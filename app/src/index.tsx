@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import { GameTemplateOptionsSpec } from '@gamepark/game-template/GameTemplateOptions'
-import { GameTemplateRules } from '@gamepark/game-template/GameTemplateRules'
-import { GameTemplateSetup } from '@gamepark/game-template/GameTemplateSetup'
+import { ChateauComboOptionsSpec } from '@gamepark/chateau-combo/ChateauComboOptions'
+import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
+import { ChateauComboSetup } from '@gamepark/chateau-combo/ChateauComboSetup'
 import { GameProvider, MaterialGameAnimations, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
@@ -14,8 +14,14 @@ setupTranslation(translations, { debug: false })
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="game-template" Rules={GameTemplateRules} optionsSpec={GameTemplateOptionsSpec} GameSetup={GameTemplateSetup}
-                  material={Material} locators={Locators} animations={new MaterialGameAnimations()}>
+    <GameProvider
+      game="chateau-combo"
+      Rules={ChateauComboRules}
+      optionsSpec={ChateauComboOptionsSpec}
+      GameSetup={ChateauComboSetup}
+      material={Material}
+      locators={Locators}
+      animations={new MaterialGameAnimations()}>
       <App/>
     </GameProvider>
   </StrictMode>,

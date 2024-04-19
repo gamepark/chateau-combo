@@ -1,3 +1,3 @@
-export { GameTemplateRules } from './GameTemplateRules'
-export { GameTemplateOptionsSpec } from './GameTemplateOptions'
-export { GameTemplateSetup } from './GameTemplateSetup'
+export { ChateauComboRules } from './ChateauComboRules'
+export { ChateauComboOptionsSpec } from './ChateauComboOptions'
+export { ChateauComboSetup } from './ChateauComboSetup'
