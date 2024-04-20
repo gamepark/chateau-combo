@@ -12,7 +12,8 @@ import { RuleId } from './rules/RuleId'
 export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialType, LocationType, ChateauComboOptions> {
   Rules = ChateauComboRules
 
-  setupMaterial(_options: ChateauComboOptions) {
+  setupMaterial() {
+    this.material(MaterialType.MessengerToken).createItem({id:1, location:{type :LocationType.EndOfRiver}})
   }
 
   start() {
