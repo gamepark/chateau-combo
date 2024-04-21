@@ -1,3 +1,8 @@
 export enum LocationType {
-    EndOfRiver
+    EndOfRiver,
+    NobleRiver,
+    VillageRiver,
+    NobleDeck,
+    VillageDeck,
+
 }
