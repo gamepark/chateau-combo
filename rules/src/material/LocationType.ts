@@ -4,5 +4,6 @@ export enum LocationType {
     VillageRiver,
     NobleDeck,
     VillageDeck,
+    GoldStock
 
 }

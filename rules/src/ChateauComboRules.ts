@@ -21,6 +21,9 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
     },
     [MaterialType.VillageCard]: {
       [LocationType.VillageDeck]: new PositiveSequenceStrategy(),
+    },
+    [MaterialType.GoldCoin]: {
+      [LocationType.GoldStock]: new PositiveSequenceStrategy(),
     }
   }
 

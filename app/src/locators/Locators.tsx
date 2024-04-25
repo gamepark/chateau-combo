@@ -28,6 +28,12 @@ export class VillageDeckLocator extends DeckLocator {
     delta = { x: -0.05, y: -0.05, z: 0.1 }
 }
 
+export class GoldStockLocator extends ItemLocator {
+
+    coordinates = {x:-30, y:10, z:0}
+
+}
+
 export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
 
     [LocationType.EndOfRiver] : new EndOfRiverLocator(),
@@ -35,6 +41,7 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
     [LocationType.VillageRiver] : new VillageRiverLocator(),
     [LocationType.NobleDeck] : new NobleDeckLocator(),
     [LocationType.VillageDeck] : new VillageDeckLocator(),
+    [LocationType.GoldStock] : new GoldStockLocator(),
 
 }
 

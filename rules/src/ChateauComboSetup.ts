@@ -14,11 +14,13 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   Rules = ChateauComboRules
 
   setupMaterial() {
-    this.material(MaterialType.MessengerToken).createItem({id:1, location:{type :LocationType.EndOfRiver}})
+    this.material(MaterialType.MessengerToken).createItem({location:{type :LocationType.EndOfRiver}})
     this.material(MaterialType.NobleCard).createItems(nobleCards.map(nobleCard => ({id:nobleCard, location:{type:LocationType.NobleDeck}})))
     this.material(MaterialType.NobleCard).shuffle()
     this.material(MaterialType.VillageCard).createItems(villageCards.map(villageCard => ({id:villageCard, location:{type:LocationType.VillageDeck}})))
     this.material(MaterialType.VillageCard).shuffle()
+    //this.material(MaterialType.GoldCoin).createItems(Array(10).map(index => ({id:index, location:{type:LocationType.GoldStock}})))
+
   }
 
   start() {
