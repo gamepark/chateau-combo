@@ -9,6 +9,8 @@ import villageCard6 from '../images/village/Diamond_6.jpg'
 import villageCard7 from '../images/village/Diamond_7.jpg'
 import villageCard8 from '../images/village/Diamond_8.jpg'
 import villageCard9 from '../images/village/Diamond_9.jpg'
+import BackCard from '../images/Back.jpg'
+
 
 export class VillageCardDescription extends CardDescription {
     type = MaterialComponentType.Card
@@ -26,6 +28,7 @@ export class VillageCardDescription extends CardDescription {
         [VillageCard.Village9]:villageCard9,
 
     }
+    backImage = BackCard
 }
 
 export const villageCardDescription = new VillageCardDescription()
