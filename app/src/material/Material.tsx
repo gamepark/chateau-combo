@@ -4,6 +4,7 @@ import { messengerTokenDescription } from './MessengerTokenDescription'
 import { nobleCardDescription } from './NobleCardDescription'
 import { villageCardDescription } from './VillageCardDescription'
 import { goldCoinDescription } from './GoldCoinDescription'
+import { keyDescription } from './KeyDescription'
 
 
 export const Material: Record<MaterialType, MaterialDescription> = {
@@ -12,5 +13,6 @@ export const Material: Record<MaterialType, MaterialDescription> = {
     [MaterialType.NobleCard]:nobleCardDescription,
     [MaterialType.VillageCard]:villageCardDescription,
     [MaterialType.GoldCoin]:goldCoinDescription,
+    [MaterialType.Key]:keyDescription
 
 }

@@ -20,6 +20,8 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     this.material(MaterialType.VillageCard).createItems(villageCards.map(villageCard => ({id:villageCard, location:{type:LocationType.VillageDeck}})))
     this.material(MaterialType.VillageCard).shuffle()
     this.material(MaterialType.GoldCoin).createItems(this.players.map(player => ({quantity:15, location:{type:LocationType.PlayerGoldStock, player}})))
+    this.material(MaterialType.Key).createItems(this.players.map(player => ({quantity:3, location:{type:LocationType.PlayerKeyStock, player}})))
+
   }
 
   start() {
