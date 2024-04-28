@@ -24,7 +24,9 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
     },
     [MaterialType.GoldCoin]: {
       [LocationType.GoldStock]: new PositiveSequenceStrategy(),
-    }
+      [LocationType.PlayerGoldStock]: new PositiveSequenceStrategy(),
+    },
+
   }
 
   hidingStrategies = {

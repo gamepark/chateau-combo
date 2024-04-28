@@ -2,6 +2,7 @@ import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
 import { DeckLocator, ItemLocator, LineLocator } from '@gamepark/react-game'
+import { playerGoldStockLocator } from './PlayerGoldStockLocator'
 
 export class EndOfRiverLocator extends LineLocator {
     coordinates = { x: 20, y: 0, z: 0 }
@@ -42,6 +43,7 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
     [LocationType.NobleDeck] : new NobleDeckLocator(),
     [LocationType.VillageDeck] : new VillageDeckLocator(),
     [LocationType.GoldStock] : new GoldStockLocator(),
+    [LocationType.PlayerGoldStock] : playerGoldStockLocator,
 
 }
 
