@@ -8,7 +8,7 @@ export class GoldStockDescription extends LocationDescription<PlayerColor, Mater
     width = 9
     ratio = 1
     borderRadius = this.width / 2
-    coordinates = { x: -25, y: 15, z: 0 }
+    coordinates = { x: -5, y: 15, z: 0 }
   }
   
   export const goldStockLocation = { type: LocationType.GoldStock }
