@@ -14,14 +14,22 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   Rules = ChateauComboRules
 
   setupMaterial() {
-    this.material(MaterialType.MessengerToken).createItem({location:{type :LocationType.EndOfRiver}})
+    this.material(MaterialType.MessengerToken).createItem({location:{type :LocationType.EndOfRiver, x:1}})
     this.material(MaterialType.NobleCard).createItems(nobleCards.map(nobleCard => ({id:nobleCard, location:{type:LocationType.NobleDeck}})))
     this.material(MaterialType.NobleCard).shuffle()
     this.material(MaterialType.VillageCard).createItems(villageCards.map(villageCard => ({id:villageCard, location:{type:LocationType.VillageDeck}})))
     this.material(MaterialType.VillageCard).shuffle()
     this.material(MaterialType.GoldCoin).createItems(this.players.map(player => ({quantity:15, location:{type:LocationType.PlayerGoldStock, player}})))
-    this.material(MaterialType.Key).createItems(this.players.map(player => ({quantity:3, location:{type:LocationType.PlayerKeyStock, player}})))
+    this.material(MaterialType.Key).createItems(this.players.map(player => ({quantity:2, location:{type:LocationType.PlayerKeyStock, player}})))
+    const nobleDeck = this.material(MaterialType.NobleCard).location(LocationType.NobleDeck).deck()
+    const villageDeck = this.material(MaterialType.VillageCard).location(LocationType.VillageDeck).deck()
 
+    nobleDeck.dealOne({type:LocationType.NobleRiver, x:0})
+    nobleDeck.dealOne({type:LocationType.NobleRiver, x:1})
+    nobleDeck.dealOne({type:LocationType.NobleRiver, x:2})
+    villageDeck.dealOne({type:LocationType.VillageRiver, x:0})
+    villageDeck.dealOne({type:LocationType.VillageRiver, x:1})
+    villageDeck.dealOne({type:LocationType.VillageRiver, x:2})
   }
 
   start() {

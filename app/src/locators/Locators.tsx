@@ -8,27 +8,27 @@ import { playerKeyStockLocator } from './PlayerKeyStockLocator'
 import { KeyStockDescription } from './KeyStockDescription'
 
 export class EndOfRiverLocator extends LineLocator {
-    coordinates = { x: 20, y: 0, z: 0 }
-    delta = {x:5, y:0, z:0}
+    coordinates = { x: -5, y: -18, z: 0 }
+    delta = {x:0, y:11, z:0}
 }
 
 export class NobleRiverLocator extends LineLocator {
-    coordinates = { x: -10, y: 20, z: 0 }
-    delta = {x:5, y:0, z:0}
+    coordinates = { x: -33, y: -18, z: 0 }
+    delta = {x:7, y:0, z:0}
 }
 
 export class VillageRiverLocator extends LineLocator {
-    coordinates = { x: 0, y: 0, z: 0 }
-    delta = {x:5, y:0, z:0}
+    coordinates = { x: -33, y: -7, z: 0 }
+    delta = {x:7, y:0, z:0}
 }
 
 export class NobleDeckLocator extends DeckLocator {
-    coordinates = { x: -30, y: 0, z: 0 }
+    coordinates = { x: -40, y: -18, z: 0 }
     delta = { x: -0.05, y: -0.05, z: 0.1 }
 }
 
 export class VillageDeckLocator extends DeckLocator {
-    coordinates = { x: -30, y: -10, z: 0 }
+    coordinates = { x: -40, y: -7, z: 0 }
     delta = { x: -0.05, y: -0.05, z: 0.1 }
 }
 
