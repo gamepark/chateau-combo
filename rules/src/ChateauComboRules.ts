@@ -2,8 +2,8 @@ import { PositiveSequenceStrategy, SecretMaterialRules, hideItemId } from '@game
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
-import { PlayerTurn } from './rules/PlayerTurn'
 import { RuleId } from './rules/RuleId'
+import { PickCard } from './rules/PickCard'
 
 
 /**
@@ -12,7 +12,7 @@ import { RuleId } from './rules/RuleId'
  */
 export class ChateauComboRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
   rules = {
-    [RuleId.PlayerTurn]: PlayerTurn
+    [RuleId.PickCard]: PickCard
   }
 
   locationsStrategies = {

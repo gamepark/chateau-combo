@@ -33,6 +33,6 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   }
 
   start() {
-    this.startPlayerTurn(RuleId.PlayerTurn, this.game.players[0])
+    this.startPlayerTurn(RuleId.PickCard, this.game.players[0])
   }
 }
