@@ -1,33 +1,89 @@
 import { isEnumValue } from "@gamepark/rules-api"
 
-export enum NobleCard {
-    Noble1 = 1,
-    Noble2,
-    Noble3,
-    Noble4,
-    Noble5,
-    Noble6,
-    Noble7,
-    Noble8,
-    Noble9,
-    Noble10
-}
+export enum Card {
+    //Noble
+    Steward = 1,
+    HisHoliness,
+    Chaplain,
+    Cardinal,
+    Templar,
+    Gravedigger,
+    Alchemist,
+    Astronomer,
+    Pilgrim,
+    Devout,
+    Nun,
+    Architect,
+    Goldsmith,
+    Apothecary,
+    Professor,
+    Officer,
+    Captain,
+    Judge,
+    Patron,
+    Guildmaster,
+    General,
+    Knight,
+    Lookout,
+    RoyalGuard,
+    Banker,
+    Pawnbroker,
+    Chetelaine,
+    Glassblower,
+    Princess,
+    Prince,
+    HisMajesty,
+    QueenMother,
+    Jester,
+    Chancellor,
+    Baron,
+    HerMajestytheQueen,
+    Duchesse,
+    // Village
+    Inventor=100,
+    Spy,
+    Vicar,
+    MiraculouslyCured,
+    Squire,
+    Philosopher,
+    Doctor,
+    Executionner,
+    Barbarian,
+    Militiaman,
+    Bombardier,
+    Stonemason,
+    Blacksmith,
+    MasterAtArms,
+    Mercenary,
+    Innkeeper,
+    Sculptor,
+    Clockmaker,
+    SpiceMerchant,
+    Armorer,
+    Potter,
+    Farmer,
+    Locksmith,
+    Carpenter,
+    Witch,
+    Brigand,
+    Woodcutter,
+    Monk,
+    Beggar,
+    StableBoy,
+    Winemaker,
+    Shepherd,
+    Usurper,
+    Traveler,
+    Farmhand,
+    Revolutionnary,
+    Firsherman,
+    Baker,
+    Beekeeper,
 
-export enum VillageCard {
-    Village1 = 1,
-    Village2,
-    Village3,
-    Village4,
-    Village5,
-    Village6,
-    Village7,
-    Village8,
-    Village9,
-    Village10
 }
 
 export enum BannerType {
-    Noble = 1, Village
+    NobleBanner = 1, VillageBanner
 }
 
 export enum BlazonType {
@@ -39,50 +95,94 @@ export enum BlazonType {
     Farmer, 
 }
 
-export class CardPattern {
-    name:string
+export type CardPattern = {
+    banner:BannerType
     cost:number
-    banner?:BannerType
-    canSwapMessengerToken:boolean
     blazon:BlazonType[]
-    // TODO : ImmediatEffet
-    // TODO : ScoringMethod
-
-    constructor(name:string, cost:number, canSwapMessengerToken:boolean, blazon:BlazonType[], banner?:BannerType){
-        this.name = name,
-        this.cost = cost,
-        this.banner = banner,
-        this.canSwapMessengerToken = canSwapMessengerToken
-        this.blazon = blazon
-    }
+    canSwapMessengerToken:boolean
+    // TDOO :
+    // immediateEffect:() => void
+    // ScoringEffect:() => void
 }
 
-export const NobleCardsObjects = {
-    [NobleCard.Noble1]: new CardPattern("Noble1", 1, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble2]: new CardPattern("Noble2", 2, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble3]: new CardPattern("Noble3", 3, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble4]: new CardPattern("Noble4", 4, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble5]: new CardPattern("Noble5", 5, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble6]: new CardPattern("Noble6", 6, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble7]: new CardPattern("Noble7", 7, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble8]: new CardPattern("Noble8", 8, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble9]: new CardPattern("Noble9", 9, false, [BlazonType.Noble], BannerType.Noble),
-    [NobleCard.Noble10]: new CardPattern("Noble10", 10, false, [BlazonType.Noble], BannerType.Noble)
+export const CardObjects: Record<Card, CardPattern> = {
+    [Card.Steward]:            { banner:BannerType.NobleBanner,   cost: 0, blazon: [BlazonType.Noble],                       canSwapMessengerToken: false },
+    [Card.HisHoliness]:        { banner:BannerType.NobleBanner,   cost: 7, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
+    [Card.Chaplain]:           { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true } ,
+    [Card.Cardinal]:           { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
+    [Card.Templar]:            { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Prayer, BlazonType.Soldier],  canSwapMessengerToken: true } ,
+    [Card.Gravedigger]:        { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Prayer, BlazonType.Teacher],  canSwapMessengerToken: false },
+    [Card.Alchemist]:          { banner:BannerType.NobleBanner,   cost: 6, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
+    [Card.Astronomer]:         { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Teacher, BlazonType.Teacher], canSwapMessengerToken: false },
+    [Card.Pilgrim]:            { banner:BannerType.NobleBanner,   cost: 6, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true } ,
+    [Card.Devout]:             { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
+    [Card.Nun]:                { banner:BannerType.NobleBanner,   cost: 3, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true } ,
+    [Card.Architect]:          { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true } ,
+    [Card.Goldsmith]:          { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Teacher, BlazonType.Worker],  canSwapMessengerToken: true } ,
+    [Card.Apothecary]:         { banner:BannerType.NobleBanner,   cost: 3, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true } ,
+    [Card.Professor]:          { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true } ,
+    [Card.Officer]:            { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+    [Card.Captain]:            { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Soldier, BlazonType.Soldier], canSwapMessengerToken: true } ,
+    [Card.Judge]:              { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true } ,
+    [Card.Patron]:             { banner:BannerType.NobleBanner,   cost: 7, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
+    [Card.Guildmaster]:        { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true } ,
+    [Card.General]:            { banner:BannerType.NobleBanner,   cost: 7, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+    [Card.Knight]:             { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+    [Card.Lookout]:            { banner:BannerType.NobleBanner,   cost: 6, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+    [Card.RoyalGuard]:         { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Noble, BlazonType.Soldier],   canSwapMessengerToken: true } ,
+    [Card.Banker]:             { banner:BannerType.NobleBanner,   cost: 7, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true } ,
+    [Card.Pawnbroker]:         { banner:BannerType.NobleBanner,   cost: 4, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true } ,
+    [Card.Chetelaine]:         { banner:BannerType.NobleBanner,   cost: 2, blazon: [BlazonType.Noble, BlazonType.Worker],    canSwapMessengerToken: false },
+    [Card.Glassblower]:        { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true } ,
+    [Card.Princess]:           { banner:BannerType.NobleBanner,   cost: 3, blazon: [BlazonType.Noble],                       canSwapMessengerToken: true } ,
+    [Card.Prince]:             { banner:BannerType.NobleBanner,   cost: 6, blazon: [BlazonType.Noble],                       canSwapMessengerToken: false },
+    [Card.HisMajesty]:         { banner:BannerType.NobleBanner,   cost: 6, blazon: [BlazonType.Noble, BlazonType.Prayer],    canSwapMessengerToken: true } ,
+    [Card.QueenMother]:        { banner:BannerType.NobleBanner,   cost: 3, blazon: [BlazonType.Noble, BlazonType.Noble],     canSwapMessengerToken: false },
+    [Card.Jester]:             { banner:BannerType.NobleBanner,   cost: 3, blazon: [BlazonType.Noble],                       canSwapMessengerToken: true } ,
+    [Card.Chancellor]:         { banner:BannerType.NobleBanner,   cost: 6, blazon: [BlazonType.Noble, BlazonType.Teacher],   canSwapMessengerToken: false },
+    [Card.Baron]:              { banner:BannerType.NobleBanner,   cost: 3, blazon: [BlazonType.Noble],                       canSwapMessengerToken: false },
+    [Card.HerMajestytheQueen]: { banner:BannerType.NobleBanner,   cost: 7, blazon: [BlazonType.Noble],                       canSwapMessengerToken: false },
+    [Card.Duchesse]:           { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Noble, BlazonType.Noble],     canSwapMessengerToken: false },
+    [Card.Inventor]:           { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Teacher, BlazonType.Teacher], canSwapMessengerToken: false },
+    [Card.Spy]:                { banner:BannerType.VillageBanner, cost: 4, blazon: [BlazonType.Teacher, BlazonType.Soldier], canSwapMessengerToken: false },
+    [Card.Vicar]:              { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true } ,
+    [Card.MiraculouslyCured]:  { banner:BannerType.VillageBanner, cost: 3, blazon: [BlazonType.Prayer, BlazonType.Prayer],   canSwapMessengerToken: true } ,
+    [Card.Squire]:             { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+    [Card.Philosopher]:        { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
+    [Card.Doctor]:             { banner:BannerType.VillageBanner, cost: 5, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true } ,
+    [Card.Executionner]:       { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true } ,
+    [Card.Barbarian]:          { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true } ,
+    [Card.Militiaman]:         { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true } , 
+    [Card.Bombardier]:         { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+    [Card.Stonemason]:         { banner:BannerType.VillageBanner, cost: 3, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true } ,
+    [Card.Blacksmith]:         { banner:BannerType.VillageBanner, cost: 5, blazon: [BlazonType.Soldier, BlazonType.Worker],  canSwapMessengerToken: false },
+    [Card.MasterAtArms]:       { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Soldier, BlazonType.Soldier], canSwapMessengerToken: false },
+    [Card.Mercenary]:          { banner:BannerType.VillageBanner, cost: 6, blazon: [BlazonType.Soldier, BlazonType.Farmer],  canSwapMessengerToken: false },
+    [Card.Innkeeper]:          { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: false },
+    [Card.Sculptor]:           { banner:BannerType.VillageBanner, cost: 3, blazon: [BlazonType.Prayer, BlazonType.Worker],   canSwapMessengerToken: true } ,
+    [Card.Clockmaker]:         { banner:BannerType.VillageBanner, cost: 3, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true } ,
+    [Card.SpiceMerchant]:      { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: false },
+    [Card.Armorer]:            { banner:BannerType.VillageBanner, cost: 3, blazon: [BlazonType.Worker],                      canSwapMessengerToken: false },
+    [Card.Potter]:             { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true } ,
+    [Card.Farmer]:             { banner:BannerType.VillageBanner, cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true } ,
+    [Card.Locksmith]:          { banner:BannerType.VillageBanner, cost: 4, blazon: [BlazonType.Worker, BlazonType.Farmer],   canSwapMessengerToken: true } , 
+    [Card.Carpenter]:          { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true } ,
+    [Card.Witch]:              { banner:BannerType.VillageBanner, cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true } ,
+    [Card.Brigand]:            { banner:BannerType.VillageBanner, cost: 7, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+    [Card.Woodcutter]:         { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+    [Card.Monk]:               { banner:BannerType.VillageBanner, cost: 4, blazon: [BlazonType.Prayer, BlazonType.Farmer],   canSwapMessengerToken: true } ,
+    [Card.Beggar]:             { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+    [Card.StableBoy]:          { banner:BannerType.VillageBanner, cost: 4, blazon: [BlazonType.Farmer, BlazonType.Noble],    canSwapMessengerToken: false },
+    [Card.Winemaker]:          { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Teacher, BlazonType.Farmer],  canSwapMessengerToken: false },
+    [Card.Shepherd]:           { banner:BannerType.VillageBanner, cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true } ,
+    [Card.Usurper]:            { banner:BannerType.VillageBanner, cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true } , 
+    [Card.Traveler]:           { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+    [Card.Farmhand]:           { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true } ,
+    [Card.Revolutionnary]:     { banner:BannerType.VillageBanner, cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true } ,
+    [Card.Firsherman]:         { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Farmer, BlazonType.Farmer],   canSwapMessengerToken: false },
+    [Card.Baker]:              { banner:BannerType.VillageBanner, cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+    [Card.Beekeeper]:          { banner:BannerType.VillageBanner, cost: 2, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+    
 }
 
-export const VillageCardsObjects = {
-    [VillageCard.Village1]: new CardPattern("Village1", 1, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village2]: new CardPattern("Village2", 2, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village3]: new CardPattern("Village3", 3, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village4]: new CardPattern("Village4", 4, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village5]: new CardPattern("Village5", 5, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village6]: new CardPattern("Village6", 6, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village7]: new CardPattern("Village7", 7, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village8]: new CardPattern("Village8", 8, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village9]: new CardPattern("Village9", 9, false, [BlazonType.Farmer], BannerType.Village),
-    [VillageCard.Village10]: new CardPattern("Village10", 10, false, [BlazonType.Farmer], BannerType.Village)
-}
-
-export const nobleCards = Object.values(NobleCard).filter<NobleCard>(isEnumValue)
-export const villageCards = Object.values(VillageCard).filter<VillageCard>(isEnumValue)
-
+export const cards = Object.values(Card).filter<Card>(isEnumValue)

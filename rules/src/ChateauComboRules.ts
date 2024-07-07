@@ -16,11 +16,11 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
   }
 
   locationsStrategies = {
-    [MaterialType.NobleCard]: {
+    [MaterialType.Card]: {
       [LocationType.NobleDeck]: new PositiveSequenceStrategy(),
-    },
-    [MaterialType.VillageCard]: {
+      [LocationType.NobleRiver]: new PositiveSequenceStrategy(), // FillGap 
       [LocationType.VillageDeck]: new PositiveSequenceStrategy(),
+      [LocationType.VillageRiver]: new PositiveSequenceStrategy(), // FillGap 
     },
     [MaterialType.GoldCoin]: {
       [LocationType.GoldStock]: new PositiveSequenceStrategy(),
@@ -30,10 +30,8 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
   }
 
   hidingStrategies = {
-    [MaterialType.NobleCard]: {
+    [MaterialType.Card]: {
       [LocationType.NobleDeck]: hideItemId,
-    },
-    [MaterialType.VillageCard]: {
       [LocationType.VillageDeck]: hideItemId,
     }
   }

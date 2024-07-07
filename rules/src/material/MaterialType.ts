@@ -1,7 +1,6 @@
 export enum MaterialType {
     MessengerToken = 1,
-    NobleCard,
-    VillageCard,
+    Card,
     GoldCoin,
     Key
 }
