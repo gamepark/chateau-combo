@@ -1,7 +1,7 @@
 import { Location, MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { LocationType } from "../material/LocationType";
-import { CardObjects } from "../CardProperties";
+import { Card, CardObjects } from "../CardProperties";
 
 // PlayerTurnRule => game.rule.player !== undefined
 // SimultaneousRule => game.rule.players !== undefined
@@ -10,24 +10,21 @@ import { CardObjects } from "../CardProperties";
 export class PickCard extends PlayerTurnRule {
 
   getLegalMoves(player:number): MaterialMove<number, number, number>[] {
-    const moves = []
     const goldAmount = this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
-
     const availableSpaces: Location[] = [{type:LocationType.PlayerBoard, player:this.player, x:0, y:0}] // Calculer la liste des coordonnées dispo
 
     const buyableCards = this
       .material(MaterialType.Card)
-      .location(LocationType.VillageRiver || LocationType.NobleRiver)
+      .location((l) => l.type === LocationType.VillageRiver || l.type === LocationType.NobleRiver)
       .filter((item) => {
-        const itemId = item.id as number
-        const definition = CardObjects[itemId]
+        const definition = CardObjects[item.id]
         const cost = definition.cost
         return cost <= goldAmount
     })  
 
-/*     const moves: MaterialMove[] = availableSpaces.flatMap((space) => {
+    const moves: MaterialMove[] = availableSpaces.flatMap((space) => {
       return buyableCards.moveItems(space)
-    }) */
+    }) 
 
     
     //const indexes = buyableCards.getIndexes()
@@ -76,7 +73,7 @@ export class PickCard extends PlayerTurnRule {
      * }
      */
 
-    return []
+    return moves
   }
 
 /*   afterItemMove(move: ItemMove) {

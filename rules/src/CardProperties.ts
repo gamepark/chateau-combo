@@ -105,7 +105,7 @@ export type CardPattern = {
     // ScoringEffect:() => void
 }
 
-export const CardObjects: Record<Card, CardPattern> = {
+export const CardObjects: Record<number, CardPattern> = {
     [Card.Steward]:            { banner:BannerType.NobleBanner,   cost: 0, blazon: [BlazonType.Noble],                       canSwapMessengerToken: false },
     [Card.HisHoliness]:        { banner:BannerType.NobleBanner,   cost: 7, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
     [Card.Chaplain]:           { banner:BannerType.NobleBanner,   cost: 5, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true } ,

@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
-import { DeckLocator, ItemContext, ItemLocator, LineLocator, PileLocator } from '@gamepark/react-game'
+import { DeckLocator, ItemContext, ItemLocator, LineLocator, LocationDescription, PileLocator } from '@gamepark/react-game'
 import { playerGoldStockLocator } from './PlayerGoldStockLocator'
 import { GoldStockDescription } from './GoldStockDescription'
 import { playerKeyStockLocator } from './PlayerKeyStockLocator'
@@ -10,12 +10,21 @@ import { Coordinates, MaterialItem } from '@gamepark/rules-api'
 
 export class PlayerBoardLocator extends ItemLocator {
 
+    locationDescription = new PlayerBoardDescription()
+
     getPosition(item: MaterialItem, _context: ItemContext): Coordinates {
-        return { x: item.location.x! * 5.2, y: item.location.y! + 5.2 , z: 0.05 }
+        return { x: item.location.x! * 5.2, y: item.location.y! * 5.2 , z: 0.05 }
     }
     
-    coordinates = { x: 20, y: 10, z: 0 }
+    coordinates = { x: 0, y: 0, z: 0 }
 }
+
+class PlayerBoardDescription extends LocationDescription {
+    location = { type: LocationType.PlayerBoard }
+    width = 30
+    ratio = 1
+    borderRadius = this.width / 2
+  }
 
 export class EndOfRiverLocator extends LineLocator {
     coordinates = { x: -5, y: -18, z: 0 }
