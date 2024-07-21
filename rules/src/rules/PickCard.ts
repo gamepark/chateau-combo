@@ -1,4 +1,4 @@
-import { Location, MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
+import { Location, Material, MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { LocationType } from "../material/LocationType";
 import { Card, CardObjects } from "../CardProperties";
@@ -11,7 +11,29 @@ export class PickCard extends PlayerTurnRule {
 
   getLegalMoves(player:number): MaterialMove<number, number, number>[] {
     const goldAmount = this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
-    const availableSpaces: Location[] = [{type:LocationType.PlayerBoard, player:this.player, x:0, y:0}] // Calculer la liste des coordonnées dispo
+    const playedCards = this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player).getItems().map(item => {return {x:item.location.x, y:item.location.y}})
+
+    const availableSpaces: Location[] = [
+    ] 
+
+    if (playedCards.length === 0){
+      availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:0, y:0, z:0})
+    }
+
+    playedCards.forEach(playedCard => {
+      if (playedCards.find(item => item.x === playedCard.x! -1 && item.y === playedCard.y! ) === undefined){
+        availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!-1, y:playedCard.y!, z:0})
+      }
+      if (playedCards.find(item => item.x === playedCard.x! +1 && item.y === playedCard.y! ) === undefined){
+        availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!+1, y:playedCard.y!, z:0})
+      }
+      if (playedCards.find(item => item.x === playedCard.x! && item.y === playedCard.y! -1 ) === undefined){
+        availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!, y:playedCard.y! -1, z:0})
+      }
+      if (playedCards.find(item => item.x === playedCard.x! && item.y === playedCard.y! +1 ) === undefined){
+        availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!, y:playedCard.y! +1, z:0})
+      }
+    })
 
     const buyableCards = this
       .material(MaterialType.Card)
@@ -25,6 +47,8 @@ export class PickCard extends PlayerTurnRule {
     const moves: MaterialMove[] = availableSpaces.flatMap((space) => {
       return buyableCards.moveItems(space)
     }) 
+
+    console.log(moves)
 
     
     //const indexes = buyableCards.getIndexes()

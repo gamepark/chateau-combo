@@ -83,8 +83,8 @@ import BackCard from '../images/Back.jpg'
 
 export class ChateauComboCardDescription extends CardDescription {
     type = MaterialComponentType.Card
-    height = 10
-    ratio = 1/1
+    width = 6.5
+    ratio = 0.715
     images = {
 
         // Noble

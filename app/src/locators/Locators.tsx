@@ -15,15 +15,13 @@ export class PlayerBoardLocator extends ItemLocator {
     getPosition(item: MaterialItem, _context: ItemContext): Coordinates {
         return { x: item.location.x! * 5.2, y: item.location.y! * 5.2 , z: 0.05 }
     }
-    
-    coordinates = { x: 0, y: 0, z: 0 }
 }
 
 class PlayerBoardDescription extends LocationDescription {
     location = { type: LocationType.PlayerBoard }
-    width = 30
-    ratio = 1
-    borderRadius = this.width / 2
+    width = 6.5
+    ratio = 0.715
+    
   }
 
 export class EndOfRiverLocator extends LineLocator {
@@ -73,12 +71,13 @@ export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, Mat
     [LocationType.NobleRiver] : new NobleRiverLocator(),
     [LocationType.VillageRiver] : new VillageRiverLocator(),
     [LocationType.NobleDeck] : new NobleDeckLocator(),
+    [LocationType.PlayerBoard]: new PlayerBoardLocator(),
     [LocationType.VillageDeck] : new VillageDeckLocator(),
     [LocationType.PlayerGoldStock] : playerGoldStockLocator,
     [LocationType.GoldStock] : new GoldStockLocator(),
     [LocationType.PlayerKeyStock]: playerKeyStockLocator,
     [LocationType.KeyStock]: new KeyStockLocator(),
-    [LocationType.PlayerBoard]: new PlayerBoardLocator()
+
 
 }
 
