@@ -1,7 +1,8 @@
-import { Location, Material, MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
+import { isMoveItemType, ItemMove, Location, Material, MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { LocationType } from "../material/LocationType";
-import { Card, CardObjects } from "../CardProperties";
+import { BannerType, Card, CardObjects } from "../CardProperties";
+import { isAnyCardAbove, isAnyCardBelow, isAnyCardToTheLeft, isAnyCardToTheRight } from "./helpers/PlayerBoardHelper";
 
 // PlayerTurnRule => game.rule.player !== undefined
 // SimultaneousRule => game.rule.players !== undefined
@@ -20,17 +21,19 @@ export class PickCard extends PlayerTurnRule {
       availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:0, y:0, z:0})
     }
 
+
+
     playedCards.forEach(playedCard => {
-      if (playedCards.find(item => item.x === playedCard.x! -1 && item.y === playedCard.y! ) === undefined){
+      if (playedCards.find(item => isAnyCardToTheLeft(item, playedCard) ) === undefined){
         availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!-1, y:playedCard.y!, z:0})
       }
-      if (playedCards.find(item => item.x === playedCard.x! +1 && item.y === playedCard.y! ) === undefined){
+      if (playedCards.find(item => isAnyCardToTheRight(item, playedCard) ) === undefined){
         availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!+1, y:playedCard.y!, z:0})
       }
-      if (playedCards.find(item => item.x === playedCard.x! && item.y === playedCard.y! -1 ) === undefined){
+      if (playedCards.find(item => isAnyCardBelow(item, playedCard)) === undefined){
         availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!, y:playedCard.y! -1, z:0})
       }
-      if (playedCards.find(item => item.x === playedCard.x! && item.y === playedCard.y! +1 ) === undefined){
+      if (playedCards.find(item => isAnyCardAbove(item, playedCard) ) === undefined){
         availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:playedCard.x!, y:playedCard.y! +1, z:0})
       }
     })
@@ -47,25 +50,35 @@ export class PickCard extends PlayerTurnRule {
     const moves: MaterialMove[] = availableSpaces.flatMap((space) => {
       return buyableCards.moveItems(space)
     }) 
-
     console.log(moves)
+    return moves
+  }
 
-    
-    //const indexes = buyableCards.getIndexes()
+  afterItemMove(move: ItemMove) {
+    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.PlayerBoard){
 
-//    for (const index of indexes) {
-//      const item = buyableCards.getItem(index) // MaterialItem => id, location
-//      const item = buyableCards.index(index) // Material => move, create...
-//    }
-    
+      const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
+      const moves: MaterialMove[] = []
 
-  //  for (const cardItem of villageCards.getIndexes()){
-   //   console.log(cardItem)
-  //    const card:CardPattern = VillageCardsObjects[cardItem]
-   //   if (card.cost <= goldAmount){   
-  //      moves.push(villageCards[cardItem].moveItem({type:LocationType.PlayerBoard, player, x:0, y:0}))
-  //    }
-  //  }
+
+      const deckLocationToDrawFrom = (CardObjects[item.id].banner === BannerType.NobleBanner) ? LocationType.NobleDeck : LocationType.VillageDeck
+      const deckToDrawFrom = this.material(MaterialType.Card).location(deckLocationToDrawFrom).deck()
+
+      moves.push(...this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).deleteItems(CardObjects[item.id].cost))
+      
+      return moves
+    } else {
+      return []
+    }
+  } 
+
+  getPlayerMoves() {
+    return []
+  }
+}
+
+
+
 
     /**
      * items: {
@@ -96,24 +109,3 @@ export class PickCard extends PlayerTurnRule {
      *    ]
      * }
      */
-
-    return moves
-  }
-
-/*   afterItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.NobleCard)(move) && move.location.type === LocationType.PlayerBoard){
-
-      const item = this.material(MaterialType.NobleCard).getItem(move.itemIndex)!
-      const moves: MaterialMove[] = []
-
-      moves.push(...this.material(MaterialType.GoldCoin).deleteItems(VillageCardsObjects[item.id].cost))
-      moves.push(this.rules().startPlayerTurn(RuleId.ChooseRegion, this.nextPlayer))
-      
-      return moves
-    }
-  } */
-
-  getPlayerMoves() {
-    return []
-  }
-}

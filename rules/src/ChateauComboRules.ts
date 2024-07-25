@@ -1,4 +1,4 @@
-import { PositiveSequenceStrategy, SecretMaterialRules, hideItemId } from '@gamepark/rules-api'
+import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideItemId } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -18,9 +18,9 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
   locationsStrategies = {
     [MaterialType.Card]: {
       [LocationType.NobleDeck]: new PositiveSequenceStrategy(),
-      [LocationType.NobleRiver]: new PositiveSequenceStrategy(), // FillGap 
+      [LocationType.NobleRiver]: new FillGapStrategy(), // FillGap 
       [LocationType.VillageDeck]: new PositiveSequenceStrategy(),
-      [LocationType.VillageRiver]: new PositiveSequenceStrategy(), // FillGap 
+      [LocationType.VillageRiver]: new FillGapStrategy(), // FillGap 
     },
     [MaterialType.GoldCoin]: {
       [LocationType.GoldStock]: new PositiveSequenceStrategy(),

@@ -1,12 +1,13 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
-import { DeckLocator, ItemContext, ItemLocator, LineLocator, LocationDescription, PileLocator } from '@gamepark/react-game'
+import { DeckLocator, ItemContext, ItemLocator, LineLocator, LocationContext, LocationDescription, MaterialContext, PileLocator } from '@gamepark/react-game'
 import { playerGoldStockLocator } from './PlayerGoldStockLocator'
 import { GoldStockDescription } from './GoldStockDescription'
 import { playerKeyStockLocator } from './PlayerKeyStockLocator'
 import { KeyStockDescription } from './KeyStockDescription'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
 
 export class PlayerBoardLocator extends ItemLocator {
 
@@ -18,6 +19,22 @@ export class PlayerBoardLocator extends ItemLocator {
 }
 
 class PlayerBoardDescription extends LocationDescription {
+
+    getLocations(context: ItemContext): Location[] {
+
+        if (context.player === undefined){
+            return []
+        }
+
+        const playerBoardHelper = new PlayerBoardHelper(context.rules.game, context.player)
+        return  playerBoardHelper.getAvailableSpaces()
+
+    }
+
+    getCoordinates(location: Location, _context: LocationContext): Coordinates {
+        return { x: location.x! * 5.2, y: location.y! * 5.2 , z: 0.05 }
+    }
+
     location = { type: LocationType.PlayerBoard }
     width = 6.5
     ratio = 0.715
