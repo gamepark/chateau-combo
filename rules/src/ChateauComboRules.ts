@@ -3,7 +3,8 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { RuleId } from './rules/RuleId'
-import { PickCard } from './rules/PickCard'
+import { BuyCardRule } from './rules/BuyCardRule'
+import { SpendKeyRule } from './rules/SpendKeyRule'
 
 
 /**
@@ -12,7 +13,8 @@ import { PickCard } from './rules/PickCard'
  */
 export class ChateauComboRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
   rules = {
-    [RuleId.PickCard]: PickCard
+    [RuleId.SpendKey]: SpendKeyRule,
+    [RuleId.BuyCard]: BuyCardRule
   }
 
   locationsStrategies = {

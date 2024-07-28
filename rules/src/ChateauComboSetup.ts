@@ -1,11 +1,12 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
+import { nobles, villages } from './Card'
+import { BannerType } from './CardCharacteristics'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
 import { RuleId } from './rules/RuleId'
-import { BannerType, CardObjects, cards } from './CardProperties'
 
 
 /**
@@ -16,29 +17,27 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
 
   setupMaterial() {
 
-    this.material(MaterialType.Card).createItems(cards.filter((card) => {
-        return CardObjects[card].banner == BannerType.NobleBanner
-    }).map(card => ({id:card, location:{type:LocationType.NobleDeck}})))
+    const allNobles = nobles.map((v) => ({ id: v, location: { type: LocationType.NobleDeck } }))
+    this.material(MaterialType.Card).createItems(allNobles)
     this.material(MaterialType.Card).location(LocationType.NobleDeck).shuffle()
 
-    this.material(MaterialType.Card).createItems(cards.filter((card) => {
-      return CardObjects[card].banner == BannerType.VillageBanner
-    }).map(card => ({id:card, location:{type:LocationType.VillageDeck}})))
+    const allVillages = villages.map((v) => ({ id: v, location: { type: LocationType.VillageDeck } }))
+    this.material(MaterialType.Card).createItems(allVillages)
     this.material(MaterialType.Card).location(LocationType.VillageDeck).shuffle()
 
-    this.material(MaterialType.MessengerToken).createItem({location:{type :LocationType.EndOfRiver, x:1}})
-    this.material(MaterialType.GoldCoin).createItems(this.players.map(player => ({quantity:15, location:{type:LocationType.PlayerGoldStock, player}})))
-    this.material(MaterialType.Key).createItems(this.players.map(player => ({quantity:2, location:{type:LocationType.PlayerKeyStock, player}})))
-  
+    this.material(MaterialType.MessengerToken).createItem({ location: { type: LocationType.EndOfRiver, id: BannerType.NobleBanner } })
+    this.material(MaterialType.GoldCoin).createItems(this.players.map(player => ({ quantity: 15, location: { type: LocationType.PlayerGoldStock, player } })))
+    this.material(MaterialType.Key).createItems(this.players.map(player => ({ quantity: 2, location: { type: LocationType.PlayerKeyStock, player } })))
+
     const nobleDeck = this.material(MaterialType.Card).location(LocationType.NobleDeck).deck()
     const villageDeck = this.material(MaterialType.Card).location(LocationType.VillageDeck).deck()
 
-    nobleDeck.deal({type:LocationType.NobleRiver}, 3)
+    nobleDeck.deal({ type: LocationType.NobleRiver }, 3)
 
-    villageDeck.deal({type:LocationType.VillageRiver}, 3)
+    villageDeck.deal({ type: LocationType.VillageRiver }, 3)
   }
 
   start() {
-    this.startPlayerTurn(RuleId.PickCard, this.game.players[0])
+    this.startPlayerTurn(RuleId.BuyCard, this.game.players[0])
   }
 }

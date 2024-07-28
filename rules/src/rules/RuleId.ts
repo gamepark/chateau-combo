@@ -1,3 +1,6 @@
 export enum RuleId {
-  PickCard = 1
+  SpendKey = 1,
+  BuyCard,
+  Effect,
+  MoveMessenger
 }
