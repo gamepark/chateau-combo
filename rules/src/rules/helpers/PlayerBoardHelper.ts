@@ -1,6 +1,7 @@
 import { Location, MaterialGame, MaterialRulesPart, XYCoordinates } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
+import uniqBy from "lodash/uniqBy";
 
 export class PlayerBoardHelper extends MaterialRulesPart {
 
@@ -17,8 +18,7 @@ export class PlayerBoardHelper extends MaterialRulesPart {
         if (playedCards.length === 0){
           availableSpaces.push({type:LocationType.PlayerBoard, player:this.player, x:0, y:0, z:0})
         }
-    
-    
+
     
         playedCards.forEach(playedCard => {
           if (playedCards.find(item => isAnyCardToTheLeft(item, playedCard) ) === undefined){
@@ -35,7 +35,7 @@ export class PlayerBoardHelper extends MaterialRulesPart {
           }
         })
 
-        return availableSpaces
+        return uniqBy(availableSpaces, (location) => JSON.stringify(location))
 
     }
 
