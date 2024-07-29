@@ -1,4 +1,4 @@
-import { Card } from '@gamepark/chateau-combo/CardProperties'
+import { Card } from '@gamepark/chateau-combo/Card'
 import { CardDescription, MaterialComponentType } from '@gamepark/react-game'
 
 import BackCard from '../images/Back.jpg'

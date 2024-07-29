@@ -2,6 +2,8 @@ import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideIte
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
+import { EndOfTurnRule } from './rules/EndOfTurnRule'
+import { MoveMessengerRule } from './rules/MoveMessengerRule'
 import { RuleId } from './rules/RuleId'
 import { BuyCardRule } from './rules/BuyCardRule'
 import { SpendKeyRule } from './rules/SpendKeyRule'
@@ -14,7 +16,9 @@ import { SpendKeyRule } from './rules/SpendKeyRule'
 export class ChateauComboRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
   rules = {
     [RuleId.SpendKey]: SpendKeyRule,
-    [RuleId.BuyCard]: BuyCardRule
+    [RuleId.BuyCard]: BuyCardRule,
+    [RuleId.MoveMessenger]: MoveMessengerRule,
+    [RuleId.EndOfTurn]: EndOfTurnRule
   }
 
   locationsStrategies = {

@@ -1,25 +1,36 @@
 import { isMoveItemType, isMoveItemTypeAtOnce, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { KeyDiscardLocationCardsRule } from './key/KeyDiscardLocationCardsRule'
 import { KeyMoveMessengerRule } from './key/KeyMoveMessengerRule'
 import { RuleId } from './RuleId'
 
 export class SpendKeyRule extends PlayerTurnRule {
-  getPlayerMoves(): MaterialMove<number, number, number>[] {
+  getPlayerMoves(): MaterialMove[] {
     if (!this.keys) return [this.startRule(RuleId.BuyCard)]
     return [
       ...new KeyDiscardLocationCardsRule(this.game).getPlayerMoves(),
-      ...new KeyMoveMessengerRule(this.game).getPlayerMoves()
+      ...new KeyMoveMessengerRule(this.game).getPlayerMoves(),
+      this.startRule(RuleId.BuyCard)
     ]
   }
 
   afterItemMove(move: ItemMove) {
-    if (isMoveItemTypeAtOnce(MaterialType.Card)(move) || isMoveItemType(MaterialType.MessengerToken)(move)) {
-      return [this.startRule(RuleId.BuyCard)]
+    const moves: MaterialMove[] = []
+    if (isMoveItemTypeAtOnce(MaterialType.Card)(move)) {
+      moves.push(
+        ...new KeyDiscardLocationCardsRule(this.game).afterItemMove(move)
+      )
+      moves.push(this.startRule(RuleId.BuyCard))
     }
 
-    return []
+    if (isMoveItemType(MaterialType.MessengerToken)(move)) {
+      moves.push(
+        ...new KeyMoveMessengerRule(this.game).afterItemMove(move)
+      )
+      moves.push(this.startRule(RuleId.BuyCard))
+    }
+
+    return moves
   }
 
   get keys() {

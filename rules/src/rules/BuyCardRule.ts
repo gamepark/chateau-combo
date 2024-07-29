@@ -1,8 +1,10 @@
 import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { BannerType, CardObjects } from '../CardProperties'
+import { BannerType, cardCharacteristics, getBanner } from '../CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 // PlayerTurnRule => game.rule.player !== undefined
 // SimultaneousRule => game.rule.players !== undefined
@@ -11,20 +13,29 @@ import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
 export class BuyCardRule extends PlayerTurnRule {
 
   getLegalMoves(): MaterialMove<number, number, number>[] {
-    const goldAmount = this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
+    const gold = this.gold
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
     const buyableCards = this
-      .material(MaterialType.Card)
-      .location((l) => l.type === LocationType.VillageRiver || l.type === LocationType.NobleRiver)
-      .filter((item) => {
-        const definition = CardObjects[item.id]
-        const cost = definition.cost
-        return cost <= goldAmount
-      })
+      .buyableCards
+      .filter((item) => cardCharacteristics[item.id].cost <= gold)
 
     return availableSpaces.flatMap((space) => {
       return buyableCards.moveItems(space)
     })
+  }
+
+  get gold() {
+    return this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
+  }
+
+  get buyableCards() {
+    const banner = this
+      .material(MaterialType.MessengerToken)
+      .getItem()!.location.id
+
+    return this
+      .material(MaterialType.Card)
+      .location(banner === BannerType.NobleBanner? LocationType.NobleRiver: LocationType.VillageRiver)
   }
 
   afterItemMove(move: ItemMove) {
@@ -33,16 +44,19 @@ export class BuyCardRule extends PlayerTurnRule {
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
       const moves: MaterialMove[] = []
 
-      const deckLocationToDrawFrom = (CardObjects[item.id].banner === BannerType.NobleBanner) ? LocationType.NobleDeck : LocationType.VillageDeck
-      const deckToDrawFrom = this.material(MaterialType.Card).location(deckLocationToDrawFrom).deck()
+      const deckLocationToDrawFrom = (getBanner(item.id) === BannerType.NobleBanner) ? LocationType.NobleDeck : LocationType.VillageDeck
+      //const deckToDrawFrom = this.material(MaterialType.Card).location(deckLocationToDrawFrom).deck()
 
       moves.push(
         ...this
           .material(MaterialType.GoldCoin)
           .location(LocationType.PlayerGoldStock)
           .player(this.player)
-          .deleteItems(CardObjects[item.id].cost)
+          .deleteItems(cardCharacteristics[item.id].cost)
       )
+
+      this.memorize(Memory.PlacedCard, move.itemIndex)
+      moves.push(this.startRule(RuleId.MoveMessenger))
 
       return moves
     } else {

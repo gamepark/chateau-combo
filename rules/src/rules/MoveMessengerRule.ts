@@ -19,7 +19,7 @@ export class MoveMessengerRule extends PlayerTurnRule {
       }))
     }
 
-    moves.push(this.startPlayerTurn(RuleId.SpendKey, this.player))
+    moves.push(this.startPlayerTurn(RuleId.EndOfTurn, this.player))
     return moves
   }
 
