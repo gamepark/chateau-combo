@@ -33,6 +33,23 @@ export class SpendKeyRule extends PlayerTurnRule {
     return moves
   }
 
+  beforeItemMove(move: ItemMove) {
+    const moves: MaterialMove[] = []
+    if (isMoveItemTypeAtOnce(MaterialType.Card)(move)) {
+      moves.push(
+        ...new KeyDiscardLocationCardsRule(this.game).beforeItemMove(move)
+      )
+    }
+
+    if (isMoveItemType(MaterialType.MessengerToken)(move)) {
+      moves.push(
+        ...new KeyMoveMessengerRule(this.game).beforeItemMove(move)
+      )
+    }
+
+    return moves
+  }
+
   get keys() {
     return this
       .material(MaterialType.Key)

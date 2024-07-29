@@ -1,23 +1,14 @@
 /** @jsxImportSource @emotion/react */
-import { ItemContext, PileLocator, getRelativePlayerIndex } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 
 class PlayerGoldStockLocator extends PileLocator {
+  radius = 2
 
-  getPosition(item: MaterialItem, context: ItemContext) {
+  getCoordinates(item: MaterialItem, context: ItemContext) {
     const playerIndex = getRelativePlayerIndex(context, item.location.player)
-    return { x:-20+playerIndex*20, y:20, z: 5 }
+    return { x: -20 + playerIndex * 20, y: 20, z: 5 }
   }
-
-  getItemIndex(item: MaterialItem<number, number>, context: ItemContext<number, number, number>): number {
-      return super.getItemIndex(item, context)
-  }
-
-  getCoordinates(_item: MaterialItem, _context: ItemContext): Coordinates {
-    return this.coordinates
-  }
-
-  
 }
 
 export const playerGoldStockLocator = new PlayerGoldStockLocator()

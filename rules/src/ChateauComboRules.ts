@@ -24,13 +24,14 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
   locationsStrategies = {
     [MaterialType.Card]: {
       [LocationType.NobleDeck]: new PositiveSequenceStrategy(),
-      [LocationType.NobleRiver]: new FillGapStrategy(), // FillGap 
+      [LocationType.NobleRiver]: new FillGapStrategy(), // FillGap
+      [LocationType.NobleDiscard]: new PositiveSequenceStrategy(),
       [LocationType.VillageDeck]: new PositiveSequenceStrategy(),
-      [LocationType.VillageRiver]: new FillGapStrategy(), // FillGap 
+      [LocationType.VillageRiver]: new FillGapStrategy(), // FillGap
+      [LocationType.VillageDiscard]: new PositiveSequenceStrategy(),
     },
     [MaterialType.GoldCoin]: {
       [LocationType.GoldStock]: new PositiveSequenceStrategy(),
-      [LocationType.PlayerGoldStock]: new PositiveSequenceStrategy(),
     },
 
   }

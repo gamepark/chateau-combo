@@ -1,4 +1,4 @@
-import { ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemTypeAtOnce, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -18,6 +18,15 @@ export class KeyDiscardLocationCardsRule extends PlayerTurnRule {
           type: LocationType.VillageDiscard
         })
     ]
+  }
+
+  beforeItemMove(move: ItemMove) {
+    if (!isMoveItemTypeAtOnce(MaterialType.Card)(move)) return []
+    const discardLocationType = this.material(MaterialType.Card).getItem(move.indexes[0])!.location.type
+    const deck = this.material(MaterialType.Card).location(discardLocationType === LocationType.NobleRiver? LocationType.NobleDeck: LocationType.VillageDeck).deck()
+    return deck.deal({
+      type: discardLocationType
+    }, 3)
   }
 
   afterItemMove(_move: ItemMove) {

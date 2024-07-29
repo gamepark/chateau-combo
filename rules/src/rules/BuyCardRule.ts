@@ -12,7 +12,7 @@ import { RuleId } from './RuleId'
 
 export class BuyCardRule extends PlayerTurnRule {
 
-  getLegalMoves(): MaterialMove<number, number, number>[] {
+  getPlayerMoves() {
     const gold = this.gold
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
     const buyableCards = this
@@ -62,10 +62,6 @@ export class BuyCardRule extends PlayerTurnRule {
     } else {
       return []
     }
-  }
-
-  getPlayerMoves() {
-    return []
   }
 }
 

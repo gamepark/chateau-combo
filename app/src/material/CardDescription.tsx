@@ -83,8 +83,8 @@ import Pilgrim from '../images/cards/cartesChCombo_ChC_eng-US9.jpg'
 
 export class ChateauComboCardDescription extends CardDescription {
   type = MaterialComponentType.Card
-  width = 6.5
-  height = 9.09
+  width = 6.3
+  height = 8.8
   images = {
 
     // Noble
