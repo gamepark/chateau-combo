@@ -15,12 +15,15 @@ export class BuyCardRule extends PlayerTurnRule {
   getPlayerMoves() {
     const gold = this.gold
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
-    const buyableCards = this
-      .buyableCards
+    const cards = this.riverCards
+    const buyableCards = cards
       .filter((item) => cardCharacteristics[item.id].cost <= gold)
 
     return availableSpaces.flatMap((space) => {
-      return buyableCards.moveItems(space)
+      return [
+        ...buyableCards.moveItems(space),
+        ...cards.moveItems({ ...space, rotation: true }),
+      ]
     })
   }
 
@@ -28,7 +31,7 @@ export class BuyCardRule extends PlayerTurnRule {
     return this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
   }
 
-  get buyableCards() {
+  get riverCards() {
     const banner = this
       .material(MaterialType.MessengerToken)
       .getItem()!.location.id
@@ -40,6 +43,7 @@ export class BuyCardRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.PlayerBoard) {
+      if (move.location.rotation !== undefined) return []
 
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
       const moves: MaterialMove[] = []

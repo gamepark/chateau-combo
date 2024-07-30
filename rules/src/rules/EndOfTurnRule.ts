@@ -1,6 +1,7 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class EndOfTurnRule extends PlayerTurnRule {
@@ -60,5 +61,10 @@ export class EndOfTurnRule extends PlayerTurnRule {
     return this
       .material(MaterialType.Card)
       .location(LocationType.VillageRiver)
+  }
+
+  onRuleEnd() {
+    this.forget(Memory.PlacedCard)
+    return []
   }
 }

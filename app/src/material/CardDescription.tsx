@@ -1,5 +1,9 @@
 import { Card } from '@gamepark/chateau-combo/Card'
-import { CardDescription, MaterialComponentType } from '@gamepark/react-game'
+import { getBanner } from '@gamepark/chateau-combo/CardCharacteristics'
+import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
+import { CardDescription, ItemContext, MaterialComponentType, MaterialContext } from '@gamepark/react-game'
+import { MaterialItem, MaterialMove } from '@gamepark/rules-api'
 
 import BackCard from '../images/Back.jpg'
 //Noble
@@ -173,6 +177,22 @@ export class ChateauComboCardDescription extends CardDescription {
 
   backImage = BackCard
 
+  isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+    item.location?.rotation && console.log("ROTATED", item.location?.rotation)
+    return  item.location?.rotation || super.isFlipped(item, context)
+  }
+
+  getShortClickLocalMove(context: ItemContext) {
+    const { rules, player } = context
+    if (!player) return
+    const card = rules.material(MaterialType.Card).index(context.index)
+    const item = card.getItem()!
+    if (item.location.type !== LocationType.NobleRiver && item.location.type !== LocationType.VillageRiver) return
+    const messenger = rules.material(MaterialType.MessengerToken).getItem()!
+    if (getBanner(item.id) !== messenger.location.id) return
+    if (item.location.rotation) return card.rotateItem(false)
+    return card.rotateItem(true)
+  }
 }
 
 export const cardDescription = new ChateauComboCardDescription()
