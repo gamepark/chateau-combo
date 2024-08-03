@@ -1,10 +1,8 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
-import { DeckLocator, ItemContext, ItemLocator, LineLocator, LocationContext, LocationDescription, PileLocator } from '@gamepark/react-game'
-import { GoldStockDescription } from './GoldStockDescription'
+import { ItemContext, ItemLocator, LocationContext, LocationDescription, PileLocator } from '@gamepark/react-game'
 import { goldStockLocator } from './GoldStockLocator'
-import { KeyStockDescription } from './KeyStockDescription'
 import { keyStockLocator } from './KeyStockLocator'
 import { nobleDeckLocator } from './NobleDeckLocator'
 import { nobleDiscardLocator } from './NobleDiscardLocator'
@@ -17,7 +15,6 @@ import { villageDiscardLocator } from './VillageDiscardLocator'
 import { villageRiverLocator } from './VillageRiverLocator'
 import { MaterialItem, Coordinates, Location } from '@gamepark/rules-api'
 import { BannerType } from '@gamepark/chateau-combo/CardCharacteristics'
-import { EndOfRiverHelper } from '@gamepark/chateau-combo/rules/helpers/EndofRiverHelper'
 
 
 export class EndOfRiverLocator extends ItemLocator {

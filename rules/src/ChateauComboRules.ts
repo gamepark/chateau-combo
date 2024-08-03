@@ -7,6 +7,7 @@ import { MoveMessengerRule } from './rules/MoveMessengerRule'
 import { RuleId } from './rules/RuleId'
 import { BuyCardRule } from './rules/BuyCardRule'
 import { SpendKeyRule } from './rules/SpendKeyRule'
+import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
 
 
 /**
@@ -18,22 +19,19 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
     [RuleId.SpendKey]: SpendKeyRule,
     [RuleId.BuyCard]: BuyCardRule,
     [RuleId.MoveMessenger]: MoveMessengerRule,
-    [RuleId.EndOfTurn]: EndOfTurnRule
+    [RuleId.EndOfTurn]: EndOfTurnRule,
+    [RuleId.ImmediateEffect]: ImmediateEffectRule
   }
 
   locationsStrategies = {
     [MaterialType.Card]: {
       [LocationType.NobleDeck]: new PositiveSequenceStrategy(),
-      [LocationType.NobleRiver]: new FillGapStrategy(), // FillGap
+      [LocationType.NobleRiver]: new FillGapStrategy(), 
       [LocationType.NobleDiscard]: new PositiveSequenceStrategy(),
       [LocationType.VillageDeck]: new PositiveSequenceStrategy(),
-      [LocationType.VillageRiver]: new FillGapStrategy(), // FillGap
+      [LocationType.VillageRiver]: new FillGapStrategy(), 
       [LocationType.VillageDiscard]: new PositiveSequenceStrategy(),
-    },
-    [MaterialType.GoldCoin]: {
-      [LocationType.GoldStock]: new PositiveSequenceStrategy(),
-    },
-
+    }
   }
 
   hidingStrategies = {

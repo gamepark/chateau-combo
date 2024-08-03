@@ -30,12 +30,12 @@ class PlayerBoardDescription extends LocationDescription {
     return this.getCardCoordinate(location, context)
   }
 
-  getCardCoordinate(location: Location, _context: MaterialContext): Coordinates {
-    const boundaries = new PlayerBoardHelper(_context.rules.game, location.player!).boundaries
+  getCardCoordinate(location: Location, context: MaterialContext): Coordinates {
+    const boundaries = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
     const deltaX = boundaries.xMax - boundaries.xMin
     const deltaY = boundaries.yMax - boundaries.yMin
-    const playerIndex = getRelativePlayerIndex(_context, location.player)
-    const baseCoordinates = getPosition(_context.rules.players.length, playerIndex)
+    const playerIndex = getRelativePlayerIndex(context, location.player)
+    const baseCoordinates = getPosition(context.rules.players.length, playerIndex)
     baseCoordinates.x += location.x! * (cardDescription.width + 0.2)
     if (boundaries.xMin < -1) baseCoordinates.x += (cardDescription.width)
     if (boundaries.xMax > 1) baseCoordinates.x -= (cardDescription.width)

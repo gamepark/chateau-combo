@@ -84,9 +84,9 @@ import Baker from '../images/cards/cartesChCombo_ChC_eng-US77.jpg'
 import Beekeeper from '../images/cards/cartesChCombo_ChC_eng-US78.jpg'
 import Astronomer from '../images/cards/cartesChCombo_ChC_eng-US8.jpg'
 import Pilgrim from '../images/cards/cartesChCombo_ChC_eng-US9.jpg'
+import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 
 export class ChateauComboCardDescription extends CardDescription {
-  type = MaterialComponentType.Card
   width = 6.3
   height = 8.8
   images = {
@@ -178,13 +178,12 @@ export class ChateauComboCardDescription extends CardDescription {
   backImage = BackCard
 
   isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
-    item.location?.rotation && console.log("ROTATED", item.location?.rotation)
     return  item.location?.rotation || super.isFlipped(item, context)
   }
 
   getShortClickLocalMove(context: ItemContext) {
     const { rules, player } = context
-    if (!player) return
+    if (!player || rules.game.rule?.id !== RuleId.BuyCard) return
     const card = rules.material(MaterialType.Card).index(context.index)
     const item = card.getItem()!
     if (item.location.type !== LocationType.NobleRiver && item.location.type !== LocationType.VillageRiver) return

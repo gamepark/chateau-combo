@@ -46,10 +46,19 @@ export class BuyCardRule extends PlayerTurnRule {
       if (move.location.rotation !== undefined) return []
 
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
+      console.log(item, cardCharacteristics[item.id])
+
       const moves: MaterialMove[] = []
 
       const deckLocationToDrawFrom = (getBanner(item.id) === BannerType.NobleBanner) ? LocationType.NobleDeck : LocationType.VillageDeck
       //const deckToDrawFrom = this.material(MaterialType.Card).location(deckLocationToDrawFrom).deck()
+
+      this
+        .material(MaterialType.Card)
+        .location((l) => l.type === LocationType.NobleRiver || l.type === LocationType.VillageRiver)
+        .rotation(true)
+        .getItems()
+        .forEach((item) => delete item.location.rotation)
 
       moves.push(
         ...this
@@ -60,7 +69,7 @@ export class BuyCardRule extends PlayerTurnRule {
       )
 
       this.memorize(Memory.PlacedCard, move.itemIndex)
-      moves.push(this.startRule(RuleId.MoveMessenger))
+      moves.push(this.startRule(RuleId.ImmediateEffect))
 
       return moves
     } else {

@@ -5,8 +5,12 @@ import { KeyMoveMessengerRule } from './key/KeyMoveMessengerRule'
 import { RuleId } from './RuleId'
 
 export class SpendKeyRule extends PlayerTurnRule {
-  getPlayerMoves(): MaterialMove[] {
+  onRuleStart() {
     if (!this.keys) return [this.startRule(RuleId.BuyCard)]
+    return []
+  }
+
+  getPlayerMoves(): MaterialMove[] {
     return [
       ...new KeyDiscardLocationCardsRule(this.game).getPlayerMoves(),
       ...new KeyMoveMessengerRule(this.game).getPlayerMoves(),
@@ -20,6 +24,7 @@ export class SpendKeyRule extends PlayerTurnRule {
       moves.push(
         ...new KeyDiscardLocationCardsRule(this.game).afterItemMove(move)
       )
+      
       moves.push(this.startRule(RuleId.BuyCard))
     }
 
@@ -27,6 +32,7 @@ export class SpendKeyRule extends PlayerTurnRule {
       moves.push(
         ...new KeyMoveMessengerRule(this.game).afterItemMove(move)
       )
+
       moves.push(this.startRule(RuleId.BuyCard))
     }
 

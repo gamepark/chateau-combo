@@ -3,7 +3,6 @@ import Key1 from '../images/Key1.png'
 import { keyStockLocation } from '../locators/KeyStockDescription'
 
 export class KeyDescription extends TokenDescription {
-    type = MaterialComponentType.Token
     height = 6
     width = 3.45
     image = Key1
