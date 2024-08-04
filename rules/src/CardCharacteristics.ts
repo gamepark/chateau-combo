@@ -109,5 +109,8 @@ export const cardCharacteristics: Record<number, CardPattern> = {
 
 export const getBanner = (card: Card) => isNoble(card)? BannerType.NobleBanner: BannerType.VillageBanner
 export const hasTheBlazon = (card:Card, targetBlazon: BlazonType) => cardCharacteristics[card].blazon.some(ownedBlazon => ownedBlazon === targetBlazon)
-
+export const howManyTargettedBlazon = (card:Card, targetBlazon:BlazonType) => {
+  console.log("howManyTargettedBlazon : ", cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0))
+  return cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0)
+}
 

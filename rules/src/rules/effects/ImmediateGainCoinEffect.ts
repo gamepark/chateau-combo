@@ -1,4 +1,4 @@
-import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon } from "../../CardCharacteristics";
+import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
@@ -23,15 +23,17 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
         
         
         const cardQuantityThatMatchCondition = panorama.filter((item) => 
-            (effect.condition!.banner !== undefined && getBanner(item.id) === effect.condition!.banner) ||
-            (effect.condition!.blazon !== undefined && effect.condition!.blazon.some(blazon =>  hasTheBlazon(item.id, blazon)))
+            (effect.condition!.banner !== undefined && getBanner(item.id) === effect.condition!.banner)
         ).length
 
-        console.log("cardThatMatch : ", cardQuantityThatMatchCondition)
-        console.log("quantity : ",cardQuantityThatMatchCondition * effect.value )
+        const howManyMatchedBlazons = (effect.condition!.blazon !== undefined) 
+            ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id, currentBlazon), 0 ) , 0) 
+            : 0
+       
+
+        console.log("howManyMatchedBlazons : ", howManyMatchedBlazons)
         
         if (effect.condition !== undefined) {
-            console.log ("Applay !")
             return [
                 this
                     .material(MaterialType.GoldCoin)
@@ -40,7 +42,7 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
                             type: LocationType.PlayerGoldStock,
                             player: this.player,
                         },
-                        quantity: cardQuantityThatMatchCondition * effect.value
+                        quantity: (cardQuantityThatMatchCondition + howManyMatchedBlazons) * effect.value
                     })
             ]
         }
