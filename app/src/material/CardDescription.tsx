@@ -132,6 +132,8 @@ export class ChateauComboCardDescription extends CardDescription {
     [Card.Baron]: Baron,
     [Card.HerMajestytheQueen]: HerMajestytheQueen,
     [Card.Duchesse]: Duchesse,
+    [Card.Scribe]:Scribe,
+    [Card.MotherSuperior]:MotherSuperior,
 
     // Village
 

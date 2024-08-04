@@ -39,6 +39,8 @@ export enum Card {
     Baron,
     HerMajestytheQueen,
     Duchesse,
+    Scribe,
+    MotherSuperior,
     // Village
     Inventor=100,
     Spy,

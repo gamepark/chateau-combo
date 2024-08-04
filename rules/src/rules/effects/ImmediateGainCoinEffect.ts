@@ -1,4 +1,4 @@
-import { BannerType, getBanner } from "../../CardCharacteristics";
+import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
@@ -7,7 +7,7 @@ import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
 export type GainCoinEffect = {
     type: ImmediateEffectType.GetCoins,
     value: number;
-    condition?: { column?: boolean, line?: boolean, banner: BannerType }
+    condition?: { column?: boolean, line?: boolean, banner?: BannerType, blazon?: BlazonType[] }
 }
 
 export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEffect> {
@@ -18,9 +18,13 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
         const panorama = this.panorama
         const column = this.cardItem.location.x
         const line = this.cardItem.location.y
+
+        console.log ("effect : ", effect.condition?.blazon)
+        
         
         const cardQuantityThatMatchCondition = panorama.filter((item) => 
-            (effect.condition!.banner && getBanner(item.id) === effect.condition!.banner)
+            (effect.condition!.banner !== undefined && getBanner(item.id) === effect.condition!.banner) ||
+            (effect.condition!.blazon !== undefined && effect.condition!.blazon.some(blazon =>  hasTheBlazon(item.id, blazon)))
         ).length
 
         console.log("cardThatMatch : ", cardQuantityThatMatchCondition)
