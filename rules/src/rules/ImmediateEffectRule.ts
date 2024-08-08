@@ -6,6 +6,7 @@ import { RuleId } from "./RuleId";
 import { ImmediateEffectType } from "../material/ImmediateEffectType";
 import { AbstractImmediateEffect } from "./effects/AbstractImmediateEffect";
 import { ImmediateGainCoinEffect } from "./effects/ImmediateGainCoinEffect";
+import { ImmediateGainKeyEffect } from "./effects/ImmediateGainKeyEffect";
 
 export class ImmediateEffectRule extends PlayerTurnRule {
     onRuleStart() {
@@ -28,6 +29,6 @@ export class ImmediateEffectRule extends PlayerTurnRule {
 type EffectCreator = new (game: MaterialGame) => AbstractImmediateEffect<any>
 const ImmediateEffects: Partial<Record<ImmediateEffectType, EffectCreator>> = {
     [ImmediateEffectType.GetCoins]: ImmediateGainCoinEffect,
-    // [ImmediateEffectType.GetKeys]: ImmediateGainKeyEffect,
+    [ImmediateEffectType.GetKeys]: ImmediateGainKeyEffect,
 }
 

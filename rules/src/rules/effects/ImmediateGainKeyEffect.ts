@@ -4,22 +4,20 @@ import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
 import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
 
-export type GainCoinEffect = {
-    type: ImmediateEffectType.GetCoins,
+export type GainKeyEffect = {
+    type: ImmediateEffectType.GetKeys,
     value: number;
     condition?: { column?: boolean, line?: boolean, banner?: BannerType, blazon?: BlazonType[] }
 }
 
-export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEffect> {
+export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffect> {
 
     
-    getEffectMoves(effect: GainCoinEffect) {
+    getEffectMoves(effect: GainKeyEffect) {
 
         const panorama = this.panorama
         const column = this.cardItem.location.x
         const line = this.cardItem.location.y
-
-        console.log ("effect : ", effect.condition?.blazon)
         
         
         const cardQuantityThatMatchCondition = panorama.filter((item) => 
@@ -30,16 +28,14 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
             ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id, currentBlazon), 0 ) , 0) 
             : 0
        
-
-        console.log("howManyMatchedBlazons : ", howManyMatchedBlazons)
         
         if (effect.condition !== undefined) {
             return [
                 this
-                    .material(MaterialType.GoldCoin)
+                    .material(MaterialType.Key)
                     .createItem({
                         location: {
-                            type: LocationType.PlayerGoldStock,
+                            type: LocationType.PlayerKeyStock,
                             player: this.player,
                         },
                         quantity: (cardQuantityThatMatchCondition + howManyMatchedBlazons) * effect.value
@@ -48,13 +44,13 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
         } else {
             return [
                 this
-                    .material(MaterialType.GoldCoin)
+                    .material(MaterialType.Key)
                     .createItem({
                         location: {
-                            type: LocationType.PlayerGoldStock,
+                            type: LocationType.PlayerKeyStock,
                             player: this.player,
                         },
-                        quantity: effect.value
+                        quantity: 1 * effect.value
                     })
             ]
         }
