@@ -1,13 +1,19 @@
-import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
 import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
 
+export type Condition = {
+    banner?: BannerType,
+    blazon?: BlazonType[]
+    blazonNumber?: number
+}
+
 export type GainKeyEffect = {
     type: ImmediateEffectType.GetKeys,
     value: number;
-    condition?: { column?: boolean, line?: boolean, banner?: BannerType, blazon?: BlazonType[] }
+    condition?: Condition
 }
 
 export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffect> {
@@ -20,14 +26,17 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
         const line = this.cardItem.location.y
         
         
-        const cardQuantityThatMatchCondition = panorama.filter((item) => 
-            (effect.condition !== undefined && effect.condition.banner !== undefined && getBanner(item.id) === effect.condition!.banner)
-        ).length
+        const howManyMatchedBanners = effect.condition !== undefined && effect.condition.banner !== undefined 
+        ? panorama.filter((item) => ( getBanner(item.id) === effect.condition!.banner)).length
+        : 0
 
         const howManyMatchedBlazons = (effect.condition !== undefined && effect.condition.blazon !== undefined) 
             ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id, currentBlazon), 0 ) , 0) 
             : 0
-       
+
+        const howManyMatchedBlazonsQuantity = (effect.condition !== undefined && effect.condition.blazonNumber !== undefined) 
+            ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + howManyBlazons(currentCard.id) === effect.condition?.blazonNumber ? 1 : 0 , 0)
+            : 0
         
         if (effect.condition !== undefined) {
             return [
@@ -38,7 +47,10 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
                             type: LocationType.PlayerKeyStock,
                             player: this.player,
                         },
-                        quantity: (cardQuantityThatMatchCondition + howManyMatchedBlazons) * effect.value
+                        quantity: (howManyMatchedBlazonsQuantity 
+                            + howManyMatchedBanners 
+                            + howManyMatchedBlazons) 
+                            * effect.value
                     })
             ]
         } else {

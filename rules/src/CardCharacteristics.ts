@@ -30,7 +30,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Scribe]:             { cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Prayer]}} },
   [Card.MotherSuperior]:     { cost: 5, blazon: [BlazonType.Prayer, BlazonType.Prayer],   canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:4}  },
   [Card.HisHoliness]:        { cost: 7, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
-  [Card.Chaplain]:           { cost: 5, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true  } ,
+  [Card.Chaplain]:           { cost: 5, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazonNumber:1}}  } ,
   [Card.Cardinal]:           { cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {banner:BannerType.NobleBanner}} },
   [Card.Templar]:            { cost: 5, blazon: [BlazonType.Prayer, BlazonType.Soldier],  canSwapMessengerToken: true  } ,
   [Card.Gravedigger]:        { cost: 4, blazon: [BlazonType.Prayer, BlazonType.Teacher],  canSwapMessengerToken: false },
@@ -40,7 +40,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Devout]:             { cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
   [Card.Nun]:                { cost: 3, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}}  } ,
   [Card.Architect]:          { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
-  [Card.Goldsmith]:          { cost: 4, blazon: [BlazonType.Teacher, BlazonType.Worker],  canSwapMessengerToken: true  } ,
+  [Card.Goldsmith]:          { cost: 4, blazon: [BlazonType.Teacher, BlazonType.Worker],  canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazonNumber:2}}  } ,
   [Card.Apothecary]:         { cost: 3, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
   [Card.Professor]:          { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
   [Card.Officer]:            { cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Noble, BlazonType.Soldier]}} },
@@ -97,7 +97,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.StableBoy]:          { cost: 4, blazon: [BlazonType.Farmer, BlazonType.Noble],    canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Noble]}} },
   [Card.Winemaker]:          { cost: 2, blazon: [BlazonType.Teacher, BlazonType.Farmer],  canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}} },
   [Card.Shepherd]:           { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
-  [Card.Usurper]:            { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
+  [Card.Usurper]:            { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazonNumber:1}}  } ,
   [Card.Traveler]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
   [Card.Farmhand]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
   [Card.Revolutionnary]:     { cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {banner:BannerType.VillageBanner}}  } ,
@@ -112,4 +112,6 @@ export const hasTheBlazon = (card:Card, targetBlazon: BlazonType) => cardCharact
 export const howManyTargettedBlazon = (card:Card, targetBlazon:BlazonType) => {
   return cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0)
 }
+export const howManyBlazons = (card:Card) => cardCharacteristics[card].blazon.length
+
 
