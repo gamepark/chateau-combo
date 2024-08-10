@@ -2,6 +2,7 @@ import { MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
 import { Memory } from "../Memory";
 import { LocationType } from "../../material/LocationType";
+import { BannerType, BlazonType } from "../../CardCharacteristics";
 
 export abstract class AbstractImmediateEffect<T> extends PlayerTurnRule {
     abstract getEffectMoves(effect: T): MaterialMove[]
@@ -25,3 +26,12 @@ export abstract class AbstractImmediateEffect<T> extends PlayerTurnRule {
             .getItem()!
     }
 }
+
+export type Condition = {
+    banner?: BannerType,
+    blazon?: BlazonType[]
+    blazonNumber?: number
+    filledOrEmpty?:SpaceFilling
+}
+
+export enum SpaceFilling{Filled=1, Empty}

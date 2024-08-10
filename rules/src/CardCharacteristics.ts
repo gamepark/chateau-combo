@@ -1,6 +1,6 @@
-import { Material } from '@gamepark/rules-api'
 import { Card, isNoble } from './Card'
 import { ImmediateEffectType } from './material/ImmediateEffectType'
+import { SpaceFilling } from './rules/effects/AbstractImmediateEffect'
 
 export enum BannerType {
   NobleBanner = 1, VillageBanner
@@ -21,7 +21,7 @@ export type CardPattern = {
   blazon:BlazonType[]
   canSwapMessengerToken:boolean
   // TDOO :
-  immediateEffect?: { type: ImmediateEffectType } & Record<any, any> 
+  immediateEffect?: ({ type: ImmediateEffectType } & Record<any, any>)  
   // scoringEffect:() => void
 }
 
@@ -37,7 +37,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Alchemist]:          { cost: 6, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
   [Card.Astronomer]:         { cost: 5, blazon: [BlazonType.Teacher, BlazonType.Teacher], canSwapMessengerToken: false },
   [Card.Pilgrim]:            { cost: 6, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true  } ,
-  [Card.Devout]:             { cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false },
+  [Card.Devout]:             { cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {filledOrEmpty:SpaceFilling.Empty}} },
   [Card.Nun]:                { cost: 3, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}}  } ,
   [Card.Architect]:          { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
   [Card.Goldsmith]:          { cost: 4, blazon: [BlazonType.Teacher, BlazonType.Worker],  canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazonNumber:2}}  } ,
@@ -91,12 +91,12 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Carpenter]:          { cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true  } ,
   [Card.Witch]:              { cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
   [Card.Brigand]:            { cost: 7, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
-  [Card.Woodcutter]:         { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+  [Card.Woodcutter]:         { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {filledOrEmpty:SpaceFilling.Filled} }},
   [Card.Monk]:               { cost: 4, blazon: [BlazonType.Prayer, BlazonType.Farmer],   canSwapMessengerToken: true , immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Prayer]}} } ,
-  [Card.Beggar]:             { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+  [Card.Beggar]:             { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {filledOrEmpty:SpaceFilling.Filled}} },
   [Card.StableBoy]:          { cost: 4, blazon: [BlazonType.Farmer, BlazonType.Noble],    canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Noble]}} },
   [Card.Winemaker]:          { cost: 2, blazon: [BlazonType.Teacher, BlazonType.Farmer],  canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}} },
-  [Card.Shepherd]:           { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
+  [Card.Shepherd]:           { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {filledOrEmpty:SpaceFilling.Empty}}  } ,
   [Card.Usurper]:            { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazonNumber:1}}  } ,
   [Card.Traveler]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
   [Card.Farmhand]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
@@ -113,5 +113,10 @@ export const howManyTargettedBlazon = (card:Card, targetBlazon:BlazonType) => {
   return cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0)
 }
 export const howManyBlazons = (card:Card) => cardCharacteristics[card].blazon.length
+
+const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chetelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Firsherman, Card.Princess, Card.Baron]
+const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card.Captain, Card.Squire, Card.Stonemason, Card.Armorer, Card.Farmhand, Card.Baron ]
+export const isNobleDiscount = (card:Card) => nobleDiscountArray.includes(card) 
+export const isVillageDiscount = (card:Card) => nobleDiscountArray.includes(card)
 
 

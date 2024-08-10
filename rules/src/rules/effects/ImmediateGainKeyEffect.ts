@@ -1,14 +1,8 @@
-import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { getBanner, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
-import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
-
-export type Condition = {
-    banner?: BannerType,
-    blazon?: BlazonType[]
-    blazonNumber?: number
-}
+import { AbstractImmediateEffect, Condition, SpaceFilling } from "./AbstractImmediateEffect";
 
 export type GainKeyEffect = {
     type: ImmediateEffectType.GetKeys,
@@ -36,6 +30,10 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
 
         const howManyMatchedBlazonsQuantity = (effect.condition !== undefined && effect.condition.blazonNumber !== undefined) 
             ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + howManyBlazons(currentCard.id) === effect.condition?.blazonNumber ? 1 : 0 , 0)
+            : 0
+
+        const howManyMatchedSpaceFilling = (effect.condition !== undefined && effect.condition.filledOrEmpty !== undefined) 
+            ? effect.condition.filledOrEmpty === SpaceFilling.Filled ? panorama.length : 1 - panorama.length
             : 0
         
         if (effect.condition !== undefined) {

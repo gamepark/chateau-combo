@@ -1,14 +1,9 @@
-import { BannerType, BlazonType, cardCharacteristics, getBanner, hasTheBlazon, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { getBanner, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
-import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
+import { AbstractImmediateEffect, Condition, SpaceFilling } from "./AbstractImmediateEffect";
 
-export type Condition = {
-    banner?: BannerType,
-    blazon?: BlazonType[]
-    blazonNumber?: number
-}
 
 export type GainCoinEffect = {
     type: ImmediateEffectType.GetCoins,
@@ -36,6 +31,10 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
         const howManyMatchedBlazonsQuantity = (effect.condition !== undefined && effect.condition.blazonNumber !== undefined) 
             ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + howManyBlazons(currentCard.id) === effect.condition?.blazonNumber ? 1 : 0 , 0)
             : 0
+        console.log("panorama length : ", panorama.length)
+        const howManyMatchedSpaceFilling = (effect.condition !== undefined && effect.condition.filledOrEmpty !== undefined) 
+            ? effect.condition.filledOrEmpty === SpaceFilling.Filled ? panorama.length : 9 - panorama.length
+            : 0
 
         if (effect.condition !== undefined) {
             return [
@@ -48,7 +47,8 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
                         },
                         quantity: (howManyMatchedBlazonsQuantity 
                                 + howManyMatchedBanners 
-                                + howManyMatchedBlazons) 
+                                + howManyMatchedBlazons
+                                + howManyMatchedSpaceFilling) 
                                 * effect.value
                     })
             ]
