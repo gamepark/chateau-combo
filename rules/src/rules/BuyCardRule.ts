@@ -63,7 +63,6 @@ export class BuyCardRule extends PlayerTurnRule {
 
 
   beforeItemMove(move: ItemMove) {
-    console.log(move)
     if (isMoveItemType(MaterialType.Card)(move) && move.location.rotation === false){
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
       const moves: MaterialMove[] = []

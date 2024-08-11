@@ -1,8 +1,8 @@
-import { BlazonType, getBanner, getBlazons, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { BlazonType, getBanner, getBlazons, getCost, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
-import { AbstractImmediateEffect, Condition, SpaceFilling } from "./AbstractImmediateEffect";
+import { AbstractImmediateEffect, Condition, isRespectingCostCondition, Sign, SpaceFilling } from "./AbstractImmediateEffect";
 
 
 export type GainCoinEffect = {
@@ -41,6 +41,10 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
             ? effect.condition.filledOrEmpty === SpaceFilling.Filled ? panorama.length : 9 - panorama.length
             : 0
 
+        const howManyMatchedCostCards = (effect.condition !== undefined && effect.condition.cardCost !== undefined)
+            ? panorama.getItems().reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, effect.condition!.cardCost!) ? 1 : 0)) , 0 )
+            : 0
+
         if (effect.condition !== undefined) {
             return [
                 this
@@ -53,7 +57,8 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
                         quantity: (howManyMatchedBlazonsQuantity 
                                 + howManyMatchedBanners 
                                 + howManyMatchedBlazons
-                                + howManyMatchedSpaceFilling) 
+                                + howManyMatchedSpaceFilling
+                                + howManyMatchedCostCards) 
                                 * effect.value
                     })
             ]
@@ -71,19 +76,5 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
             ]
         }
 
-
-
-
-        // Pour chaque entrée dans effect.banners
-
-        // Si column === true => compter l'ensemble des bannière === banner sur la même colonne
-        // Si line === true => compter l'ensemble des bannières === banner sur la même ligne
-        // Créer autant de gold que effect.value * la somme des deux lignes précédentes
-
-        //(!effect.condition?.column && !effect.condition?.line) ||
-        //(effect.condition?.column && item.location.x === column) || 
-        //(effect.condition?.line && item.location.y === line)
-
-        return []
     }
 }

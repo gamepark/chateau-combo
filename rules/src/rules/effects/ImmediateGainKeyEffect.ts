@@ -2,7 +2,7 @@ import { BlazonType, getBanner, getBlazons, howManyBlazons, howManyTargettedBlaz
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
-import { AbstractImmediateEffect, Condition, SpaceFilling } from "./AbstractImmediateEffect";
+import { AbstractImmediateEffect, Condition, isRespectingCostCondition, SpaceFilling } from "./AbstractImmediateEffect";
 
 export type GainKeyEffect = {
     type: ImmediateEffectType.GetKeys,
@@ -39,6 +39,10 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
         const howManyMatchedSpaceFilling = (effect.condition !== undefined && effect.condition.filledOrEmpty !== undefined) 
             ? effect.condition.filledOrEmpty === SpaceFilling.Filled ? panorama.length : 1 - panorama.length
             : 0
+
+        const howManyMatchedCostCards = (effect.condition !== undefined && effect.condition.cardCost !== undefined)
+            ? panorama.getItems().reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, effect.condition!.cardCost!) ? 1 : 0)) , 0 )
+            : 0
         
         if (effect.condition !== undefined) {
             return [
@@ -52,7 +56,8 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
                         quantity: (howManyMatchedBlazonsQuantity 
                             + howManyMatchedBanners 
                             + howManyMatchedBlazons
-                            + howManyMatchedSpaceFilling) 
+                            + howManyMatchedSpaceFilling
+                            + howManyMatchedCostCards) 
                             * effect.value
                     })
             ]

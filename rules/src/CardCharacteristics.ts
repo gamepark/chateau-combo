@@ -1,6 +1,6 @@
 import { Card, isNoble } from './Card'
 import { ImmediateEffectType } from './material/ImmediateEffectType'
-import { SpaceFilling } from './rules/effects/AbstractImmediateEffect'
+import { Sign, SpaceFilling } from './rules/effects/AbstractImmediateEffect'
 
 export enum BannerType {
   NobleBanner = 1, VillageBanner
@@ -55,7 +55,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Lookout]:            { cost: 6, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Soldier]}}},
   [Card.RoyalGuard]:         { cost: 4, blazon: [BlazonType.Noble, BlazonType.Soldier],   canSwapMessengerToken: true  } ,
   [Card.Banker]:             { cost: 7, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true  } ,
-  [Card.Pawnbroker]:         { cost: 4, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true  } ,
+  [Card.Pawnbroker]:         { cost: 4, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {cardCost:{cost:4, sign:Sign.Equal}}}  } ,
   [Card.Chetelaine]:         { cost: 2, blazon: [BlazonType.Noble, BlazonType.Worker],    canSwapMessengerToken: false },
   [Card.Glassblower]:        { cost: 5, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Prayer, BlazonType.Worker]}}  } ,
   [Card.Princess]:           { cost: 3, blazon: [BlazonType.Noble],                       canSwapMessengerToken: true  } ,
@@ -100,7 +100,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Winemaker]:          { cost: 2, blazon: [BlazonType.Teacher, BlazonType.Farmer],  canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}} },
   [Card.Shepherd]:           { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {filledOrEmpty:SpaceFilling.Empty}}  } ,
   [Card.Usurper]:            { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazonNumber:1}}  } ,
-  [Card.Traveler]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+  [Card.Traveler]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:3, condition: {cardCost:{cost:0, sign:Sign.Equal}}} },
   [Card.Farmhand]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
   [Card.Revolutionnary]:     { cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {banner:BannerType.VillageBanner}}  } ,
   [Card.Firsherman]:         { cost: 2, blazon: [BlazonType.Farmer, BlazonType.Farmer],   canSwapMessengerToken: false },
@@ -109,17 +109,19 @@ export const cardCharacteristics: Record<number, CardPattern> = {
 
 }
 
+export const getCost = (card:Card) => cardCharacteristics[card].cost
+export const getBlazons = (card:Card) => cardCharacteristics[card].blazon
 export const getBanner = (card: Card) => isNoble(card)? BannerType.NobleBanner: BannerType.VillageBanner
 export const hasTheBlazon = (card:Card, targetBlazon: BlazonType) => cardCharacteristics[card].blazon.some(ownedBlazon => ownedBlazon === targetBlazon)
 export const howManyTargettedBlazon = (card:Card, targetBlazon:BlazonType) => {
   return cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0)
 }
-export const getBlazons = (card:Card) => cardCharacteristics[card].blazon
+
 export const howManyBlazons = (card:Card) => cardCharacteristics[card].blazon.length
 
 const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chetelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Firsherman, Card.Princess, Card.Baron]
 const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card.Captain, Card.Squire, Card.Stonemason, Card.Armorer, Card.Farmhand, Card.Baron ]
 export const isNobleDiscount = (card:Card) => nobleDiscountArray.includes(card) 
-export const isVillageDiscount = (card:Card) => nobleDiscountArray.includes(card)
+export const isVillageDiscount = (card:Card) => villageDiscountArray.includes(card)
 
 
