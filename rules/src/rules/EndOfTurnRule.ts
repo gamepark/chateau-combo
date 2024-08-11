@@ -30,6 +30,8 @@ export class EndOfTurnRule extends PlayerTurnRule {
       )
     }
 
+    this.forget(Memory.PlacedCard)
+
     moves.push(
       this.startPlayerTurn(RuleId.SpendKey, this.nextPlayer)
     )

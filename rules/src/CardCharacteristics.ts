@@ -13,6 +13,8 @@ export enum BlazonType {
   Soldier,
   Worker,
   Farmer,
+  Different,
+  MissingDifferent
 }
 
 export type CardPattern = {
@@ -42,13 +44,13 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Architect]:          { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
   [Card.Goldsmith]:          { cost: 4, blazon: [BlazonType.Teacher, BlazonType.Worker],  canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazonNumber:2}}  } ,
   [Card.Apothecary]:         { cost: 3, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
-  [Card.Professor]:          { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true  } ,
+  [Card.Professor]:          { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Different]}}  } ,
   [Card.Officer]:            { cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Noble, BlazonType.Soldier]}} },
   [Card.Captain]:            { cost: 5, blazon: [BlazonType.Soldier, BlazonType.Soldier], canSwapMessengerToken: true  } ,
   [Card.Judge]:              { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:2} } ,
   [Card.Patron]:             { cost: 7, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
   [Card.Guildmaster]:        { cost: 5, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true  } ,
-  [Card.General]:            { cost: 7, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
+  [Card.General]:            { cost: 7, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Different]}} },
   [Card.Knight]:             { cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}} },
   [Card.Lookout]:            { cost: 6, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Soldier]}}},
   [Card.RoyalGuard]:         { cost: 4, blazon: [BlazonType.Noble, BlazonType.Soldier],   canSwapMessengerToken: true  } ,
@@ -79,16 +81,16 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Stonemason]:         { cost: 3, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true  } ,
   [Card.Blacksmith]:         { cost: 5, blazon: [BlazonType.Soldier, BlazonType.Worker],  canSwapMessengerToken: false },
   [Card.MasterAtArms]:       { cost: 2, blazon: [BlazonType.Soldier, BlazonType.Soldier], canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Soldier]}} },
-  [Card.Mercenary]:          { cost: 6, blazon: [BlazonType.Soldier, BlazonType.Farmer],  canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Farmer]}} },
+  [Card.Mercenary]:          { cost: 6, blazon: [BlazonType.Soldier, BlazonType.Farmer],  canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Different]}} },
   [Card.Innkeeper]:          { cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: false },
   [Card.Sculptor]:           { cost: 3, blazon: [BlazonType.Prayer, BlazonType.Worker],   canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Prayer]}}  } ,
   [Card.Clockmaker]:         { cost: 3, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Worker]}}  } ,
   [Card.SpiceMerchant]:      { cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:2, condition: {blazon:[BlazonType.Worker]}} },
   [Card.Armorer]:            { cost: 3, blazon: [BlazonType.Worker],                      canSwapMessengerToken: false },
   [Card.Potter]:             { cost: 2, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true  } ,
-  [Card.Farmer]:             { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
+  [Card.Farmer]:             { cost: 5, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Farmer]}}  } ,
   [Card.Locksmith]:          { cost: 4, blazon: [BlazonType.Worker, BlazonType.Farmer],   canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Worker]}}  } ,
-  [Card.Carpenter]:          { cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true  } ,
+  [Card.Carpenter]:          { cost: 0, blazon: [BlazonType.Worker],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.MissingDifferent]}}  } ,
   [Card.Witch]:              { cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
   [Card.Brigand]:            { cost: 7, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
   [Card.Woodcutter]:         { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {filledOrEmpty:SpaceFilling.Filled} }},
@@ -112,6 +114,7 @@ export const hasTheBlazon = (card:Card, targetBlazon: BlazonType) => cardCharact
 export const howManyTargettedBlazon = (card:Card, targetBlazon:BlazonType) => {
   return cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0)
 }
+export const getBlazons = (card:Card) => cardCharacteristics[card].blazon
 export const howManyBlazons = (card:Card) => cardCharacteristics[card].blazon.length
 
 const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chetelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Firsherman, Card.Princess, Card.Baron]

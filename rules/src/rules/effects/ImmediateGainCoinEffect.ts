@@ -1,4 +1,4 @@
-import { getBanner, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { BlazonType, getBanner, getBlazons, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
@@ -16,22 +16,27 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
     
     getEffectMoves(effect: GainCoinEffect) {
 
-        const panorama = this.panorama
-        const column = this.cardItem.location.x
-        const line = this.cardItem.location.y        
+        const panorama = this.panorama 
+
+        const howManyDifferentBlazons:BlazonType[] = []
+        panorama.getItems().forEach(item => {
+            getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+        })
         
         const howManyMatchedBanners = effect.condition !== undefined && effect.condition.banner !== undefined 
         ? panorama.filter((item) => ( getBanner(item.id) === effect.condition!.banner)).length
         : 0
 
         const howManyMatchedBlazons = (effect.condition !== undefined && effect.condition.blazon !== undefined) 
-            ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id, currentBlazon), 0 ) , 0) 
+            ? effect.condition.blazon.some(blazon => blazon === BlazonType.Different || blazon === BlazonType.MissingDifferent) 
+                ? effect.condition.blazon.includes(BlazonType.Different) ? howManyDifferentBlazons.length : 6 - howManyDifferentBlazons.length
+                : panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id, currentBlazon), 0 ) , 0) 
             : 0
 
         const howManyMatchedBlazonsQuantity = (effect.condition !== undefined && effect.condition.blazonNumber !== undefined) 
-            ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + howManyBlazons(currentCard.id) === effect.condition?.blazonNumber ? 1 : 0 , 0)
+            ? panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + (howManyBlazons(currentCard.id) === effect.condition?.blazonNumber ? 1 : 0) , 0)
             : 0
-        console.log("panorama length : ", panorama.length)
+            
         const howManyMatchedSpaceFilling = (effect.condition !== undefined && effect.condition.filledOrEmpty !== undefined) 
             ? effect.condition.filledOrEmpty === SpaceFilling.Filled ? panorama.length : 9 - panorama.length
             : 0

@@ -63,17 +63,20 @@ export class BuyCardRule extends PlayerTurnRule {
 
 
   beforeItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.Card)(move)){
+    console.log(move)
+    if (isMoveItemType(MaterialType.Card)(move) && move.location.rotation === false){
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
       const moves: MaterialMove[] = []
 
-      moves.push(
-        ...this
-          .material(MaterialType.GoldCoin)
-          .location(LocationType.PlayerGoldStock)
-          .player(this.player)
-          .deleteItems(cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )
-      )
+      if (move.location.rotation === undefined || (cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )> 0) {
+        moves.push(
+          ...this
+            .material(MaterialType.GoldCoin)
+            .location(LocationType.PlayerGoldStock)
+            .player(this.player)
+            .deleteItems(cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )
+        )
+      }
 
       return moves
 
@@ -103,7 +106,7 @@ export class BuyCardRule extends PlayerTurnRule {
         )
         moves.push(
           this
-          .material(MaterialType.GoldCoin)
+          .material(MaterialType.Key)
           .createItem({location:{type:LocationType.PlayerKeyStock, player:this.player}, quantity:2})
         )
         moves.push(this.startRule(RuleId.EndOfTurn))
