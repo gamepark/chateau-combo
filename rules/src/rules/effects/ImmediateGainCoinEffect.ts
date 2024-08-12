@@ -1,3 +1,4 @@
+import { MaterialMove } from "@gamepark/rules-api";
 import { BlazonType, canStockCoins, getBanner, getBlazons, getCost, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
@@ -15,6 +16,8 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
 
     
     getEffectMoves(effect: GainCoinEffect) {
+
+        const moves: MaterialMove[] = []
 
         const panorama = this.panorama 
 
@@ -48,38 +51,58 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
         const howManyMatchedStoreCoinCards = (effect.condition !== undefined && effect.condition.onStockCard !== undefined)
             ? panorama.getItems().filter(card => canStockCoins(card.id)).length
             : 0
+        if (effect.value !== 0){
 
-        if (effect.condition !== undefined) {
-            return [
-                this
-                    .material(MaterialType.GoldCoin)
-                    .createItem({
-                        location: {
-                            type: LocationType.PlayerGoldStock,
-                            player: this.player,
-                        },
-                        quantity: (howManyMatchedBlazonsQuantity 
-                                + howManyMatchedBanners 
-                                + howManyMatchedBlazons
-                                + howManyMatchedSpaceFilling
-                                + howManyMatchedCostCards
-                                + howManyMatchedStoreCoinCards) 
-                                * effect.value
-                    })
-            ]
-        } else {
-            return [
-                this
-                    .material(MaterialType.GoldCoin)
-                    .createItem({
-                        location: {
-                            type: LocationType.PlayerGoldStock,
-                            player: this.player,
-                        },
-                        quantity: effect.value
-                    })
-            ]
+            if (effect.condition !== undefined) {
+                moves.push
+                    this
+                        .material(MaterialType.GoldCoin)
+                        .createItem({
+                            location: {
+                                type: LocationType.PlayerGoldStock,
+                                player: this.player,
+                            },
+                            quantity: (howManyMatchedBlazonsQuantity 
+                                    + howManyMatchedBanners 
+                                    + howManyMatchedBlazons
+                                    + howManyMatchedSpaceFilling
+                                    + howManyMatchedCostCards
+                                    + howManyMatchedStoreCoinCards) 
+                                    * effect.value
+                        })
+            } else {
+                moves.push(
+                    this
+                        .material(MaterialType.GoldCoin)
+                        .createItem({
+                            location: {
+                                type: LocationType.PlayerGoldStock,
+                                player: this.player,
+                            },
+                            quantity: effect.value
+                        })
+                )
+            }
+
         }
+
+        if (effect.condition !== undefined && effect.condition.opponentGain !== undefined){
+            this.game.players.forEach(player => player !== this.player &&
+                moves.push(
+                    this.material(MaterialType.GoldCoin)
+                    .createItem({
+                        location:{
+                            type: LocationType.PlayerGoldStock,
+                            player
+                        }, 
+                        quantity:effect.condition!.opponentGain
+                    })
+                )
+            )
+
+        }
+
+        return moves
 
     }
 }

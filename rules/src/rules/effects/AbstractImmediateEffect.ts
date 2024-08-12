@@ -34,6 +34,7 @@ export type Condition = {
     filledOrEmpty?:SpaceFilling
     cardCost?:{cost:number, sign:Sign}
     onStockCard?:boolean
+    opponentGain?:number
 }
 
 export enum SpaceFilling{Filled=1, Empty}

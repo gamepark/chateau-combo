@@ -1,3 +1,4 @@
+import { MaterialMove } from "@gamepark/rules-api";
 import { BlazonType, canStockCoins, getBanner, getBlazons, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
@@ -16,6 +17,7 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
     getEffectMoves(effect: GainKeyEffect) {
 
         const panorama = this.panorama
+        const moves: MaterialMove[] = []
 
         const howManyDifferentBlazons:BlazonType[] = []
         panorama.getItems().forEach(item => {
@@ -49,7 +51,7 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
             : 0
         
         if (effect.condition !== undefined) {
-            return [
+            moves.push( 
                 this
                     .material(MaterialType.Key)
                     .createItem({
@@ -65,9 +67,9 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
                             + howManyMatchedStoreCoinCards) 
                             * effect.value
                     })
-            ]
+            )
         } else {
-            return [
+            moves.push( 
                 this
                     .material(MaterialType.Key)
                     .createItem({
@@ -75,24 +77,28 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
                             type: LocationType.PlayerKeyStock,
                             player: this.player,
                         },
-                        quantity: 1 * effect.value
+                        quantity: effect.value
                     })
-            ]
+            )
         }
 
+        if (effect.condition !== undefined && effect.condition.opponentGain !== undefined){
+            this.game.players.forEach(player => player !== this.player &&
+                moves.push(
+                    this.material(MaterialType.Key)
+                    .createItem({
+                        location:{
+                            type: LocationType.PlayerKeyStock,
+                            player
+                        }, 
+                        quantity:effect.condition!.opponentGain
+                    })
+                )
+            )
 
+        }
 
+        return moves
 
-        // Pour chaque entrée dans effect.banners
-
-        // Si column === true => compter l'ensemble des bannière === banner sur la même colonne
-        // Si line === true => compter l'ensemble des bannières === banner sur la même ligne
-        // Créer autant de gold que effect.value * la somme des deux lignes précédentes
-
-        //(!effect.condition?.column && !effect.condition?.line) ||
-        //(effect.condition?.column && item.location.x === column) || 
-        //(effect.condition?.line && item.location.y === line)
-
-        return []
     }
 }
