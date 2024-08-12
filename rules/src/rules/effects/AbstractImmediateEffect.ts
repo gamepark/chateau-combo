@@ -33,6 +33,7 @@ export type Condition = {
     blazonNumber?: number
     filledOrEmpty?:SpaceFilling
     cardCost?:{cost:number, sign:Sign}
+    onStockCard?:boolean
 }
 
 export enum SpaceFilling{Filled=1, Empty}

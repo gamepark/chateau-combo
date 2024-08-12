@@ -124,4 +124,7 @@ const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card
 export const isNobleDiscount = (card:Card) => nobleDiscountArray.includes(card) 
 export const isVillageDiscount = (card:Card) => villageDiscountArray.includes(card)
 
+export const canStockCoinsArray = [Card.Steward, Card.Gravedigger, Card.Vicar, Card.MiraculouslyCured, Card.MasterAtArms, Card.Innkeeper, Card.Sculptor, Card.Potter, Card.Farmhand, Card.Beekeeper, Card.QueenMother]
+export const canStockCoins = (card:Card) => canStockCoinsArray.includes(card)
+
 

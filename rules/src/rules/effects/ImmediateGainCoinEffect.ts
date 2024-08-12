@@ -1,4 +1,4 @@
-import { BlazonType, getBanner, getBlazons, getCost, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { BlazonType, canStockCoins, getBanner, getBlazons, getCost, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
@@ -45,6 +45,10 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
             ? panorama.getItems().reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, effect.condition!.cardCost!) ? 1 : 0)) , 0 )
             : 0
 
+        const howManyMatchedStoreCoinCards = (effect.condition !== undefined && effect.condition.onStockCard !== undefined)
+            ? panorama.getItems().filter(card => canStockCoins(card.id)).length
+            : 0
+
         if (effect.condition !== undefined) {
             return [
                 this
@@ -58,7 +62,8 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
                                 + howManyMatchedBanners 
                                 + howManyMatchedBlazons
                                 + howManyMatchedSpaceFilling
-                                + howManyMatchedCostCards) 
+                                + howManyMatchedCostCards
+                                + howManyMatchedStoreCoinCards) 
                                 * effect.value
                     })
             ]
