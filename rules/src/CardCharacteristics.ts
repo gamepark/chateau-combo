@@ -70,7 +70,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Inventor]:           { cost: 2, blazon: [BlazonType.Teacher, BlazonType.Teacher], canSwapMessengerToken: false, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Teacher]}} },
   [Card.Spy]:                { cost: 4, blazon: [BlazonType.Teacher, BlazonType.Soldier], canSwapMessengerToken: false },
   [Card.Vicar]:              { cost: 0, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.VillageBanner}}  } ,
-  [Card.MiraculouslyCured]:  { cost: 3, blazon: [BlazonType.Prayer, BlazonType.Prayer],   canSwapMessengerToken: true  } ,
+  [Card.MiraculouslyCured]:  { cost: 3, blazon: [BlazonType.Prayer, BlazonType.Prayer],   canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {onStockCard:true}}   } ,
   [Card.Squire]:             { cost: 0, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
   [Card.Philosopher]:        { cost: 2, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
   [Card.Doctor]:             { cost: 5, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true, immediateEffect:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Teacher, BlazonType.Farmer]}}  } ,
