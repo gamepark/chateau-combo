@@ -1,3 +1,4 @@
 export enum Memory {
-  PlacedCard = 1
+  PlacedCard = 1,
+  ImmediateEffectsToPlay
 }
