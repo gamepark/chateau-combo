@@ -13,36 +13,41 @@ export class ImmediateEffectRule extends PlayerTurnRule {
         const card = this.card
         const immediateEffect = cardCharacteristics[card.id].immediateEffect 
         const moves: MaterialMove[] = []
-        const effectCreatorArray:EffectCreator[] = []
+        const effectCreatorArray: ({type: ImmediateEffectType} & Record<any, any>)[] = []
 
         // Si on a déjà mémorisé des effets, alors il en reste a appliquer
         if (this.remind(Memory.ImmediateEffectsToPlay) !== undefined){
-
         } // Sinon, c'est la première fois, donc on calcule les effets
         else {
             if( immediateEffect === undefined) {
                 moves.push(this.startRule(RuleId.MoveMessenger))
             } else {
                 immediateEffect.forEach(eff => {
-                    effectCreatorArray.push(ImmediateEffects[eff.type]!)
-    
+                    effectCreatorArray.push(eff)    
                 })
             }
+            console.log(effectCreatorArray)
             this.memorize(Memory.ImmediateEffectsToPlay, effectCreatorArray)
+            console.log(this.remind(Memory.ImmediateEffectsToPlay))
         }
 
         // On parcourt la liste des effets à jouer, et on va dans les rules nécessaires
 
         const EffectArray = this.remind(Memory.ImmediateEffectsToPlay)
+        console.log(EffectArray)
 
-        const effectMoves:MaterialMove[] = new EffectArray[0](this.game).getEffectMoves(immediateEffect)
+        const firstEffectType:ImmediateEffectType = EffectArray[0].type
+
+        const effectMoves:MaterialMove[] = new ImmediateEffects[firstEffectType]!(this.game).getEffectMoves(EffectArray[0])
         effectMoves.forEach(move => moves.push(move))
         EffectArray.shift()
         // On mémorise le nouveau tableau amputé du premier élément traité
-        EffectArray.length !== 0 
-            ? this.memorize(Memory.ImmediateEffectsToPlay, EffectArray)
-            : (moves.push(this.startRule(RuleId.MoveMessenger)) && this.forget(Memory.ImmediateEffectsToPlay))
-
+        if (EffectArray.length !== 0){
+            this.memorize(Memory.ImmediateEffectsToPlay, EffectArray)
+        } else {
+            moves.push(this.startRule(RuleId.MoveMessenger))
+            this.forget(Memory.ImmediateEffectsToPlay)
+        }
 
         return moves
     }
