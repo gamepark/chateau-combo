@@ -54,7 +54,7 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
         if (effect.value !== 0){
 
             if (effect.condition !== undefined) {
-                moves.push
+                moves.push(
                     this
                         .material(MaterialType.GoldCoin)
                         .createItem({
@@ -69,7 +69,7 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
                                     + howManyMatchedCostCards
                                     + howManyMatchedStoreCoinCards) 
                                     * effect.value
-                        })
+                        }))
             } else {
                 moves.push(
                     this

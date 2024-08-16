@@ -28,14 +28,11 @@ export class ImmediateEffectRule extends PlayerTurnRule {
             }
             console.log(effectCreatorArray)
             this.memorize(Memory.ImmediateEffectsToPlay, effectCreatorArray)
-            console.log(this.remind(Memory.ImmediateEffectsToPlay))
         }
 
         // On parcourt la liste des effets à jouer, et on va dans les rules nécessaires
 
         const EffectArray = this.remind(Memory.ImmediateEffectsToPlay)
-        console.log(EffectArray)
-
         const firstEffectType:ImmediateEffectType = EffectArray[0].type
 
         const effectMoves:MaterialMove[] = new ImmediateEffects[firstEffectType]!(this.game).getEffectMoves(EffectArray[0])
