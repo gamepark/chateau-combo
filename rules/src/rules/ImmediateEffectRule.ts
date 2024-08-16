@@ -13,30 +13,30 @@ export class ImmediateEffectRule extends PlayerTurnRule {
         const card = this.card
         const immediateEffect = cardCharacteristics[card.id].immediateEffect 
         const moves: MaterialMove[] = []
-        const effectCreatorArray: ({type: ImmediateEffectType} & Record<any, any>)[] = []
 
         // Si on a déjà mémorisé des effets, alors il en reste a appliquer
-        if (this.remind(Memory.ImmediateEffectsToPlay) !== undefined){
-        } // Sinon, c'est la première fois, donc on calcule les effets
-        else {
+        if (this.remind(Memory.ImmediateEffectsToPlay) === undefined){
             if( immediateEffect === undefined) {
                 moves.push(this.startRule(RuleId.MoveMessenger))
             } else {
-                immediateEffect.forEach(eff => {
-                    effectCreatorArray.push(eff)    
-                })
+                this.memorize(Memory.ImmediateEffectsToPlay, immediateEffect)
             }
-            console.log(effectCreatorArray)
-            this.memorize(Memory.ImmediateEffectsToPlay, effectCreatorArray)
         }
 
         // On parcourt la liste des effets à jouer, et on va dans les rules nécessaires
-
         const EffectArray = this.remind(Memory.ImmediateEffectsToPlay)
         const firstEffectType:ImmediateEffectType = EffectArray[0].type
 
-        const effectMoves:MaterialMove[] = new ImmediateEffects[firstEffectType]!(this.game).getEffectMoves(EffectArray[0])
-        effectMoves.forEach(move => moves.push(move))
+        // Si c'est un effet gérable immédiatement, on le fait
+        if (firstEffectType === ImmediateEffectType.GetCoins || firstEffectType === ImmediateEffectType.GetKeys){
+            const effectMoves:MaterialMove[] = new ImmediateEffects[firstEffectType]!(this.game).getEffectMoves(EffectArray[0])
+            effectMoves.forEach(move => moves.push(move))
+        } // Sinon, on pousse une rule spécifique dans laquelle passer
+          else {
+            // TODO
+        }
+
+        // Dans tous les cas, on supprime l'élément du tableau mémorisé, car traité
         EffectArray.shift()
         // On mémorise le nouveau tableau amputé du premier élément traité
         if (EffectArray.length !== 0){
