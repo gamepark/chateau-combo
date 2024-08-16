@@ -14,6 +14,21 @@ export abstract class AbstractImmediateEffect<T> extends PlayerTurnRule {
             .player(this.player)
     }
 
+    get neighborPanorama(){
+
+        if (this.game.players.length === 2){
+            return [this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.nextPlayer)]
+        }
+
+        const neighbors:number[] = [
+            this.player-1 === 0 ? this.game.players.length : this.player - 1 ,
+            this.nextPlayer
+        ]
+        return [this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(neighbors[0]),
+                this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(neighbors[1])
+               ]
+    }
+
     get card() {
         return this
             .material(MaterialType.Card)
@@ -35,6 +50,7 @@ export type Condition = {
     cardCost?:{cost:number, sign:Sign}
     onStockCard?:boolean
     opponentGain?:number
+    bestNeighbor?:boolean
 }
 
 export enum SpaceFilling{Filled=1, Empty}
