@@ -41,6 +41,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
         // On mémorise le nouveau tableau amputé du premier élément traité
         if (EffectArray.length !== 0){
             this.memorize(Memory.ImmediateEffectsToPlay, EffectArray)
+            moves.push(this.startRule(RuleId.ImmediateEffect))
         } else {
             moves.push(this.startRule(RuleId.MoveMessenger))
             this.forget(Memory.ImmediateEffectsToPlay)

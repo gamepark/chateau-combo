@@ -14,7 +14,6 @@ import { isNoble } from '../Card'
 export class BuyCardRule extends PlayerTurnRule {
 
   getPlayerMoves() {
-    console.log("Effects: ", this.remind(Memory.ImmediateEffectsToPlay))
     const gold = this.gold
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
     const cards = this.riverCards

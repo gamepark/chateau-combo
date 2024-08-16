@@ -104,7 +104,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Farmhand]:           { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true  } ,
   [Card.Revolutionnary]:     { cost: 4, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {banner:BannerType.VillageBanner}}]  } ,
   [Card.Firsherman]:         { cost: 2, blazon: [BlazonType.Farmer, BlazonType.Farmer],   canSwapMessengerToken: false },
-  [Card.Baker]:              { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
+  [Card.Baker]:              { cost: 0, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Farmer]}}, {type:ImmediateEffectType.GetKeys, value:1, condition: {banner:BannerType.VillageBanner}}]  },
   [Card.Beekeeper]:          { cost: 2, blazon: [BlazonType.Farmer],                      canSwapMessengerToken: false },
 
 }
