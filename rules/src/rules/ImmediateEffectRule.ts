@@ -14,7 +14,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
         const immediateEffect = cardCharacteristics[card.id].immediateEffect 
         const moves: MaterialMove[] = []
 
-        // Si on a déjà mémorisé des effets, alors il en reste a appliquer
+        // Si on a pas d'effets, alors on les calcule
         if (this.remind(Memory.ImmediateEffectsToPlay) === undefined){
             if( immediateEffect === undefined) {
                 moves.push(this.startRule(RuleId.MoveMessenger))
@@ -33,6 +33,10 @@ export class ImmediateEffectRule extends PlayerTurnRule {
             effectMoves.forEach(move => moves.push(move))
         } // Sinon, on pousse une rule spécifique dans laquelle passer
           else {
+            if (firstEffectType === ImmediateEffectType.DiscardFromRiver){
+                moves.push(this.startRule(RuleId.DiscardFromRiver))
+                return moves
+            }
             // TODO
         }
 

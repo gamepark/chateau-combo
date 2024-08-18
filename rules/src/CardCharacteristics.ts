@@ -1,5 +1,7 @@
 import { Card, isNoble } from './Card'
 import { ImmediateEffectType } from './material/ImmediateEffectType'
+import { LocationType } from './material/LocationType'
+import { MaterialType } from './material/MaterialType'
 import { Sign, SpaceFilling } from './rules/effects/AbstractImmediateEffect'
 
 export enum BannerType {
@@ -35,7 +37,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Chaplain]:           { cost: 5, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:1, condition: {blazonNumber:1}}]  } ,
   [Card.Cardinal]:           { cost: 4, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {banner:BannerType.NobleBanner}}] },
   [Card.Templar]:            { cost: 5, blazon: [BlazonType.Prayer, BlazonType.Soldier],  canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Prayer], bestNeighbor:true}},{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Soldier]}}]  } ,
-  [Card.Gravedigger]:        { cost: 4, blazon: [BlazonType.Prayer, BlazonType.Teacher],  canSwapMessengerToken: false },
+  [Card.Gravedigger]:        { cost: 4, blazon: [BlazonType.Prayer, BlazonType.Teacher],  canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.DiscardFromRiver, river:LocationType.VillageRiver, token:MaterialType.GoldCoin}] },
   [Card.Alchemist]:          { cost: 6, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
   [Card.Astronomer]:         { cost: 5, blazon: [BlazonType.Teacher, BlazonType.Teacher], canSwapMessengerToken: false },
   [Card.Pilgrim]:            { cost: 6, blazon: [BlazonType.Prayer],                      canSwapMessengerToken: true  } ,
@@ -49,7 +51,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Captain]:            { cost: 5, blazon: [BlazonType.Soldier, BlazonType.Soldier], canSwapMessengerToken: true  } ,
   [Card.Judge]:              { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:2}] } ,
   [Card.Patron]:             { cost: 7, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:0, condition:{opponentGain:2}}]},
-  [Card.Guildmaster]:        { cost: 5, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true  } ,
+  [Card.Guildmaster]:        { cost: 5, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.DiscardFromRiver, river:LocationType.VillageRiver, token:MaterialType.Key}]  } ,
   [Card.General]:            { cost: 7, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Different]}}] },
   [Card.Knight]:             { cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}}] },
   [Card.Lookout]:            { cost: 6, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Soldier]}}]},
@@ -74,7 +76,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Squire]:             { cost: 0, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
   [Card.Philosopher]:        { cost: 2, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false },
   [Card.Doctor]:             { cost: 5, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Teacher, BlazonType.Farmer]}}]  } ,
-  [Card.Executionner]:       { cost: 0, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true  } ,
+  [Card.Executionner]:       { cost: 0, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.DiscardFromRiver, river:LocationType.NobleRiver, token:MaterialType.GoldCoin}]  } ,
   [Card.Barbarian]:          { cost: 2, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true  } ,
   [Card.Militiaman]:         { cost: 2, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: true  } ,
   [Card.Bombardier]:         { cost: 2, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false },
