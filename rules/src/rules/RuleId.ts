@@ -3,6 +3,7 @@ export enum RuleId {
   BuyCard,
   ImmediateEffect,
   DiscardFromRiver,
+  ChooseBetween,
   MoveMessenger,
   EndOfTurn
 }

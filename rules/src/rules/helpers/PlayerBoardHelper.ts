@@ -2,6 +2,7 @@ import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepa
 import uniqBy from 'lodash/uniqBy'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { BuyCardRule } from '../BuyCardRule'
 
 export class PlayerBoardHelper extends MaterialRulesPart {
 
@@ -63,6 +64,21 @@ export class PlayerBoardHelper extends MaterialRulesPart {
       .material(MaterialType.Card)
       .location(LocationType.PlayerBoard)
       .player(this.player)
+  }
+
+  get coinsQuantity(){
+    return this.material(MaterialType.GoldCoin).player(this.player).getQuantity()
+  }
+
+  get keyQuantity(){
+    return this.material(MaterialType.Key).player(this.player).getQuantity()
+  }
+
+  get villageDiscount(){
+    return new BuyCardRule(this.game).villageDiscount
+  }
+  get nobleDiscount(){
+    return new BuyCardRule(this.game).nobleDiscount
   }
 
 }

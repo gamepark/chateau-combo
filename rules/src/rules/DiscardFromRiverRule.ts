@@ -56,7 +56,6 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
       
       
       return moves
-        //TODO HERE
     }
   return []
   }

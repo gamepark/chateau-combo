@@ -1,5 +1,6 @@
 export enum ImmediateEffectType {
     GetCoins = 1,
     GetKeys,
-    DiscardFromRiver
+    DiscardFromRiver,
+    ChooseBetween
 }

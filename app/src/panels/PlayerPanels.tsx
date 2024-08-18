@@ -3,13 +3,14 @@ import { css } from '@emotion/react'
 import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
 import { PlayerPanel, usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
+import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
 
 export const PlayerPanels: FC<any> = () => {
   const players = usePlayers({ sortFromMe: true })
   return (
     <>
       {players.map((player, index) =>
-        <PlayerPanel key={player.id} playerId={player.id} color={playerColorCode[player.id]} css={panelPosition(index)}/>
+        <ChateauComboPlayerPanel key={player.id} player={player} css={panelPosition(index)}/>
       )}
     </>
   )

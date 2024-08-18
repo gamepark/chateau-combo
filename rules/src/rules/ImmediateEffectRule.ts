@@ -36,8 +36,10 @@ export class ImmediateEffectRule extends PlayerTurnRule {
             if (firstEffectType === ImmediateEffectType.DiscardFromRiver){
                 moves.push(this.startRule(RuleId.DiscardFromRiver))
                 return moves
+            } else  if (firstEffectType === ImmediateEffectType.ChooseBetween){
+                moves.push(this.startRule(RuleId.ChooseBetween))
+                return moves
             }
-            // TODO
         }
 
         // Dans tous les cas, on supprime l'élément du tableau mémorisé, car traité

@@ -9,6 +9,7 @@ import { BuyCardRule } from './rules/BuyCardRule'
 import { SpendKeyRule } from './rules/SpendKeyRule'
 import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
 import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
+import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
 
 
 /**
@@ -22,7 +23,8 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
     [RuleId.MoveMessenger]: MoveMessengerRule,
     [RuleId.EndOfTurn]: EndOfTurnRule,
     [RuleId.ImmediateEffect]: ImmediateEffectRule,
-    [RuleId.DiscardFromRiver]: DiscardFromRiverRule
+    [RuleId.DiscardFromRiver]: DiscardFromRiverRule,
+    [RuleId.ChooseBetween]: ChooseBetweenRule
   }
 
   locationsStrategies = {
