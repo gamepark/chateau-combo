@@ -1,17 +1,21 @@
 import { isMoveItemTypeAtOnce, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { BannerType } from '../../CardCharacteristics'
 
 export class KeyDiscardLocationCardsRule extends PlayerTurnRule {
   getPlayerMoves() {
+    const messengerPosition = this.material(MaterialType.MessengerToken).getItem()!.location.id
+    
     return [
-      this
+      messengerPosition === BannerType.NobleBanner 
+      ? this
         .material(MaterialType.Card)
         .location(LocationType.NobleRiver)
         .moveItemsAtOnce({
           type: LocationType.NobleDiscard
-        }),
-      this
+        })
+      : this
         .material(MaterialType.Card)
         .location(LocationType.VillageRiver)
         .moveItemsAtOnce({
