@@ -4,7 +4,7 @@ import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
 import { usePlayerId, useRules } from "@gamepark/react-game"
 import { useTranslation } from "react-i18next"
 
-export const DiscardFromRiver = () => {
+export const DiscardFromRiverHeader = () => {
   const rules = useRules<ChateauComboRules>()!
   const player = usePlayerId()
   const activePlayer = rules.getActivePlayer()!
@@ -12,7 +12,7 @@ export const DiscardFromRiver = () => {
   if (player === activePlayer){
     return <MyDiscardFromRiver />
   } else {
-    return <PlayerDiscardFromRiver activePlayer={activePlayer} />
+    return <PlayerDiscardFromRiverHeader activePlayer={activePlayer} />
   }
 
 }
@@ -25,7 +25,7 @@ const MyDiscardFromRiver = () => {
 
 }
 
-const PlayerDiscardFromRiver = ({ activePlayer }: { activePlayer: number }) => {
+const PlayerDiscardFromRiverHeader = ({ activePlayer }: { activePlayer: number }) => {
   const { t } = useTranslation()
   return <>
     <span>{t('header.player.discard.from.river', {activePlayer})}</span>
