@@ -25,14 +25,12 @@ const MySpendKeyHeader = () => {
   const rules = useRules<ChateauComboRules>()!
   const player = usePlayerId()
   const legalMoves = rules.getLegalMoves(player)
-  console.log(legalMoves)
-
-
+  
 
   return <>
     <span>{t('header.you.spend.key')}</span>
-    {legalMoves.map(move => 
-      <PlayMoveButton move={move}> {t(getSpendKeyHeaderMoveTrans(move))} </PlayMoveButton>
+    {legalMoves.map((move, index) => 
+      <PlayMoveButton key={index} move={move}> {t(getSpendKeyHeaderMoveTrans(move))} </PlayMoveButton>
     )}
   </>
 
@@ -40,7 +38,9 @@ const MySpendKeyHeader = () => {
 
 const PlayerSpendKeyHeader = ({ activePlayer }: { activePlayer: number }) => {
   const { t } = useTranslation()
-  return <p>{t('header.player.spend.key', {activePlayer})}</p>
+  return <>
+    <span>{t('header.player.spend.key', {activePlayer})}</span>
+  </>
 }
 
 function getSpendKeyHeaderMoveTrans(move:MaterialMove):string{

@@ -10,14 +10,23 @@ export type ChooseBetweenRuleEffect = {
     effect2:({ type: ImmediateEffectType } & Record<any, any>)[]
 }
 
-//{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Noble], bestNeighbor:true}}]
-//{type:ImmediateEffectType.GetKeys, value:2]
+//[Card.Barbarian]:
+//   immediateEffect:[{type:ImmediateEffectType.ChooseBetween,
+// effect1:{type:ImmediateEffectType.GetCoins, value:1, condition: {blazon:[BlazonType.Teacher], bestNeighbor:true}},
+// effect2:{type:ImmediateEffectType.GetKeys, value:2}
+//}]  } ,
+
 
 export class ChooseBetweenRule extends PlayerTurnRule {
 
   getPlayerMoves() {
+    return [this.startRule(RuleId.ImmediateEffect)]
+  }
 
-    return []
+  startImmediateEffect(effect:({ type: ImmediateEffectType } & Record<any, any>)[]){
+    this.forget(Memory.ImmediateEffectsToPlay)
+    this.memorize(Memory.EffectChosenBetween, {effect})
+    this.startRule(RuleId.ImmediateEffect)
   }
 
   get placedCard() {
@@ -26,8 +35,18 @@ export class ChooseBetweenRule extends PlayerTurnRule {
         .index(this.remind(Memory.PlacedCard))
   }
 
+  get effect1ToPlay() {
+    return cardCharacteristics[this.placedCard.getItem()!.id].immediateEffect![0].effect1
+  }
+
+  get effect2ToPlay() {
+    return cardCharacteristics[this.placedCard.getItem()!.id].immediateEffect![0].effect2
+  }
+
   afterItemMove(move: ItemMove) {
 
   return []
   }
+
+
 }

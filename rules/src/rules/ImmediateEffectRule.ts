@@ -36,7 +36,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
             if (firstEffectType === ImmediateEffectType.DiscardFromRiver){
                 moves.push(this.startRule(RuleId.DiscardFromRiver))
                 return moves
-            } else  if (firstEffectType === ImmediateEffectType.ChooseBetween){
+            } else if (firstEffectType === ImmediateEffectType.ChooseBetween){
                 moves.push(this.startRule(RuleId.ChooseBetween))
                 return moves
             }

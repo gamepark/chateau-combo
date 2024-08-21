@@ -31,5 +31,5 @@ const MyBuyCardHeader = () => {
 
 const PlayerBuyCardHeader = ({ activePlayer }: { activePlayer: number }) => {
   const { t } = useTranslation()
-  return <p>{t('header.player.choose.card', {activePlayer})}</p>
+  return <span>{t('header.player.choose.card', {activePlayer})}</span>
 }
