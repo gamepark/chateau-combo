@@ -42,9 +42,15 @@ export class EndOfTurnRule extends PlayerTurnRule {
       )
     }
 
-    moves.push(
-      this.startPlayerTurn(RuleId.SpendKey, this.nextPlayer)
+    const playersWithRemainingSpots = this.game.players.filter(player => 
+      this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(player).getItems().length !== 9
     )
+
+    if (playersWithRemainingSpots.length === 0){
+      moves.push(this.startRule(RuleId.EndGame))
+    } else {
+      moves.push(this.startPlayerTurn(RuleId.SpendKey, this.nextPlayer))
+    }
 
     return moves
   }

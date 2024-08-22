@@ -5,5 +5,6 @@ export enum RuleId {
   DiscardFromRiver,
   ChooseBetween,
   MoveMessenger,
-  EndOfTurn
+  EndOfTurn,
+  EndGame
 }
