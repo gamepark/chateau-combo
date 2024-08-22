@@ -87,6 +87,7 @@ export class BuyCardRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.PlayerBoard) {
 
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
+      this.memorize(Memory.PlacedCard, move.itemIndex)
       const moves: MaterialMove[] = []
       this
         .material(MaterialType.Card)
@@ -111,7 +112,6 @@ export class BuyCardRule extends PlayerTurnRule {
       
       } else {
         if (cardCharacteristics[item.id].immediateEffect !== undefined){
-          this.memorize(Memory.PlacedCard, move.itemIndex)
           moves.push(this.startRule(RuleId.ImmediateEffect))
         } else {
           moves.push(this.startRule(RuleId.EndOfTurn))

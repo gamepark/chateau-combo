@@ -11,7 +11,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     // Move Messenger if it should
-    if (this.placedCard?.id !== undefined && cardCharacteristics[this.placedCard.id].canSwapMessengerToken === true) {
+    if (this.placedCard?.id !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[this.placedCard.id].canSwapMessengerToken === true) {
       moves.push(this.messenger.moveItem({
         type: LocationType.EndOfRiver,
         id: isNoble(this.placedCard.id) ? BannerType.VillageBanner : BannerType.NobleBanner
