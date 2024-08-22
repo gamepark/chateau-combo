@@ -66,7 +66,7 @@ export class BuyCardRule extends PlayerTurnRule {
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
       const moves: MaterialMove[] = []
 
-      if (move.location.rotation === undefined || (cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )> 0) {
+      if (move.location.rotation === undefined && (cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )> 0) {
         moves.push(
           ...this
             .material(MaterialType.GoldCoin)
