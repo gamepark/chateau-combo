@@ -1,54 +1,99 @@
-import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { LocationType } from '../material/LocationType'
+import { MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnRule } from '@gamepark/rules-api'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
-import { RuleId } from './RuleId'
-import { BannerType, cardCharacteristics } from '../CardCharacteristics'
-import { isNoble } from '../Card'
+import { LocationType } from '../material/LocationType'
+import { cardCharacteristics, CardPattern, howManyTargettedBlazon } from '../CardCharacteristics'
 
-export class EndGameRule extends PlayerTurnRule {
+export class EndGameRule extends MaterialRulesPart {
   onRuleStart() {
-    const moves: MaterialMove[] = []
+        const moves: MaterialMove[] = []
 
-    return moves
-  }
+        const panoramaAndScoreOfPlayers = this.game.players.map(player => ({player, panorama:this.panorama.player(player), score:0}))
+        panoramaAndScoreOfPlayers.forEach(panoramaObject => {
+            panoramaObject.panorama.getItems().map(card => {
+                return getScoreOfTheCard(card , panoramaObject.panorama.getItems())
+            })
+        })
 
-  get messenger() {
-    return this
-      .material(MaterialType.MessengerToken)
-      .location(LocationType.EndOfRiver)
-  }
 
-  get nobleDeck() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.NobleDeck)
-      .deck()
-  }
 
-  get villageDeck() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.VillageDeck)
-      .deck()
-  }
-
-  get nobleRiver() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.NobleRiver)
-  }
-
-  get villageRiver() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.VillageRiver)
+        moves.push(this.rules().endGame())
+        return moves
   }
 
   get placedCard() {
     return this
-      .material(MaterialType.Card)
-      .getItem(this.remind(Memory.PlacedCard))
+        .material(MaterialType.Card)
+        .getItem(this.remind(Memory.PlacedCard))
   }
 
+  get panorama() {
+    return this
+        .material(MaterialType.Card)
+        .location(LocationType.PlayerBoard)
+  }
+
+}
+
+function getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+    const cardCaracs = cardCharacteristics[card.id]
+
+    if (cardCaracs.scoringEffect !== undefined){
+        switch (cardCaracs.scoringEffect.type){
+            case ScoringType.ByBlazon:
+                return getScoreByBlazon(card, panorama)
+        }
+    } else {
+        return 0
+    }
+
+function getScoreByBlazon(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+
+    const cardCaracs = cardCharacteristics[card.id]
+    const blazon = cardCaracs.scoringEffect!.condition.blazon
+    const cardCoordinates = {x:card.location.x!, y:card.location.y!}
+    const cardsToCheck = panorama.filter(item => (
+        (cardCaracs.scoringEffect!.blazonCondition.line === true && item.location.x === cardCoordinates.x) ||
+        (cardCaracs.scoringEffect!.blazonCondition.column === true && item.location.y === cardCoordinates.y)
+    ))
+
+    return cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)  
+
+}
+
+
+    // Pieces sur la carte
+    // Blason ligne / colonne / ligne & colonne
+    // Position sur la grille
+    // Missing blazon
+    // Cartes à X blason
+    // Banner
+    // Cles restantes tresor
+    // Reductions
+    // groupe de blasons
+    // Groupe de banners
+    // Coutant X ou plus // Coutant exactement X
+    // Cartes où l'argent est stockable
+    // Si carte retournee
+
+
+    return 0
+
+}
+
+// Structure scoring : {type: ScoringType, value:number}
+    // & condition
+
+//    export type Condition = {
+//        banner?: BannerType,
+//        blazon?: BlazonType[]
+//        blazonNumber?: number
+//        cardCost?:{cost:number, sign:Sign}
+//    }
+
+export enum ScoringType {
+    ByBlazon = 1,
+    ByBanner,
+    ByKeys,
+    ByDiscount,
 }

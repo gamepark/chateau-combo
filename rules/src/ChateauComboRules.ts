@@ -1,4 +1,4 @@
-import { FillGapStrategy, PositiveSequenceStrategy, SecretMaterialRules, hideItemId } from '@gamepark/rules-api'
+import { CompetitiveScore, FillGapStrategy, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, hideItemId } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -17,7 +17,8 @@ import { EndGameRule } from './rules/EndGameRule'
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class ChateauComboRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType> {
+export class ChateauComboRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
+implements CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> {
   rules = {
     [RuleId.SpendKey]: SpendKeyRule,
     [RuleId.BuyCard]: BuyCardRule,
@@ -45,5 +46,9 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerColor, Material
       [LocationType.NobleDeck]: hideItemId,
       [LocationType.VillageDeck]: hideItemId,
     }
+  }
+
+  getScore(playerId: PlayerColor): number {
+    return 0
   }
 }
