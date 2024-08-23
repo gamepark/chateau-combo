@@ -1,4 +1,4 @@
-import { MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnRule } from '@gamepark/rules-api'
+import { Coordinates, MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
@@ -42,6 +42,8 @@ function getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialI
         switch (cardCaracs.scoringEffect.type){
             case ScoringType.ByBlazon:
                 return getScoreByBlazon(card, panorama)
+            case ScoringType.ByPosition:
+                return getScoreByPosition(card, panorama)
         }
     } else {
         return 0
@@ -65,9 +67,39 @@ function getScoreByBlazon(card:MaterialItem<number, number>, panorama:MaterialIt
 
 }
 
+function getScoreByPosition(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+    const cardCaracs = cardCharacteristics[card.id]
+    const value = cardCaracs.scoringEffect!.value
+    const validPositions:XYCoordinates[] = cardCaracs.scoringEffect!.validPositions
+    const rationnalizedPanorama = getRationnalizedPanorama(panorama)
+    const cardCoordinates = {x: rationnalizedPanorama.find(item => item.id === card.id)!.location.x!, y:rationnalizedPanorama.find(item => item.id === card.id)!.location.y!}
+
+    return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
+}
+
+function getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
+    const maxX = Math.max(...panorama.map(item => item.location.x!))
+    const maxY = Math.max(...panorama.map(item => item.location.y!))
+    const rationnalizedPanorama = panorama.map(item => {
+        const result = item
+        if (maxX === 2){
+            result.location.x = result.location.x! - 1
+        } else if (maxX === 0){
+            result.location.x = result.location.x! + 1
+        }
+        if (maxY === 2){
+            result.location.y = result.location.y! - 1
+        } else if (maxY === 0){
+            result.location.y = result.location.y! + 1
+        }
+        return result
+        
+    })
+    return rationnalizedPanorama
+}
+
 
     // Pieces sur la carte
-    // Blason ligne / colonne / ligne & colonne
     // Position sur la grille
     // Missing blazon
     // Cartes à X blason
@@ -100,4 +132,5 @@ export enum ScoringType {
     ByBanner,
     ByKeys,
     ByDiscount,
+    ByPosition,
 }
