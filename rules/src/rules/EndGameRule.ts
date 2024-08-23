@@ -49,15 +49,19 @@ function getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialI
 
 function getScoreByBlazon(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
 
+    console.log("score carte n° ", card.id)
+
     const cardCaracs = cardCharacteristics[card.id]
-    const blazon = cardCaracs.scoringEffect!.condition.blazon
+    const blazon = cardCaracs.scoringEffect!.blazonCondition.blazonType
+    const value = cardCaracs.scoringEffect!.value
     const cardCoordinates = {x:card.location.x!, y:card.location.y!}
-    const cardsToCheck = panorama.filter(item => (
-        (cardCaracs.scoringEffect!.blazonCondition.line === true && item.location.x === cardCoordinates.x) ||
-        (cardCaracs.scoringEffect!.blazonCondition.column === true && item.location.y === cardCoordinates.y)
+    const cardsToCheck = panorama.filter(item => item.location.rotation === undefined && (
+        (cardCaracs.scoringEffect!.blazonCondition.line === true && item.location.y === cardCoordinates.y) ||
+        (cardCaracs.scoringEffect!.blazonCondition.column === true && item.location.x === cardCoordinates.x)
     ))
 
-    return cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)  
+    console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0))
+    return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)  
 
 }
 
