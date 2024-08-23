@@ -10,8 +10,9 @@ export class EndGameRule extends MaterialRulesPart {
 
         const panoramaAndScoreOfPlayers = this.game.players.map(player => ({player, panorama:this.panorama.player(player), score:0}))
         panoramaAndScoreOfPlayers.forEach(panoramaObject => {
+            const playerKeys = this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(panoramaObject.player).getQuantity()
             panoramaObject.panorama.getItems().map(card => {
-                return getScoreOfTheCard(card , panoramaObject.panorama.getItems())
+                return getScoreOfTheCard(card , panoramaObject.panorama.getItems(), playerKeys)
             })
         })
 
@@ -35,7 +36,7 @@ export class EndGameRule extends MaterialRulesPart {
 
 }
 
-function getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+function getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[], playerKeys:number):number{
     const cardCaracs = cardCharacteristics[card.id]
 
     if (cardCaracs.scoringEffect !== undefined){
@@ -44,6 +45,8 @@ function getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialI
                 return getScoreByBlazon(card, panorama)
             case ScoringType.ByPosition:
                 return getScoreByPosition(card, panorama)
+            case ScoringType.ByKeys:
+                return getScoreByKeys(card, playerKeys)
         }
     } else {
         return 0
@@ -75,6 +78,10 @@ function getScoreByPosition(card:MaterialItem<number, number>, panorama:Material
     const cardCoordinates = {x: rationnalizedPanorama.find(item => item.id === card.id)!.location.x!, y:rationnalizedPanorama.find(item => item.id === card.id)!.location.y!}
 
     return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
+}
+
+function getScoreByKeys(card:MaterialItem<number, number>, keys:number):number{
+    return keys * cardCharacteristics[card.id].scoringEffect!.value
 }
 
 function getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
