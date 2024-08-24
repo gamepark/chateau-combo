@@ -2,7 +2,7 @@ import { Coordinates, MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnR
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
-import { BannerType, cardCharacteristics, CardPattern, howManyTargettedBlazon } from '../CardCharacteristics'
+import { BannerType, BlazonType, cardCharacteristics, CardPattern, howManyTargettedBlazon } from '../CardCharacteristics'
 import { isNoble } from '../Card'
 
 export class EndGameRule extends MaterialRulesPart {
@@ -46,6 +46,8 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByKeys(card, playerKeys)
                 case ScoringType.ByBanner:
                     return this.getScoreByBanner(card, panorama)
+                case ScoringType.ByBlazonGroup:
+                    return this.getScoreByBlazonGroup(card, panorama)
             }
         } else {
             return 0
@@ -54,8 +56,6 @@ export class EndGameRule extends MaterialRulesPart {
         // Pieces sur la carte
         // Missing blazon
         // Cartes à X blason
-        // Banner
-        // Cles restantes tresor
         // Reductions
         // groupe de blasons
         // Groupe de banners
@@ -88,6 +88,13 @@ export class EndGameRule extends MaterialRulesPart {
         console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0))
         return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)  
 
+    }
+
+    getScoreByBlazonGroup(card:MaterialItem, panorama:MaterialItem[]):number{
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        const blazonGroup:BlazonType[] = cardCaracs.scoringEffect!.blazonGroupType
+        return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0)))
     }
 
     getScoreByPosition(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
@@ -139,6 +146,7 @@ export class EndGameRule extends MaterialRulesPart {
 
 export enum ScoringType {
     ByBlazon = 1,
+    ByBlazonGroup,
     ByBanner,
     ByKeys,
     ByDiscount,
