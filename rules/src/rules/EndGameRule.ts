@@ -105,8 +105,8 @@ export class EndGameRule extends MaterialRulesPart {
             cardsToCheck.forEach(item => {
                 getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
             })
-            console.log("score : ", howManyDifferentBlazons.length)
-            return howManyDifferentBlazons.length
+            console.log("score : ", value * howManyDifferentBlazons.length)
+            return value * howManyDifferentBlazons.length
         } else {
             console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0))
             return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)      
@@ -133,8 +133,8 @@ export class EndGameRule extends MaterialRulesPart {
             panorama.forEach(item => 
                 getBlazons(item.id).forEach(blazon => playerBlazonCounting[blazon] += 1)
             )
-
-            return Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0)
+            console.log("score : ", value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0))
+            return value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0)
 
         } else {
             console.log("score : ", value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0))))
