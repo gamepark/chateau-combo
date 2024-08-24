@@ -93,13 +93,24 @@ export class EndGameRule extends MaterialRulesPart {
         const blazon = cardCaracs.scoringEffect!.blazonCondition.blazonType
         const value = cardCaracs.scoringEffect!.value
         const cardCoordinates = {x:card.location.x!, y:card.location.y!}
-        const cardsToCheck = panorama.filter(item => (
+        const cardsToCheck = cardCaracs.scoringEffect!.blazonCondition.line !== true && cardCaracs.scoringEffect!.blazonCondition.column !== true 
+            ? panorama
+            : panorama.filter(item => (
             (cardCaracs.scoringEffect!.blazonCondition.line === true && item.location.y === cardCoordinates.y) ||
             (cardCaracs.scoringEffect!.blazonCondition.column === true && item.location.x === cardCoordinates.x)
         ))
-        console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0))
-        return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)  
 
+        if (blazon === BlazonType.Different){
+            const howManyDifferentBlazons:BlazonType[] = []
+            cardsToCheck.forEach(item => {
+                getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+            })
+            console.log("score : ", howManyDifferentBlazons.length)
+            return howManyDifferentBlazons.length
+        } else {
+            console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0))
+            return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)      
+        }
     }
 
     getScoreByBlazonGroup(card:MaterialItem, panorama:MaterialItem[]):number{
