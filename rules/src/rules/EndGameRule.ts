@@ -4,6 +4,7 @@ import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
 import { BannerType, BlazonType, cardCharacteristics, CardPattern, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
 import { isNoble } from '../Card'
+import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
 
 export class EndGameRule extends MaterialRulesPart {
     onRuleStart() {
@@ -56,6 +57,8 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByMissingBlazon(card, panorama)
                 case ScoringType.ByDiscount:
                     return this.getScoreByDiscountCards(card, panorama)
+                case ScoringType.ByCost:
+                    return this.getScoreByCost(card, panorama)
                 
             }
         } else {
@@ -65,7 +68,6 @@ export class EndGameRule extends MaterialRulesPart {
         // Pieces sur la carte
         // Missing blazon
         // Cartes à X blason
-        // Reductions
         // Groupe de banners
         // Coutant X ou plus // Coutant exactement X
         // Cartes où l'argent est stockable
@@ -144,6 +146,14 @@ export class EndGameRule extends MaterialRulesPart {
         return value * panorama.filter(item => isNobleDiscount(item.id) || isVillageDiscount(item.id)).length
     }
 
+    getScoreByCost(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        console.log("score : ", value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 ) )
+        return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 )
+    }
+
     getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
     const maxX = Math.max(...panorama.map(item => item.location.x!))
     const maxY = Math.max(...panorama.map(item => item.location.y!))
@@ -185,4 +195,5 @@ export enum ScoringType {
     ByKeys,
     ByDiscount,
     ByPosition,
+    ByCost
 }
