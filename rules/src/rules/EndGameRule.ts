@@ -2,7 +2,7 @@ import { Coordinates, MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnR
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
-import { BannerType, BlazonType, cardCharacteristics, CardPattern, howManyTargettedBlazon } from '../CardCharacteristics'
+import { BannerType, BlazonType, cardCharacteristics, CardPattern, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
 import { isNoble } from '../Card'
 
 export class EndGameRule extends MaterialRulesPart {
@@ -54,6 +54,8 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByBlazonGroup(card, panorama)
                 case ScoringType.ByMissingBlazon:
                     return this.getScoreByMissingBlazon(card, panorama)
+                case ScoringType.ByDiscount:
+                    return this.getScoreByDiscountCards(card, panorama)
                 
             }
         } else {
@@ -83,7 +85,7 @@ export class EndGameRule extends MaterialRulesPart {
     }
 
 
-    getScoreByBlazon(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+    getScoreByBlazon(card:MaterialItem, panorama:MaterialItem[]):number{
         console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const blazon = cardCaracs.scoringEffect!.blazonCondition.blazonType
@@ -116,7 +118,7 @@ export class EndGameRule extends MaterialRulesPart {
         return panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
     }
 
-    getScoreByPosition(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+    getScoreByPosition(card:MaterialItem, panorama:MaterialItem[]):number{
         console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
@@ -128,10 +130,18 @@ export class EndGameRule extends MaterialRulesPart {
         return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
     }
 
-    getScoreByKeys(card:MaterialItem<number, number>, keys:number):number{
+    getScoreByKeys(card:MaterialItem, keys:number):number{
         console.log("score carte n° ", card.id)
         console.log("score : ", keys * cardCharacteristics[card.id].scoringEffect!.value)
         return keys * cardCharacteristics[card.id].scoringEffect!.value
+    }
+
+    getScoreByDiscountCards(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        console.log("score : ", value * panorama.filter(item => isNobleDiscount(item.id) || isVillageDiscount(item.id)).length)
+        return value * panorama.filter(item => isNobleDiscount(item.id) || isVillageDiscount(item.id)).length
     }
 
     getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
