@@ -118,8 +118,28 @@ export class EndGameRule extends MaterialRulesPart {
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
         const blazonGroup:BlazonType[] = cardCaracs.scoringEffect!.blazonGroupType
-        console.log("score : ", value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0))))
-        return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0)))
+
+        if (blazonGroup[0] === BlazonType.Identical){
+        
+            const playerBlazonCounting: Record<number, number> = {
+                [BlazonType.Noble] : 0,
+                [BlazonType.Prayer] : 0,
+                [BlazonType.Teacher] : 0,
+                [BlazonType.Soldier] : 0,
+                [BlazonType.Worker] : 0,
+                [BlazonType.Farmer] : 0,
+            }
+
+            panorama.forEach(item => 
+                getBlazons(item.id).forEach(blazon => playerBlazonCounting[blazon] += 1)
+            )
+
+            return Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0)
+
+        } else {
+            console.log("score : ", value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0))))
+            return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0)))
+        }
     }
 
     getScoreByMissingBlazon(card:MaterialItem, panorama:MaterialItem[]):number{

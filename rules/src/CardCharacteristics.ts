@@ -17,7 +17,8 @@ export enum BlazonType {
   Worker,
   Farmer,
   Different,
-  MissingDifferent
+  MissingDifferent,
+  Identical
 }
 
 export type CardPattern = {
@@ -53,7 +54,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Judge]:              { cost: 4, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:2}] } ,
   [Card.Patron]:             { cost: 7, blazon: [BlazonType.Teacher],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:0, condition:{opponentGain:2}}], scoringEffect:{type:ScoringType.ByCost, cardCost:{cost:5, sign:Sign.Plus}}},
   [Card.Guildmaster]:        { cost: 5, blazon: [BlazonType.Worker, BlazonType.Worker],   canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.DiscardFromRiver, river:LocationType.VillageRiver, token:MaterialType.Key}], scoringEffect:{type:ScoringType.ByPosition, value:5, validPositions: [{x:-1, y:-1},{x:0, y:-1},{x:1, y:-1}]}  } ,
-  [Card.General]:            { cost: 7, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Different]}}] },
+  [Card.General]:            { cost: 7, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Different]}}], scoringEffect:{type:ScoringType.ByBlazonGroup, value:6, blazonGroupType:[BlazonType.Identical]} },
   [Card.Knight]:             { cost: 5, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetCoins, value:1, condition: {banner:BannerType.NobleBanner}}], scoringEffect:{type:ScoringType.ByBlazon, value:3, blazonCondition:{blazonType:BlazonType.Noble,line:true, column:true}}  },
   [Card.Lookout]:            { cost: 6, blazon: [BlazonType.Soldier],                     canSwapMessengerToken: false, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition: {blazon:[BlazonType.Soldier]}}]},
   [Card.RoyalGuard]:         { cost: 4, blazon: [BlazonType.Noble, BlazonType.Soldier],   canSwapMessengerToken: true, immediateEffect:[{type:ImmediateEffectType.GetKeys, value:1, condition:{opponentGain:1}}], scoringEffect:{type:ScoringType.ByBlazon, value:3, blazonCondition:{blazonType:BlazonType.Noble, column:true}}   } ,
