@@ -53,12 +53,14 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByBanner(card, panorama)
                 case ScoringType.ByBlazonGroup:
                     return this.getScoreByBlazonGroup(card, panorama)
-                case ScoringType.ByMissingBlazon:
+                case ScoringType.IfMissingBlazon:
                     return this.getScoreByMissingBlazon(card, panorama)
                 case ScoringType.ByDiscount:
                     return this.getScoreByDiscountCards(card, panorama)
                 case ScoringType.ByCost:
                     return this.getScoreByCost(card, panorama)
+                case ScoringType.IfHiddenCard:
+                    return this.getScoreIfHiddenCard(card, this.panorama.getItems())
                 
             }
         } else {
@@ -69,7 +71,6 @@ export class EndGameRule extends MaterialRulesPart {
         // Missing blazon
         // Cartes à X blason
         // Groupe de banners
-        // Coutant X ou plus // Coutant exactement X
         // Cartes où l'argent est stockable
         // Si carte retournee
 
@@ -154,6 +155,14 @@ export class EndGameRule extends MaterialRulesPart {
         return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 )
     }
 
+    getScoreIfHiddenCard(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        console.log("score : ", value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0)
+        return value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0
+    }
+
     getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
     const maxX = Math.max(...panorama.map(item => item.location.x!))
     const maxY = Math.max(...panorama.map(item => item.location.y!))
@@ -190,10 +199,11 @@ export class EndGameRule extends MaterialRulesPart {
 export enum ScoringType {
     ByBlazon = 1,
     ByBlazonGroup,
-    ByMissingBlazon,
+    IfMissingBlazon,
     ByBanner,
     ByKeys,
     ByDiscount,
     ByPosition,
-    ByCost
+    ByCost,
+    IfHiddenCard
 }
