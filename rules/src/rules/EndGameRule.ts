@@ -2,7 +2,7 @@ import { Coordinates, MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnR
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
-import { BannerType, BlazonType, cardCharacteristics, CardPattern, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { BannerType, BlazonType, cardCharacteristics, CardPattern, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
 import { isNoble } from '../Card'
 import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
 
@@ -116,8 +116,14 @@ export class EndGameRule extends MaterialRulesPart {
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
         const missingBlazon = cardCaracs.scoringEffect!.missingBlazonType
+        const howManyDifferentBlazons:BlazonType[] = []
+        panorama.forEach(item => {
+            getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+        })
         console.log("score : ", panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value)
-        return panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
+        return missingBlazon === BlazonType.Different 
+            ? value * (6 - howManyDifferentBlazons.length)
+            : panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
     }
 
     getScoreByBlazonQuantity(card:MaterialItem, panorama:MaterialItem[]):number{
