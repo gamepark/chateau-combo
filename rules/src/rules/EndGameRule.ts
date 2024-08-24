@@ -48,6 +48,8 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByBanner(card, panorama)
                 case ScoringType.ByBlazonGroup:
                     return this.getScoreByBlazonGroup(card, panorama)
+                case ScoringType.ByMissingBlazon:
+                    return this.getScoreByMissingBlazon(card, panorama)
             }
         } else {
             return 0
@@ -57,7 +59,6 @@ export class EndGameRule extends MaterialRulesPart {
         // Missing blazon
         // Cartes à X blason
         // Reductions
-        // groupe de blasons
         // Groupe de banners
         // Coutant X ou plus // Coutant exactement X
         // Cartes où l'argent est stockable
@@ -95,6 +96,13 @@ export class EndGameRule extends MaterialRulesPart {
         const value = cardCaracs.scoringEffect!.value
         const blazonGroup:BlazonType[] = cardCaracs.scoringEffect!.blazonGroupType
         return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0)))
+    }
+
+    getScoreByMissingBlazon(card:MaterialItem, panorama:MaterialItem[]):number{
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        const missingBlazon = cardCaracs.scoringEffect!.missingBlazonType
+        return panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
     }
 
     getScoreByPosition(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
@@ -147,6 +155,7 @@ export class EndGameRule extends MaterialRulesPart {
 export enum ScoringType {
     ByBlazon = 1,
     ByBlazonGroup,
+    ByMissingBlazon,
     ByBanner,
     ByKeys,
     ByDiscount,
