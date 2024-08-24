@@ -2,7 +2,7 @@ import { Coordinates, MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnR
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
-import { BannerType, BlazonType, cardCharacteristics, CardPattern, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { BannerType, BlazonType, cardCharacteristics, CardPattern, getBanner, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
 import { isNoble } from '../Card'
 import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
 
@@ -63,6 +63,8 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreIfHiddenCard(card, this.panorama.getItems())
                 case ScoringType.ByBlazonCount:
                     return this.getScoreByBlazonQuantity(card, panorama)
+                case ScoringType.ByBannerGroup:
+                    return this.getScoreByBannerGroup(card, panorama)
                 
             }
         } else {
@@ -70,8 +72,6 @@ export class EndGameRule extends MaterialRulesPart {
         }
 
         // Pieces sur la carte
-        // Missing blazon
-        // Cartes à X blason
         // Groupe de banners
         // Pièces sur les cartes
 
@@ -84,6 +84,29 @@ export class EndGameRule extends MaterialRulesPart {
         const banner = cardCaracs.scoringEffect!.bannerType
         console.log("score : ", value * panorama.filter(item => banner === BannerType.NobleBanner ? isNoble(item.id) : !isNoble(item.id)).length)
         return value * panorama.filter(item => banner === BannerType.NobleBanner ? isNoble(item.id) : !isNoble(item.id)).length
+    }
+
+    getScoreByBannerGroup(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        const bannerConditions:{nobleBanners:number, villageBanners:number} = cardCaracs.scoringEffect!.bannerConditions
+        const playerBannerCount: Record<number, number> = {
+            [BannerType.NobleBanner] : 0,
+            [BannerType.VillageBanner] : 0,
+        }
+
+        panorama.forEach(item => playerBannerCount[getBanner(item.id)] += 1)
+
+        if(bannerConditions.nobleBanners !== 0){
+            playerBannerCount[BannerType.NobleBanner] = playerBannerCount[BannerType.NobleBanner] % bannerConditions.nobleBanners
+        } 
+        if(bannerConditions.villageBanners !== 0){
+            playerBannerCount[BannerType.VillageBanner] = playerBannerCount[BannerType.VillageBanner] % bannerConditions.villageBanners
+        }
+
+        console.log("score : ", value * Math.min(...Object.values(playerBannerCount)))
+        return value * Math.min(...Object.values(playerBannerCount))
     }
 
 
@@ -247,6 +270,7 @@ export enum ScoringType {
     ByBlazonCount,
     IfMissingBlazon,
     ByBanner,
+    ByBannerGroup,
     ByKeys,
     ByDiscount,
     ByPosition,
