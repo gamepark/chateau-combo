@@ -9,11 +9,11 @@ export class EndGameRule extends MaterialRulesPart {
     onRuleStart() {
         const moves: MaterialMove[] = []
 
-        const panoramaAndScoreOfPlayers = this.game.players.map(player => ({player, panorama:this.panorama.player(player), score:0}))
+        const panoramaAndScoreOfPlayers = this.game.players.map(player => ({player, panorama:this.panoramaWithoutHiddenCards.player(player), score:0}))
         panoramaAndScoreOfPlayers.forEach(panoramaObject => {
             const playerKeys = this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(panoramaObject.player).getQuantity()
             panoramaObject.panorama.getItems().map(card => {
-                return this.getScoreOfTheCard(card , panoramaObject.panorama.getItems(), playerKeys)
+                return card.location.rotation === undefined ? this.getScoreOfTheCard(card , panoramaObject.panorama.getItems(), playerKeys) : 0
             })
         })
 
@@ -33,6 +33,10 @@ export class EndGameRule extends MaterialRulesPart {
         .location(LocationType.PlayerBoard)
   }
 
+  get panoramaWithoutHiddenCards(){
+    return this.panorama.filter(item => item.location.rotation === undefined)
+  }
+
     getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[], playerKeys:number):number{
 
         const cardCaracs = cardCharacteristics[card.id]
@@ -50,6 +54,7 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByBlazonGroup(card, panorama)
                 case ScoringType.ByMissingBlazon:
                     return this.getScoreByMissingBlazon(card, panorama)
+                
             }
         } else {
             return 0
@@ -69,9 +74,11 @@ export class EndGameRule extends MaterialRulesPart {
     }
 
     getScoreByBanner(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
-        const banner = cardCaracs.scoringEffect!.blazonCondition.bannerType
+        const banner = cardCaracs.scoringEffect!.bannerType
+        console.log("score : ", value * panorama.filter(item => banner === BannerType.NobleBanner ? isNoble(item.id) : !isNoble(item.id)).length)
         return value * panorama.filter(item => banner === BannerType.NobleBanner ? isNoble(item.id) : !isNoble(item.id)).length
     }
 
@@ -82,7 +89,7 @@ export class EndGameRule extends MaterialRulesPart {
         const blazon = cardCaracs.scoringEffect!.blazonCondition.blazonType
         const value = cardCaracs.scoringEffect!.value
         const cardCoordinates = {x:card.location.x!, y:card.location.y!}
-        const cardsToCheck = panorama.filter(item => item.location.rotation === undefined && (
+        const cardsToCheck = panorama.filter(item => (
             (cardCaracs.scoringEffect!.blazonCondition.line === true && item.location.y === cardCoordinates.y) ||
             (cardCaracs.scoringEffect!.blazonCondition.column === true && item.location.x === cardCoordinates.x)
         ))
@@ -92,32 +99,40 @@ export class EndGameRule extends MaterialRulesPart {
     }
 
     getScoreByBlazonGroup(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
         const blazonGroup:BlazonType[] = cardCaracs.scoringEffect!.blazonGroupType
+        console.log("score : ", value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0))))
         return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0)))
     }
 
     getScoreByMissingBlazon(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
         const missingBlazon = cardCaracs.scoringEffect!.missingBlazonType
+        console.log("score : ", panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value)
         return panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
     }
 
     getScoreByPosition(card:MaterialItem<number, number>, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
         const validPositions:XYCoordinates[] = cardCaracs.scoringEffect!.validPositions
         const rationnalizedPanorama = this.getRationnalizedPanorama(panorama)
         const cardCoordinates = {x: rationnalizedPanorama.find(item => item.id === card.id)!.location.x!, y:rationnalizedPanorama.find(item => item.id === card.id)!.location.y!}
 
+        console.log("score : ", validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value)
         return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
-}
+    }
 
     getScoreByKeys(card:MaterialItem<number, number>, keys:number):number{
-    return keys * cardCharacteristics[card.id].scoringEffect!.value
-}
+        console.log("score carte n° ", card.id)
+        console.log("score : ", keys * cardCharacteristics[card.id].scoringEffect!.value)
+        return keys * cardCharacteristics[card.id].scoringEffect!.value
+    }
 
     getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
     const maxX = Math.max(...panorama.map(item => item.location.x!))
