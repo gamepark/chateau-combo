@@ -61,6 +61,8 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByCost(card, panorama)
                 case ScoringType.IfHiddenCard:
                     return this.getScoreIfHiddenCard(card, this.panorama.getItems())
+                case ScoringType.ByBlazonCount:
+                    return this.getScoreByBlazonQuantity(card, panorama)
                 
             }
         } else {
@@ -71,10 +73,7 @@ export class EndGameRule extends MaterialRulesPart {
         // Missing blazon
         // Cartes à X blason
         // Groupe de banners
-        // Cartes où l'argent est stockable
-        // Si carte retournee
-
-        return 0
+        // Pièces sur les cartes
 
     }
 
@@ -119,6 +118,15 @@ export class EndGameRule extends MaterialRulesPart {
         const missingBlazon = cardCaracs.scoringEffect!.missingBlazonType
         console.log("score : ", panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value)
         return panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
+    }
+
+    getScoreByBlazonQuantity(card:MaterialItem, panorama:MaterialItem[]):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        const quantityToCheck = cardCaracs.scoringEffect!.blazonQuantity
+        console.log("score : ", value * panorama.filter(item => cardCharacteristics[item.id].blazon.lastIndexOf === quantityToCheck).length)
+        return value * panorama.filter(item => cardCharacteristics[item.id].blazon.lastIndexOf === quantityToCheck).length
     }
 
     getScoreByPosition(card:MaterialItem, panorama:MaterialItem[]):number{
@@ -199,11 +207,12 @@ export class EndGameRule extends MaterialRulesPart {
 export enum ScoringType {
     ByBlazon = 1,
     ByBlazonGroup,
+    ByBlazonCount,
     IfMissingBlazon,
     ByBanner,
     ByKeys,
     ByDiscount,
     ByPosition,
     ByCost,
-    IfHiddenCard
+    IfHiddenCard,
 }
