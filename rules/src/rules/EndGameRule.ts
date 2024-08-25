@@ -274,7 +274,8 @@ export class EndGameRule extends MaterialRulesPart {
         console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
-        const goldOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getItems().filter(item => item.location.x === card.location.x && item.location.y === card.location.y).length
+        const goldOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId)
+        .filter(item => item.location.x === card.location.x && item.location.y === card.location.y).getQuantity()
         console.log("score : ", goldOnCard * value)
         return goldOnCard * value
     }

@@ -81,6 +81,10 @@ export class PlayerBoardHelper extends MaterialRulesPart {
     return new BuyCardRule(this.game).nobleDiscount
   }
 
+  get testcoin(){
+    return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getItems().filter(item => item.location.x === 1 && item.location.y === 0)
+  }
+
 }
 
 export const isAnyCardToTheLeft = (slotToCheck: MaterialItem, reference: { x?: number; y?: number }) => {

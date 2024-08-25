@@ -7,6 +7,7 @@ import { ImmediateEffectType } from "../material/ImmediateEffectType";
 import { AbstractImmediateEffect } from "./effects/AbstractImmediateEffect";
 import { ImmediateGainCoinEffect } from "./effects/ImmediateGainCoinEffect";
 import { ImmediateGainKeyEffect } from "./effects/ImmediateGainKeyEffect";
+import { ImmediatePutGoldOnCardEffect } from "./effects/ImmediatePutGoldOnCardEffect";
 
 export class ImmediateEffectRule extends PlayerTurnRule {
     onRuleStart() {
@@ -28,7 +29,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
         const firstEffectType:ImmediateEffectType = EffectArray[0].type
 
         // Si c'est un effet gérable immédiatement, on le fait
-        if (firstEffectType === ImmediateEffectType.GetCoins || firstEffectType === ImmediateEffectType.GetKeys){
+        if (firstEffectType === ImmediateEffectType.GetCoins || firstEffectType === ImmediateEffectType.GetKeys || firstEffectType === ImmediateEffectType.PutGoldOnCard){
             const effectMoves:MaterialMove[] = new ImmediateEffects[firstEffectType]!(this.game).getEffectMoves(EffectArray[0])
             effectMoves.forEach(move => moves.push(move))
         } // Sinon, on pousse une rule spécifique dans laquelle passer
@@ -39,7 +40,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
             } else if (firstEffectType === ImmediateEffectType.ChooseBetween){
                 moves.push(this.startRule(RuleId.ChooseBetween))
                 return moves
-            }
+            } 
         }
 
         // Dans tous les cas, on supprime l'élément du tableau mémorisé, car traité
@@ -67,5 +68,6 @@ type EffectCreator = new (game: MaterialGame) => AbstractImmediateEffect<any>
 const ImmediateEffects: Partial<Record<ImmediateEffectType, EffectCreator>> = {
     [ImmediateEffectType.GetCoins]: ImmediateGainCoinEffect,
     [ImmediateEffectType.GetKeys]: ImmediateGainKeyEffect,
+    [ImmediateEffectType.PutGoldOnCard]: ImmediatePutGoldOnCardEffect
 }
 
