@@ -41,8 +41,8 @@ export class EndGameRule extends MaterialRulesPart {
 
         })
 
-        // Math.min(cardCharacteristics[card.id].scoringEffect!.limit - goldAlreadyOnCard, playerGoldStock)
 
+        // TODO : use this only after the end of the game !
         // Calculating final score
         const panoramaAndScoreOfPlayers = this.game.players.map(player => ({player, panorama:this.panoramaWithoutHiddenCards.player(player), score:0}))
         panoramaAndScoreOfPlayers.forEach(panoramaObject => {
@@ -104,15 +104,10 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByGoldOnCard(card, playerId)
                 case ScoringType.ByGoldOnAllCards:
                     return this.getScoreByGoldOnAllCards(card, playerId)
-                
             }
         } else {
             return 0
         }
-
-        // Pieces sur la carte
-        // Groupe de banners
-        // Pièces sur les cartes
 
     }
 
