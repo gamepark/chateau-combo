@@ -67,11 +67,11 @@ export class PlayerBoardHelper extends MaterialRulesPart {
   }
 
   get coinsQuantity(){
-    return this.material(MaterialType.GoldCoin).player(this.player).getQuantity()
+    return this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
   }
 
   get keyQuantity(){
-    return this.material(MaterialType.Key).player(this.player).getQuantity()
+    return this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(this.player).getQuantity()
   }
 
   get villageDiscount(){

@@ -5,11 +5,45 @@ import { LocationType } from '../material/LocationType'
 import { BannerType, BlazonType, cardCharacteristics, CardPattern, getBanner, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
 import { isNoble } from '../Card'
 import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
+import { t } from 'i18next'
 
 export class EndGameRule extends MaterialRulesPart {
     onRuleStart() {
         const moves: MaterialMove[] = []
 
+        // Moving the remaining money
+        this.game.players.forEach(player => {
+            const cardsToFill = this.panorama.player(player).getItems().filter(item => item.location.rotation === undefined && cardCharacteristics[item.id].scoringEffect?.type === ScoringType.ByGoldOnCard)
+            cardsToFill.forEach(card => {
+                const playerGoldStock = this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(player).getQuantity()
+                if(playerGoldStock === 0){
+                    return 
+                } else {
+                    const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(player)
+                    .filter(item => item.location.x === card.location.x && item.location.y === card.location.y)
+                    .getQuantity()
+                    if (goldAlreadyOnCard < cardCharacteristics[card.id].scoringEffect!.limit){
+                        moves.push(...this.material(MaterialType.GoldCoin)
+                        .location(LocationType.PlayerGoldStock)
+                        .player(player)
+                        .moveItems(
+                             {
+                                type:LocationType.PlayerBoard,
+                                player,
+                                x:card.location.x,
+                                y:card.location.y,
+                            }, Math.min(cardCharacteristics[card.id].scoringEffect!.limit - goldAlreadyOnCard, playerGoldStock)
+                            
+                        ))
+                    }
+                }
+            })
+
+        })
+
+        // Math.min(cardCharacteristics[card.id].scoringEffect!.limit - goldAlreadyOnCard, playerGoldStock)
+
+        // Calculating final score
         const panoramaAndScoreOfPlayers = this.game.players.map(player => ({player, panorama:this.panoramaWithoutHiddenCards.player(player), score:0}))
         panoramaAndScoreOfPlayers.forEach(panoramaObject => {
             const playerKeys = this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(panoramaObject.player).getQuantity()
@@ -241,7 +275,7 @@ export class EndGameRule extends MaterialRulesPart {
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
         const goldOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getItems().filter(item => item.location.x === card.location.x && item.location.y === card.location.y).length
-        console.log(goldOnCard * value)
+        console.log("score : ", goldOnCard * value)
         return goldOnCard * value
     }
 
@@ -249,6 +283,7 @@ export class EndGameRule extends MaterialRulesPart {
         console.log("score carte n° ", card.id)
         const cardCaracs = cardCharacteristics[card.id]
         const value = cardCaracs.scoringEffect!.value
+        console.log("score : ", value * this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getQuantity())
         return value * this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getQuantity()
     }
 
