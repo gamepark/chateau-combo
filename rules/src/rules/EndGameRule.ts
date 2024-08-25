@@ -14,7 +14,7 @@ export class EndGameRule extends MaterialRulesPart {
         panoramaAndScoreOfPlayers.forEach(panoramaObject => {
             const playerKeys = this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(panoramaObject.player).getQuantity()
             panoramaObject.panorama.getItems().map(card => {
-                return card.location.rotation === undefined ? this.getScoreOfTheCard(card , panoramaObject.panorama.getItems(), playerKeys) : 0
+                return card.location.rotation === undefined ? this.getScoreOfTheCard(card , panoramaObject.panorama.getItems(), panoramaObject.player) : 0
             })
         })
 
@@ -38,9 +38,10 @@ export class EndGameRule extends MaterialRulesPart {
     return this.panorama.filter(item => item.location.rotation === undefined)
   }
 
-    getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[], playerKeys:number):number{
+    getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[], playerId:number):number{
 
         const cardCaracs = cardCharacteristics[card.id]
+        const playerKeys = this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(playerId).getQuantity()
         if (cardCaracs.scoringEffect !== undefined){
             switch (cardCaracs.scoringEffect.type){
                 case ScoringType.ByBlazon:
@@ -65,6 +66,10 @@ export class EndGameRule extends MaterialRulesPart {
                     return this.getScoreByBlazonQuantity(card, panorama)
                 case ScoringType.ByBannerGroup:
                     return this.getScoreByBannerGroup(card, panorama)
+                case ScoringType.ByGoldOnCard:
+                    return this.getScoreByGoldOnCard(card, playerId)
+                case ScoringType.ByGoldOnAllCards:
+                    return this.getScoreByGoldOnAllCards(card, playerId)
                 
             }
         } else {
@@ -231,6 +236,22 @@ export class EndGameRule extends MaterialRulesPart {
         return value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0
     }
 
+    getScoreByGoldOnCard(card:MaterialItem, playerId:number):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        const goldOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getItems().filter(item => item.location.x === card.location.x && item.location.y === card.location.y).length
+        console.log(goldOnCard * value)
+        return goldOnCard * value
+    }
+
+    getScoreByGoldOnAllCards(card:MaterialItem, playerId:number):number{
+        console.log("score carte n° ", card.id)
+        const cardCaracs = cardCharacteristics[card.id]
+        const value = cardCaracs.scoringEffect!.value
+        return value * this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getQuantity()
+    }
+
     getRationnalizedPanorama(panorama:MaterialItem[]):MaterialItem[]{
     const maxX = Math.max(...panorama.map(item => item.location.x!))
     const maxY = Math.max(...panorama.map(item => item.location.y!))
@@ -254,16 +275,6 @@ export class EndGameRule extends MaterialRulesPart {
 
 }
 
-// Structure scoring : {type: ScoringType, value:number}
-    // & condition
-
-//    export type Condition = {
-//        banner?: BannerType,
-//        blazon?: BlazonType[]
-//        blazonNumber?: number
-//        cardCost?:{cost:number, sign:Sign}
-//    }
-
 export enum ScoringType {
     ByBlazon = 1,
     ByBlazonGroup,
@@ -276,4 +287,6 @@ export enum ScoringType {
     ByPosition,
     ByCost,
     IfHiddenCard,
+    ByGoldOnCard,
+    ByGoldOnAllCards
 }
