@@ -1,13 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import { ItemContext, PileLocator, getRelativePlayerIndex } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { MaterialItem } from '@gamepark/rules-api'
 
 class PlayerKeyStockLocator extends PileLocator {
 
   getCoordinates(item: MaterialItem, context: ItemContext) {
     const playerIndex = getRelativePlayerIndex(context, item.location.player)
-    return { x:-18+playerIndex*20, y:20, z: 5 }
+    const playerNumber = context.rules.game.players.length
+    return { x: -15 + playerIndex*getTokenDeltaX(playerNumber), y:7, z: 5 }
   }
 }
 
-export const playerKeyStockLocator = new PlayerKeyStockLocator()
+export function getTokenDeltaX(playerNumber:number):number{
+  switch(playerNumber){
+    case 2:
+      return 60
+    case 3:
+      return 30
+    case 4:
+      return 20
+    default :
+      return 20
+  }
+}
+
+
+
+export const playerKeyStockLocator = new PlayerKeyStockLocator() 

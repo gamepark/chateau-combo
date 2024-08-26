@@ -23,7 +23,6 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
         const panorama = this.panorama 
 
         if (effect.putMethod === PutMethod.onEach){
-            console.log("coucou")
             const cardsToPutGoldOn = panorama.filter(item => item.location.rotation === undefined 
                 && cardCharacteristics[item.id].scoringEffect !== undefined 
                 && cardCharacteristics[item.id].scoringEffect!.type === ScoringType.ByGoldOnCard )
@@ -32,7 +31,6 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
                 const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
                     .filter(gold => gold.location.x === card.location.x && gold.location.y === card.location.y).getQuantity()
                 if (goldCardCanStore - goldAlreadyOnCard !== 0){
-                    console.log(Math.min(effect.goldPut, goldCardCanStore - goldAlreadyOnCard))
                     moves.push(this.material(MaterialType.GoldCoin).createItem({
                         location:{
                             type: LocationType.PlayerBoard,

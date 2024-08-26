@@ -23,7 +23,6 @@ const MyImmediateEffectHeader = () => {
   const { t } = useTranslation()
   const rules = useRules<ChateauComboRules>()!
   const placedCard = rules.material(MaterialType.Card).index(rules.game.memory[Memory.PlacedCard]) 
-  console.log(rules.game.memory[Memory.ImmediateEffectsToPlay])
   const actualImmediateEffect = undefined //rules.game.memory[Memory.ImmediateEffectsToPlay][0].type
 
   return <span>{ t(getEffectHeader(actualImmediateEffect, 'you'), {placedCard}) }</span>

@@ -35,9 +35,9 @@ class EndOfRiverDescription extends LocationDescription {
     
     getCoordinates(location: Location, _context: LocationContext): Coordinates {
         if (location.id === BannerType.NobleBanner){
-            return { x: 30, y: -18, z: 0 }
+            return { x: 23, y: -18, z: 0 }
         } else {
-            return { x: 30, y: -8, z: 0 }
+            return { x: 23, y: -8, z: 0 }
         }
     }
     

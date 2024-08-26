@@ -1,9 +1,9 @@
-import messengerToken from '../images/messengerToken.jpg'
-import { TokenDescription, MaterialComponentType } from '@gamepark/react-game'
+import messengerToken from '../images/messengerToken.png'
+import { TokenDescription } from '@gamepark/react-game'
 
 export class MessengerTokenDescription extends TokenDescription {
-    height = 10
-    ratio = 1/1
+    height = 8.8
+    ratio = 42/50
     image = messengerToken
 }
 

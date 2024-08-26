@@ -13,12 +13,11 @@ export const getPosition = (players: number, index: number): Coordinates => {
 }
 
 export const getTwoPlayerGamePosition = (index: number) => {
-  if (index === 0) return { x: -30, y: 12, z: 0 }
-  return { x: 30, y: 12, z: 0 }
+  return { x: -30 + 60 * index, y: 12, z: 0 }
 }
 
 export const getThreePlayerGamePosition = (index: number) => {
-  return { x: 0, y: 0, z: 0 }
+  return { x: -30 + 30 * index, y: 12, z: 0 }
 }
 
 export const getFourPlayerGamePosition = (index: number) => {
