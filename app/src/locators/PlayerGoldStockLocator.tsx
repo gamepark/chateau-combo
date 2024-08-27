@@ -9,8 +9,16 @@ class PlayerGoldStockLocator extends PileLocator {
   getCoordinates(item: MaterialItem, context: ItemContext) {
     const playerIndex = getRelativePlayerIndex(context, item.location.player)
     const playerNumber = context.rules.game.players.length
-    return { x: -15 + playerIndex * getTokenDeltaX(playerNumber), y: 17, z: 5 }
+    if (playerNumber < 4){
+      return { x: -15 + playerIndex * getTokenDeltaX(playerNumber), y: 17, z: 5 }
+    } else if (playerNumber === 4){
+      return { x: -37 + playerIndex * getTokenDeltaX(playerNumber), y: 30, z: 5 }
+    } else {
+      return { x: -15 + playerIndex * getTokenDeltaX(playerNumber), y: 17, z: 5 }
+    }
   }
 }
+
+
 
 export const playerGoldStockLocator = new PlayerGoldStockLocator()

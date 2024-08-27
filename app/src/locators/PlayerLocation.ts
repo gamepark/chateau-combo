@@ -21,7 +21,7 @@ export const getThreePlayerGamePosition = (index: number) => {
 }
 
 export const getFourPlayerGamePosition = (index: number) => {
-  return { x: 0, y: 0, z: 0 }
+  return { x: -33 + 22 * index, y: 12, z: 0 }
 }
 
 export const getFivePlayerGamePosition = (index: number) => {
