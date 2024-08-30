@@ -1,13 +1,13 @@
-import { MaterialComponentType, RoundTokenDescription } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
+import { RoundTokenDescription } from '@gamepark/react-game'
 import Coin1 from '../images/Coin1.png'
-import { goldStockLocation } from '../locators/GoldStockDescription'
 
 export class GoldCoinDescription extends RoundTokenDescription {
     diameter = 3
     image = Coin1
 
-    staticItem = { quantity: 10, location: goldStockLocation }
-    stockLocation = goldStockLocation
+    stockLocation = { type: LocationType.KeyStock }
+    staticItem = { quantity: 10, location: this.stockLocation }
 }
 
 export const goldCoinDescription = new GoldCoinDescription()

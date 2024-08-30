@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
-import { PlayerPanel, usePlayers } from '@gamepark/react-game'
+import { usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
 import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
 

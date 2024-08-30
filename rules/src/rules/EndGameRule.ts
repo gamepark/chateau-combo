@@ -3,7 +3,7 @@ import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
 import { BannerType, BlazonType, cardCharacteristics, CardPattern, getBanner, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
-import { isNoble } from '../Card'
+import { isCastleType, isNoble, isVillageType } from '../material/Card'
 import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
 import { t } from 'i18next'
 
@@ -13,7 +13,7 @@ export class EndGameRule extends MaterialRulesPart {
 
         // Moving the remaining money
         this.game.players.forEach(player => {
-            const cardsToFill = this.panorama.player(player).getItems().filter(item => item.location.rotation === undefined && cardCharacteristics[item.id].scoringEffect?.type === ScoringType.ByGoldOnCard)
+            const cardsToFill = this.panorama.player(player).getItems().filter(item => item.location.rotation === undefined && cardCharacteristics[item.id.front].scoringEffect?.type === ScoringType.ByGoldOnCard)
             cardsToFill.forEach(card => {
                 const playerGoldStock = this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(player).getQuantity()
                 if(playerGoldStock === 0){
@@ -22,7 +22,7 @@ export class EndGameRule extends MaterialRulesPart {
                     const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(player)
                     .filter(item => item.location.x === card.location.x && item.location.y === card.location.y)
                     .getQuantity()
-                    if (goldAlreadyOnCard < cardCharacteristics[card.id].scoringEffect!.limit){
+                    if (goldAlreadyOnCard < cardCharacteristics[card.id.front].scoringEffect!.limit){
                         moves.push(...this.material(MaterialType.GoldCoin)
                         .location(LocationType.PlayerGoldStock)
                         .player(player)
@@ -32,7 +32,7 @@ export class EndGameRule extends MaterialRulesPart {
                                 player,
                                 x:card.location.x,
                                 y:card.location.y,
-                            }, Math.min(cardCharacteristics[card.id].scoringEffect!.limit - goldAlreadyOnCard, playerGoldStock)
+                            }, Math.min(cardCharacteristics[card.id.front].scoringEffect!.limit - goldAlreadyOnCard, playerGoldStock)
                             
                         ))
                     }
@@ -74,7 +74,7 @@ export class EndGameRule extends MaterialRulesPart {
 
     getScoreOfTheCard(card:MaterialItem<number, number>, panorama:MaterialItem[], playerId:number):number{
 
-        const cardCaracs = cardCharacteristics[card.id]
+        const cardCaracs = cardCharacteristics[card.id.front]
         const playerKeys = this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(playerId).getQuantity()
         if (cardCaracs.scoringEffect !== undefined){
             switch (cardCaracs.scoringEffect.type){
@@ -112,17 +112,17 @@ export class EndGameRule extends MaterialRulesPart {
     }
 
     getScoreByBanner(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const banner = cardCaracs.scoringEffect!.bannerType
-        console.log("score : ", value * panorama.filter(item => banner === BannerType.NobleBanner ? isNoble(item.id) : !isNoble(item.id)).length)
-        return value * panorama.filter(item => banner === BannerType.NobleBanner ? isNoble(item.id) : !isNoble(item.id)).length
+        console.log("score : ", value * panorama.filter(item => banner === BannerType.NobleBanner ? isCastleType(item.id) : isVillageType(item.id)).length)
+        return value * panorama.filter(item => banner === BannerType.NobleBanner ? isCastleType(item.id) : isVillageType(item.id)).length
     }
 
     getScoreByBannerGroup(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const bannerConditions:{nobleBanners:number, villageBanners:number} = cardCaracs.scoringEffect!.bannerConditions
         const playerBannerCount: Record<number, number> = {
@@ -130,7 +130,7 @@ export class EndGameRule extends MaterialRulesPart {
             [BannerType.VillageBanner] : 0,
         }
 
-        panorama.forEach(item => playerBannerCount[getBanner(item.id)] += 1)
+        panorama.forEach(item => playerBannerCount[getBanner(item.id.front)] += 1)
 
         if(bannerConditions.nobleBanners !== 0){
             playerBannerCount[BannerType.NobleBanner] = playerBannerCount[BannerType.NobleBanner] % bannerConditions.nobleBanners
@@ -145,8 +145,8 @@ export class EndGameRule extends MaterialRulesPart {
 
 
     getScoreByBlazon(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const blazon = cardCaracs.scoringEffect!.blazonCondition.blazonType
         const value = cardCaracs.scoringEffect!.value
         const cardCoordinates = {x:card.location.x!, y:card.location.y!}
@@ -160,19 +160,19 @@ export class EndGameRule extends MaterialRulesPart {
         if (blazon === BlazonType.Different){
             const howManyDifferentBlazons:BlazonType[] = []
             cardsToCheck.forEach(item => {
-                getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+                getBlazons(item.id.front).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
             })
             console.log("score : ", value * howManyDifferentBlazons.length)
             return value * howManyDifferentBlazons.length
         } else {
-            console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0))
-            return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazon), 0)      
+            console.log("score : ", value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazon), 0))
+            return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazon), 0)
         }
     }
 
     getScoreByBlazonGroup(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const blazonGroup:BlazonType[] = cardCaracs.scoringEffect!.blazonGroupType
 
@@ -188,86 +188,86 @@ export class EndGameRule extends MaterialRulesPart {
             }
 
             panorama.forEach(item => 
-                getBlazons(item.id).forEach(blazon => playerBlazonCounting[blazon] += 1)
+                getBlazons(item.id.front).forEach(blazon => playerBlazonCounting[blazon] += 1)
             )
             console.log("score : ", value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0))
             return value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0)
 
         } else {
-            console.log("score : ", value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0))))
-            return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, blazonToCount), 0)))
+            console.log("score : ", value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazonToCount), 0))))
+            return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazonToCount), 0)))
         }
     }
 
     getScoreByMissingBlazon(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const missingBlazon = cardCaracs.scoringEffect!.missingBlazonType
         const howManyDifferentBlazons:BlazonType[] = []
         panorama.forEach(item => {
-            getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+            getBlazons(item.id.front).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
         })
-        console.log("score : ", panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value)
+        console.log("score : ", panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value)
         return missingBlazon === BlazonType.Different 
             ? value * (6 - howManyDifferentBlazons.length)
-            : panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id, missingBlazon), 0) > 0 ? 0 : value
+            : panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value
     }
 
     getScoreByBlazonQuantity(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const quantityToCheck = cardCaracs.scoringEffect!.blazonQuantity
-        console.log("score : ", value * panorama.filter(item => cardCharacteristics[item.id].blazon.lastIndexOf === quantityToCheck).length)
-        return value * panorama.filter(item => cardCharacteristics[item.id].blazon.lastIndexOf === quantityToCheck).length
+        console.log("score : ", value * panorama.filter(item => cardCharacteristics[item.id.front].blazon.lastIndexOf === quantityToCheck).length)
+        return value * panorama.filter(item => cardCharacteristics[item.id.front].blazon.lastIndexOf === quantityToCheck).length
     }
 
     getScoreByPosition(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const validPositions:XYCoordinates[] = cardCaracs.scoringEffect!.validPositions
         const rationnalizedPanorama = this.getRationnalizedPanorama(panorama)
-        const cardCoordinates = {x: rationnalizedPanorama.find(item => item.id === card.id)!.location.x!, y:rationnalizedPanorama.find(item => item.id === card.id)!.location.y!}
+        const cardCoordinates = {x: rationnalizedPanorama.find(item => item.id.front === card.id.front)!.location.x!, y:rationnalizedPanorama.find(item => item.id.front === card.id.front)!.location.y!}
 
         console.log("score : ", validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value)
         return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
     }
 
     getScoreByKeys(card:MaterialItem, keys:number):number{
-        console.log("score carte n° ", card.id)
-        console.log("score : ", keys * cardCharacteristics[card.id].scoringEffect!.value)
-        return keys * cardCharacteristics[card.id].scoringEffect!.value
+        console.log("score carte n° ", card.id.front)
+        console.log("score : ", keys * cardCharacteristics[card.id.front].scoringEffect!.value)
+        return keys * cardCharacteristics[card.id.front].scoringEffect!.value
     }
 
     getScoreByDiscountCards(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
-        console.log("score : ", value * panorama.filter(item => isNobleDiscount(item.id) || isVillageDiscount(item.id)).length)
-        return value * panorama.filter(item => isNobleDiscount(item.id) || isVillageDiscount(item.id)).length
+        console.log("score : ", value * panorama.filter(item => isNobleDiscount(item.id.front) || isVillageDiscount(item.id.front)).length)
+        return value * panorama.filter(item => isNobleDiscount(item.id.front) || isVillageDiscount(item.id.front)).length
     }
 
     getScoreByCost(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
-        console.log("score : ", value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 ) )
-        return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 )
+        console.log("score : ", value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 ) )
+        return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)) , 0 )
     }
 
     getScoreIfHiddenCard(card:MaterialItem, panorama:MaterialItem[]):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         console.log("score : ", value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0)
         return value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0
     }
 
     getScoreByGoldOnCard(card:MaterialItem, playerId:number):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const goldOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId)
         .filter(item => item.location.x === card.location.x && item.location.y === card.location.y).getQuantity()
@@ -276,8 +276,8 @@ export class EndGameRule extends MaterialRulesPart {
     }
 
     getScoreByGoldOnAllCards(card:MaterialItem, playerId:number):number{
-        console.log("score carte n° ", card.id)
-        const cardCaracs = cardCharacteristics[card.id]
+        console.log("score carte n° ", card.id.front)
+        const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         console.log("score : ", value * this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getQuantity())
         return value * this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(playerId).getQuantity()

@@ -25,21 +25,21 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
 
         const howManyDifferentBlazons:BlazonType[] = []
         playerPanorama.getItems().forEach(item => {
-            getBlazons(item.id).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+            getBlazons(item.id.front).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
         })
         
         const howManyMatchedBanners = effect.condition !== undefined && effect.condition.banner !== undefined 
-        ? Math.max(...panoramas.map(panorama => panorama.filter((item) => ( getBanner(item.id) === effect.condition!.banner)).length))
+        ? Math.max(...panoramas.map(panorama => panorama.filter((item) => ( getBanner(item.id.front) === effect.condition!.banner)).length))
         : 0
 
         const howManyMatchedBlazons = (effect.condition !== undefined && effect.condition.blazon !== undefined) 
             ? effect.condition.blazon.some(blazon => blazon === BlazonType.Different || blazon === BlazonType.MissingDifferent) 
                 ? effect.condition.blazon.includes(BlazonType.Different) ? howManyDifferentBlazons.length : 6 - howManyDifferentBlazons.length
-                : Math.max(...panoramas.map(panorama => panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id, currentBlazon), 0 ) , 0) ))
+                : Math.max(...panoramas.map(panorama => panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon ) => blazonAcc + howManyTargettedBlazon(currentCard.id.front, currentBlazon), 0 ) , 0) ))
             : 0
 
         const howManyMatchedBlazonsQuantity = (effect.condition !== undefined && effect.condition.blazonNumber !== undefined) 
-            ? playerPanorama.getItems().reduce((cardAcc, currentCard) => cardAcc + (howManyBlazons(currentCard.id) === effect.condition?.blazonNumber ? 1 : 0) , 0)
+            ? playerPanorama.getItems().reduce((cardAcc, currentCard) => cardAcc + (howManyBlazons(currentCard.id.front) === effect.condition?.blazonNumber ? 1 : 0) , 0)
             : 0
             
         const howManyMatchedSpaceFilling = (effect.condition !== undefined && effect.condition.filledOrEmpty !== undefined) 
@@ -47,11 +47,11 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
             : 0
 
         const howManyMatchedCostCards = (effect.condition !== undefined && effect.condition.cardCost !== undefined)
-            ? playerPanorama.getItems().reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id, effect.condition!.cardCost!) ? 1 : 0)) , 0 )
+            ? playerPanorama.getItems().reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, effect.condition!.cardCost!) ? 1 : 0)) , 0 )
             : 0
 
         const howManyMatchedStoreCoinCards = (effect.condition !== undefined && effect.condition.onStockCard !== undefined)
-            ? playerPanorama.getItems().filter(card => canStockCoins(card.id)).length
+            ? playerPanorama.getItems().filter(card => canStockCoins(card.id.front)).length
             : 0
         if (effect.value !== 0){
 

@@ -1,7 +1,6 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
-import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
-import { ItemContext, ItemLocator, LocationContext, LocationDescription, PileLocator } from '@gamepark/react-game'
+import { Locator } from '@gamepark/react-game'
+import { endOfRiverLocator } from './EndOfRiverLocator'
 import { goldStockLocator } from './GoldStockLocator'
 import { keyStockLocator } from './KeyStockLocator'
 import { nobleDeckLocator } from './NobleDeckLocator'
@@ -13,43 +12,10 @@ import { playerKeyStockLocator } from './PlayerKeyStockLocator'
 import { villageDeckLocator } from './VillageDeckLocator'
 import { villageDiscardLocator } from './VillageDiscardLocator'
 import { villageRiverLocator } from './VillageRiverLocator'
-import { MaterialItem, Coordinates, Location } from '@gamepark/rules-api'
-import { BannerType } from '@gamepark/chateau-combo/CardCharacteristics'
 
+export const Locators: Partial<Record<LocationType, Locator>> = {
 
-export class EndOfRiverLocator extends ItemLocator {
-
-    locationDescription = new EndOfRiverDescription()
-    getPosition(item: MaterialItem, context: ItemContext) {
-        return this.locationDescription.getCoordinates(item.location, context)
-    }
-
-}
-
-class EndOfRiverDescription extends LocationDescription {
-
-    locations = [
-        { type: LocationType.EndOfRiver, id: BannerType.NobleBanner },
-        { type: LocationType.EndOfRiver, id: BannerType.VillageBanner },
-    ]
-    
-    getCoordinates(location: Location, _context: LocationContext): Coordinates {
-        if (location.id === BannerType.NobleBanner){
-            return { x: 23, y: -18, z: 0 }
-        } else {
-            return { x: 23, y: -8, z: 0 }
-        }
-    }
-    
-    width = 6.3
-    height = 8.8
-        
-}
-
-
-export const Locators: Partial<Record<LocationType, ItemLocator<PlayerColor, MaterialType, LocationType>>> = {
-
-    [LocationType.EndOfRiver] : new EndOfRiverLocator(),
+    [LocationType.EndOfRiver] : endOfRiverLocator,
     [LocationType.NobleRiver] : nobleRiverLocator,
     [LocationType.VillageRiver] : villageRiverLocator,
     [LocationType.NobleDeck] : nobleDeckLocator,

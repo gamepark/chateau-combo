@@ -12,7 +12,7 @@ import { ImmediatePutGoldOnCardEffect } from "./effects/ImmediatePutGoldOnCardEf
 export class ImmediateEffectRule extends PlayerTurnRule {
     onRuleStart() {
         const card = this.card
-        const immediateEffect = cardCharacteristics[card.id].immediateEffect 
+        const immediateEffect = cardCharacteristics[card.id.front].immediateEffect
         const moves: MaterialMove[] = []
 
         // Si on a pas d'effets, alors on les calcule

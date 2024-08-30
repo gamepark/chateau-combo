@@ -8,8 +8,7 @@ import { Headers } from './headers/Headers'
 export default function App() {
   const game = useGame<MaterialGame>()
   const [isJustDisplayed, setJustDisplayed] = useState(true)
-  // TODO: set to true when there is at least one image
-  const [isImagesLoading, setImagesLoading] = useState(false)
+  const [isImagesLoading, setImagesLoading] = useState(true)
   useEffect(() => {
     setTimeout(() => setJustDisplayed(false), 2000)
   }, [])

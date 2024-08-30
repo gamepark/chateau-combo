@@ -9,8 +9,8 @@ export class MoveMessengerRule extends PlayerTurnRule {
   onRuleStart() {
     const messenger = this.messenger
     const card = this.placedCard
-    const banner = getBanner(card.id)
-    const canSwapMessengerToken = cardCharacteristics[card.id].canSwapMessengerToken
+    const banner = getBanner(card.id.front)
+    const canSwapMessengerToken = cardCharacteristics[card.id.front].canSwapMessengerToken
     const moves: MaterialMove[] = []
     if (canSwapMessengerToken && messenger.getItem()?.location.id !== banner) {
       moves.push(messenger.moveItem({

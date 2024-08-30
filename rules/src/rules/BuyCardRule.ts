@@ -1,15 +1,11 @@
-import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule, PlayMoveContext } from '@gamepark/rules-api'
-import { BannerType, cardCharacteristics, getBanner, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { BannerType, cardCharacteristics, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { isCastleType } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
-import { isNoble } from '../Card'
-
-// PlayerTurnRule => game.rule.player !== undefined
-// SimultaneousRule => game.rule.players !== undefined
-// MaterialRulePart => Rien
 
 export class BuyCardRule extends PlayerTurnRule {
 
@@ -18,7 +14,7 @@ export class BuyCardRule extends PlayerTurnRule {
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
     const cards = this.riverCards
     const buyableCards = cards
-      .filter((item) => cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) <= gold)
+      .filter((item) => cardCharacteristics[item.id.front].cost - (isCastleType(item.id) ? this.nobleDiscount : this.villageDiscount) <= gold)
 
     return availableSpaces.flatMap((space) => {
       return [
@@ -49,13 +45,13 @@ export class BuyCardRule extends PlayerTurnRule {
     return this
     .material(MaterialType.Card)
     .location(LocationType.PlayerBoard)
-    .player(this.player).getItems().filter(item => isNobleDiscount(item.id)).length
+    .player(this.player).getItems().filter(item => isNobleDiscount(item.id.front)).length
   }
   
   get villageDiscount(){
     return this.material(MaterialType.Card)
     .location(LocationType.PlayerBoard)
-    .player(this.player).getItems().filter(item => isVillageDiscount(item.id)).length
+    .player(this.player).getItems().filter(item => isVillageDiscount(item.id.front)).length
   }
 
 
@@ -66,13 +62,13 @@ export class BuyCardRule extends PlayerTurnRule {
       const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
       const moves: MaterialMove[] = []
 
-      if (move.location.rotation === undefined && (cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )> 0) {
+      if (move.location.rotation === undefined && (cardCharacteristics[item.id.front].cost - (isCastleType(item.id) ? this.nobleDiscount : this.villageDiscount) )> 0) {
         moves.push(
           ...this
             .material(MaterialType.GoldCoin)
             .location(LocationType.PlayerGoldStock)
             .player(this.player)
-            .deleteItems(cardCharacteristics[item.id].cost - (isNoble(item.id) ? this.nobleDiscount : this.villageDiscount) )
+            .deleteItems(cardCharacteristics[item.id.front].cost - (isCastleType(item.id) ? this.nobleDiscount : this.villageDiscount) )
         )
       }
 
@@ -111,7 +107,7 @@ export class BuyCardRule extends PlayerTurnRule {
         moves.push(this.startRule(RuleId.EndOfTurn))
       
       } else {
-        if (cardCharacteristics[item.id].immediateEffect !== undefined){
+        if (cardCharacteristics[item.id.front].immediateEffect !== undefined){
           moves.push(this.startRule(RuleId.ImmediateEffect))
         } else {
           moves.push(this.startRule(RuleId.EndOfTurn))
@@ -124,34 +120,3 @@ export class BuyCardRule extends PlayerTurnRule {
     }
   }
 }
-
-
-/**
- * items: {
- *    [MaterialType....]: [
- *      0{
- *        id: number | { front: number, back: number },
- *        location: {
- *          type: LocationType...,
- *          id? : any,
- *          x: number,
- *          y: number,
- *          z: number,
- *          rotation: any
- *          player: number
- *        }
- *      }, 1{
- *        id: number | { front: number, back: number },
- *        location: {
- *          type: LocationType...,
- *          id? : any,
- *          x: number,
- *          y: number,
- *          z: number,
- *          rotation: any
- *          player: number
- *        }
- *      }
- *    ]
- * }
- */

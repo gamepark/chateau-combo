@@ -1,14 +1,14 @@
-import { MaterialComponentType, TokenDescription } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
+import { TokenDescription } from '@gamepark/react-game'
 import Key1 from '../images/Key1.png'
-import { keyStockLocation } from '../locators/KeyStockDescription'
 
 export class KeyDescription extends TokenDescription {
     height = 6
     width = 3.45
     image = Key1
 
-    staticItem = { quantity: 10, location: keyStockLocation }
-    stockLocation = keyStockLocation
+    stockLocation = { type: LocationType.KeyStock }
+    staticItem = { quantity: 10, location: this.stockLocation }
 }
 
 export const keyDescription = new KeyDescription()

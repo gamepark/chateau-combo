@@ -4,17 +4,17 @@ import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 import { BannerType, cardCharacteristics } from '../CardCharacteristics'
-import { isNoble } from '../Card'
+import { isCastleType, isNoble } from '../material/Card'
 
 export class EndOfTurnRule extends PlayerTurnRule {
   onRuleStart() {
     const moves: MaterialMove[] = []
 
     // Move Messenger if it should
-    if (this.placedCard?.id !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[this.placedCard.id].canSwapMessengerToken === true) {
+    if (this.placedCard?.id.front !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[this.placedCard.id.front].canSwapMessengerToken) {
       moves.push(this.messenger.moveItem({
         type: LocationType.EndOfRiver,
-        id: isNoble(this.placedCard.id) ? BannerType.VillageBanner : BannerType.NobleBanner
+        id: isCastleType(this.placedCard.id) ? BannerType.VillageBanner : BannerType.NobleBanner
       }))
     }
 

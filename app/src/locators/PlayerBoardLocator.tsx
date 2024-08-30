@@ -1,39 +1,13 @@
-import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
-import { getRelativePlayerIndex, ItemContext, ItemLocator, LocationContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { getRelativePlayerIndex, Locator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location } from '@gamepark/rules-api'
 import { cardDescription } from '../material/CardDescription'
 import { getPosition } from './PlayerLocation'
 
-export class PlayerBoardLocator extends ItemLocator {
+export class PlayerBoardLocator extends Locator {
 
-  locationDescription = new PlayerBoardDescription()
-
-  getPosition(item: MaterialItem, context: ItemContext): Coordinates {
-    return this.locationDescription.getCardCoordinate(item.location, context)
-  }
-}
-
-class PlayerBoardDescription extends LocationDescription {
-
-  getLocations(context: ItemContext): Location[] {
-
-    if (context.player === undefined) {
-      return []
-    }
-
-    return new PlayerBoardHelper(context.rules.game, context.player).availableSpaces
-
-  }
-
-  getCoordinates(location: Location, context: LocationContext): Coordinates {
-    return this.getCardCoordinate(location, context)
-  }
-
-  getCardCoordinate(location: Location, context: MaterialContext): Coordinates {
+  getCoordinates(location: Location, context: MaterialContext): Coordinates {
     const boundaries = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
-    const deltaX = boundaries.xMax - boundaries.xMin
-    const deltaY = boundaries.yMax - boundaries.yMin
     const playerIndex = getRelativePlayerIndex(context, location.player)
     const baseCoordinates = getPosition(context.rules.players.length, playerIndex)
     baseCoordinates.x += location.x! * (cardDescription.width + 0.2)
@@ -46,11 +20,6 @@ class PlayerBoardDescription extends LocationDescription {
 
     return baseCoordinates
   }
-
-  location = { type: LocationType.PlayerBoard }
-  width = 6.3
-  height = 8.8
-
 }
 
 export const playerBoardLocator = new PlayerBoardLocator()

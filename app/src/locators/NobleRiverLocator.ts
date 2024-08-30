@@ -1,8 +1,8 @@
-import { LineLocator } from '@gamepark/react-game'
+import { ListLocator } from '@gamepark/react-game'
 import { cardDescription } from '../material/CardDescription'
 import { nobleDeckLocator } from './NobleDeckLocator'
 
-export class NobleRiverLocator extends LineLocator {
+export class NobleRiverLocator extends ListLocator {
   getCoordinates() {
     const nobleDeck = nobleDeckLocator.coordinates
     return {
@@ -11,9 +11,8 @@ export class NobleRiverLocator extends LineLocator {
       z: nobleDeck.z
     }
   }
-  delta = {x:7, y:0, z:0}
 
-
+  gap = { x: 7 }
 }
 
 export const nobleRiverLocator = new NobleRiverLocator()

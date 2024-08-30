@@ -1,5 +1,5 @@
 export enum LocationType {
-    EndOfRiver,
+    EndOfRiver = 1,
     NobleDeck,
     NobleRiver,
     NobleDiscard,

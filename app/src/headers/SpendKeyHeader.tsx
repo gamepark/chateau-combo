@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
-import { MaterialType } from "@gamepark/chateau-combo/material/MaterialType"
-import { PlayMoveButton, usePlayerId, useRules } from "@gamepark/react-game"
-import { ItemMoveType, MaterialMove, MoveKind } from "@gamepark/rules-api"
-import { useTranslation } from "react-i18next"
+import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
+import { PlayMoveButton, usePlayerId, useRules } from '@gamepark/react-game'
+import { ItemMoveType, MaterialMove, MoveKind } from '@gamepark/rules-api'
+import { useTranslation } from 'react-i18next'
 
 export const SpendKeyHeader = () => {
   const rules = useRules<ChateauComboRules>()!

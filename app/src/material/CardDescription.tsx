@@ -1,9 +1,10 @@
-import { Card } from '@gamepark/chateau-combo/Card'
 import { getBanner } from '@gamepark/chateau-combo/CardCharacteristics'
+import { Card, CardType } from '@gamepark/chateau-combo/material/Card'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { CardDescription, ItemContext, MaterialComponentType, MaterialContext } from '@gamepark/react-game'
-import { MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
+import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
 
 import BackCard from '../images/Back.jpg'
 //Noble
@@ -86,11 +87,19 @@ import Baker from '../images/cards/cartesChCombo_ChC_eng-US77.jpg'
 import Beekeeper from '../images/cards/cartesChCombo_ChC_eng-US78.jpg'
 import HerMajestytheQueen from '../images/cards/cartesChCombo_ChC_eng-US8.jpg'
 import Baron from '../images/cards/cartesChCombo_ChC_eng-US9.jpg'
-import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
+
+import Castle from '../images/cards/castle.jpg'
+import Village from '../images/cards/village.jpg'
 
 export class ChateauComboCardDescription extends CardDescription {
   width = 6.3
   height = 8.8
+
+  backImages = {
+    [CardType.Castle]: Castle,
+    [CardType.Village]: Village,
+  }
+
   images = {
 
     // Noble
@@ -181,7 +190,7 @@ export class ChateauComboCardDescription extends CardDescription {
 
   backImage = BackCard
 
-  isFlipped(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+  isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     return  item.location?.rotation || super.isFlipped(item, context)
   }
 

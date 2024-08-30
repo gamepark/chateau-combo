@@ -1,17 +1,14 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
 import { Player } from '@gamepark/react-client'
-import { PlayerPanel, usePlayers, useRules } from '@gamepark/react-game'
+import { PlayerPanel, useRules } from '@gamepark/react-game'
 import { FC, HTMLAttributes, useMemo } from 'react'
-import { playerColorCode } from './PlayerPanels'
-import { MaterialItem } from '@gamepark/rules-api'
-import { Material } from 'src/material/Material'
-import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import coinImage from '../images/Coin1.png'
 import keyImage from '../images/Key1.png'
+import { playerColorCode } from './PlayerPanels'
 
 
 type ChateauComboPlayerPanelProps = {
@@ -22,7 +19,6 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
 
 
   const { player, ...rest } = props
-  const players = usePlayers({ sortFromMe: true })
   const rules = useRules<ChateauComboRules>()!
   const state = useMemo(() => new PlayerBoardHelper(rules.game, player.id), [rules.game, player.id])  
   

@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { ItemContext, PileLocator, getRelativePlayerIndex } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { Location } from '@gamepark/rules-api'
 
 class PlayerKeyStockLocator extends PileLocator {
 
-  getCoordinates(item: MaterialItem, context: ItemContext) {
-    const playerIndex = getRelativePlayerIndex(context, item.location.player)
+  getCoordinates(location: Location, context: ItemContext) {
+    const playerIndex = getRelativePlayerIndex(context, location.player)
     const playerNumber = context.rules.game.players.length
     if (playerNumber < 4){
       return { x: -15 + playerIndex*getTokenDeltaX(playerNumber), y:7, z: 5 }
