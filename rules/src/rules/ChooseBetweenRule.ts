@@ -29,16 +29,18 @@ export class ChooseBetweenRule extends PlayerTurnRule {
   get placedCard() {
     return this
         .material(MaterialType.Card)
-        .index(this.remind(Memory.PlacedCard))
+        .getItem(this.remind(Memory.PlacedCard))!
   }
 
   get effect1ToPlay() {
-    return [cardCharacteristics[this.placedCard.getItem()!.id.front].immediateEffect![0].effect1]
+    return [cardCharacteristics[this.placedCard.id.front].immediateEffect![0].effect1]
   }
 
   get effect2ToPlay() {
-    return [cardCharacteristics[this.placedCard.getItem()!.id.front].immediateEffect![0].effect2]
+    return [cardCharacteristics[this.placedCard.id.front].immediateEffect![0].effect2]
   }
+
+
 
   onCustomMove(move: CustomMove): MaterialMove[] {
     if (move.type === CustomMoveType.Choice){

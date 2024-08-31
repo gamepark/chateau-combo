@@ -1,20 +1,19 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { cardCharacteristics } from '../CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
-import { cardCharacteristics } from '../CardCharacteristics'
-import { isCastleType, Place } from '../material/Card'
 
 export class EndOfTurnRule extends PlayerTurnRule {
   onRuleStart() {
     const moves: MaterialMove[] = []
-
+    const placedCard = this.placedCard
     // Move Messenger if it should
-    if (this.placedCard?.id.front !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[this.placedCard.id.front].canSwapMessengerToken) {
+    if (placedCard.id.front !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[placedCard.id.front].canSwapMessengerToken) {
       moves.push(this.messenger.moveItem({
         type: LocationType.EndOfRiver,
-        id: isCastleType(this.placedCard.id) ? Place.Village : Place.Castle
+        id: placedCard.id.back
       }))
     }
 
@@ -90,7 +89,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
   get placedCard() {
     return this
       .material(MaterialType.Card)
-      .getItem(this.remind(Memory.PlacedCard))
+      .getItem(this.remind(Memory.PlacedCard))!
   }
 
   onRuleEnd() {

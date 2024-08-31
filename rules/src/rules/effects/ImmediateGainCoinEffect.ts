@@ -1,5 +1,5 @@
 import { MaterialMove } from "@gamepark/rules-api";
-import { BlazonType, canStockCoins, getBanner, getBlazons, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { BlazonType, canStockCoins, getBlazons, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
@@ -25,11 +25,11 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
 
         const howManyDifferentBlazons:BlazonType[] = []
         playerPanorama.getItems().forEach(item => {
-            getBlazons(item.id.front).forEach(blazon => howManyDifferentBlazons.includes(blazon) === false && howManyDifferentBlazons.push(blazon))
+            getBlazons(item.id.front).forEach(blazon => !howManyDifferentBlazons.includes(blazon) && howManyDifferentBlazons.push(blazon))
         })
         
         const howManyMatchedBanners = effect.condition !== undefined && effect.condition.banner !== undefined 
-        ? Math.max(...panoramas.map(panorama => panorama.filter((item) => ( getBanner(item.id.front) === effect.condition!.banner)).length))
+        ? Math.max(...panoramas.map(panorama => panorama.filter((item) => ( item.id.back === effect.condition!.banner)).length))
         : 0
 
         const howManyMatchedBlazons = (effect.condition !== undefined && effect.condition.blazon !== undefined) 

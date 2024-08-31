@@ -1,4 +1,3 @@
-import { getBanner } from '@gamepark/chateau-combo/CardCharacteristics'
 import { Card, Place } from '@gamepark/chateau-combo/material/Card'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
@@ -97,7 +96,7 @@ export class ChateauComboCardDescription extends CardDescription {
 
   backImages = {
     [Place.Castle]: Castle,
-    [Place.Village]: Village,
+    [Place.Village]: Village
   }
 
   images = {
@@ -141,8 +140,8 @@ export class ChateauComboCardDescription extends CardDescription {
     [Card.Baron]: Baron,
     [Card.HerMajestytheQueen]: HerMajestytheQueen,
     [Card.Duchesse]: Duchesse,
-    [Card.Scribe]:Scribe,
-    [Card.MotherSuperior]:MotherSuperior,
+    [Card.Scribe]: Scribe,
+    [Card.MotherSuperior]: MotherSuperior,
 
     // Village
 
@@ -191,7 +190,7 @@ export class ChateauComboCardDescription extends CardDescription {
   backImage = BackCard
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
-    return  item.location?.rotation || super.isFlipped(item, context)
+    return item.location?.rotation || super.isFlipped(item, context)
   }
 
   getShortClickLocalMove(context: ItemContext) {
@@ -201,7 +200,7 @@ export class ChateauComboCardDescription extends CardDescription {
     const item = card.getItem()!
     if (item.location.type !== LocationType.NobleRiver && item.location.type !== LocationType.VillageRiver) return
     const messenger = rules.material(MaterialType.MessengerToken).getItem()!
-    if (getBanner(item.id) !== messenger.location.id) return
+    if (item.id.back !== messenger.location.id) return
     if (item.location.rotation) return card.rotateItem(false)
     return card.rotateItem(true)
   }
