@@ -10,12 +10,16 @@ export class EndOfTurnRule extends PlayerTurnRule {
   onRuleStart() {
     const moves: MaterialMove[] = []
     const placedCard = this.placedCard
+    const messenger = this.messenger
     // Move Messenger if it should
     if (placedCard.id.front !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[placedCard.id.front].canSwapMessengerToken) {
-      moves.push(this.messenger.moveItem({
-        type: LocationType.EndOfRiver,
-        id: placedCard.id.back
-      }))
+      if (placedCard.id.back !== messenger.getItem()!.location.id) {
+        moves.push(messenger.moveItem({
+          type: LocationType.EndOfRiver,
+          id: placedCard.id.back
+        }))
+      }
+
     }
 
     for (const place of places) {

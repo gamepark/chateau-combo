@@ -9,7 +9,7 @@ export class DiscardLocator extends PileLocator {
   getCoordinates(location: Location) {
     const gameDeck = gameDeckLocator.getCoordinates(location)
     return {
-      x: gameDeck.x - (cardDescription.width + 0.7),
+      x: gameDeck.x - (cardDescription.width + 1.5),
       y: gameDeck.y
     }
   }
