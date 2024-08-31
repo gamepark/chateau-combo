@@ -1,6 +1,5 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { CardType, nobles, villages } from './material/Card'
-import { BannerType } from './CardCharacteristics'
+import { Place, nobles, villages } from './material/Card'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
 import { LocationType } from './material/LocationType'
@@ -17,15 +16,15 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
 
   setupMaterial() {
 
-    const allNobles = nobles.map((v) => ({ id: { front: v, back: CardType.Castle }, location: { type: LocationType.NobleDeck } }))
+    const allNobles = nobles.map((v) => ({ id: { front: v, back: Place.Castle }, location: { type: LocationType.NobleDeck } }))
     this.material(MaterialType.Card).createItems(allNobles)
     this.material(MaterialType.Card).location(LocationType.NobleDeck).shuffle()
 
-    const allVillages = villages.map((v) => ({ id: { front: v, back: CardType.Village }, location: { type: LocationType.VillageDeck } }))
+    const allVillages = villages.map((v) => ({ id: { front: v, back: Place.Village }, location: { type: LocationType.VillageDeck } }))
     this.material(MaterialType.Card).createItems(allVillages)
     this.material(MaterialType.Card).location(LocationType.VillageDeck).shuffle()
 
-    this.material(MaterialType.MessengerToken).createItem({ location: { type: LocationType.EndOfRiver, id: BannerType.NobleBanner } })
+    this.material(MaterialType.MessengerToken).createItem({ location: { type: LocationType.EndOfRiver, id: Place.Castle } })
     this.material(MaterialType.GoldCoin).createItems(this.players.map(player => ({ quantity: 15, location: { type: LocationType.PlayerGoldStock, player } })))
     this.material(MaterialType.Key).createItems(this.players.map(player => ({ quantity: 2, location: { type: LocationType.PlayerKeyStock, player } })))
 

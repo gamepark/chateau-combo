@@ -3,8 +3,8 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
-import { BannerType, cardCharacteristics } from '../CardCharacteristics'
-import { isCastleType, isNoble } from '../material/Card'
+import { cardCharacteristics } from '../CardCharacteristics'
+import { isCastleType, Place } from '../material/Card'
 
 export class EndOfTurnRule extends PlayerTurnRule {
   onRuleStart() {
@@ -14,7 +14,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
     if (this.placedCard?.id.front !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[this.placedCard.id.front].canSwapMessengerToken) {
       moves.push(this.messenger.moveItem({
         type: LocationType.EndOfRiver,
-        id: isCastleType(this.placedCard.id) ? BannerType.VillageBanner : BannerType.NobleBanner
+        id: isCastleType(this.placedCard.id) ? Place.Village : Place.Castle
       }))
     }
 

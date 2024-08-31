@@ -1,14 +1,14 @@
-import { isMoveItemTypeAtOnce, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemTypeAtOnce, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { Place } from '../../material/Card'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { BannerType } from '../../CardCharacteristics'
 
 export class KeyDiscardLocationCardsRule extends PlayerTurnRule {
   getPlayerMoves() {
     const messengerPosition = this.material(MaterialType.MessengerToken).getItem()!.location.id
     
     return [
-      messengerPosition === BannerType.NobleBanner 
+      messengerPosition === Place.Castle 
       ? this
         .material(MaterialType.Card)
         .location(LocationType.NobleRiver)

@@ -1,9 +1,9 @@
 import { MaterialMove } from "@gamepark/rules-api";
-import { BlazonType, canStockCoins, getBanner, getBlazons, getCost, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
+import { BlazonType, canStockCoins, getBanner, getBlazons, howManyBlazons, howManyTargettedBlazon } from "../../CardCharacteristics";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
-import { AbstractImmediateEffect, Condition, isRespectingCostCondition, Sign, SpaceFilling } from "./AbstractImmediateEffect";
+import { AbstractImmediateEffect, Condition, isRespectingCostCondition, SpaceFilling } from "./AbstractImmediateEffect";
 
 
 export type GainCoinEffect = {

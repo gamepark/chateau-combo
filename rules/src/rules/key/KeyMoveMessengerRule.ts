@@ -1,5 +1,5 @@
-import { ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { BannerType, getBanner } from '../../CardCharacteristics'
+import { ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { Place } from '../../material/Card'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -9,7 +9,7 @@ export class KeyMoveMessengerRule extends PlayerTurnRule {
     return [
       messenger.moveItem((item) => ({
         type: LocationType.EndOfRiver,
-        id: item.location.id === BannerType.VillageBanner? BannerType.NobleBanner: BannerType.VillageBanner,
+        id: item.location.id === Place.Village? Place.Castle: Place.Village,
       }))
     ]
   }

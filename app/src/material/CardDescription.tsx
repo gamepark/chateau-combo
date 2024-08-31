@@ -1,5 +1,5 @@
 import { getBanner } from '@gamepark/chateau-combo/CardCharacteristics'
-import { Card, CardType } from '@gamepark/chateau-combo/material/Card'
+import { Card, Place } from '@gamepark/chateau-combo/material/Card'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
@@ -96,8 +96,8 @@ export class ChateauComboCardDescription extends CardDescription {
   height = 8.8
 
   backImages = {
-    [CardType.Castle]: Castle,
-    [CardType.Village]: Village,
+    [Place.Castle]: Castle,
+    [Place.Village]: Village,
   }
 
   images = {

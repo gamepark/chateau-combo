@@ -1,6 +1,6 @@
 import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { BannerType, cardCharacteristics, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
-import { isCastleType } from '../material/Card'
+import { cardCharacteristics, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { isCastleType, Place } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
@@ -38,7 +38,7 @@ export class BuyCardRule extends PlayerTurnRule {
 
     return this
       .material(MaterialType.Card)
-      .location(banner === BannerType.NobleBanner? LocationType.NobleRiver: LocationType.VillageRiver)
+      .location(banner === Place.Castle? LocationType.NobleRiver: LocationType.VillageRiver)
   }
 
   get nobleDiscount() {

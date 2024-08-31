@@ -1,11 +1,10 @@
-import { Coordinates, MaterialItem, MaterialMove, MaterialRulesPart, PlayerTurnRule, XYCoordinates } from '@gamepark/rules-api'
+import { MaterialItem, MaterialMove, MaterialRulesPart, XYCoordinates } from '@gamepark/rules-api'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
-import { BannerType, BlazonType, cardCharacteristics, CardPattern, getBanner, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
-import { isCastleType, isNoble, isVillageType } from '../material/Card'
+import { BlazonType, cardCharacteristics, getBanner, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { isCastleType, isVillageType, Place } from '../material/Card'
 import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
-import { t } from 'i18next'
 
 export class EndGameRule extends MaterialRulesPart {
     onRuleStart() {
@@ -116,8 +115,8 @@ export class EndGameRule extends MaterialRulesPart {
         const cardCaracs = cardCharacteristics[card.id.front]
         const value = cardCaracs.scoringEffect!.value
         const banner = cardCaracs.scoringEffect!.bannerType
-        console.log("score : ", value * panorama.filter(item => banner === BannerType.NobleBanner ? isCastleType(item.id) : isVillageType(item.id)).length)
-        return value * panorama.filter(item => banner === BannerType.NobleBanner ? isCastleType(item.id) : isVillageType(item.id)).length
+        console.log("score : ", value * panorama.filter(item => banner === Place.Castle ? isCastleType(item.id) : isVillageType(item.id)).length)
+        return value * panorama.filter(item => banner === Place.Castle ? isCastleType(item.id) : isVillageType(item.id)).length
     }
 
     getScoreByBannerGroup(card:MaterialItem, panorama:MaterialItem[]):number{
@@ -126,17 +125,17 @@ export class EndGameRule extends MaterialRulesPart {
         const value = cardCaracs.scoringEffect!.value
         const bannerConditions:{nobleBanners:number, villageBanners:number} = cardCaracs.scoringEffect!.bannerConditions
         const playerBannerCount: Record<number, number> = {
-            [BannerType.NobleBanner] : 0,
-            [BannerType.VillageBanner] : 0,
+            [Place.Castle] : 0,
+            [Place.Village] : 0,
         }
 
         panorama.forEach(item => playerBannerCount[getBanner(item.id.front)] += 1)
 
         if(bannerConditions.nobleBanners !== 0){
-            playerBannerCount[BannerType.NobleBanner] = playerBannerCount[BannerType.NobleBanner] % bannerConditions.nobleBanners
+            playerBannerCount[Place.Castle] = playerBannerCount[Place.Castle] % bannerConditions.nobleBanners
         } 
         if(bannerConditions.villageBanners !== 0){
-            playerBannerCount[BannerType.VillageBanner] = playerBannerCount[BannerType.VillageBanner] % bannerConditions.villageBanners
+            playerBannerCount[Place.Village] = playerBannerCount[Place.Village] % bannerConditions.villageBanners
         }
 
         console.log("score : ", value * Math.min(...Object.values(playerBannerCount)))

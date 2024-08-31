@@ -86,12 +86,12 @@ export enum Card {
 
 export const cards = Object.values(Card).filter(isEnumValue)
 export const isNoble = (card: Card) => card < Card.Inventor
-export const isCastleType = (id: { front: Card, back: CardType }) => id.back === CardType.Castle
+export const isCastleType = (id: { front: Card, back: Place }) => id.back === Place.Castle
 export const nobles = cards.filter(isNoble)
 export const isVillage = (card: Card) => card >= Card.Inventor
-export const isVillageType = (id: { front: Card, back: CardType }) => id.back === CardType.Village
+export const isVillageType = (id: { front: Card, back: Place }) => id.back === Place.Village
 export const villages = cards.filter(isVillage)
-export enum CardType {
+export enum Place {
     Village = 1,
     Castle
 }
