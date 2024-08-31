@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
-
-import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
-import { CustomMoveType } from "@gamepark/chateau-combo/rules/CustomMoveTtpe"
-import { PlayMoveButton, usePlayerId, useRules } from "@gamepark/react-game"
-import { useTranslation } from "react-i18next"
+import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
+import { CustomMoveType } from '@gamepark/chateau-combo/rules/CustomMoveType'
+import { PlayMoveButton, usePlayerId, useRules } from '@gamepark/react-game'
+import { useTranslation } from 'react-i18next'
 
 export const ChooseBetweenHeader = () => {
   const rules = useRules<ChateauComboRules>()!

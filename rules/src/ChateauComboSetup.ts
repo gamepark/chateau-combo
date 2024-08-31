@@ -70,7 +70,7 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
     const items = cards.map((v) => ({
       id: {
         front: v,
-        back: Place.Castle
+        back: place
       },
       location: {
         type: LocationType.Deck,

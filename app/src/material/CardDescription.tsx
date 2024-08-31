@@ -187,8 +187,6 @@ export class ChateauComboCardDescription extends CardDescription {
 
   }
 
-  backImage = BackCard
-
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     return item.location?.rotation || super.isFlipped(item, context)
   }

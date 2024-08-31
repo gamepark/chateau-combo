@@ -4,7 +4,7 @@ import { Memory } from './Memory'
 import { cardCharacteristics } from '../CardCharacteristics'
 import { RuleId } from './RuleId'
 import { ImmediateEffectType } from '../material/ImmediateEffectType'
-import { CustomMoveType } from './CustomMoveTtpe'
+import { CustomMoveType } from './CustomMoveType'
 
 export type ChooseBetweenRuleEffect = { 
     effect1:({ type: ImmediateEffectType } & Record<any, any>)[]

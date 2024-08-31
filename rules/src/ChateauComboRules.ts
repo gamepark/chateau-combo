@@ -1,4 +1,13 @@
-import { CompetitiveScore, FillGapStrategy, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules, hideItemId } from '@gamepark/rules-api'
+import {
+  CompetitiveScore,
+  FillGapStrategy,
+  MaterialGame,
+  MaterialMove,
+  PositiveSequenceStrategy,
+  SecretMaterialRules,
+  hideItemId,
+  hideFront
+} from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -40,7 +49,7 @@ implements CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType
 
   hidingStrategies = {
     [MaterialType.Card]: {
-      [LocationType.Deck]: hideItemId,
+      [LocationType.Deck]: hideFront,
     }
   }
 
