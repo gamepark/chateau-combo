@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, Location, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { cardCharacteristics, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { cardCharacteristics, isDiscountForPlace } from '../CardCharacteristics'
 import { Place } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -42,12 +42,11 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   getDiscount(item: MaterialItem) {
-    const filterCards = (i: MaterialItem) => item.id.back === Place.Castle? isNobleDiscount(i.id.front): isVillageDiscount(i.id.front)
     return this
       .material(MaterialType.Card)
       .location(LocationType.PlayerBoard)
       .player(this.player)
-      .filter(filterCards)
+      .filter((i) => isDiscountForPlace(i.id.front, item.id.back))
       .length
   }
 

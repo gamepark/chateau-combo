@@ -1,5 +1,5 @@
 import { MaterialItem, MaterialMove, MaterialRulesPart, XYCoordinates } from '@gamepark/rules-api'
-import { BlazonType, cardCharacteristics, getBlazons, howManyTargettedBlazon, isNobleDiscount, isVillageDiscount } from '../CardCharacteristics'
+import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDiscount } from '../CardCharacteristics'
 import { Place } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -187,8 +187,8 @@ export class EndGameRule extends MaterialRulesPart {
       console.log('score : ', value * howManyDifferentBlazons.length)
       return value * howManyDifferentBlazons.length
     } else {
-      console.log('score : ', value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazon), 0))
-      return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazon), 0)
+      console.log('score : ', value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazon), 0))
+      return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazon), 0)
     }
   }
 
@@ -216,8 +216,8 @@ export class EndGameRule extends MaterialRulesPart {
       return value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0)
 
     } else {
-      console.log('score : ', value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazonToCount), 0))))
-      return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, blazonToCount), 0)))
+      console.log('score : ', value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazonToCount), 0))))
+      return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazonToCount), 0)))
     }
   }
 
@@ -230,10 +230,10 @@ export class EndGameRule extends MaterialRulesPart {
     panorama.forEach(item => {
       getBlazons(item.id.front).forEach(blazon => !howManyDifferentBlazons.includes(blazon) && howManyDifferentBlazons.push(blazon))
     })
-    console.log('score : ', panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value)
+    console.log('score : ', panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value)
     return missingBlazon === BlazonType.Different
       ? value * (6 - howManyDifferentBlazons.length)
-      : panorama.reduce((cardAcc, currentCard) => cardAcc + howManyTargettedBlazon(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value
+      : panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value
   }
 
   getScoreByBlazonQuantity(card: MaterialItem, panorama: MaterialItem[]): number {
@@ -270,13 +270,14 @@ export class EndGameRule extends MaterialRulesPart {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
     const value = cardCaracs.scoringEffect!.value
-    console.log('score : ', value * panorama.filter(item => isNobleDiscount(item.id.front) || isVillageDiscount(item.id.front)).length)
-    return value * this.countDiscountCards(panorama)
+    const discountCardsCount = this.countDiscountCards(panorama)
+    console.log('score : ', value * discountCardsCount)
+    return value * discountCardsCount
   }
 
   countDiscountCards(panorama: MaterialItem[]) {
     return panorama
-      .filter((i) => isNobleDiscount(i.id.front) || isVillageDiscount(i.id.front))
+      .filter((i) => isDiscount(i.id.front))
       .length
   }
 

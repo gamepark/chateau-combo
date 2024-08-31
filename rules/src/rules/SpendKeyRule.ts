@@ -19,41 +19,33 @@ export class SpendKeyRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
-    const moves: MaterialMove[] = []
     if (isMoveItemTypeAtOnce(MaterialType.Card)(move)) {
-      moves.push(
-        ...new KeyDiscardLocationCardsRule(this.game).afterItemMove(move)
-      )
-      
-      moves.push(this.startRule(RuleId.BuyCard))
+      return [
+        ...new KeyDiscardLocationCardsRule(this.game).afterItemMove(move),
+        this.startRule(RuleId.BuyCard)
+      ]
     }
 
     if (isMoveItemType(MaterialType.MessengerToken)(move)) {
-      moves.push(
-        ...new KeyMoveMessengerRule(this.game).afterItemMove(move)
-      )
-
-      moves.push(this.startRule(RuleId.BuyCard))
+      return [
+        ...new KeyMoveMessengerRule(this.game).afterItemMove(move),
+        this.startRule(RuleId.BuyCard)
+      ]
     }
 
-    return moves
+    return []
   }
 
   beforeItemMove(move: ItemMove) {
-    const moves: MaterialMove[] = []
     if (isMoveItemTypeAtOnce(MaterialType.Card)(move)) {
-      moves.push(
-        ...new KeyDiscardLocationCardsRule(this.game).beforeItemMove(move)
-      )
+      return new KeyDiscardLocationCardsRule(this.game).beforeItemMove(move)
     }
 
     if (isMoveItemType(MaterialType.MessengerToken)(move)) {
-      moves.push(
-        ...new KeyMoveMessengerRule(this.game).beforeItemMove(move)
-      )
+      return new KeyMoveMessengerRule(this.game).beforeItemMove(move)
     }
 
-    return moves
+    return []
   }
 
   get keys() {

@@ -677,17 +677,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
 
 export const getCost = (card: Card) => cardCharacteristics[card].cost
 export const getBlazons = (card: Card) => cardCharacteristics[card].blazon
-export const hasTheBlazon = (card: Card, targetBlazon: BlazonType) => cardCharacteristics[card].blazon.some(ownedBlazon => ownedBlazon === targetBlazon)
-export const howManyTargettedBlazon = (card: Card, targetBlazon: BlazonType) => {
-  return cardCharacteristics[card].blazon.reduce((acc, cur) => acc + (cur === targetBlazon ? 1 : 0), 0)
-}
-
-export const howManyBlazons = (card: Card) => cardCharacteristics[card].blazon.length
+export const countBlazonsOfType = (card: Card, blazon: BlazonType) => cardCharacteristics[card].blazon.filter((b) => b === blazon).length
+export const countBlazons = (card: Card) => cardCharacteristics[card].blazon.length
 
 const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chetelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Firsherman, Card.Princess, Card.Baron]
 const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card.Captain, Card.Squire, Card.Stonemason, Card.Armorer, Card.Farmhand, Card.Baron]
-export const isNobleDiscount = (card: Card) => nobleDiscountArray.includes(card)
+export const isCastleDiscount = (card: Card) => nobleDiscountArray.includes(card)
 export const isVillageDiscount = (card: Card) => villageDiscountArray.includes(card)
+export const isDiscountForPlace = (possessedCard: Card, place: Place) =>  place === Place.Castle? isCastleDiscount(possessedCard): isVillageDiscount(possessedCard)
+export const isDiscount = (card: Card) =>  isCastleDiscount(card) || isVillageDiscount(card)
 
 export const canStockCoinsArray = [Card.Steward, Card.Gravedigger, Card.Vicar, Card.MiraculouslyCured, Card.MasterAtArms, Card.Innkeeper, Card.Sculptor, Card.Potter, Card.Farmhand, Card.Beekeeper, Card.QueenMother]
 export const canStockCoins = (card: Card) => canStockCoinsArray.includes(card)

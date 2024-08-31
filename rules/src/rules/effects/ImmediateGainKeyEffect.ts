@@ -1,5 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import { BlazonType, canStockCoins, getBlazons, howManyBlazons, howManyTargettedBlazon } from '../../CardCharacteristics'
+import { BlazonType, canStockCoins, getBlazons, countBlazons, countBlazonsOfType } from '../../CardCharacteristics'
 import { ImmediateEffectType } from '../../material/ImmediateEffectType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -34,11 +34,11 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
     const howManyMatchedBlazons = (effect.condition !== undefined && effect.condition.blazon !== undefined)
       ? effect.condition.blazon.some(blazon => blazon === BlazonType.Different || blazon === BlazonType.MissingDifferent)
         ? effect.condition.blazon.includes(BlazonType.Different) ? howManyDifferentBlazons.length : 6 - howManyDifferentBlazons.length
-        : Math.max(...neighborsPanoramas.map(panorama => panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon) => blazonAcc + howManyTargettedBlazon(currentCard.id.front, currentBlazon), 0), 0)))
+        : Math.max(...neighborsPanoramas.map(panorama => panorama.getItems().reduce((cardAcc, currentCard) => cardAcc + effect.condition!.blazon!.reduce((blazonAcc, currentBlazon) => blazonAcc + countBlazonsOfType(currentCard.id.front, currentBlazon), 0), 0)))
       : 0
 
     const howManyMatchedBlazonsQuantity = (effect.condition !== undefined && effect.condition.blazonNumber !== undefined)
-      ? playerPanorama.getItems().reduce((cardAcc, currentCard) => cardAcc + (howManyBlazons(currentCard.id.front) === effect.condition?.blazonNumber ? 1 : 0), 0)
+      ? playerPanorama.getItems().reduce((cardAcc, currentCard) => cardAcc + (countBlazons(currentCard.id.front) === effect.condition?.blazonNumber ? 1 : 0), 0)
       : 0
 
     const howManyMatchedSpaceFilling = (effect.condition !== undefined && effect.condition.filledOrEmpty !== undefined)
