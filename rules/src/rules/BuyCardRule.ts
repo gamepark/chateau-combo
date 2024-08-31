@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, Location, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isDeleteItemType, isMoveItemType, ItemMove, Location, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics, isDiscountForPlace } from '../CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -11,16 +11,32 @@ export class BuyCardRule extends PlayerTurnRule {
   getPlayerMoves() {
     const gold = this.gold
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
+    const moves: MaterialMove[] = []
+
+    if (this.keys.getQuantity() && !this.hasSpentKey) {
+      moves.push(
+        this.keys.deleteItem(1)
+      )
+    }
+
     const cards = this.riverCards
     const buyableCards = cards
       .filter((item) => cardCharacteristics[item.id.front].cost - this.getDiscount(item) <= gold)
 
-    return availableSpaces.flatMap((space) => {
-      return [
-        ...buyableCards.moveItems(space),
-        ...cards.moveItems({ ...space, rotation: true })
-      ]
-    })
+    moves.push(
+      ...availableSpaces.flatMap((space) => {
+        return [
+          ...buyableCards.moveItems(space),
+          ...cards.moveItems({ ...space, rotation: true })
+        ]
+      })
+    )
+
+    return moves
+  }
+
+  get hasSpentKey() {
+    return this.remind(Memory.KeySpent)
   }
 
   get gold() {
@@ -70,8 +86,13 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
+    if (isDeleteItemType(MaterialType.Key)(move)) {
+      this.memorize(Memory.KeySpent, true)
+      return [this.startRule(RuleId.SpendKey)]
+    }
+
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.PlayerBoard) return []
-    
+
     const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
     this.memorize(Memory.PlacedCard, move.itemIndex)
     const moves: MaterialMove[] = []
@@ -106,5 +127,11 @@ export class BuyCardRule extends PlayerTurnRule {
     }
 
     return moves
+  }
+
+  get keys() {
+    return this
+      .material(MaterialType.Key)
+      .player(this.player)
   }
 }

@@ -1,42 +1,50 @@
-import { isMoveItemTypeAtOnce, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { RuleId } from '../RuleId'
 
 export class KeyDiscardLocationCardsRule extends PlayerTurnRule {
   getPlayerMoves() {
-    const messengerPosition = this.material(MaterialType.MessengerToken).getItem()!.location.id
-
-    return [
-      this
-        .material(MaterialType.Card)
-        .location(LocationType.River)
-        .locationId(messengerPosition)
-        .moveItemsAtOnce({
-          type: LocationType.Discard,
-          id: messengerPosition
-        })
-    ]
+    return this
+      .river
+      .moveItems((item) => ({
+        type: LocationType.Discard,
+        id: item.location.id
+      }))
   }
 
-  beforeItemMove(move: ItemMove) {
-    if (!isMoveItemTypeAtOnce(MaterialType.Card)(move)) return []
-    const originLocation = this.material(MaterialType.Card).getItem(move.indexes[0])!.location
+  get river() {
+    return this
+      .material(MaterialType.Card)
+      .location(LocationType.River)
+      .locationId(this.messengerPlace)
+  }
+
+  get messengerPlace() {
+    return this.material(MaterialType.MessengerToken).getItem()!.location.id
+  }
+
+  afterItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.Card)(move)) return []
+    const river = this.river
+    const place = this.messengerPlace
     const deck = this
       .material(MaterialType.Card)
       .location(LocationType.Deck)
-      .locationId(originLocation.id)
+      .locationId(place)
       .deck()
 
-    return deck.deal({
-      type: originLocation.type,
-      id: originLocation.id
-    }, 3)
-  }
-
-  afterItemMove(_move: ItemMove) {
-    return this
-      .material(MaterialType.Key)
-      .player(this.player)
-      .deleteItems(1)
+    if (river.length !== 2) return []
+    return [
+      ...this.river.moveItems({
+        type: LocationType.Discard,
+        id: place
+      }),
+      ...deck.deal({
+        type: LocationType.River,
+        id: place
+      }, 3),
+      this.startRule(RuleId.BuyCard)
+    ]
   }
 }

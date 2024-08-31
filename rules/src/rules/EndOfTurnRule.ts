@@ -79,6 +79,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
   onRuleEnd() {
     // Cleaning
     this.forget(Memory.PlacedCard)
+    this.forget(Memory.KeySpent)
     this.forget(Memory.ImmediateEffectsToPlay)
     return []
   }

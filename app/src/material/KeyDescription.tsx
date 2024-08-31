@@ -6,6 +6,7 @@ export class KeyDescription extends TokenDescription {
     height = 6
     width = 3.45
     image = Key1
+    borderRadius = 3
 
     stockLocation = { type: LocationType.KeyStock }
     staticItem = { quantity: 10, location: this.stockLocation }

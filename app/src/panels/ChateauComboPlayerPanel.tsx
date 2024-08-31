@@ -15,8 +15,6 @@ type ChateauComboPlayerPanelProps = {
   } & HTMLAttributes<HTMLDivElement>
 
 export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props) => {
-
-
   const { player, ...rest } = props
   const rules = useRules<ChateauComboRules>()!
   const state = useMemo(() => new PlayerBoardHelper(rules.game, player.id), [rules.game, player.id])  

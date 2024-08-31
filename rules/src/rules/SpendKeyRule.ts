@@ -1,43 +1,33 @@
 import { isMoveItemType, isMoveItemTypeAtOnce, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { KeyDiscardLocationCardsRule } from './key/KeyDiscardLocationCardsRule'
 import { KeyMoveMessengerRule } from './key/KeyMoveMessengerRule'
 import { RuleId } from './RuleId'
 
 export class SpendKeyRule extends PlayerTurnRule {
-  onRuleStart() {
-    if (!this.keys) return [this.startRule(RuleId.BuyCard)]
-    return []
-  }
-
   getPlayerMoves(): MaterialMove[] {
     return [
       ...new KeyDiscardLocationCardsRule(this.game).getPlayerMoves(),
       ...new KeyMoveMessengerRule(this.game).getPlayerMoves(),
-      this.startRule(RuleId.BuyCard)
+      //this.startRule(RuleId.BuyCard)
     ]
   }
 
   afterItemMove(move: ItemMove) {
-    if (isMoveItemTypeAtOnce(MaterialType.Card)(move)) {
-      return [
-        ...new KeyDiscardLocationCardsRule(this.game).afterItemMove(move),
-        this.startRule(RuleId.BuyCard)
-      ]
+    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard) {
+      return new KeyDiscardLocationCardsRule(this.game).afterItemMove(move)
     }
 
     if (isMoveItemType(MaterialType.MessengerToken)(move)) {
-      return [
-        ...new KeyMoveMessengerRule(this.game).afterItemMove(move),
-        this.startRule(RuleId.BuyCard)
-      ]
+      return new KeyMoveMessengerRule(this.game).afterItemMove(move)
     }
 
     return []
   }
 
   beforeItemMove(move: ItemMove) {
-    if (isMoveItemTypeAtOnce(MaterialType.Card)(move)) {
+    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard) {
       return new KeyDiscardLocationCardsRule(this.game).beforeItemMove(move)
     }
 
@@ -46,12 +36,5 @@ export class SpendKeyRule extends PlayerTurnRule {
     }
 
     return []
-  }
-
-  get keys() {
-    return this
-      .material(MaterialType.Key)
-      .player(this.player)
-      .getQuantity()
   }
 }

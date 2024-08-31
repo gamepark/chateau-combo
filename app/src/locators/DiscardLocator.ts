@@ -1,10 +1,11 @@
-import { PileLocator } from '@gamepark/react-game'
+import { DropAreaDescription, PileLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { cardDescription } from '../material/CardDescription'
 import { gameDeckLocator } from './GameDeckLocator'
 
 export class DiscardLocator extends PileLocator {
 
+  locationDescription = new DropAreaDescription(cardDescription)
   maxAngle = 10
   getCoordinates(location: Location) {
     const gameDeck = gameDeckLocator.getCoordinates(location)
