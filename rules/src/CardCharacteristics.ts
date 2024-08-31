@@ -97,7 +97,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Prayer, BlazonType.Teacher],
     canSwapMessengerToken: false,
-    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: LocationType.VillageRiver, token: MaterialType.GoldCoin }],
+    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.GoldCoin }],
     scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 8 }
   },
 
@@ -198,7 +198,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Worker, BlazonType.Worker],
     canSwapMessengerToken: true,
-    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: LocationType.VillageRiver, token: MaterialType.Key }],
+    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.Key }],
     scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }] }
   },
 
@@ -400,7 +400,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     blazon: [BlazonType.Soldier],
     canSwapMessengerToken: true,
-    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: LocationType.NobleRiver, token: MaterialType.GoldCoin }],
+    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Castle, token: MaterialType.GoldCoin }],
     scoringEffect: { type: ScoringType.ByBanner, value: 2, bannerType: Place.Castle }
   },
 

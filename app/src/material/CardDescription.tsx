@@ -198,7 +198,7 @@ export class ChateauComboCardDescription extends CardDescription {
     if (!player || rules.game.rule?.id !== RuleId.BuyCard) return
     const card = rules.material(MaterialType.Card).index(context.index)
     const item = card.getItem()!
-    if (item.location.type !== LocationType.NobleRiver && item.location.type !== LocationType.VillageRiver) return
+    if (item.location.type !== LocationType.River) return
     const messenger = rules.material(MaterialType.MessengerToken).getItem()!
     if (item.id.back !== messenger.location.id) return
     if (item.location.rotation) return card.rotateItem(false)

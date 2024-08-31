@@ -1,5 +1,6 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../CardCharacteristics'
+import { Place, places } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
@@ -17,28 +18,18 @@ export class EndOfTurnRule extends PlayerTurnRule {
       }))
     }
 
-    // Refill villageRiver
-    const villageRiver = this.villageRiver
-    const villageDeck = this.villageDeck
-    const villageToDraw = 3 - villageRiver.length
-    if (villageToDraw) {
-      moves.push(
-        ...villageDeck.deal({
-          type: LocationType.VillageRiver
-        }, villageToDraw)
-      )
-    }
-
-    // Refill NobleRiver
-    const nobleRiver = this.nobleRiver
-    const nobleDeck = this.nobleDeck
-    const nobleToDraw = 3 - nobleRiver.length
-    if (nobleToDraw) {
-      moves.push(
-        ...nobleDeck.deal({
-          type: LocationType.NobleRiver
-        }, nobleToDraw)
-      )
+    for (const place of places) {
+      const river = this.getRiver(place)
+      const deck = this.getDeck(place)
+      const cardsToDraw = 3 - river.length
+      if (cardsToDraw) {
+        moves.push(
+          ...deck.deal({
+            type: LocationType.River,
+            id: place
+          }, cardsToDraw)
+        )
+      }
     }
 
     const playersWithRemainingSpots = this.game.players.filter(player => 
@@ -60,30 +51,19 @@ export class EndOfTurnRule extends PlayerTurnRule {
       .location(LocationType.EndOfRiver)
   }
 
-  get nobleDeck() {
+  getDeck(place: Place) {
     return this
       .material(MaterialType.Card)
-      .location(LocationType.NobleDeck)
+      .location(LocationType.Deck)
+      .locationId(place)
       .deck()
   }
 
-  get villageDeck() {
+  getRiver(place: Place) {
     return this
       .material(MaterialType.Card)
-      .location(LocationType.VillageDeck)
-      .deck()
-  }
-
-  get nobleRiver() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.NobleRiver)
-  }
-
-  get villageRiver() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.VillageRiver)
+      .location(LocationType.River)
+      .location(place)
   }
 
   get placedCard() {

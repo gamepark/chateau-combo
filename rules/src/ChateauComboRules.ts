@@ -32,19 +32,15 @@ implements CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType
 
   locationsStrategies = {
     [MaterialType.Card]: {
-      [LocationType.NobleDeck]: new PositiveSequenceStrategy(),
-      [LocationType.NobleRiver]: new FillGapStrategy(), 
-      [LocationType.NobleDiscard]: new PositiveSequenceStrategy(),
-      [LocationType.VillageDeck]: new PositiveSequenceStrategy(),
-      [LocationType.VillageRiver]: new FillGapStrategy(), 
-      [LocationType.VillageDiscard]: new PositiveSequenceStrategy(),
+      [LocationType.Deck]: new PositiveSequenceStrategy(),
+      [LocationType.River]: new FillGapStrategy(),
+      [LocationType.Discard]: new PositiveSequenceStrategy(),
     }
   }
 
   hidingStrategies = {
     [MaterialType.Card]: {
-      [LocationType.NobleDeck]: hideItemId,
-      [LocationType.VillageDeck]: hideItemId,
+      [LocationType.Deck]: hideItemId,
     }
   }
 

@@ -1,7 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
-import { Place, nobles, villages } from './material/Card'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
+import { Card, nobles, Place, places, villages } from './material/Card'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -15,24 +15,93 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   Rules = ChateauComboRules
 
   setupMaterial() {
+    this.setupMessengerToken()
+    this.setupPlayers()
+    this.setupDeck()
+    this.setupRiver()
+  }
 
-    const allNobles = nobles.map((v) => ({ id: { front: v, back: Place.Castle }, location: { type: LocationType.NobleDeck } }))
-    this.material(MaterialType.Card).createItems(allNobles)
-    this.material(MaterialType.Card).location(LocationType.NobleDeck).shuffle()
+  setupMessengerToken() {
+    this
+      .material(MaterialType.MessengerToken)
+      .createItem({
+        location: {
+          type: LocationType.EndOfRiver,
+          id: Place.Castle
+        }
+      })
+  }
 
-    const allVillages = villages.map((v) => ({ id: { front: v, back: Place.Village }, location: { type: LocationType.VillageDeck } }))
-    this.material(MaterialType.Card).createItems(allVillages)
-    this.material(MaterialType.Card).location(LocationType.VillageDeck).shuffle()
+  setupPlayers() {
+    for (const player of this.players) {
+      this.setupPlayer(player)
+    }
+  }
 
-    this.material(MaterialType.MessengerToken).createItem({ location: { type: LocationType.EndOfRiver, id: Place.Castle } })
-    this.material(MaterialType.GoldCoin).createItems(this.players.map(player => ({ quantity: 15, location: { type: LocationType.PlayerGoldStock, player } })))
-    this.material(MaterialType.Key).createItems(this.players.map(player => ({ quantity: 2, location: { type: LocationType.PlayerKeyStock, player } })))
+  setupPlayer(player: PlayerColor) {
+    this
+      .material(MaterialType.GoldCoin)
+      .createItem({
+        location: {
+          type: LocationType.PlayerGoldStock,
+          player: player
+        },
+        quantity: 15
+      })
 
-    const nobleDeck = this.material(MaterialType.Card).location(LocationType.NobleDeck).deck()
-    const villageDeck = this.material(MaterialType.Card).location(LocationType.VillageDeck).deck()
+    this
+      .material(MaterialType.Key)
+      .createItem({
+        location: {
+          type: LocationType.PlayerKeyStock,
+          player: player
+        },
+        quantity: 2
+      })
 
-    nobleDeck.deal({ type: LocationType.NobleRiver }, 3)
-    villageDeck.deal({ type: LocationType.VillageRiver }, 3)
+  }
+
+  setupDeck() {
+    this.setupDeckType(Place.Castle, nobles)
+    this.setupDeckType(Place.Village, villages)
+  }
+
+  setupDeckType(place: Place, cards: Card[]) {
+    const items = cards.map((v) => ({
+      id: {
+        front: v,
+        back: Place.Castle
+      },
+      location: {
+        type: LocationType.Deck,
+        id: place
+      }
+    }))
+
+    this.material(MaterialType.Card).createItems(items)
+    this.material(MaterialType.Card).location(LocationType.Deck).locationId(place).shuffle()
+  }
+
+  setupRiver() {
+    for (const place of places) {
+      this.setupRiverType(place)
+    }
+  }
+
+  setupRiverType(place: Place) {
+    const deck = this.getDeck(place)
+    deck.deal({
+      type: LocationType.River,
+      id: place
+    }, 3)
+  }
+
+  getDeck(place: Place) {
+    return this
+      .material(MaterialType.Card)
+      .location(LocationType.Deck)
+      .locationId(place)
+      .deck()
   }
 
   start() {
