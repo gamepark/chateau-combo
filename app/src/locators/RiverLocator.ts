@@ -1,13 +1,13 @@
 import { ListLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
-import { cardDescription } from '../material/CardDescription'
+import { chateauComboCardDescription } from '../material/ChateauComboCardDescription'
 import { gameDeckLocator } from './GameDeckLocator'
 
 export class RiverLocator extends ListLocator {
   getCoordinates(location: Location) {
     const gameDeck = gameDeckLocator.getCoordinates(location)
     return {
-      x: gameDeck.x + (cardDescription.width + 0.7),
+      x: gameDeck.x + (chateauComboCardDescription.width + 0.7),
       y: gameDeck.y,
     }
   }

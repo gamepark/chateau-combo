@@ -7,7 +7,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import { Locators } from './locators/Locators'
-import { Material } from './material/Material'
+import { Material, materialI18n } from './material/Material'
 import translations from './translations.json'
 
 setupTranslation(translations, { debug: false })
@@ -21,6 +21,7 @@ ReactDOM.render(
       GameSetup={ChateauComboSetup}
       material={Material}
       locators={Locators}
+      materialI18n={materialI18n}
       animations={new MaterialGameAnimations()}>
       <App/>
     </GameProvider>
