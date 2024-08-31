@@ -146,7 +146,7 @@ export class EndGameRule extends MaterialRulesPart {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
     const value = cardCaracs.scoringEffect!.value
-    const bannerConditions: { nobleBanners: number, villageBanners: number } = cardCaracs.scoringEffect!.bannerConditions
+    const bannerConditions: { castleBanners: number, villageBanners: number } = cardCaracs.scoringEffect!.bannerConditions
     const playerBannerCount: Record<number, number> = {
       [Place.Castle]: 0,
       [Place.Village]: 0
@@ -154,8 +154,8 @@ export class EndGameRule extends MaterialRulesPart {
 
     panorama.forEach(item => playerBannerCount[item.id.back] += 1)
 
-    if (bannerConditions.nobleBanners !== 0) {
-      playerBannerCount[Place.Castle] = playerBannerCount[Place.Castle] % bannerConditions.nobleBanners
+    if (bannerConditions.castleBanners !== 0) {
+      playerBannerCount[Place.Castle] = playerBannerCount[Place.Castle] % bannerConditions.castleBanners
     }
     if (bannerConditions.villageBanners !== 0) {
       playerBannerCount[Place.Village] = playerBannerCount[Place.Village] % bannerConditions.villageBanners

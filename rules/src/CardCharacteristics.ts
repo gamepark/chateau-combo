@@ -1,14 +1,10 @@
-import { Card, isNoble, Place } from './material/Card'
+import { Card, Place } from './material/Card'
 import { ImmediateEffectType } from './material/ImmediateEffectType'
-import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Sign, SpaceFilling } from './rules/effects/AbstractImmediateEffect'
 import { PutMethod } from './rules/effects/ImmediatePutGoldOnCardEffect'
 import { ScoringType } from './rules/EndGameRule'
 
-export enum BannerType {
-  NobleBanner = 1, VillageBanner
-}
 
 export enum BlazonType {
   Noble = 1,
@@ -183,7 +179,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Teacher],
     canSwapMessengerToken: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 2 }],
-    scoringEffect: { type: ScoringType.ByBannerGroup, value: 3, bannerConditions: { nobleBanners: 1, villageBanners: 1 } }
+    scoringEffect: { type: ScoringType.ByBannerGroup, value: 3, bannerConditions: { castleBanners: 1, villageBanners: 1 } }
   },
 
   [Card.Patron]: {
@@ -565,7 +561,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Farmer],
     canSwapMessengerToken: false,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Castle, bestNeighbor: true } }],
-    scoringEffect: { type: ScoringType.ByBannerGroup, value: 7, bannerConditions: { nobleBanners: 0, villageBanners: 3 } }
+    scoringEffect: { type: ScoringType.ByBannerGroup, value: 7, bannerConditions: { castleBanners: 0, villageBanners: 3 } }
   },
 
   [Card.Woodcutter]: {
@@ -684,8 +680,8 @@ const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Ca
 const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card.Captain, Card.Squire, Card.Stonemason, Card.Armorer, Card.Farmhand, Card.Baron]
 export const isCastleDiscount = (card: Card) => nobleDiscountArray.includes(card)
 export const isVillageDiscount = (card: Card) => villageDiscountArray.includes(card)
-export const isDiscountForPlace = (possessedCard: Card, place: Place) =>  place === Place.Castle? isCastleDiscount(possessedCard): isVillageDiscount(possessedCard)
-export const isDiscount = (card: Card) =>  isCastleDiscount(card) || isVillageDiscount(card)
+export const isDiscountForPlace = (possessedCard: Card, place: Place) => place === Place.Castle ? isCastleDiscount(possessedCard) : isVillageDiscount(possessedCard)
+export const isDiscount = (card: Card) => isCastleDiscount(card) || isVillageDiscount(card)
 
 export const canStockCoinsArray = [Card.Steward, Card.Gravedigger, Card.Vicar, Card.MiraculouslyCured, Card.MasterAtArms, Card.Innkeeper, Card.Sculptor, Card.Potter, Card.Farmhand, Card.Beekeeper, Card.QueenMother]
 export const canStockCoins = (card: Card) => canStockCoinsArray.includes(card)

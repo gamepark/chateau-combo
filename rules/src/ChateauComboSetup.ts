@@ -1,7 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
-import { Card, nobles, Place, places, villages } from './material/Card'
+import { Card, castles, Place, places, villages } from './material/Card'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerColor } from './PlayerColor'
@@ -62,7 +62,7 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerColor, MaterialTy
   }
 
   setupDeck() {
-    this.setupDeckType(Place.Castle, nobles)
+    this.setupDeckType(Place.Castle, castles)
     this.setupDeckType(Place.Village, villages)
   }
 
