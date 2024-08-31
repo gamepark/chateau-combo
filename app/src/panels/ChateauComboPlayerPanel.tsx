@@ -8,7 +8,6 @@ import { PlayerPanel, useRules } from '@gamepark/react-game'
 import { FC, HTMLAttributes, useMemo } from 'react'
 import coinImage from '../images/Coin1.png'
 import keyImage from '../images/Key1.png'
-import { playerColorCode } from './PlayerPanels'
 
 
 type ChateauComboPlayerPanelProps = {
@@ -24,7 +23,7 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
   
   return (
     <>
-    <PlayerPanel activeRing key={player.id} playerId={player.id} color={playerColorCode[player.id]} {...rest}>
+    <PlayerPanel activeRing key={player.id} playerId={player.id} {...rest}>
         <div css={tokenQuantity}>
             <div css={keyQuantity}>
                 <div>{state.keyQuantity} </div>

@@ -3,7 +3,7 @@ import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDisc
 import { Place } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { PlayerColor } from '../PlayerColor'
+import { PlayerId } from '../PlayerId'
 import { isRespectingCostCondition } from './effects/AbstractImmediateEffect'
 
 export class EndGameRule extends MaterialRulesPart {
@@ -52,38 +52,38 @@ export class EndGameRule extends MaterialRulesPart {
     return moves
   }
 
-  getPlayerGoldStock(player: PlayerColor) {
+  getPlayerGoldStock(player: PlayerId) {
     return this
       .material(MaterialType.GoldCoin)
       .location(LocationType.PlayerGoldStock)
       .player(player)
   }
 
-  getPlayerKeyStock(player: PlayerColor) {
+  getPlayerKeyStock(player: PlayerId) {
     return this
       .material(MaterialType.Key)
       .location(LocationType.PlayerKeyStock)
       .player(player)
   }
 
-  countPlayerGoldOnCard(player: PlayerColor, card: MaterialItem) {
+  countPlayerGoldOnCard(player: PlayerId, card: MaterialItem) {
     return this.getPlayerGoldOnCards(player)
       .filter(item => item.location.x === card.location.x && item.location.y === card.location.y)
       .getQuantity()
   }
 
-  countPlayerGoldOnCards(player: PlayerColor) {
+  countPlayerGoldOnCards(player: PlayerId) {
     return this.getPlayerGoldOnCards(player).getQuantity()
   }
 
-  getPlayerGoldOnCards(player: PlayerColor) {
+  getPlayerGoldOnCards(player: PlayerId) {
     return this
       .material(MaterialType.GoldCoin)
       .location(LocationType.PlayerBoard)
       .player(player)
   }
 
-  getPanorama(player: PlayerColor) {
+  getPanorama(player: PlayerId) {
     return this
       .material(MaterialType.Card)
       .location(LocationType.PlayerBoard)
@@ -91,7 +91,7 @@ export class EndGameRule extends MaterialRulesPart {
       .getItems()
   }
 
-  getPanoramaWithoutHiddenCards(player: PlayerColor) {
+  getPanoramaWithoutHiddenCards(player: PlayerId) {
     return this.getPanorama(player).filter(item => item.location.rotation === undefined)
   }
 

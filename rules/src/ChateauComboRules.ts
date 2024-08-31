@@ -10,7 +10,7 @@ import {
 } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { PlayerColor } from './PlayerColor'
+import { PlayerId } from './PlayerId'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
 import { MoveMessengerRule } from './rules/MoveMessengerRule'
 import { RuleId } from './rules/RuleId'
@@ -26,8 +26,8 @@ import { EndGameRule } from './rules/EndGameRule'
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class ChateauComboRules extends SecretMaterialRules<PlayerColor, MaterialType, LocationType>
-implements CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType>, MaterialMove<PlayerColor, MaterialType, LocationType>, PlayerColor> {
+export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
+implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
     [RuleId.SpendKey]: SpendKeyRule,
     [RuleId.BuyCard]: BuyCardRule,
@@ -53,7 +53,7 @@ implements CompetitiveScore<MaterialGame<PlayerColor, MaterialType, LocationType
     }
   }
 
-  getScore(playerId: PlayerColor): number {
+  getScore(playerId: PlayerId): number {
     return 0
   }
 }

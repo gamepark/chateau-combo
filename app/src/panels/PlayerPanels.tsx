@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { PlayerColor } from '@gamepark/chateau-combo/PlayerColor'
 import { usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
 import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
@@ -22,10 +21,3 @@ const panelPosition = (index: number) => css`
   width: 28em;
   height: 14em;
 `
-
-export const playerColorCode: Record<PlayerColor, string> = {
-  [PlayerColor.Red]: 'red',
-  [PlayerColor.Blue]: 'blue',
-  [PlayerColor.Green]: 'green',
-  [PlayerColor.Yellow]: 'yellow'
-}
