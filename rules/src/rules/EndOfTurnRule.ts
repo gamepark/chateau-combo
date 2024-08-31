@@ -21,7 +21,6 @@ export class EndOfTurnRule extends PlayerTurnRule {
     for (const place of places) {
       const river = this.getRiver(place)
       const deck = this.getDeck(place)
-      console.log(river, deck, place)
       const cardsToDraw = 3 - river.length
       if (cardsToDraw) {
         moves.push(
