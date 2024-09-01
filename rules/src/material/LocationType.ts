@@ -8,5 +8,5 @@ export enum LocationType {
     KeyStock,
     PlayerKeyStock,
     PlayerBoard,
-
+    CardRotate,
 }

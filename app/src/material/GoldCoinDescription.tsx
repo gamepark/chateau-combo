@@ -6,7 +6,7 @@ export class GoldCoinDescription extends RoundTokenDescription {
     diameter = 3
     image = Coin1
 
-    stockLocation = { type: LocationType.KeyStock }
+    stockLocation = { type: LocationType.GoldStock }
     staticItem = { quantity: 10, location: this.stockLocation }
 }
 

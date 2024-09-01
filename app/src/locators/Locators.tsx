@@ -1,5 +1,6 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { Locator } from '@gamepark/react-game'
+import { cardRotateButtonLocator } from './CardRotateButtonLocator'
 import { discardLocator } from './DiscardLocator'
 import { endOfRiverLocator } from './EndOfRiverLocator'
 import { gameDeckLocator } from './GameDeckLocator'
@@ -21,6 +22,7 @@ export const Locators: Partial<Record<LocationType, Locator>> = {
     [LocationType.PlayerKeyStock]: playerKeyStockLocator,
     [LocationType.KeyStock]: keyStockLocator,
     [LocationType.Discard]: discardLocator,
+    [LocationType.CardRotate]: cardRotateButtonLocator,
 
 
 }
