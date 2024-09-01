@@ -186,18 +186,6 @@ export class ChateauComboCardDescription extends CardDescription {
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     return item.location?.rotation || super.isFlipped(item, context)
   }
-
-  getShortClickLocalMove(context: ItemContext) {
-    const { rules, player } = context
-    if (!player || rules.game.rule?.id !== RuleId.BuyCard) return
-    const card = rules.material(MaterialType.Card).index(context.index)
-    const item = card.getItem()!
-    if (item.location.type !== LocationType.River) return
-    const messenger = rules.material(MaterialType.MessengerToken).getItem()!
-    if (item.id.back !== messenger.location.id) return
-    if (item.location.rotation) return card.rotateItem(false)
-    return card.rotateItem(true)
-  }
 }
 
 export const chateauComboCardDescription = new ChateauComboCardDescription()
