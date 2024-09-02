@@ -84,7 +84,4 @@ export enum Card {
 }
 
 export const cards = getEnumValues(Card)
-export const isCastle = (card: Card) => card < Card.Inventor
-export const castles = cards.filter(isCastle)
-export const isVillage = (card: Card) => card >= Card.Inventor
-export const villages = cards.filter(isVillage)
+export const getCardPlace = (card: Card) => Math.floor(card / 100) + 1

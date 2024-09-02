@@ -1,7 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
-import { Card, castles, villages } from './material/Card'
+import { cards, getCardPlace } from './material/Card'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Place, places } from './material/Place'
@@ -18,7 +18,7 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   setupMaterial() {
     this.setupMessengerToken()
     this.setupPlayers()
-    this.setupDeck()
+    this.setupDecks()
     this.setupRiver()
   }
 
@@ -62,25 +62,21 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
 
   }
 
-  setupDeck() {
-    this.setupDeckType(Place.Castle, castles)
-    this.setupDeckType(Place.Village, villages)
-  }
-
-  setupDeckType(place: Place, cards: Card[]) {
-    const items = cards.map((v) => ({
+  setupDecks() {
+    const items = cards.map(card => ({
       id: {
-        front: v,
-        back: place
+        front: card,
+        back: getCardPlace(card)
       },
       location: {
         type: LocationType.Deck,
-        id: place
+        id: getCardPlace(card)
       }
     }))
-
     this.material(MaterialType.Card).createItems(items)
-    this.material(MaterialType.Card).location(LocationType.Deck).locationId(place).shuffle()
+    for (const place of places) {
+      this.material(MaterialType.Card).location(LocationType.Deck).locationId(place).shuffle()
+    }
   }
 
   setupRiver() {
