@@ -12,7 +12,7 @@ export class MoveMessengerRule extends PlayerTurnRule {
     const card = this.placedCard
     const place = card.id.back
     const moves: MaterialMove[] = []
-    if (cardCharacteristics[card.id.front].canSwapMessengerToken) {
+    if (cardCharacteristics[card.id.front].moveMessenger) {
       moves.push(messenger.moveItem({
         type: LocationType.EndOfRiver,
         id: place === Place.Castle ? Place.Village : Place.Castle
