@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { css, Interpolation } from '@emotion/react'
+import { css } from '@emotion/react'
 import { TokenDescription } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
 import messengerToken from '../images/messengerToken.png'
 
-export class MessengerTokenDescription extends TokenDescription {
-  height = 8.8
-  ratio = 42 / 50
+class MessengerTokenDescription extends TokenDescription {
+  width = 4
+  height = 5
   image = messengerToken
 
   getFrontExtraCss() {
@@ -15,7 +14,7 @@ export class MessengerTokenDescription extends TokenDescription {
 }
 
 const borderRadiusCss = css`
-  border-radius: 4em 3em 3em 1em;
+  border-radius: 2em 3em 1em 2em;
 `
 
 export const messengerTokenDescription = new MessengerTokenDescription()
