@@ -1,6 +1,6 @@
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
-import { getRelativePlayerIndex, Locator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, Location } from '@gamepark/rules-api'
+import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, isMoveItem, Location, MaterialMove } from '@gamepark/rules-api'
 import { chateauComboCardDescription } from '../material/ChateauComboCardDescription'
 import { getPosition } from './PlayerLocation'
 
@@ -19,6 +19,21 @@ export class PlayerBoardLocator extends Locator {
 
 
     return baseCoordinates
+  }
+
+  locationDescription  = new PlayerBoardDescription()
+}
+
+export class PlayerBoardDescription extends DropAreaDescription {
+  constructor() {
+    super(chateauComboCardDescription)
+  }
+
+  getBestDropMove(moves: MaterialMove[], _location: Location, context: ItemContext): MaterialMove {
+    const moveWithSameRotation = moves.find(move =>
+      isMoveItem(move) && move.location.rotation === context.rules.material(move.itemType).getItem(move.itemIndex)?.location.rotation
+    )
+    return moveWithSameRotation ?? moves[0]
   }
 }
 

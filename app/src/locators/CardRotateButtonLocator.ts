@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
@@ -23,7 +25,6 @@ export class CardRotateButtonLocator extends Locator {
       }))
   }
 
-
   placeLocation(location: Location, context: LocationContext): string[] {
     const { rules, locators } = context
     const messenger = rules.material(MaterialType.MessengerToken).getItem()!.location.id
@@ -39,6 +40,7 @@ export class CardRotateButtonDescription extends LocationDescription {
   height = 2
   width = 2
   borderRadius = 1
+  extraCss = css`pointer-events: auto !important;`
 
   content = CardRotateButton
 

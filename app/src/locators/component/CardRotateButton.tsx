@@ -13,7 +13,11 @@ export const CardRotateButton: FC<{ location: Location }> = ({ location }) => {
   const rules = useRules<ChateauComboRules>()!
   const card = rules.material(MaterialType.Card).index(location.parent!)
   const rotation = card.getItem()!.location.rotation
-  const flip = useCallback(() => play(card.rotateItem(!rotation)), [rotation])
+  const flip = useCallback((event) => {
+    console.log("???")
+    event.preventDefault()
+    play(card.rotateItem(!rotation), { local: true })
+  }, [rotation])
   const animation = useAnimation((animation) =>
     isMoveItemType(MaterialType.Card)(animation.move) && animation.move.itemIndex === location.parent)
   if (animation) return null
@@ -32,7 +36,6 @@ const button = css`
   transition: transform 0.2s;
   height: 100%;
   width: 100%;
-  //border: 0.1em solid white;
   cursor: pointer !important;
   &:active {
     filter: unset;
