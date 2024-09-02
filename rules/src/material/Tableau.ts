@@ -67,6 +67,11 @@ export class Tableau extends MaterialRulesPart {
         return this.countCards(isDiscount)
       case ConditionType.IfCardFlippedDown:
         return this.cards.every(isNotNull) ? 0 : 1
+      case ConditionType.PerCardWithPurse:
+        return 0 // TODO once all other scoring are migrated
+      case ConditionType.PerGoldInPurse:
+        // TODO: store gold on the card (parent item)
+        return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).location(l => l.x === x && l.y === y).getQuantity()
       default:
         return 0
     }

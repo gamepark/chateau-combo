@@ -14,13 +14,14 @@ export enum ConditionType {
   PerCardWithDiscount,
   IfCardFlippedDown,
   PerCardWithPurse,
-  PerGoldOnThisPurse,
-  PerGoldOnAllPurses,
+  PerGoldInPurse,
+  PerGoldInAllPurses,
   IfPosition
 }
 
 export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
   | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount | IfCardFlippedDown
+  | PerCardWithPurse | PerGoldInPurse
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -76,4 +77,12 @@ export type PerCardWithDiscount = {
 
 export type IfCardFlippedDown = {
   type: ConditionType.IfCardFlippedDown
+}
+
+export type PerCardWithPurse = {
+  type: ConditionType.PerCardWithPurse
+}
+
+export type PerGoldInPurse = {
+  type: ConditionType.PerGoldInPurse
 }
