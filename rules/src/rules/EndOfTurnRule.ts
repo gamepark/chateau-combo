@@ -43,7 +43,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
     if (playersWithRemainingSpots.length === 0){
       moves.push(this.startRule(RuleId.EndGame))
     } else {
-      moves.push(this.startPlayerTurn(RuleId.SpendKey, this.nextPlayer))
+      moves.push(this.startPlayerTurn(RuleId.BuyCard, this.nextPlayer))
     }
 
     return moves
