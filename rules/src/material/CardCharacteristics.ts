@@ -1,6 +1,5 @@
 import { Sign, SpaceFilling } from '../rules/effects/AbstractImmediateEffect'
 import { PutMethod } from '../rules/effects/ImmediatePutGoldOnCardEffect'
-import { ScoringType } from '../rules/EndGameRule'
 import { Card } from './Card'
 import { ImmediateEffectType } from './ImmediateEffectType'
 import { MaterialType } from './MaterialType'
@@ -17,6 +16,22 @@ export enum BlazonType {
   Different,
   MissingDifferent,
   Identical
+}
+
+export enum ScoringType {
+  ByBlazon = 1,
+  ByBlazonGroup,
+  ByBlazonCount,
+  IfMissingBlazon,
+  ByBanner,
+  ByBannerGroup,
+  ByKeys,
+  ByDiscount,
+  ByPosition,
+  ByCost,
+  IfHiddenCard,
+  ByGoldOnCard,
+  ByGoldOnAllCards
 }
 
 export type CardPattern = {
