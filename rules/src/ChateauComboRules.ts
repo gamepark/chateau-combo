@@ -6,14 +6,13 @@ import {
   MaterialItem,
   MaterialMove,
   PositiveSequenceStrategy,
-  SecretMaterialRules,
-  XYCoordinates
+  SecretMaterialRules
 } from '@gamepark/rules-api'
 import sumBy from 'lodash/sumBy'
 import { cardCharacteristics } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByPosition, ScoringType } from './material/Scoring'
+import { ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringType } from './material/Scoring'
 import { Tableau } from './material/Tableau'
 import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
@@ -62,7 +61,7 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
 
   getScore(player: PlayerId): number {
     const tableau = this.getTableauWithoutHiddenCards(player)
-    return sumBy(tableau, card => this.getScoreOfTheCard(card, tableau)) + new Tableau(this.game, player).score
+    return sumBy(tableau, card => this.getScoreOfTheCard(card)) + new Tableau(this.game, player).score
   }
 
   getTableau(player: PlayerId) {
@@ -88,14 +87,12 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
       .player(player)
   }
 
-  getScoreOfTheCard(card: MaterialItem, panorama: MaterialItem[]): number {
+  getScoreOfTheCard(card: MaterialItem): number {
     if (card.location.rotation) return 0
     const playerId = card.location.player!
     const cardCaracs = cardCharacteristics[card.id.front]
     if (cardCaracs.scoringEffect !== undefined) {
       switch ((cardCaracs.scoringEffect as any).type) {
-        case ScoringType.ByPosition:
-          return this.getScoreByPosition(card, panorama)
         case ScoringType.ByGoldOnCard:
           return this.getScoreByGoldOnCard(card, playerId)
         case ScoringType.ByGoldOnAllCards:
@@ -104,22 +101,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     }
 
     return 0
-  }
-
-  getScoreByPosition(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const scoringEffect = cardCaracs.scoringEffect as ScoringByPosition
-    const value = scoringEffect.value
-    const validPositions: XYCoordinates[] = scoringEffect.validPositions
-    const rationnalizedPanorama = this.getRationnalizedPanorama(panorama)
-    const cardCoordinates = {
-      x: rationnalizedPanorama.find(item => item.id.front === card.id.front)!.location.x!,
-      y: rationnalizedPanorama.find(item => item.id.front === card.id.front)!.location.y!
-    }
-
-    console.log('score : ', validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value)
-    return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
   }
 
   getScoreByGoldOnCard(card: MaterialItem, playerId: number): number {

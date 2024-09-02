@@ -78,6 +78,8 @@ export class Tableau extends MaterialRulesPart {
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).location(l => l.x === x && l.y === y).getQuantity()
       case ConditionType.PerGoldInAllPurses:
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getQuantity()
+      case ConditionType.IfPosition:
+        return condition.position[y][x] ? 1 : 0
       default:
         return 0
     }

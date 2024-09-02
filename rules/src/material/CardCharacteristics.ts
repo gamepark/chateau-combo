@@ -21,6 +21,8 @@ export enum BlazonType {
   Identical
 }
 
+const X = true, _ = false
+
 export const shields = getEnumValues(BlazonType).filter(shield => shield <= 6) // TODO: remove filter once enum is cleaned
 
 export type CardPattern = {
@@ -53,7 +55,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Prayer, BlazonType.Prayer],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 4 }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }] }
+    scoringEffect: {
+      score: 5, condition: {
+        type: ConditionType.IfPosition, position: [
+          [X, X, X],
+          [_, _, _],
+          [_, _, _]
+        ]
+      }
+    }
   },
 
   [Card.HisHoliness]: {
@@ -105,7 +115,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Astronomer]: {
     cost: 5,
     blazon: [BlazonType.Teacher, BlazonType.Teacher],
-    scoringEffect: { type: ScoringType.ByPosition, value: 8, validPositions: [{ x: -1, y: -1 }, { x: -1, y: 0 }, { x: -1, y: 1 }] }
+    scoringEffect: {
+      score: 8, condition: {
+        type: ConditionType.IfPosition, position: [
+          [X, _, _],
+          [X, _, _],
+          [X, _, _]
+        ]
+      }
+    }
   },
 
   [Card.Pilgrim]: {
@@ -142,7 +160,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Teacher, BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazonNumber: 2 } }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 6, validPositions: [{ x: -1, y: -1 }, { x: -1, y: 0 }, { x: -1, y: 1 }] }
+    scoringEffect: {
+      score: 6, condition: {
+        type: ConditionType.IfPosition, position: [
+          [X, _, _],
+          [X, _, _],
+          [X, _, _]
+        ]
+      }
+    }
   },
 
   [Card.Apothecary]: {
@@ -171,7 +197,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Soldier, BlazonType.Soldier],
     moveMessenger: true,
-    scoringEffect: { type: ScoringType.ByPosition, value: 8, validPositions: [{ x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 }] }
+    scoringEffect: {
+      score: 8, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, _, X],
+          [_, _, X],
+          [_, _, X]
+        ]
+      }
+    }
   },
 
   [Card.Judge]: {
@@ -194,7 +228,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker, BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.Key }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }] }
+    scoringEffect: {
+      score: 5, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, _, _],
+          [_, _, _],
+          [X, X, X]
+        ]
+      }
+    }
   },
 
   [Card.General]: {
@@ -321,7 +363,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Noble, BlazonType.Noble],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 2 }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 8, validPositions: [{ x: -1, y: 1 }, { x: 0, y: 1 }, { x: 1, y: 1 }] }
+    scoringEffect: {
+      score: 8, condition: {
+        type: ConditionType.IfPosition, position: [
+          [X, X, X],
+          [_, _, _],
+          [_, _, _]
+        ]
+      }
+    }
   },
 
   [Card.Inventor]: {
@@ -339,7 +389,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       value: 1,
       condition: { blazon: [BlazonType.Soldier], bestNeighbor: true }
     }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 6, validPositions: [{ x: 0, y: -1 }, { x: 0, y: 0 }, { x: 0, y: 1 }] }
+    scoringEffect: {
+      score: 6, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, X, _],
+          [_, X, _],
+          [_, X, _]
+        ]
+      }
+    }
   },
 
   [Card.Vicar]: {
@@ -483,7 +541,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     blazon: [BlazonType.Worker],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 2, condition: { blazon: [BlazonType.Worker] } }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: -1, y: 0 }, { x: 0, y: 0 }, { x: 1, y: 0 }] }
+    scoringEffect: {
+      score: 5, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, _, _],
+          [X, X, X],
+          [_, _, _]
+        ]
+      }
+    }
   },
 
   [Card.Armorer]: {
@@ -504,7 +570,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Farmer] } }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 7, validPositions: [{ x: -1, y: -1 }, { x: 0, y: -1 }, { x: 1, y: -1 }] }
+    scoringEffect: {
+      score: 7, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, _, _],
+          [_, _, _],
+          [X, X, X]
+        ]
+      }
+    }
   },
 
   [Card.Locksmith]: {
@@ -550,7 +624,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       value: 1,
       condition: { filledOrEmpty: SpaceFilling.Filled }
     }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 }] }
+    scoringEffect: {
+      score: 5, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, _, X],
+          [_, _, X],
+          [_, _, X]
+        ]
+      }
+    }
   },
 
   [Card.Monk]: {
@@ -618,7 +700,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Fisherman]: {
     cost: 2,
     blazon: [BlazonType.Farmer, BlazonType.Farmer],
-    scoringEffect: { type: ScoringType.ByPosition, value: 4, validPositions: [{ x: -1, y: -1 }, { x: -1, y: 1 }, { x: 1, y: -1 }, { x: 1, y: 1 }] }
+    scoringEffect: {
+      score: 4, condition: {
+        type: ConditionType.IfPosition, position: [
+          [X, _, X],
+          [_, _, _],
+          [X, _, X]
+        ]
+      }
+    }
   },
 
   [Card.Baker]: {
@@ -629,7 +719,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       value: 1,
       condition: { banner: Place.Village }
     }],
-    scoringEffect: { type: ScoringType.ByPosition, value: 3, validPositions: [{ x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: -1 }, { x: 0, y: 1 }] }
+    scoringEffect: {
+      score: 3, condition: {
+        type: ConditionType.IfPosition, position: [
+          [_, X, _],
+          [X, _, X],
+          [_, X, _]
+        ]
+      }
+    }
   },
 
   [Card.Beekeeper]: {
