@@ -99,7 +99,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
 
   [Card.Alchemist]: {
     cost: 6, blazon: [BlazonType.Teacher],
-    scoringEffect: { type: ScoringType.ByDiscount, value: 4 }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerCardWithDiscount } }
   },
 
   [Card.Astronomer]: {

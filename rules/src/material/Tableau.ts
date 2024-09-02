@@ -3,7 +3,7 @@ import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card, getCardPlace } from './Card'
-import { BlazonType, cardCharacteristics, shields } from './CardCharacteristics'
+import { BlazonType, cardCharacteristics, isDiscount, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
@@ -63,6 +63,8 @@ export class Tableau extends MaterialRulesPart {
         } else {
           return this.countCards(card => cardCharacteristics[card].cost === condition.cost)
         }
+      case ConditionType.PerCardWithDiscount:
+        return this.countCards(isDiscount)
       default:
         return 0
     }

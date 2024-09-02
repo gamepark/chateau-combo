@@ -7,7 +7,6 @@ import { Place } from './Place'
 export enum ScoringType {
   ByBanner,
   ByKeys,
-  ByDiscount,
   ByPosition,
   IfHiddenCard,
   ByGoldOnCard,
@@ -15,7 +14,7 @@ export enum ScoringType {
 }
 
 export type Scoring = ScoringByBanner
-  | ScoringByKeys | ScoringByDiscount | ScoringByPosition | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
+  | ScoringByKeys | ScoringByPosition | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
   | { score: number, condition: Condition }
 
 export type ScoringByBanner = {
@@ -26,11 +25,6 @@ export type ScoringByBanner = {
 
 export type ScoringByKeys = {
   type: ScoringType.ByKeys
-  value: number
-}
-
-export type ScoringByDiscount = {
-  type: ScoringType.ByDiscount
   value: number
 }
 

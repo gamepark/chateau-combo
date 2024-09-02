@@ -10,12 +10,11 @@ import {
   XYCoordinates
 } from '@gamepark/rules-api'
 import sumBy from 'lodash/sumBy'
-import { cardCharacteristics, isDiscount } from './material/CardCharacteristics'
+import { cardCharacteristics } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import {
   ScoringByBanner,
-  ScoringByDiscount,
   ScoringByGoldOnAllCards,
   ScoringByGoldOnCard,
   ScoringByKeys,
@@ -117,8 +116,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreByKeys(card, playerKeys)
         case ScoringType.ByBanner:
           return this.getScoreByBanner(card, panorama)
-        case ScoringType.ByDiscount:
-          return this.getScoreByDiscountCards(card, panorama)
         case ScoringType.IfHiddenCard:
           return this.getScoreIfHiddenCard(card, this.getTableau(playerId))
         case ScoringType.ByGoldOnCard:
@@ -161,21 +158,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     const scoringEffect = cardCharacteristics[card.id.front].scoringEffect as ScoringByKeys
     console.log('score : ', keys * scoringEffect.value)
     return keys * scoringEffect.value
-  }
-
-  getScoreByDiscountCards(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const value = (cardCaracs.scoringEffect as ScoringByDiscount).value
-    const discountCardsCount = this.countDiscountCards(panorama)
-    console.log('score : ', value * discountCardsCount)
-    return value * discountCardsCount
-  }
-
-  countDiscountCards(panorama: MaterialItem[]) {
-    return panorama
-      .filter((i) => isDiscount(i.id.front))
-      .length
   }
 
   getScoreIfHiddenCard(card: MaterialItem, panorama: MaterialItem[]): number {
