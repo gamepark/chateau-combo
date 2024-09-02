@@ -1,3 +1,4 @@
+import { getEnumValues } from '@gamepark/rules-api'
 import { Sign, SpaceFilling } from '../rules/effects/AbstractImmediateEffect'
 import { PutMethod } from '../rules/effects/ImmediatePutGoldOnCardEffect'
 import { Card } from './Card'
@@ -19,6 +20,8 @@ export enum BlazonType {
   MissingDifferent,
   Identical
 }
+
+export const shields = getEnumValues(BlazonType).filter(shield => shield <= 6) // TODO: remove filter once enum is cleaned
 
 export type CardPattern = {
   //banner:BannerType
@@ -57,7 +60,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 7,
     blazon: [BlazonType.Prayer],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 3, condition: { opponentGain: 1 } }],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 6, missingBlazonType: BlazonType.Different }
+    scoringEffect: { score: 6, condition: { type: ConditionType.PerMissingShieldType } }
   },
 
   [Card.Chaplain]: {
@@ -72,7 +75,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Prayer],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Castle } }],
-    scoringEffect: { score: 3, condition: {type: ConditionType.PerShield, shield: BlazonType.Prayer, line: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer, line: true } }
   },
 
   [Card.Templar]: {

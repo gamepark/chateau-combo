@@ -3,7 +3,7 @@ import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card } from './Card'
-import { cardCharacteristics } from './CardCharacteristics'
+import { cardCharacteristics, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
@@ -43,6 +43,12 @@ export class Tableau extends MaterialRulesPart {
         )
       case ConditionType.PerDifferentShieldType:
         return uniq(this.getConsideredCards(condition, x, y).map(card => card ? cardCharacteristics[card].blazon : [])).length
+      case ConditionType.PerMissingShieldType:
+        return shields.filter(shield =>
+          !this.cards.some(card =>
+            card && cardCharacteristics[card].blazon.some(cardShield => cardShield === shield)
+          )
+        ).length
       default:
         return 0
     }
@@ -52,6 +58,10 @@ export class Tableau extends MaterialRulesPart {
     if (line && column) return this.tableau.flatMap((l, y2) => l.filter((_, x2) => y === y2 || x === x2))
     if (line && !column) return this.tableau[y]
     if (!line && column) return this.tableau.map(l => l[x])
+    return this.cards
+  }
+
+  get cards() {
     return this.tableau.flatMap(l => l)
   }
 }

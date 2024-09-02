@@ -16,9 +16,9 @@ export enum ConditionType {
   IfPosition
 }
 
-export type Condition = PerShieldCondition | PerDifferentShieldType
+export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType
 
-export type PerShieldCondition = {
+export type PerShield = {
   type: ConditionType.PerShield
   shield: BlazonType
   line?: boolean
@@ -29,4 +29,8 @@ export type PerDifferentShieldType = {
   type: ConditionType.PerDifferentShieldType
   line?: boolean
   column?: boolean
+}
+
+export type PerMissingShieldType = {
+  type: ConditionType.PerMissingShieldType
 }

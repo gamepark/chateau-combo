@@ -17,9 +17,15 @@ import { Place } from './material/Place'
 import {
   ScoringByBanner,
   ScoringByBannerGroup,
-  ScoringByBlazon,
   ScoringByBlazonCount,
-  ScoringByBlazonGroup, ScoringByCost, ScoringByDiscount, ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByKeys, ScoringByPosition, ScoringIfHiddenCard,
+  ScoringByBlazonGroup,
+  ScoringByCost,
+  ScoringByDiscount,
+  ScoringByGoldOnAllCards,
+  ScoringByGoldOnCard,
+  ScoringByKeys,
+  ScoringByPosition,
+  ScoringIfHiddenCard,
   ScoringIfMissingBlazon,
   ScoringType
 } from './material/Scoring'
