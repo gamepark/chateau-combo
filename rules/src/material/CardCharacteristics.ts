@@ -6,7 +6,7 @@ import { ConditionType } from './Condition'
 import { ImmediateEffect, ImmediateEffectType } from './ImmediateEffect'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
-import { Scoring, ScoringType } from './Scoring'
+import { Scoring } from './Scoring'
 
 
 export enum BlazonType {
@@ -40,7 +40,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     blazon: [BlazonType.Noble],
     immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 0, putMethod: PutMethod.onTwoBest }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 3 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 3 } }
   },
 
   [Card.Scribe]: {
@@ -104,7 +104,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Prayer, BlazonType.Teacher],
     immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.GoldCoin }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 8 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 8 } }
   },
 
   [Card.Alchemist]: {
@@ -277,8 +277,8 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       effect1: { type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach },
       effect2: { type: ImmediateEffectType.GetKeys, value: 3 }
     }],
-    scoringEffect: { type: ScoringType.ByGoldOnAllCards, value: 1 }
-  },  // TODO : choose between, with gold on card
+    scoringEffect: { score: 1, condition: { type: ConditionType.PerGoldInAllPurses } }
+  },
 
   [Card.Pawnbroker]: {
     cost: 4,
@@ -328,7 +328,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 3,
     blazon: [BlazonType.Noble, BlazonType.Noble],
     immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 5 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
   },
 
   [Card.Jester]: {
@@ -405,7 +405,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Prayer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { banner: Place.Village } }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 5 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
   },
 
   [Card.MiraculouslyCured]: {
@@ -413,7 +413,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Prayer, BlazonType.Prayer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { onStockCard: true } }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 4 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   },
 
   [Card.Squire]: {
@@ -501,7 +501,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 2,
     blazon: [BlazonType.Soldier, BlazonType.Soldier],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Soldier] } }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 4 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   },
 
   [Card.Mercenary]: {
@@ -519,14 +519,14 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       value: 0,
       condition: { opponentGain: 2 }
     }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 6 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 6 } }
   }, // TODO
   [Card.Sculptor]: {
     cost: 3,
     blazon: [BlazonType.Prayer, BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Prayer] } }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 7 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 7 } }
   },
 
   [Card.Clockmaker]: {
@@ -563,7 +563,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker, BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 4 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   }, // TODO
   [Card.Farmer]: {
     cost: 5,
@@ -687,7 +687,12 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     scoringEffect: { score: 2, condition: { type: ConditionType.PerCardWithCost, cost: 0 } }
   },
 
-  [Card.Farmhand]: { cost: 0, blazon: [BlazonType.Farmer], moveMessenger: true, scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 5 } },
+  [Card.Farmhand]: {
+    cost: 0,
+    blazon: [BlazonType.Farmer],
+    moveMessenger: true,
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
+  },
 
   [Card.Revolutionary]: {
     cost: 4,
@@ -734,9 +739,8 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 2,
     blazon: [BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }],
-    scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 9 }
-  } // TODO
-
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 9 } }
+  }
 }
 
 export const getCost = (card: Card) => cardCharacteristics[card].cost

@@ -1,18 +1,6 @@
-import {
-  CompetitiveScore,
-  FillGapStrategy,
-  hideFront,
-  MaterialGame,
-  MaterialItem,
-  MaterialMove,
-  PositiveSequenceStrategy,
-  SecretMaterialRules
-} from '@gamepark/rules-api'
-import sumBy from 'lodash/sumBy'
-import { cardCharacteristics } from './material/CardCharacteristics'
+import { CompetitiveScore, FillGapStrategy, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringType } from './material/Scoring'
 import { Tableau } from './material/Tableau'
 import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
@@ -60,92 +48,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   }
 
   getScore(player: PlayerId): number {
-    const tableau = this.getTableauWithoutHiddenCards(player)
-    return sumBy(tableau, card => this.getScoreOfTheCard(card)) + new Tableau(this.game, player).score
+    return this.material(MaterialType.Key).player(player).getQuantity() + new Tableau(this.game, player).score
   }
-
-  getTableau(player: PlayerId) {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.PlayerBoard)
-      .player(player)
-      .getItems()
-  }
-
-  getTableauWithoutHiddenCards(player: PlayerId) {
-    return this.getTableau(player).filter(item => item.location.rotation === undefined)
-  }
-
-  countPlayerGoldOnCards(player: PlayerId) {
-    return this.getPlayerGoldOnCards(player).getQuantity()
-  }
-
-  getPlayerGoldOnCards(player: PlayerId) {
-    return this
-      .material(MaterialType.GoldCoin)
-      .location(LocationType.PlayerBoard)
-      .player(player)
-  }
-
-  getScoreOfTheCard(card: MaterialItem): number {
-    if (card.location.rotation) return 0
-    const playerId = card.location.player!
-    const cardCaracs = cardCharacteristics[card.id.front]
-    if (cardCaracs.scoringEffect !== undefined) {
-      switch ((cardCaracs.scoringEffect as any).type) {
-        case ScoringType.ByGoldOnCard:
-          return this.getScoreByGoldOnCard(card, playerId)
-        case ScoringType.ByGoldOnAllCards:
-          return this.getScoreByGoldOnAllCards(card, playerId)
-      }
-    }
-
-    return 0
-  }
-
-  getScoreByGoldOnCard(card: MaterialItem, playerId: number): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const value = (cardCaracs.scoringEffect as ScoringByGoldOnCard).value
-    const goldOnCard = this.countPlayerGoldOnCard(playerId, card)
-    console.log('score : ', goldOnCard * value)
-    return goldOnCard * value
-  }
-
-  countPlayerGoldOnCard(player: PlayerId, card: MaterialItem) {
-    return this.getPlayerGoldOnCards(player)
-      .filter(item => item.location.x === card.location.x && item.location.y === card.location.y)
-      .getQuantity()
-  }
-
-  getScoreByGoldOnAllCards(card: MaterialItem, playerId: number): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const value = (cardCaracs.scoringEffect as ScoringByGoldOnAllCards).value
-    const goldOnAllCards = this.countPlayerGoldOnCards(playerId)
-    console.log('score : ', value * goldOnAllCards)
-    return value * goldOnAllCards
-  }
-
-  getRationnalizedPanorama(panorama: MaterialItem[]): MaterialItem[] {
-    const maxX = Math.max(...panorama.map(item => item.location.x!))
-    const maxY = Math.max(...panorama.map(item => item.location.y!))
-    const rationnalizedPanorama = panorama.map(item => {
-      const result = item
-      if (maxX === 2) {
-        result.location.x = result.location.x! - 1
-      } else if (maxX === 0) {
-        result.location.x = result.location.x! + 1
-      }
-      if (maxY === 2) {
-        result.location.y = result.location.y! - 1
-      } else if (maxY === 0) {
-        result.location.y = result.location.y! + 1
-      }
-      return result
-
-    })
-    return rationnalizedPanorama
-  }
-
 }

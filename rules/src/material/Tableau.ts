@@ -7,6 +7,7 @@ import { BlazonType, cardCharacteristics, isDiscount, shields } from './CardChar
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
+import { hasPurse } from './Scoring'
 
 export class Tableau extends MaterialRulesPart {
   tableau: (Card | null)[][] = [[], [], []]
@@ -72,7 +73,7 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.IfCardFlippedDown:
         return this.cards.every(isNotNull) ? 0 : 1
       case ConditionType.PerCardWithPurse:
-        return 0 // TODO once all other scoring are migrated
+        return this.countCards(hasPurse)
       case ConditionType.PerGoldInPurse:
         // TODO: store gold on the card (parent item)
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).location(l => l.x === x && l.y === y).getQuantity()
