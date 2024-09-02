@@ -201,7 +201,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 7,
     blazon: [BlazonType.Soldier],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Different] } }],
-    scoringEffect: { type: ScoringType.ByBlazonGroup, value: 6, blazonGroupType: [BlazonType.Identical] }
+    scoringEffect: { score: 6, condition: { type: ConditionType.PerIdenticalShieldsSet, count: 3 } }
   },
 
   [Card.Knight]: {

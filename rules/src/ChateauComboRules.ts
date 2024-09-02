@@ -10,7 +10,7 @@ import {
   XYCoordinates
 } from '@gamepark/rules-api'
 import sumBy from 'lodash/sumBy'
-import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDiscount } from './material/CardCharacteristics'
+import { cardCharacteristics, isDiscount } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Place } from './material/Place'
@@ -18,7 +18,6 @@ import {
   ScoringByBanner,
   ScoringByBannerGroup,
   ScoringByBlazonCount,
-  ScoringByBlazonGroup,
   ScoringByCost,
   ScoringByDiscount,
   ScoringByGoldOnAllCards,
@@ -123,8 +122,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreByKeys(card, playerKeys)
         case ScoringType.ByBanner:
           return this.getScoreByBanner(card, panorama)
-        case ScoringType.ByBlazonGroup:
-          return this.getScoreByBlazonGroup(card, panorama)
         case ScoringType.ByDiscount:
           return this.getScoreByDiscountCards(card, panorama)
         case ScoringType.ByCost:
@@ -175,36 +172,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
 
     console.log('score : ', value * Math.min(...Object.values(playerBannerCount)))
     return value * Math.min(...Object.values(playerBannerCount))
-  }
-
-  getScoreByBlazonGroup(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const scoringEffect = cardCaracs.scoringEffect as ScoringByBlazonGroup
-    const value = scoringEffect.value
-    const blazonGroup: BlazonType[] = scoringEffect.blazonGroupType
-
-    if (blazonGroup[0] === BlazonType.Identical) {
-
-      const playerBlazonCounting: Record<number, number> = {
-        [BlazonType.Noble]: 0,
-        [BlazonType.Prayer]: 0,
-        [BlazonType.Teacher]: 0,
-        [BlazonType.Soldier]: 0,
-        [BlazonType.Worker]: 0,
-        [BlazonType.Farmer]: 0
-      }
-
-      panorama.forEach(item =>
-        getBlazons(item.id.front).forEach(blazon => playerBlazonCounting[blazon] += 1)
-      )
-      console.log('score : ', value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0))
-      return value * Object.values(playerBlazonCounting).reduce((acc, cur) => acc + cur % 3, 0)
-
-    } else {
-      console.log('score : ', value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazonToCount), 0))))
-      return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazonToCount), 0)))
-    }
   }
 
   getScoreByBlazonQuantity(card: MaterialItem, panorama: MaterialItem[]): number {

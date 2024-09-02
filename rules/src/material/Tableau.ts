@@ -3,7 +3,7 @@ import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card } from './Card'
-import { cardCharacteristics, shields } from './CardCharacteristics'
+import { BlazonType, cardCharacteristics, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
@@ -38,9 +38,7 @@ export class Tableau extends MaterialRulesPart {
   countCondition(condition: Condition, x: number, y: number) {
     switch (condition.type) {
       case ConditionType.PerShield:
-        return sumBy(this.getConsideredCards(condition, x, y), card =>
-          card ? cardCharacteristics[card].blazon.filter(shield => shield === condition.shield).length : 0
-        )
+        return this.countShields(condition.shield, this.getConsideredCards(condition, x, y))
       case ConditionType.PerDifferentShieldType:
         return uniq(this.getConsideredCards(condition, x, y).map(card => card ? cardCharacteristics[card].blazon : [])).length
       case ConditionType.PerMissingShieldType:
@@ -53,6 +51,8 @@ export class Tableau extends MaterialRulesPart {
         return this.cards.some(card => card && cardCharacteristics[card].blazon.some(shield => shield === condition.shield)) ? 0 : 1
       case ConditionType.PerShieldsSet:
         return this.countSets(condition.shields, this.cards.flatMap(card => card ? cardCharacteristics[card].blazon : []))
+      case ConditionType.PerIdenticalShieldsSet:
+        return sumBy(shields, shield => Math.floor(this.countShields(shield) / condition.count))
       default:
         return 0
     }
@@ -67,6 +67,10 @@ export class Tableau extends MaterialRulesPart {
 
   get cards() {
     return this.tableau.flatMap(l => l)
+  }
+
+  countShields(shield: BlazonType, cards = this.cards) {
+    return sumBy(cards, card => card ? cardCharacteristics[card].blazon.filter(s => s === shield).length : 0)
   }
 
   countSets(set: number[], values: number[]) {

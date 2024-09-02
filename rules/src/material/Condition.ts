@@ -18,7 +18,7 @@ export enum ConditionType {
   IfPosition
 }
 
-export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet
+export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -45,4 +45,9 @@ export type IfShieldMissing = {
 export type PerShieldsSet = {
   type: ConditionType.PerShieldsSet
   shields: BlazonType[]
+}
+
+export type PerIdenticalShieldsSet = {
+  type: ConditionType.PerIdenticalShieldsSet
+  count: number
 }
