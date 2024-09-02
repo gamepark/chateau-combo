@@ -83,6 +83,10 @@ export class Tableau extends MaterialRulesPart {
       }
       case ConditionType.PerGoldInAllPurses:
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getQuantity()
+      case ConditionType.PerFullPosition:
+        return this.countCards()
+      case ConditionType.PerEmptyPosition:
+        return 9 - this.countCards()
       case ConditionType.IfPosition:
         return condition.position[y][x] ? 1 : 0
       case ConditionType.BestNeighbor:
@@ -120,7 +124,7 @@ export class Tableau extends MaterialRulesPart {
     return sets
   }
 
-  countCards(predicate: (card: Card) => boolean) {
+  countCards(predicate: (card: Card) => boolean = () => true) {
     return this.cards.reduce((sum, card) => card && predicate(card) ? sum + 1 : sum, 0)
   }
 
