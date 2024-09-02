@@ -1,6 +1,6 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { BlazonType, canStockCoins, countBlazons, countBlazonsOfType, getBlazons } from '../../material/CardCharacteristics'
-import { ImmediateEffectType } from '../../material/ImmediateEffectType'
+import { ImmediateEffectType } from '../../material/ImmediateEffect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { AbstractImmediateEffect, Condition, isRespectingCostCondition, SpaceFilling } from './AbstractImmediateEffect'

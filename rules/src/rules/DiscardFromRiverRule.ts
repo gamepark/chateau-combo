@@ -1,5 +1,6 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
+import { DiscardFromRiverEffect } from '../material/ImmediateEffect'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
@@ -29,13 +30,13 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
   }
 
   get discardPlace() {
-    return cardCharacteristics[this.placedCard.id.front].immediateEffect![0].river
+    return (cardCharacteristics[this.placedCard.id.front].immediateEffect![0] as DiscardFromRiverEffect).river
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Discard) return []
 
-    const effect = cardCharacteristics[this.placedCard.id.front].immediateEffect![0]
+    const effect = cardCharacteristics[this.placedCard.id.front].immediateEffect![0] as DiscardFromRiverEffect
     const discardedCardId = this.material(MaterialType.Card).getItem(move.itemIndex)!.id.front
     const discardedCardCost = cardCharacteristics[discardedCardId].cost
     const moves: MaterialMove[] = []

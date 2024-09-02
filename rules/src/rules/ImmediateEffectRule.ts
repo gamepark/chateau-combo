@@ -1,6 +1,6 @@
 import { MaterialGame, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { ImmediateEffectType } from '../material/ImmediateEffectType'
+import { ImmediateEffectType } from '../material/ImmediateEffect'
 import { MaterialType } from '../material/MaterialType'
 import { AbstractImmediateEffect } from './effects/AbstractImmediateEffect'
 import { ImmediateGainCoinEffect } from './effects/ImmediateGainCoinEffect'

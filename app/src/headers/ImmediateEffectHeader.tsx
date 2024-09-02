@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
-import { ImmediateEffectType } from "@gamepark/chateau-combo/material/ImmediateEffectType"
+import { ImmediateEffectType } from "@gamepark/chateau-combo/material/ImmediateEffect"
 import { MaterialType } from "@gamepark/chateau-combo/material/MaterialType"
 import { Memory } from "@gamepark/chateau-combo/rules/Memory"
 import { usePlayerId, useRules } from "@gamepark/react-game"

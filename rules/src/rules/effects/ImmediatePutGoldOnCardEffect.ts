@@ -1,5 +1,5 @@
 import { MaterialMove } from "@gamepark/rules-api";
-import { ImmediateEffectType } from "../../material/ImmediateEffectType";
+import { ImmediateEffectType } from "../../material/ImmediateEffect";
 
 import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
 import { cardCharacteristics, ScoringType } from '../../material/CardCharacteristics'

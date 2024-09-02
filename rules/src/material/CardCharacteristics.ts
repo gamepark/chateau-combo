@@ -1,7 +1,7 @@
 import { Sign, SpaceFilling } from '../rules/effects/AbstractImmediateEffect'
 import { PutMethod } from '../rules/effects/ImmediatePutGoldOnCardEffect'
 import { Card } from './Card'
-import { ImmediateEffectType } from './ImmediateEffectType'
+import { ImmediateEffect, ImmediateEffectType } from './ImmediateEffect'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
 
@@ -40,7 +40,7 @@ export type CardPattern = {
   blazon: BlazonType[]
   moveMessenger?: boolean
   // TDOO :
-  immediateEffect?: ({ type: ImmediateEffectType } & Record<any, any>)[]
+  immediateEffect?: ImmediateEffect[]
   scoringEffect: ({ type: ScoringType } & Record<any, any>)
 }
 
@@ -467,7 +467,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Innkeeper]: {
     cost: 0,
     blazon: [BlazonType.Worker],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMehtod: PutMethod.onEach }, {
+    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }, {
       type: ImmediateEffectType.GetCoins,
       value: 0,
       condition: { opponentGain: 2 }
