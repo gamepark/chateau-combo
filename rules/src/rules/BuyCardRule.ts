@@ -88,7 +88,7 @@ export class BuyCardRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (isDeleteItemType(MaterialType.Key)(move)) {
       this.memorize(Memory.KeySpent, true)
-      return [this.startRule(RuleId.SpendKey)]
+      return [this.startRule(RuleId.KeyEffect)]
     }
 
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.PlayerBoard) return []

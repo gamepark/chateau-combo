@@ -5,7 +5,7 @@ import { PlayMoveButton, usePlayerId, useRules } from '@gamepark/react-game'
 import { ItemMoveType, MaterialMove, MoveKind } from '@gamepark/rules-api'
 import { useTranslation } from 'react-i18next'
 
-export const SpendKeyHeader = () => {
+export const KeyEffectHeader = () => {
   const rules = useRules<ChateauComboRules>()!
   const player = usePlayerId()
   const activePlayer = rules.getActivePlayer()!

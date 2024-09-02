@@ -15,7 +15,7 @@ import { EndOfTurnRule } from './rules/EndOfTurnRule'
 import { MoveMessengerRule } from './rules/MoveMessengerRule'
 import { RuleId } from './rules/RuleId'
 import { BuyCardRule } from './rules/BuyCardRule'
-import { SpendKeyRule } from './rules/SpendKeyRule'
+import { KeyEffectRule } from './rules/KeyEffectRule'
 import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
 import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
 import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
@@ -29,7 +29,7 @@ import { EndGameRule } from './rules/EndGameRule'
 export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
 implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
-    [RuleId.SpendKey]: SpendKeyRule,
+    [RuleId.KeyEffect]: KeyEffectRule,
     [RuleId.BuyCard]: BuyCardRule,
     [RuleId.MoveMessenger]: MoveMessengerRule,
     [RuleId.EndOfTurn]: EndOfTurnRule,
