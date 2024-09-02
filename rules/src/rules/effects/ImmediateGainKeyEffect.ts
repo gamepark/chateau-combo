@@ -1,5 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import { BlazonType, canStockCoins, countBlazons, countBlazonsOfType, getBlazons } from '../../CardCharacteristics'
+import { BlazonType, canStockCoins, countBlazons, countBlazonsOfType, getBlazons } from '../../material/CardCharacteristics'
 import { ImmediateEffectType } from '../../material/ImmediateEffectType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'

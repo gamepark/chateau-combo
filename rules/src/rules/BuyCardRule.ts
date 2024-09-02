@@ -1,5 +1,5 @@
 import { isDeleteItemType, isMoveItemType, ItemMove, Location, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { cardCharacteristics, isDiscountForPlace } from '../CardCharacteristics'
+import { cardCharacteristics, isDiscountForPlace } from '../material/CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'

@@ -1,5 +1,5 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { cardCharacteristics } from '../CardCharacteristics'
+import { cardCharacteristics } from '../material/CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'

@@ -1,10 +1,10 @@
-import { Card } from './material/Card'
-import { ImmediateEffectType } from './material/ImmediateEffectType'
-import { MaterialType } from './material/MaterialType'
-import { Place } from './material/Place'
-import { Sign, SpaceFilling } from './rules/effects/AbstractImmediateEffect'
-import { PutMethod } from './rules/effects/ImmediatePutGoldOnCardEffect'
-import { ScoringType } from './rules/EndGameRule'
+import { Card } from './Card'
+import { ImmediateEffectType } from './ImmediateEffectType'
+import { MaterialType } from './MaterialType'
+import { Place } from './Place'
+import { Sign, SpaceFilling } from '../rules/effects/AbstractImmediateEffect'
+import { PutMethod } from '../rules/effects/ImmediatePutGoldOnCardEffect'
+import { ScoringType } from '../rules/EndGameRule'
 
 
 export enum BlazonType {

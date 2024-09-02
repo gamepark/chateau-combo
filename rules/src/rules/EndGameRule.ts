@@ -1,5 +1,5 @@
 import { MaterialItem, MaterialMove, MaterialRulesPart, XYCoordinates } from '@gamepark/rules-api'
-import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDiscount } from '../CardCharacteristics'
+import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDiscount } from '../material/CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'

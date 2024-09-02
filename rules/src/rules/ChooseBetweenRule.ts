@@ -1,7 +1,7 @@
 import { CustomMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
-import { cardCharacteristics } from '../CardCharacteristics'
+import { cardCharacteristics } from '../material/CardCharacteristics'
 import { RuleId } from './RuleId'
 import { ImmediateEffectType } from '../material/ImmediateEffectType'
 import { CustomMoveType } from './CustomMoveType'

@@ -3,7 +3,7 @@ import { MaterialType } from "../../material/MaterialType";
 import { Place } from '../../material/Place'
 import { Memory } from "../Memory";
 import { LocationType } from "../../material/LocationType";
-import { BlazonType, getCost } from "../../CardCharacteristics";
+import { BlazonType, getCost } from "../../material/CardCharacteristics";
 
 export abstract class AbstractImmediateEffect<T> extends PlayerTurnRule {
     abstract getEffectMoves(effect: T): MaterialMove[]

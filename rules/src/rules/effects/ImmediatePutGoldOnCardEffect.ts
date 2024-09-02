@@ -2,7 +2,7 @@ import { MaterialMove } from "@gamepark/rules-api";
 import { ImmediateEffectType } from "../../material/ImmediateEffectType";
 
 import { AbstractImmediateEffect } from "./AbstractImmediateEffect";
-import { cardCharacteristics } from "../../CardCharacteristics";
+import { cardCharacteristics } from "../../material/CardCharacteristics";
 import { ScoringType } from "../EndGameRule";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
