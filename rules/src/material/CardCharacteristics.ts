@@ -179,7 +179,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Teacher],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 2 }],
-    scoringEffect: { type: ScoringType.ByBannerGroup, value: 3, bannerConditions: { castleBanners: 1, villageBanners: 1 } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerBannersSet, banners: [Place.Castle, Place.Village] } }
   },
 
   [Card.Patron]: {
@@ -539,7 +539,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 7,
     blazon: [BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Castle, bestNeighbor: true } }],
-    scoringEffect: { type: ScoringType.ByBannerGroup, value: 7, bannerConditions: { castleBanners: 0, villageBanners: 3 } }
+    scoringEffect: { score: 7, condition: { type: ConditionType.PerBannersSet, banners: [Place.Village, Place.Village, Place.Village] } }
   },
 
   [Card.Woodcutter]: {

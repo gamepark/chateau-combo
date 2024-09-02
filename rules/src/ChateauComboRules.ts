@@ -13,10 +13,8 @@ import sumBy from 'lodash/sumBy'
 import { cardCharacteristics, isDiscount } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { Place } from './material/Place'
 import {
   ScoringByBanner,
-  ScoringByBannerGroup,
   ScoringByBlazonCount,
   ScoringByCost,
   ScoringByDiscount,
@@ -130,8 +128,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreIfHiddenCard(card, this.getTableau(playerId))
         case ScoringType.ByBlazonCount:
           return this.getScoreByBlazonQuantity(card, panorama)
-        case ScoringType.ByBannerGroup:
-          return this.getScoreByBannerGroup(card, panorama)
         case ScoringType.ByGoldOnCard:
           return this.getScoreByGoldOnCard(card, playerId)
         case ScoringType.ByGoldOnAllCards:
@@ -149,29 +145,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     const banner = (cardCaracs.scoringEffect as ScoringByBanner).bannerType
     console.log('score : ', value * panorama.filter(item => banner === item.id.back).length)
     return value * panorama.filter(item => banner === item.id.back).length
-  }
-
-  getScoreByBannerGroup(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const value = (cardCaracs.scoringEffect as ScoringByBannerGroup).value
-    const bannerConditions: { castleBanners: number, villageBanners: number } = (cardCaracs.scoringEffect as ScoringByBannerGroup).bannerConditions
-    const playerBannerCount: Record<number, number> = {
-      [Place.Castle]: 0,
-      [Place.Village]: 0
-    }
-
-    panorama.forEach(item => playerBannerCount[item.id.back] += 1)
-
-    if (bannerConditions.castleBanners !== 0) {
-      playerBannerCount[Place.Castle] = playerBannerCount[Place.Castle] % bannerConditions.castleBanners
-    }
-    if (bannerConditions.villageBanners !== 0) {
-      playerBannerCount[Place.Village] = playerBannerCount[Place.Village] % bannerConditions.villageBanners
-    }
-
-    console.log('score : ', value * Math.min(...Object.values(playerBannerCount)))
-    return value * Math.min(...Object.values(playerBannerCount))
   }
 
   getScoreByBlazonQuantity(card: MaterialItem, panorama: MaterialItem[]): number {

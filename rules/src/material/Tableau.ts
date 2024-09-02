@@ -2,7 +2,7 @@ import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
-import { Card } from './Card'
+import { Card, getCardPlace } from './Card'
 import { BlazonType, cardCharacteristics, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
@@ -53,6 +53,8 @@ export class Tableau extends MaterialRulesPart {
         return this.countSets(condition.shields, this.cards.flatMap(card => card ? cardCharacteristics[card].blazon : []))
       case ConditionType.PerIdenticalShieldsSet:
         return sumBy(shields, shield => Math.floor(this.countShields(shield) / condition.count))
+      case ConditionType.PerBannersSet:
+        return this.countSets(condition.banners, this.cards.filter(isNotNull).map(getCardPlace))
       default:
         return 0
     }
@@ -86,3 +88,5 @@ export class Tableau extends MaterialRulesPart {
     return sets
   }
 }
+
+const isNotNull = <T>(value: T | null): value is T => value !== null

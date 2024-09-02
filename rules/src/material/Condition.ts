@@ -1,4 +1,5 @@
 import { BlazonType } from './CardCharacteristics'
+import { Place } from './Place'
 
 export enum ConditionType {
   PerShield = 1,
@@ -19,6 +20,7 @@ export enum ConditionType {
 }
 
 export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
+  | PerBannersSet
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -50,4 +52,9 @@ export type PerShieldsSet = {
 export type PerIdenticalShieldsSet = {
   type: ConditionType.PerIdenticalShieldsSet
   count: number
+}
+
+export type PerBannersSet = {
+  type: ConditionType.PerBannersSet
+  banners: Place[]
 }
