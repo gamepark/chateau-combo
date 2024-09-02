@@ -1,5 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import { BlazonType, canStockCoins, getBlazons, countBlazons, countBlazonsOfType } from '../../CardCharacteristics'
+import { BlazonType, canStockCoins, countBlazons, countBlazonsOfType, getBlazons } from '../../CardCharacteristics'
 import { ImmediateEffectType } from '../../material/ImmediateEffectType'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -54,54 +54,41 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
       : 0
 
     if (effect.condition !== undefined) {
-      moves.push(
-        this
-          .material(MaterialType.Key)
-          .createItem({
-            location: {
-              type: LocationType.PlayerKeyStock,
-              player: this.player
-            },
-            quantity: (howManyMatchedBlazonsQuantity
-                + howManyMatchedBanners
-                + howManyMatchedBlazons
-                + howManyMatchedSpaceFilling
-                + howManyMatchedCostCards
-                + howManyMatchedStoreCoinCards)
-              * effect.value
-          })
-      )
+      const quantity = (howManyMatchedBlazonsQuantity
+          + howManyMatchedBanners
+          + howManyMatchedBlazons
+          + howManyMatchedSpaceFilling
+          + howManyMatchedCostCards
+          + howManyMatchedStoreCoinCards)
+        * effect.value
+      moves.push(...this.gainKeys(quantity))
     } else {
-      moves.push(
-        this
-          .material(MaterialType.Key)
-          .createItem({
-            location: {
-              type: LocationType.PlayerKeyStock,
-              player: this.player
-            },
-            quantity: effect.value
-          })
-      )
+      moves.push(...this.gainKeys(effect.value))
     }
 
-    if (effect.condition !== undefined && effect.condition.opponentGain !== undefined) {
-      this.game.players.forEach(player => player !== this.player &&
-        moves.push(
-          this.material(MaterialType.Key)
-            .createItem({
-              location: {
-                type: LocationType.PlayerKeyStock,
-                player
-              },
-              quantity: effect.condition!.opponentGain
-            })
-        )
-      )
-
+    if (effect.condition !== undefined && effect.condition.opponentGain) {
+      for (const player of this.game.players) {
+        if (player === this.player) continue;
+        moves.push(...this.gainKeys(effect.condition!.opponentGain!))
+      }
     }
 
     return moves
 
+  }
+
+  gainKeys(quantity: number) {
+    if (!quantity) return []
+    return [
+      this
+        .material(MaterialType.Key)
+        .createItem({
+          location: {
+            type: LocationType.PlayerKeyStock,
+            player: this.player
+          },
+          quantity: quantity
+        })
+    ]
   }
 }

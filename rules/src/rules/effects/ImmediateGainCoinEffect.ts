@@ -54,57 +54,46 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
       ? playerPanorama.getItems().filter(card => canStockCoins(card.id.front)).length
       : 0
 
-    if (effect.value !== 0) {
+
+    if (effect.value) {
       if (effect.condition !== undefined) {
-        moves.push(
-          this
-            .material(MaterialType.GoldCoin)
-            .createItem({
-              location: {
-                type: LocationType.PlayerGoldStock,
-                player: this.player
-              },
-              quantity: (howManyMatchedBlazonsQuantity
-                  + howManyMatchedBanners
-                  + howManyMatchedBlazons
-                  + howManyMatchedSpaceFilling
-                  + howManyMatchedCostCards
-                  + howManyMatchedStoreCoinCards)
-                * effect.value
-            }))
+        const quantity = (howManyMatchedBlazonsQuantity
+          + howManyMatchedBanners
+          + howManyMatchedBlazons
+          + howManyMatchedSpaceFilling
+          + howManyMatchedCostCards
+          + howManyMatchedStoreCoinCards) * effect.value
+        moves.push(...this.gainGold(quantity))
       } else {
-        moves.push(
-          this
-            .material(MaterialType.GoldCoin)
-            .createItem({
-              location: {
-                type: LocationType.PlayerGoldStock,
-                player: this.player
-              },
-              quantity: effect.value
-            })
-        )
+        moves.push(...this.gainGold(effect.value))
       }
 
     }
 
-    if (effect.condition !== undefined && effect.condition.opponentGain !== undefined) {
-      this.game.players.forEach(player => player !== this.player &&
-        moves.push(
-          this.material(MaterialType.GoldCoin)
-            .createItem({
-              location: {
-                type: LocationType.PlayerGoldStock,
-                player
-              },
-              quantity: effect.condition!.opponentGain
-            })
-        )
-      )
-
+    if (effect.condition !== undefined && effect.condition.opponentGain) {
+      for (const player of this.game.players) {
+        if (player === this.player) {
+          moves.push(...this.gainGold(effect.condition.opponentGain))
+        }
+      }
     }
 
     return moves
 
+  }
+
+  gainGold(quantity: number) {
+    if (!quantity) return []
+    return [
+      this
+        .material(MaterialType.GoldCoin)
+        .createItem({
+          location: {
+            type: LocationType.PlayerGoldStock,
+            player: this.player
+          },
+          quantity: quantity
+        })
+    ]
   }
 }
