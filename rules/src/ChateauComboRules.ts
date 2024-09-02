@@ -10,10 +10,19 @@ import {
   XYCoordinates
 } from '@gamepark/rules-api'
 import sumBy from 'lodash/sumBy'
-import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDiscount, ScoringType } from './material/CardCharacteristics'
+import { BlazonType, cardCharacteristics, countBlazonsOfType, getBlazons, isDiscount } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Place } from './material/Place'
+import {
+  ScoringByBanner,
+  ScoringByBannerGroup,
+  ScoringByBlazon,
+  ScoringByBlazonCount,
+  ScoringByBlazonGroup, ScoringByCost, ScoringByDiscount, ScoringByKeys, ScoringByPosition,
+  ScoringIfMissingBlazon,
+  ScoringType
+} from './material/Scoring'
 import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
 import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
@@ -137,8 +146,8 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByBanner(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    const banner = cardCaracs.scoringEffect!.bannerType
+    const value = (cardCaracs.scoringEffect as ScoringByBanner).value
+    const banner = (cardCaracs.scoringEffect as ScoringByBanner).bannerType
     console.log('score : ', value * panorama.filter(item => banner === item.id.back).length)
     return value * panorama.filter(item => banner === item.id.back).length
   }
@@ -146,8 +155,8 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByBannerGroup(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    const bannerConditions: { castleBanners: number, villageBanners: number } = cardCaracs.scoringEffect!.bannerConditions
+    const value = (cardCaracs.scoringEffect as ScoringByBannerGroup).value
+    const bannerConditions: { castleBanners: number, villageBanners: number } = (cardCaracs.scoringEffect as ScoringByBannerGroup).bannerConditions
     const playerBannerCount: Record<number, number> = {
       [Place.Castle]: 0,
       [Place.Village]: 0
@@ -170,14 +179,15 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByBlazon(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const blazon = cardCaracs.scoringEffect!.blazonCondition.blazonType
-    const value = cardCaracs.scoringEffect!.value
+    const scoringEffect = cardCaracs.scoringEffect as ScoringByBlazon
+    const blazon = scoringEffect.blazonCondition.blazonType
+    const value = scoringEffect.value
     const cardCoordinates = { x: card.location.x!, y: card.location.y! }
-    const cardsToCheck = !cardCaracs.scoringEffect!.blazonCondition.line && !cardCaracs.scoringEffect!.blazonCondition.column
+    const cardsToCheck = !scoringEffect.blazonCondition.line && !scoringEffect.blazonCondition.column
       ? panorama
       : panorama.filter(item => (
-        (!!cardCaracs.scoringEffect!.blazonCondition.line && item.location.y === cardCoordinates.y) ||
-        (!!cardCaracs.scoringEffect!.blazonCondition.column && item.location.x === cardCoordinates.x)
+        (!!scoringEffect.blazonCondition.line && item.location.y === cardCoordinates.y) ||
+        (!!scoringEffect.blazonCondition.column && item.location.x === cardCoordinates.x)
       ))
 
     if (blazon === BlazonType.Different) {
@@ -196,8 +206,9 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByBlazonGroup(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    const blazonGroup: BlazonType[] = cardCaracs.scoringEffect!.blazonGroupType
+    const scoringEffect = cardCaracs.scoringEffect as ScoringByBlazonGroup
+    const value = scoringEffect.value
+    const blazonGroup: BlazonType[] = scoringEffect.blazonGroupType
 
     if (blazonGroup[0] === BlazonType.Identical) {
 
@@ -225,8 +236,9 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByMissingBlazon(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    const missingBlazon = cardCaracs.scoringEffect!.missingBlazonType
+    const scoringEffect = cardCaracs.scoringEffect as ScoringIfMissingBlazon
+    const value = scoringEffect.value
+    const missingBlazon = scoringEffect.missingBlazonType
     const howManyDifferentBlazons: BlazonType[] = []
     panorama.forEach(item => {
       getBlazons(item.id.front).forEach(blazon => !howManyDifferentBlazons.includes(blazon) && howManyDifferentBlazons.push(blazon))
@@ -240,17 +252,20 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByBlazonQuantity(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    const quantityToCheck = cardCaracs.scoringEffect!.blazonQuantity
-    console.log('score : ', value * panorama.filter(item => cardCharacteristics[item.id.front].blazon.lastIndexOf === quantityToCheck).length)
-    return value * panorama.filter(item => cardCharacteristics[item.id.front].blazon.lastIndexOf === quantityToCheck).length
+    const scoringEffect = cardCaracs.scoringEffect as ScoringByBlazonCount
+    const value = scoringEffect.value
+    const quantityToCheck = scoringEffect.blazonQuantity
+    // TODO: fix that
+    //console.log('score : ', value * panorama.filter(item => cardCharacteristics[item.id.front].blazon.lastIndexOf === quantityToCheck).length)
+    return 0 //value * panorama.filter(item => cardCharacteristics[item.id.front].blazon.lastIndexOf === quantityToCheck).length
   }
 
   getScoreByPosition(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    const validPositions: XYCoordinates[] = cardCaracs.scoringEffect!.validPositions
+    const scoringEffect = cardCaracs.scoringEffect as ScoringByPosition
+    const value = scoringEffect.value
+    const validPositions: XYCoordinates[] = scoringEffect.validPositions
     const rationnalizedPanorama = this.getRationnalizedPanorama(panorama)
     const cardCoordinates = {
       x: rationnalizedPanorama.find(item => item.id.front === card.id.front)!.location.x!,
@@ -263,14 +278,15 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
 
   getScoreByKeys(card: MaterialItem, keys: number): number {
     console.log('score carte n° ', card.id.front)
-    console.log('score : ', keys * cardCharacteristics[card.id.front].scoringEffect!.value)
-    return keys * cardCharacteristics[card.id.front].scoringEffect!.value
+    const scoringEffect = cardCharacteristics[card.id.front].scoringEffect as ScoringByKeys
+    console.log('score : ', keys * scoringEffect.value)
+    return keys * scoringEffect.value
   }
 
   getScoreByDiscountCards(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
+    const value = (cardCaracs.scoringEffect as ScoringByDiscount).value
     const discountCardsCount = this.countDiscountCards(panorama)
     console.log('score : ', value * discountCardsCount)
     return value * discountCardsCount
@@ -285,9 +301,10 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   getScoreByCost(card: MaterialItem, panorama: MaterialItem[]): number {
     console.log('score carte n° ', card.id.front)
     const cardCaracs = cardCharacteristics[card.id.front]
-    const value = cardCaracs.scoringEffect!.value
-    console.log('score : ', value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)), 0))
-    return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, cardCaracs.scoringEffect!.cardCost) ? 1 : 0)), 0)
+    const scoringEffect = cardCaracs.scoringEffect as ScoringByCost
+    const value = scoringEffect.value
+    console.log('score : ', value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, scoringEffect.cardCost) ? 1 : 0)), 0))
+    return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, scoringEffect.cardCost) ? 1 : 0)), 0)
   }
 
   getScoreIfHiddenCard(card: MaterialItem, panorama: MaterialItem[]): number {

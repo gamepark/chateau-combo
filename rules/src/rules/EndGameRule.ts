@@ -1,7 +1,8 @@
 import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { cardCharacteristics, ScoringType } from '../material/CardCharacteristics'
+import { cardCharacteristics } from '../material/CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { ScoringByGoldOnCard, ScoringType } from '../material/Scoring'
 import { PlayerId } from '../PlayerId'
 
 export class EndGameRule extends MaterialRulesPart {
@@ -19,7 +20,7 @@ export class EndGameRule extends MaterialRulesPart {
         if (playerGoldStock.getQuantity() === 0) return
 
         const goldAlreadyOnCard = this.countPlayerGoldOnCard(player, card)
-        if (goldAlreadyOnCard < cardCharacteristics[card.id.front].scoringEffect!.limit) {
+        if (goldAlreadyOnCard < (cardCharacteristics[card.id.front].scoringEffect as ScoringByGoldOnCard).limit) {
           moves.push(
             ...playerGoldStock
               .moveItems(
@@ -28,7 +29,7 @@ export class EndGameRule extends MaterialRulesPart {
                   player,
                   x: card.location.x,
                   y: card.location.y
-                }, Math.min(cardCharacteristics[card.id.front].scoringEffect!.limit - goldAlreadyOnCard, playerGoldStock.getQuantity())
+                }, Math.min((cardCharacteristics[card.id.front].scoringEffect as ScoringByGoldOnCard).limit - goldAlreadyOnCard, playerGoldStock.getQuantity())
               ))
         }
       })

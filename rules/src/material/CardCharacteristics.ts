@@ -4,6 +4,7 @@ import { Card } from './Card'
 import { ImmediateEffect, ImmediateEffectType } from './ImmediateEffect'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
+import { Scoring, ScoringType } from './Scoring'
 
 
 export enum BlazonType {
@@ -18,22 +19,6 @@ export enum BlazonType {
   Identical
 }
 
-export enum ScoringType {
-  ByBlazon = 1,
-  ByBlazonGroup,
-  ByBlazonCount,
-  IfMissingBlazon,
-  ByBanner,
-  ByBannerGroup,
-  ByKeys,
-  ByDiscount,
-  ByPosition,
-  ByCost,
-  IfHiddenCard,
-  ByGoldOnCard,
-  ByGoldOnAllCards
-}
-
 export type CardPattern = {
   //banner:BannerType
   cost: number
@@ -41,7 +26,7 @@ export type CardPattern = {
   moveMessenger?: boolean
   // TDOO :
   immediateEffect?: ImmediateEffect[]
-  scoringEffect: ({ type: ScoringType } & Record<any, any>)
+  scoringEffect: Scoring
 }
 
 export const cardCharacteristics: Record<number, CardPattern> = {
@@ -197,7 +182,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 7,
     blazon: [BlazonType.Teacher],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, condition: { opponentGain: 2 } }],
-    scoringEffect: { type: ScoringType.ByCost, cardCost: { cost: 5, sign: Sign.Plus } }
+    scoringEffect: { type: ScoringType.ByCost, value: 5, cardCost: { cost: 5, sign: Sign.Plus } }
   },
 
   [Card.Guildmaster]: {
@@ -254,7 +239,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { cardCost: { cost: 4, sign: Sign.Equal } } }],
-    scoringEffect: { type: ScoringType.ByCost, cardCost: { cost: 4, sign: Sign.Equal } }
+    scoringEffect: { type: ScoringType.ByCost, value: 3, cardCost: { cost: 4, sign: Sign.Equal } }
   },
 
   [Card.Chatelaine]: {
@@ -613,7 +598,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     blazon: [BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 3, condition: { cardCost: { cost: 0, sign: Sign.Equal } } }],
-    scoringEffect: { type: ScoringType.ByCost, cardCost: { cost: 0, sign: Sign.Equal } }
+    scoringEffect: { type: ScoringType.ByCost, value: 2, cardCost: { cost: 0, sign: Sign.Equal } }
   },
 
   [Card.Farmhand]: { cost: 0, blazon: [BlazonType.Farmer], moveMessenger: true, scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 5 } },

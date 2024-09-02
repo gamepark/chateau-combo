@@ -70,7 +70,7 @@ type CardCostCondition = {
     cardCost: CardCost
 }
 
-type CardCost = {
+export type CardCost = {
     cost: number
     sign: Sign
 }
