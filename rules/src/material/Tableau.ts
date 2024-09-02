@@ -55,6 +55,8 @@ export class Tableau extends MaterialRulesPart {
         return sumBy(shields, shield => Math.floor(this.countShields(shield) / condition.count))
       case ConditionType.PerBannersSet:
         return this.countSets(condition.banners, this.cards.filter(isNotNull).map(getCardPlace))
+      case ConditionType.PerCardWithShieldCount:
+        return this.cards.filter(card => card && cardCharacteristics[card].blazon.length === condition.count).length
       default:
         return 0
     }

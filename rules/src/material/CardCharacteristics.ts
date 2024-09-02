@@ -436,7 +436,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       effect1: { type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Noble], bestNeighbor: true } },
       effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
     }],
-    scoringEffect: { type: ScoringType.ByBlazonCount, value: 2, blazonQuantity: 2 }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerCardWithShieldCount, count: 2 } }
   },
 
   [Card.MasterAtArms]: {
