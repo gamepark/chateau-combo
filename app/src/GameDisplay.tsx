@@ -20,8 +20,8 @@ export const GameDisplay: FC<GameDisplayProps> = ({players}) => {
         css={css`background-color: #ffffff80`}         
                >
       <GameTableNavigation/>
+      <PlayerPanels/>
     </GameTable>
-    <PlayerPanels/>
   </>
 }
 

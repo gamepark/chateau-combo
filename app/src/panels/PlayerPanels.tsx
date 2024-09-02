@@ -1,23 +1,29 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { usePlayers } from '@gamepark/react-game'
+import { usePlayerId, usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
+import { createPortal } from 'react-dom'
 import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
 
 export const PlayerPanels: FC<any> = () => {
   const players = usePlayers({ sortFromMe: true })
-  return (
+  const root = document.getElementById('root')
+  const playerId = usePlayerId()
+  if (!root) {
+    return null
+  }
+
+  return createPortal(
     <>
       {players.map((player, index) =>
-        <ChateauComboPlayerPanel key={player.id} player={player} css={panelPosition(index)}/>
+        <ChateauComboPlayerPanel player={player} key={player.id} css={panelPosition(index)} />
       )}
-    </>
+    </>,
+    root
   )
 }
 const panelPosition = (index: number) => css`
   position: absolute;
   right: 1em;
   top: ${8.5 + index * 16}em;
-  width: 28em;
-  height: 14em;
 `
