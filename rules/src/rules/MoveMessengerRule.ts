@@ -1,5 +1,6 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../CardCharacteristics'
+import { Place } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
@@ -9,13 +10,12 @@ export class MoveMessengerRule extends PlayerTurnRule {
   onRuleStart() {
     const messenger = this.messenger
     const card = this.placedCard
-    const canSwapMessengerToken = cardCharacteristics[card.id.front].canSwapMessengerToken
     const place = card.id.back
     const moves: MaterialMove[] = []
-    if (canSwapMessengerToken && messenger.getItem()?.location.id !== place) {
+    if (cardCharacteristics[card.id.front].canSwapMessengerToken) {
       moves.push(messenger.moveItem({
         type: LocationType.EndOfRiver,
-        id: place
+        id: place === Place.Castle ? Place.Village : Place.Castle
       }))
     }
 

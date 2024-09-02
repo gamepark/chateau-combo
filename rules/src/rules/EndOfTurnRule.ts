@@ -1,5 +1,4 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { cardCharacteristics } from '../CardCharacteristics'
 import { Place, places } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -9,18 +8,6 @@ import { RuleId } from './RuleId'
 export class EndOfTurnRule extends PlayerTurnRule {
   onRuleStart() {
     const moves: MaterialMove[] = []
-    const placedCard = this.placedCard
-    const messenger = this.messenger
-    // Move Messenger if it should
-    if (placedCard.id.front !== undefined && this.placedCard.location.rotation === undefined && cardCharacteristics[placedCard.id.front].canSwapMessengerToken) {
-      if (placedCard.id.back !== messenger.getItem()!.location.id) {
-        moves.push(messenger.moveItem({
-          type: LocationType.EndOfRiver,
-          id: placedCard.id.back
-        }))
-      }
-
-    }
 
     for (const place of places) {
       const river = this.getRiver(place)
@@ -49,12 +36,6 @@ export class EndOfTurnRule extends PlayerTurnRule {
     return moves
   }
 
-  get messenger() {
-    return this
-      .material(MaterialType.MessengerToken)
-      .location(LocationType.EndOfRiver)
-  }
-
   getDeck(place: Place) {
     return this
       .material(MaterialType.Card)
@@ -68,12 +49,6 @@ export class EndOfTurnRule extends PlayerTurnRule {
       .material(MaterialType.Card)
       .location(LocationType.River)
       .locationId(place)
-  }
-
-  get placedCard() {
-    return this
-      .material(MaterialType.Card)
-      .getItem(this.remind(Memory.PlacedCard))!
   }
 
   onRuleEnd() {
