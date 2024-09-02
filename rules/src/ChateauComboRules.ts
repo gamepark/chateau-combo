@@ -112,8 +112,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     const playerKeys = this.getPlayerKeyStock(playerId).getQuantity()
     if (cardCaracs.scoringEffect !== undefined) {
       switch ((cardCaracs.scoringEffect as any).type) {
-        case ScoringType.ByBlazon:
-          return this.getScoreByBlazon(card, panorama)
         case ScoringType.ByPosition:
           return this.getScoreByPosition(card, panorama)
         case ScoringType.ByKeys:
@@ -174,34 +172,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
 
     console.log('score : ', value * Math.min(...Object.values(playerBannerCount)))
     return value * Math.min(...Object.values(playerBannerCount))
-  }
-
-
-  getScoreByBlazon(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const scoringEffect = cardCaracs.scoringEffect as ScoringByBlazon
-    const blazon = scoringEffect.blazonCondition.blazonType
-    const value = scoringEffect.value
-    const cardCoordinates = { x: card.location.x!, y: card.location.y! }
-    const cardsToCheck = !scoringEffect.blazonCondition.line && !scoringEffect.blazonCondition.column
-      ? panorama
-      : panorama.filter(item => (
-        (!!scoringEffect.blazonCondition.line && item.location.y === cardCoordinates.y) ||
-        (!!scoringEffect.blazonCondition.column && item.location.x === cardCoordinates.x)
-      ))
-
-    if (blazon === BlazonType.Different) {
-      const howManyDifferentBlazons: BlazonType[] = []
-      cardsToCheck.forEach(item => {
-        getBlazons(item.id.front).forEach(blazon => !howManyDifferentBlazons.includes(blazon) && howManyDifferentBlazons.push(blazon))
-      })
-      console.log('score : ', value * howManyDifferentBlazons.length)
-      return value * howManyDifferentBlazons.length
-    } else {
-      console.log('score : ', value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazon), 0))
-      return value * cardsToCheck.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazon), 0)
-    }
   }
 
   getScoreByBlazonGroup(card: MaterialItem, panorama: MaterialItem[]): number {

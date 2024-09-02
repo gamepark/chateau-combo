@@ -27,4 +27,6 @@ export type PerShieldCondition = {
 
 export type PerDifferentShieldType = {
   type: ConditionType.PerDifferentShieldType
+  line?: boolean
+  column?: boolean
 }

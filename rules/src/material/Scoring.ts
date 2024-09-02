@@ -6,7 +6,6 @@ import { CardCost } from './ImmediateEffect'
 import { Place } from './Place'
 
 export enum ScoringType {
-  ByBlazon = 1,
   ByBlazonGroup,
   ByBlazonCount,
   IfMissingBlazon,
@@ -21,15 +20,9 @@ export enum ScoringType {
   ByGoldOnAllCards
 }
 
-export type Scoring = ScoringByBlazon | ScoringByBlazonGroup | ScoringByBlazonCount | ScoringIfMissingBlazon | ScoringByBanner | ScoringByBannerGroup
+export type Scoring = ScoringByBlazonGroup | ScoringByBlazonCount | ScoringIfMissingBlazon | ScoringByBanner | ScoringByBannerGroup
   | ScoringByKeys | ScoringByDiscount | ScoringByPosition | ScoringByCost | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
   | { score: number, condition: Condition }
-
-export type ScoringByBlazon = {
-  type: ScoringType.ByBlazon
-  value: number
-  blazonCondition: BlazonCondition
-}
 
 export type ScoringByBlazonGroup = {
   type: ScoringType.ByBlazonGroup

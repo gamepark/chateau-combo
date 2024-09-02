@@ -1,5 +1,5 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import { range } from 'lodash'
+import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card } from './Card'
@@ -41,6 +41,8 @@ export class Tableau extends MaterialRulesPart {
         return sumBy(this.getConsideredCards(condition, x, y), card =>
           card ? cardCharacteristics[card].blazon.filter(shield => shield === condition.shield).length : 0
         )
+      case ConditionType.PerDifferentShieldType:
+        return uniq(this.getConsideredCards(condition, x, y).map(card => card ? cardCharacteristics[card].blazon : [])).length
       default:
         return 0
     }

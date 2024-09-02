@@ -109,7 +109,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 6,
     blazon: [BlazonType.Prayer],
     moveMessenger: true,
-    scoringEffect: { type: ScoringType.ByBlazon, value: 4, blazonCondition: { blazonType: BlazonType.Different, line: true } }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerDifferentShieldType, line: true } }
   },
 
   [Card.Devout]: {
@@ -131,7 +131,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Teacher],
     moveMessenger: true,
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Different } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerDifferentShieldType } }
   },
 
   [Card.Goldsmith]: {
@@ -212,7 +212,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 6,
     blazon: [BlazonType.Soldier],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Soldier] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 4, blazonCondition: { blazonType: BlazonType.Different, column: true } }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerDifferentShieldType, column: true } }
   },
 
   [Card.RoyalGuard]: {
@@ -246,7 +246,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Chatelaine]: {
     cost: 2,
     blazon: [BlazonType.Noble, BlazonType.Worker],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Different, line: true } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerDifferentShieldType, line: true } }
   },
 
   [Card.Glassblower]: {
@@ -576,7 +576,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 2,
     blazon: [BlazonType.Teacher, BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { banner: Place.Village } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Different, column: true } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerDifferentShieldType, column: true } }
   },
 
   [Card.Shepherd]: {
