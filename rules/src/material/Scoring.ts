@@ -2,25 +2,16 @@ import { XYCoordinates } from '@gamepark/rules-api'
 import { Card } from './Card'
 import { cardCharacteristics } from './CardCharacteristics'
 import { Condition } from './Condition'
-import { Place } from './Place'
 
 export enum ScoringType {
-  ByBanner,
   ByKeys,
   ByPosition,
   ByGoldOnCard,
   ByGoldOnAllCards
 }
 
-export type Scoring = ScoringByBanner
-  | ScoringByKeys | ScoringByPosition | ScoringByGoldOnCard | ScoringByGoldOnAllCards
+export type Scoring = ScoringByKeys | ScoringByPosition | ScoringByGoldOnCard | ScoringByGoldOnAllCards
   | { score: number, condition: Condition }
-
-export type ScoringByBanner = {
-  type: ScoringType.ByBanner
-  value: number
-  bannerType: Place
-}
 
 export type ScoringByKeys = {
   type: ScoringType.ByKeys

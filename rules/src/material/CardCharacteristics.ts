@@ -68,7 +68,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Prayer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazonNumber: 1 } }],
-    scoringEffect: { type: ScoringType.ByBanner, value: 2, bannerType: Place.Village }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
   },
 
   [Card.Cardinal]: {
@@ -301,7 +301,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 6,
     blazon: [BlazonType.Noble, BlazonType.Teacher],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Teacher] } }],
-    scoringEffect: { type: ScoringType.ByBanner, value: 2, bannerType: Place.Village }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
   },
 
   [Card.Baron]: {
@@ -328,7 +328,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 2,
     blazon: [BlazonType.Teacher, BlazonType.Teacher],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Teacher] } }],
-    scoringEffect: { type: ScoringType.ByBanner, value: 1, bannerType: Place.Village }
+    scoringEffect: { score: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
   },
 
   [Card.Spy]: {
@@ -383,7 +383,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Soldier],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Castle, token: MaterialType.GoldCoin }],
-    scoringEffect: { type: ScoringType.ByBanner, value: 2, bannerType: Place.Castle }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
   [Card.Barbarian]: {
@@ -595,7 +595,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazonNumber: 1 } }],
-    scoringEffect: { type: ScoringType.ByBanner, value: 2, bannerType: Place.Castle }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
   [Card.Traveler]: {

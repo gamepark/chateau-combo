@@ -13,7 +13,7 @@ import sumBy from 'lodash/sumBy'
 import { cardCharacteristics } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { ScoringByBanner, ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByKeys, ScoringByPosition, ScoringType } from './material/Scoring'
+import { ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByKeys, ScoringByPosition, ScoringType } from './material/Scoring'
 import { Tableau } from './material/Tableau'
 import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
@@ -106,8 +106,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreByPosition(card, panorama)
         case ScoringType.ByKeys:
           return this.getScoreByKeys(card, playerKeys)
-        case ScoringType.ByBanner:
-          return this.getScoreByBanner(card, panorama)
         case ScoringType.ByGoldOnCard:
           return this.getScoreByGoldOnCard(card, playerId)
         case ScoringType.ByGoldOnAllCards:
@@ -116,15 +114,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     }
 
     return 0
-  }
-
-  getScoreByBanner(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const value = (cardCaracs.scoringEffect as ScoringByBanner).value
-    const banner = (cardCaracs.scoringEffect as ScoringByBanner).bannerType
-    console.log('score : ', value * panorama.filter(item => banner === item.id.back).length)
-    return value * panorama.filter(item => banner === item.id.back).length
   }
 
   getScoreByPosition(card: MaterialItem, panorama: MaterialItem[]): number {
