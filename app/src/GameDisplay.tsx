@@ -1,28 +1,25 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import { GameTable, GameTableNavigation } from '@gamepark/react-game'
 import { FC } from 'react'
 import { PlayerPanels } from './panels/PlayerPanels'
-import { css } from '@emotion/react'
 
 type GameDisplayProps = {
   players: number
 }
 
-export const GameDisplay: FC<GameDisplayProps> = ({players}) => {
+export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
   const tableSized = getTableSize(players)
-  return <>
-    <GameTable 
+  return <GameTable
     xMin={tableSized.xMin}
-     xMax={tableSized.xMax}
-      yMin={tableSized.yMin}
-       yMax={tableSized.yMax}
-               margin={{ top: 7, left: 0, right: 30, bottom: 0 }}
-        css={css`background-color: #ffffff80`}         
-               >
-      <GameTableNavigation/>
-      <PlayerPanels/>
-    </GameTable>
-  </>
+    xMax={tableSized.xMax}
+    yMin={tableSized.yMin}
+    yMax={tableSized.yMax}
+    margin={{ top: 7, left: 0, right: 30, bottom: 0 }}
+    css={process.env.NODE_ENV === 'development' && css`border: 1px solid white;`}>
+    <GameTableNavigation/>
+    <PlayerPanels/>
+  </GameTable>
 }
 
 function getTableSize(playerNumber: number): { xMin: number, xMax: number, yMin: number, yMax: number } {
