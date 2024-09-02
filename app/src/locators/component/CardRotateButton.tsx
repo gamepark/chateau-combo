@@ -14,7 +14,6 @@ export const CardRotateButton: FC<{ location: Location }> = ({ location }) => {
   const card = rules.material(MaterialType.Card).index(location.parent!)
   const rotation = card.getItem()!.location.rotation
   const flip = useCallback((event) => {
-    console.log("???")
     event.preventDefault()
     play(card.rotateItem(!rotation), { local: true })
   }, [rotation])
