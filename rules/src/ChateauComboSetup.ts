@@ -27,7 +27,7 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
       .createItem({
         location: {
           type: LocationType.EndOfRiver,
-          id: Place.Castle
+          id: Place.Village
         }
       })
   }
