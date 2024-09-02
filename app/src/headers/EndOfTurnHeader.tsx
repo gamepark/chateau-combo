@@ -4,6 +4,6 @@ import { useTranslation } from "react-i18next"
 
 export const EndOfTurnHeader = () => {
     const { t } = useTranslation()
-    return <span>{t('header.end.turn')}</span>
+    return <span>{t('move-messenger')}</span>
 }
 
