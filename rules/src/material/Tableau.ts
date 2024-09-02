@@ -65,6 +65,8 @@ export class Tableau extends MaterialRulesPart {
         }
       case ConditionType.PerCardWithDiscount:
         return this.countCards(isDiscount)
+      case ConditionType.IfCardFlippedDown:
+        return this.cards.every(isNotNull) ? 0 : 1
       default:
         return 0
     }

@@ -520,7 +520,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.MissingDifferent] } }],
-    scoringEffect: { type: ScoringType.IfHiddenCard, value: 8 }
+    scoringEffect: { score: 8, condition: { type: ConditionType.IfCardFlippedDown } }
   },
 
   [Card.Witch]: {

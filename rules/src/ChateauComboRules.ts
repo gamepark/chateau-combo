@@ -13,15 +13,7 @@ import sumBy from 'lodash/sumBy'
 import { cardCharacteristics } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import {
-  ScoringByBanner,
-  ScoringByGoldOnAllCards,
-  ScoringByGoldOnCard,
-  ScoringByKeys,
-  ScoringByPosition,
-  ScoringIfHiddenCard,
-  ScoringType
-} from './material/Scoring'
+import { ScoringByBanner, ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByKeys, ScoringByPosition, ScoringType } from './material/Scoring'
 import { Tableau } from './material/Tableau'
 import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
@@ -116,8 +108,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreByKeys(card, playerKeys)
         case ScoringType.ByBanner:
           return this.getScoreByBanner(card, panorama)
-        case ScoringType.IfHiddenCard:
-          return this.getScoreIfHiddenCard(card, this.getTableau(playerId))
         case ScoringType.ByGoldOnCard:
           return this.getScoreByGoldOnCard(card, playerId)
         case ScoringType.ByGoldOnAllCards:
@@ -158,14 +148,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     const scoringEffect = cardCharacteristics[card.id.front].scoringEffect as ScoringByKeys
     console.log('score : ', keys * scoringEffect.value)
     return keys * scoringEffect.value
-  }
-
-  getScoreIfHiddenCard(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const value = (cardCaracs.scoringEffect as ScoringIfHiddenCard).value
-    console.log('score : ', value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0)
-    return value * panorama.filter(item => item.location.rotation !== undefined).length > 0 ? 1 : 0
   }
 
   getScoreByGoldOnCard(card: MaterialItem, playerId: number): number {

@@ -20,7 +20,7 @@ export enum ConditionType {
 }
 
 export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
-  | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount
+  | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount | IfCardFlippedDown
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -72,4 +72,8 @@ export type PerCardWithCost = {
 
 export type PerCardWithDiscount = {
   type: ConditionType.PerCardWithDiscount
+}
+
+export type IfCardFlippedDown = {
+  type: ConditionType.IfCardFlippedDown
 }

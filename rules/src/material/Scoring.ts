@@ -8,13 +8,12 @@ export enum ScoringType {
   ByBanner,
   ByKeys,
   ByPosition,
-  IfHiddenCard,
   ByGoldOnCard,
   ByGoldOnAllCards
 }
 
 export type Scoring = ScoringByBanner
-  | ScoringByKeys | ScoringByPosition | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
+  | ScoringByKeys | ScoringByPosition | ScoringByGoldOnCard | ScoringByGoldOnAllCards
   | { score: number, condition: Condition }
 
 export type ScoringByBanner = {
@@ -32,11 +31,6 @@ export type ScoringByPosition = {
   type: ScoringType.ByPosition
   value: number
   validPositions: XYCoordinates[]
-}
-
-export type ScoringIfHiddenCard = {
-  type: ScoringType.IfHiddenCard
-  value: number
 }
 
 export type ScoringByGoldOnCard = {
