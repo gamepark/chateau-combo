@@ -2,7 +2,7 @@
   "name": "@gamepark/chateau-combo-app",
   "version": "0.0.0",
   "private": true,
-  "description": "The user interface of Château combo adaptation for Game Park",
+  "description": "The user interface of Château Combo adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "dependencies": {
