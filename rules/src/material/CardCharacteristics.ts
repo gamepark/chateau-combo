@@ -441,7 +441,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Soldier],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Castle, token: MaterialType.GoldCoin }],
-    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
+    scoringEffect: { score: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
   [Card.Barbarian]: {

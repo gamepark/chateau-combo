@@ -36,7 +36,7 @@ export class Tableau extends MaterialRulesPart {
     if (card === null) return 0
     const scoring = cardCharacteristics[card].scoringEffect as { score: number, condition: Condition } // TODO remove cast once refactoring is complete
     if (!scoring.score) return 0 // TODO: remove once refactoring is complete
-    return this.countCondition(scoring.condition, x, y) * scoring.score
+    return scoring.score * this.countCondition(scoring.condition, x, y)
   }
 
   countCondition(condition: Condition, x: number, y: number) {
@@ -44,7 +44,7 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerShield:
         return this.countShields(condition.shield, this.getConsideredCards(condition, x, y))
       case ConditionType.PerDifferentShieldType:
-        return uniq(this.getConsideredCards(condition, x, y).map(card => card ? cardCharacteristics[card].blazon : [])).length
+        return uniq(this.getConsideredCards(condition, x, y).flatMap(card => card ? cardCharacteristics[card].blazon : [])).length
       case ConditionType.PerMissingShieldType:
         return shields.filter(shield =>
           !this.cards.some(card =>
