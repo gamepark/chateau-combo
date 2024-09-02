@@ -1,25 +1,17 @@
-import {
-  CompetitiveScore,
-  FillGapStrategy,
-  MaterialGame,
-  MaterialMove,
-  PositiveSequenceStrategy,
-  SecretMaterialRules,
-  hideItemId,
-  hideFront
-} from '@gamepark/rules-api'
+import { CompetitiveScore, FillGapStrategy, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules } from '@gamepark/rules-api'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './PlayerId'
+import { BuyCardRule } from './rules/BuyCardRule'
+import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
+import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
+import { EndGameRule } from './rules/EndGameRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
+import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
+import { KeyEffectRule } from './rules/KeyEffectRule'
 import { MoveMessengerRule } from './rules/MoveMessengerRule'
 import { RuleId } from './rules/RuleId'
-import { BuyCardRule } from './rules/BuyCardRule'
-import { KeyEffectRule } from './rules/KeyEffectRule'
-import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
-import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
-import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
-import { EndGameRule } from './rules/EndGameRule'
+import { SpendKeyRule } from './rules/SpendKeyRule'
 
 
 /**
@@ -27,8 +19,9 @@ import { EndGameRule } from './rules/EndGameRule'
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
 export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
+  implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
+    [RuleId.SpendKey]: SpendKeyRule,
     [RuleId.KeyEffect]: KeyEffectRule,
     [RuleId.BuyCard]: BuyCardRule,
     [RuleId.MoveMessenger]: MoveMessengerRule,
@@ -36,20 +29,20 @@ implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, 
     [RuleId.ImmediateEffect]: ImmediateEffectRule,
     [RuleId.DiscardFromRiver]: DiscardFromRiverRule,
     [RuleId.ChooseBetween]: ChooseBetweenRule,
-    [RuleId.EndGame]:EndGameRule
+    [RuleId.EndGame]: EndGameRule
   }
 
   locationsStrategies = {
     [MaterialType.Card]: {
       [LocationType.Deck]: new PositiveSequenceStrategy(),
       [LocationType.River]: new FillGapStrategy(),
-      [LocationType.Discard]: new PositiveSequenceStrategy(),
+      [LocationType.Discard]: new PositiveSequenceStrategy()
     }
   }
 
   hidingStrategies = {
     [MaterialType.Card]: {
-      [LocationType.Deck]: hideFront,
+      [LocationType.Deck]: hideFront
     }
   }
 

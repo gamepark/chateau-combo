@@ -10,8 +10,9 @@ import { EndOfTurnHeader } from './EndOfTurnHeader'
 import { EndGameHeader } from './EndGameHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
-  [RuleId.BuyCard]: BuyCardHeader,
+  [RuleId.SpendKey]: BuyCardHeader,
   [RuleId.KeyEffect]: KeyEffectHeader,
+  [RuleId.BuyCard]: BuyCardHeader, // TODO header plus spécifique
   [RuleId.DiscardFromRiver]: DiscardFromRiverHeader,
   [RuleId.ChooseBetween]: ChooseBetweenHeader,
   [RuleId.ImmediateEffect]: ImmediateEffectHeader,

@@ -13,12 +13,6 @@ export class BuyCardRule extends PlayerTurnRule {
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
     const moves: MaterialMove[] = []
 
-    if (this.keys.getQuantity() && !this.hasSpentKey) {
-      moves.push(
-        this.keys.deleteItem(1)
-      )
-    }
-
     const cards = this.riverCards
     const buyableCards = cards
       .filter((item) => cardCharacteristics[item.id.front].cost - this.getDiscount(item) <= gold)
@@ -33,10 +27,6 @@ export class BuyCardRule extends PlayerTurnRule {
     )
 
     return moves
-  }
-
-  get hasSpentKey() {
-    return this.remind(Memory.KeySpent)
   }
 
   get gold() {
@@ -86,11 +76,6 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
-    if (isDeleteItemType(MaterialType.Key)(move)) {
-      this.memorize(Memory.KeySpent, true)
-      return [this.startRule(RuleId.KeyEffect)]
-    }
-
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.PlayerBoard) return []
 
     const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
@@ -127,11 +112,5 @@ export class BuyCardRule extends PlayerTurnRule {
     }
 
     return moves
-  }
-
-  get keys() {
-    return this
-      .material(MaterialType.Key)
-      .player(this.player)
   }
 }

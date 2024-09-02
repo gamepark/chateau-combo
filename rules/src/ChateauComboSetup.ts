@@ -102,6 +102,6 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   }
 
   start() {
-    this.startPlayerTurn(RuleId.BuyCard, this.game.players[0])
+    this.startPlayerTurn(RuleId.SpendKey, this.game.players[0])
   }
 }

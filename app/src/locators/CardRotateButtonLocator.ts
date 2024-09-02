@@ -11,11 +11,13 @@ import { riverLocator } from './RiverLocator'
 export class CardRotateButtonLocator extends Locator {
   locationDescription = new CardRotateButtonDescription()
 
-  coordinates = { x: 2.5, z: 5}
+  coordinates = { x: 2.5, z: 5 }
 
   getLocations(context: MaterialContext) {
     const { rules, player } = context
-    if (!player || !rules.game.rule || rules.game.rule.id !== RuleId.BuyCard || rules.game.rule.player !== player) return []
+    const rule = rules.game.rule
+    const canBuyCard = rule?.player === player && (rule?.id === RuleId.SpendKey || rule?.id === RuleId.BuyCard)
+    if (!canBuyCard) return []
     const messenger = rules.material(MaterialType.MessengerToken).getItem()!.location.id
     const riverCards = rules.material(MaterialType.Card).location(LocationType.River).locationId(messenger)
     return riverCards.getIndexes()
