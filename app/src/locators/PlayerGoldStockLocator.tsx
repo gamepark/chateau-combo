@@ -5,6 +5,8 @@ import { getTokenDeltaX } from './PlayerKeyStockLocator'
 
 class PlayerGoldStockLocator extends PileLocator {
   radius = 2
+  // TODO: better management of animations + limits ?
+  limit = 1000
 
   getCoordinates(location: Location, context: MaterialContext) {
     const playerIndex = getRelativePlayerIndex(context, location.player)

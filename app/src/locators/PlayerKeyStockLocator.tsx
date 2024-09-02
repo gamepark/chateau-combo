@@ -3,6 +3,8 @@ import { ItemContext, PileLocator, getRelativePlayerIndex } from '@gamepark/reac
 import { Location } from '@gamepark/rules-api'
 
 class PlayerKeyStockLocator extends PileLocator {
+  // TODO: better management of animations + limits ?
+  limit = 1000
 
   getCoordinates(location: Location, context: ItemContext) {
     const playerIndex = getRelativePlayerIndex(context, location.player)
