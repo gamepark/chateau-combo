@@ -41,7 +41,7 @@ export type CardPattern = {
   moveMessenger?: boolean
   // TDOO :
   immediateEffect?: ({ type: ImmediateEffectType } & Record<any, any>)[]
-  scoringEffect?: ({ type: ScoringType } & Record<any, any>)
+  scoringEffect: ({ type: ScoringType } & Record<any, any>)
 }
 
 export const cardCharacteristics: Record<number, CardPattern> = {
@@ -225,7 +225,8 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Lookout]: {
     cost: 6,
     blazon: [BlazonType.Soldier],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Soldier] } }]
+    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Soldier] } }],
+    scoringEffect: { type: ScoringType.ByBlazon, value: 4, blazonCondition: { blazonType: BlazonType.Different, column: true } }
   },
 
   [Card.RoyalGuard]: {
@@ -558,9 +559,9 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     immediateEffect: [{
       type: ImmediateEffectType.GetCoins,
       value: 1,
-      condition: { filledOrEmpty: SpaceFilling.Filled },
-      scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 }] }
-    }]
+      condition: { filledOrEmpty: SpaceFilling.Filled }
+    }],
+    scoringEffect: { type: ScoringType.ByPosition, value: 5, validPositions: [{ x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 }] }
   },
 
   [Card.Monk]: {
