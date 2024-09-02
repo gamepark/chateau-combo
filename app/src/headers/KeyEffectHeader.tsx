@@ -1,53 +1,29 @@
 /** @jsxImportSource @emotion/react */
 
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { PlayMoveButton, usePlayerId, useRules } from '@gamepark/react-game'
-import { ItemMoveType, MaterialMove, MoveKind } from '@gamepark/rules-api'
-import { useTranslation } from 'react-i18next'
+import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
+import { KeyEffectRule } from '@gamepark/chateau-combo/rules/KeyEffectRule'
+import { PlayMoveButton, useGame, usePlayerId, useRules } from '@gamepark/react-game'
+import { isMoveItemType, ItemMoveType, MaterialGame, MaterialMove, MoveKind } from '@gamepark/rules-api'
+import { useMemo } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 
 export const KeyEffectHeader = () => {
-  const rules = useRules<ChateauComboRules>()!
+  const game = useGame<MaterialGame>()!
   const player = usePlayerId()
-  const activePlayer = rules.getActivePlayer()!
-  
+  // This is because useLegalMoves() can return 0 moves during animations
+  const keyEffectRule = new KeyEffectRule(game)
+  const activePlayer = keyEffectRule.getActivePlayer()
+  const itsMe = player && activePlayer === player
+  const legalMoves = useMemo(() => keyEffectRule.getPlayerMoves(), [game])
+  const moveMessenger = legalMoves.find((move) => isMoveItemType(MaterialType.MessengerToken)(move))
+  const discardCards = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard)
 
-  if (player === activePlayer){
-    return <MySpendKeyHeader />
-  } else {
-    return <PlayerSpendKeyHeader activePlayer={activePlayer} />
-  }
-
-}
-
-const MySpendKeyHeader = () => {
-  const { t } = useTranslation()
-  const rules = useRules<ChateauComboRules>()!
-  const player = usePlayerId()
-  const legalMoves = rules.getLegalMoves(player)
-  
-
-  return <>
-    <span>{t('header.you.spend.key')}</span>
-    {legalMoves.map((move, index) => 
-      <PlayMoveButton key={index} move={move}> {t(getSpendKeyHeaderMoveTrans(move))} </PlayMoveButton>
-    )}
-  </>
-
-}
-
-const PlayerSpendKeyHeader = ({ activePlayer }: { activePlayer: number }) => {
-  const { t } = useTranslation()
-  return <>
-    <span>{t('header.player.spend.key', {activePlayer})}</span>
-  </>
-}
-
-function getSpendKeyHeaderMoveTrans(move:MaterialMove):string{
-  if (move.kind === MoveKind.RulesMove){
-    return 'header.you.spend.key.dont'
-  } else {
-    return move.type === ItemMoveType.MoveAtOnce
-      ? 'header.you.spend.key.discard'
-      : 'header.you.spend.key.messenger'
-  }
+  return (
+    <Trans defaults={itsMe ? 'key-effect.you' : 'key-effect.player'} values={{ place: keyEffectRule.messengerPlace }}>
+      <PlayMoveButton move={moveMessenger}/>
+      <PlayMoveButton move={discardCards}/>
+    </Trans>
+  )
 }
