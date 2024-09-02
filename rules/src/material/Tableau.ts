@@ -39,7 +39,7 @@ export class Tableau extends MaterialRulesPart {
     return scoring.score * this.countCondition(scoring.condition, x, y)
   }
 
-  countCondition(condition: Condition, x: number, y: number) {
+  countCondition(condition: Condition, x: number, y: number): number {
     switch (condition.type) {
       case ConditionType.PerShield:
         return this.countShields(condition.shield, this.getConsideredCards(condition, x, y))
@@ -85,6 +85,8 @@ export class Tableau extends MaterialRulesPart {
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getQuantity()
       case ConditionType.IfPosition:
         return condition.position[y][x] ? 1 : 0
+      case ConditionType.BestNeighbor:
+        return Math.max(...this.neighbors.map(neighbor => new Tableau(this.game, neighbor).countCondition(condition.condition, x, y)))
       default:
         return 0
     }
@@ -120,6 +122,11 @@ export class Tableau extends MaterialRulesPart {
 
   countCards(predicate: (card: Card) => boolean) {
     return this.cards.reduce((sum, card) => card && predicate(card) ? sum + 1 : sum, 0)
+  }
+
+  get neighbors() {
+    const index = this.game.players.indexOf(this.player)
+    return this.game.players.filter((_, i, players) => Math.abs(index - i) === 1 || Math.abs(index - i) === players.length - 1)
   }
 }
 

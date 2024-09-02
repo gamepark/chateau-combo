@@ -18,12 +18,13 @@ export enum ConditionType {
   PerCardWithPurse,
   PerGoldInPurse,
   PerGoldInAllPurses,
-  IfPosition
+  IfPosition,
+  BestNeighbor
 }
 
 export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
   | PerKey | PerBanner | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount | IfCardFlippedDown
-  | PerCardWithPurse | PerGoldInPurse | PerGoldInAllPurses | IfPosition
+  | PerCardWithPurse | PerGoldInPurse | PerGoldInAllPurses | IfPosition | BestNeighbor
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -106,4 +107,9 @@ export type PerGoldInAllPurses = {
 export type IfPosition = {
   type: ConditionType.IfPosition
   position: boolean[][]
+}
+
+export type BestNeighbor = {
+  type: ConditionType.BestNeighbor
+  condition: Condition
 }
