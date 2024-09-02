@@ -87,7 +87,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       value: 1,
       condition: { blazon: [BlazonType.Prayer], bestNeighbor: true }
     }, { type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Soldier] } }],
-    scoringEffect: { type: ScoringType.ByKeys, value: 1 }
+    scoringEffect: { score: 1, condition: { type: ConditionType.PerKey } }
   },
 
   [Card.Gravedigger]: {
@@ -512,7 +512,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker, BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Worker] } }],
-    scoringEffect: { type: ScoringType.ByKeys, value: 1 }
+    scoringEffect: { score: 1, condition: { type: ConditionType.PerKey } }
   },
 
   [Card.Carpenter]: {

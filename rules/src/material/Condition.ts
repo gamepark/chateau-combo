@@ -8,6 +8,7 @@ export enum ConditionType {
   IfShieldMissing,
   PerShieldsSet,
   PerIdenticalShieldsSet,
+  PerKey,
   PerBanner,
   PerBannersSet,
   PerCardWithShieldCount,
@@ -21,7 +22,7 @@ export enum ConditionType {
 }
 
 export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
-  | PerBanner | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount | IfCardFlippedDown
+  | PerKey | PerBanner | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount | IfCardFlippedDown
   | PerCardWithPurse | PerGoldInPurse | PerGoldInAllPurses
 
 export type PerShield = {
@@ -54,6 +55,10 @@ export type PerShieldsSet = {
 export type PerIdenticalShieldsSet = {
   type: ConditionType.PerIdenticalShieldsSet
   count: number
+}
+
+export type PerKey = {
+  type: ConditionType.PerKey
 }
 
 export type PerBanner = {

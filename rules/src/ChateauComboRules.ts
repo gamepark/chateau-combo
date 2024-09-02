@@ -13,7 +13,7 @@ import sumBy from 'lodash/sumBy'
 import { cardCharacteristics } from './material/CardCharacteristics'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByKeys, ScoringByPosition, ScoringType } from './material/Scoring'
+import { ScoringByGoldOnAllCards, ScoringByGoldOnCard, ScoringByPosition, ScoringType } from './material/Scoring'
 import { Tableau } from './material/Tableau'
 import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
@@ -77,13 +77,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     return this.getTableau(player).filter(item => item.location.rotation === undefined)
   }
 
-  getPlayerKeyStock(player: PlayerId) {
-    return this
-      .material(MaterialType.Key)
-      .location(LocationType.PlayerKeyStock)
-      .player(player)
-  }
-
   countPlayerGoldOnCards(player: PlayerId) {
     return this.getPlayerGoldOnCards(player).getQuantity()
   }
@@ -99,13 +92,10 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     if (card.location.rotation) return 0
     const playerId = card.location.player!
     const cardCaracs = cardCharacteristics[card.id.front]
-    const playerKeys = this.getPlayerKeyStock(playerId).getQuantity()
     if (cardCaracs.scoringEffect !== undefined) {
       switch ((cardCaracs.scoringEffect as any).type) {
         case ScoringType.ByPosition:
           return this.getScoreByPosition(card, panorama)
-        case ScoringType.ByKeys:
-          return this.getScoreByKeys(card, playerKeys)
         case ScoringType.ByGoldOnCard:
           return this.getScoreByGoldOnCard(card, playerId)
         case ScoringType.ByGoldOnAllCards:
@@ -130,13 +120,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
 
     console.log('score : ', validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value)
     return validPositions.filter(position => position.x === cardCoordinates.x && position.y === cardCoordinates.y).length * value
-  }
-
-  getScoreByKeys(card: MaterialItem, keys: number): number {
-    console.log('score carte n° ', card.id.front)
-    const scoringEffect = cardCharacteristics[card.id.front].scoringEffect as ScoringByKeys
-    console.log('score : ', keys * scoringEffect.value)
-    return keys * scoringEffect.value
   }
 
   getScoreByGoldOnCard(card: MaterialItem, playerId: number): number {

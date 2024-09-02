@@ -4,19 +4,13 @@ import { cardCharacteristics } from './CardCharacteristics'
 import { Condition } from './Condition'
 
 export enum ScoringType {
-  ByKeys,
   ByPosition,
   ByGoldOnCard,
   ByGoldOnAllCards
 }
 
-export type Scoring = ScoringByKeys | ScoringByPosition | ScoringByGoldOnCard | ScoringByGoldOnAllCards
+export type Scoring = ScoringByPosition | ScoringByGoldOnCard | ScoringByGoldOnAllCards
   | { score: number, condition: Condition }
-
-export type ScoringByKeys = {
-  type: ScoringType.ByKeys
-  value: number
-}
 
 export type ScoringByPosition = {
   type: ScoringType.ByPosition
