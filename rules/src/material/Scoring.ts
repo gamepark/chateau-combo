@@ -1,8 +1,7 @@
 import { XYCoordinates } from '@gamepark/rules-api'
 import { Card } from './Card'
-import { BlazonType, cardCharacteristics } from './CardCharacteristics'
+import { cardCharacteristics } from './CardCharacteristics'
 import { Condition } from './Condition'
-import { CardCost } from './ImmediateEffect'
 import { Place } from './Place'
 
 export enum ScoringType {
@@ -10,14 +9,13 @@ export enum ScoringType {
   ByKeys,
   ByDiscount,
   ByPosition,
-  ByCost,
   IfHiddenCard,
   ByGoldOnCard,
   ByGoldOnAllCards
 }
 
 export type Scoring = ScoringByBanner
-  | ScoringByKeys | ScoringByDiscount | ScoringByPosition | ScoringByCost | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
+  | ScoringByKeys | ScoringByDiscount | ScoringByPosition | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
   | { score: number, condition: Condition }
 
 export type ScoringByBanner = {
@@ -42,12 +40,6 @@ export type ScoringByPosition = {
   validPositions: XYCoordinates[]
 }
 
-export type ScoringByCost = {
-  type: ScoringType.ByCost
-  cardCost: CardCost
-  value: number
-}
-
 export type ScoringIfHiddenCard = {
   type: ScoringType.IfHiddenCard
   value: number
@@ -62,12 +54,6 @@ export type ScoringByGoldOnCard = {
 export type ScoringByGoldOnAllCards = {
   type: ScoringType.ByGoldOnAllCards
   value: number
-}
-
-type BlazonCondition = {
-  blazonType: BlazonType
-  line?: boolean
-  column?: boolean
 }
 
 export const hasPurse = (card: Card) => (cardCharacteristics[card].scoringEffect as ScoringByGoldOnCard).type === ScoringType.ByGoldOnCard

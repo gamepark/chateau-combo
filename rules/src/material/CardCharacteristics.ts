@@ -186,7 +186,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 7,
     blazon: [BlazonType.Teacher],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, condition: { opponentGain: 2 } }],
-    scoringEffect: { type: ScoringType.ByCost, value: 5, cardCost: { cost: 5, sign: Sign.Plus } }
+    scoringEffect: { score: 5, condition: { type: ConditionType.PerCardWithCost, cost: 5, orGreater: true } }
   },
 
   [Card.Guildmaster]: {
@@ -243,7 +243,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { cardCost: { cost: 4, sign: Sign.Equal } } }],
-    scoringEffect: { type: ScoringType.ByCost, value: 3, cardCost: { cost: 4, sign: Sign.Equal } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerCardWithCost, cost: 4 } }
   },
 
   [Card.Chatelaine]: {
@@ -602,7 +602,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     blazon: [BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 3, condition: { cardCost: { cost: 0, sign: Sign.Equal } } }],
-    scoringEffect: { type: ScoringType.ByCost, value: 2, cardCost: { cost: 0, sign: Sign.Equal } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerCardWithCost, cost: 0 } }
   },
 
   [Card.Farmhand]: { cost: 0, blazon: [BlazonType.Farmer], moveMessenger: true, scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 5 } },

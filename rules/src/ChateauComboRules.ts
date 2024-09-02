@@ -15,7 +15,6 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import {
   ScoringByBanner,
-  ScoringByCost,
   ScoringByDiscount,
   ScoringByGoldOnAllCards,
   ScoringByGoldOnCard,
@@ -29,7 +28,6 @@ import { PlayerId } from './PlayerId'
 import { BuyCardRule } from './rules/BuyCardRule'
 import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
 import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
-import { isRespectingCostCondition } from './rules/effects/AbstractImmediateEffect'
 import { EndGameRule } from './rules/EndGameRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
 import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
@@ -121,8 +119,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreByBanner(card, panorama)
         case ScoringType.ByDiscount:
           return this.getScoreByDiscountCards(card, panorama)
-        case ScoringType.ByCost:
-          return this.getScoreByCost(card, panorama)
         case ScoringType.IfHiddenCard:
           return this.getScoreIfHiddenCard(card, this.getTableau(playerId))
         case ScoringType.ByGoldOnCard:
@@ -180,15 +176,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     return panorama
       .filter((i) => isDiscount(i.id.front))
       .length
-  }
-
-  getScoreByCost(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const scoringEffect = cardCaracs.scoringEffect as ScoringByCost
-    const value = scoringEffect.value
-    console.log('score : ', value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, scoringEffect.cardCost) ? 1 : 0)), 0))
-    return value * panorama.reduce((cardAcc, currentCard) => (cardAcc + (isRespectingCostCondition(currentCard.id.front, scoringEffect.cardCost) ? 1 : 0)), 0)
   }
 
   getScoreIfHiddenCard(card: MaterialItem, panorama: MaterialItem[]): number {

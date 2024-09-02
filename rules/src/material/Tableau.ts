@@ -56,7 +56,13 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerBannersSet:
         return this.countSets(condition.banners, this.cards.filter(isNotNull).map(getCardPlace))
       case ConditionType.PerCardWithShieldCount:
-        return this.cards.filter(card => card && cardCharacteristics[card].blazon.length === condition.count).length
+        return this.countCards(card => cardCharacteristics[card].blazon.length === condition.count)
+      case ConditionType.PerCardWithCost:
+        if (condition.orGreater) {
+          return this.countCards(card => cardCharacteristics[card].cost >= condition.cost)
+        } else {
+          return this.countCards(card => cardCharacteristics[card].cost === condition.cost)
+        }
       default:
         return 0
     }
@@ -88,6 +94,10 @@ export class Tableau extends MaterialRulesPart {
       sets++
     }
     return sets
+  }
+
+  countCards(predicate: (card: Card) => boolean) {
+    return this.cards.reduce((sum, card) => card && predicate(card) ? sum + 1 : sum, 0)
   }
 }
 
