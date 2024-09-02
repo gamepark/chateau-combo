@@ -3,7 +3,7 @@ import { cardCharacteristics } from '../../material/CardCharacteristics'
 import { ImmediateEffectType } from '../../material/ImmediateEffect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { ScoringByGoldOnCard, ScoringType } from '../../material/Scoring'
+import { hasPurse, ScoringByGoldOnCard } from '../../material/Scoring'
 
 import { AbstractImmediateEffect } from './AbstractImmediateEffect'
 
@@ -25,7 +25,7 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
         if (effect.putMethod === PutMethod.onEach){
             const cardsToPutGoldOn = panorama.filter(item => item.location.rotation === undefined 
                 && cardCharacteristics[item.id.front].scoringEffect !== undefined
-                && cardCharacteristics[item.id.front].scoringEffect!.type === ScoringType.ByGoldOnCard )
+                && hasPurse(item.id.front))
             cardsToPutGoldOn.getItems().forEach(card => {
                 const goldCardCanStore = (cardCharacteristics[card.id.front].scoringEffect as ScoringByGoldOnCard).limit
                 const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
@@ -46,7 +46,7 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
         } else if (effect.putMethod === PutMethod.onTwoBest){
             const cardsToPutGoldOn = panorama.filter(item => item.location.rotation === undefined 
                 && cardCharacteristics[item.id.front].scoringEffect !== undefined
-                && cardCharacteristics[item.id.front].scoringEffect!.type === ScoringType.ByGoldOnCard )
+                && hasPurse(item.id.front))
 
             const getBestTwoCardsToPutGoldOn = cardsToPutGoldOn.getItems().sort((card1, card2) => { 
                 const goldCard1CanStore = (cardCharacteristics[card1.id.front].scoringEffect as ScoringByGoldOnCard).limit

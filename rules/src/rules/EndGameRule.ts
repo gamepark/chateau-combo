@@ -2,7 +2,7 @@ import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-a
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { ScoringByGoldOnCard, ScoringType } from '../material/Scoring'
+import { hasPurse, ScoringByGoldOnCard } from '../material/Scoring'
 import { PlayerId } from '../PlayerId'
 
 export class EndGameRule extends MaterialRulesPart {
@@ -13,7 +13,7 @@ export class EndGameRule extends MaterialRulesPart {
     this.game.players.forEach(player => {
       const cardsToFill = this
         .getPanoramaWithoutHiddenCards(player)
-        .filter(item => cardCharacteristics[item.id.front].scoringEffect?.type === ScoringType.ByGoldOnCard)
+        .filter(item => hasPurse(item.id.front))
 
       cardsToFill.forEach(card => {
         const playerGoldStock = this.getPlayerGoldStock(player)

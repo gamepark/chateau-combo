@@ -1,5 +1,7 @@
 import { XYCoordinates } from '@gamepark/rules-api'
-import { BlazonType } from './CardCharacteristics'
+import { Card } from './Card'
+import { BlazonType, cardCharacteristics } from './CardCharacteristics'
+import { Condition } from './Condition'
 import { CardCost } from './ImmediateEffect'
 import { Place } from './Place'
 
@@ -21,6 +23,7 @@ export enum ScoringType {
 
 export type Scoring = ScoringByBlazon | ScoringByBlazonGroup | ScoringByBlazonCount | ScoringIfMissingBlazon | ScoringByBanner | ScoringByBannerGroup
   | ScoringByKeys | ScoringByDiscount | ScoringByPosition | ScoringByCost | ScoringIfHiddenCard | ScoringByGoldOnCard | ScoringByGoldOnAllCards
+  | { score: number, condition: Condition }
 
 export type ScoringByBlazon = {
   type: ScoringType.ByBlazon
@@ -101,3 +104,5 @@ type BlazonCondition = {
   line?: boolean
   column?: boolean
 }
+
+export const hasPurse = (card: Card) => (cardCharacteristics[card].scoringEffect as ScoringByGoldOnCard).type === ScoringType.ByGoldOnCard

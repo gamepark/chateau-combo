@@ -1,6 +1,7 @@
 import { Sign, SpaceFilling } from '../rules/effects/AbstractImmediateEffect'
 import { PutMethod } from '../rules/effects/ImmediatePutGoldOnCardEffect'
 import { Card } from './Card'
+import { ConditionType } from './Condition'
 import { ImmediateEffect, ImmediateEffectType } from './ImmediateEffect'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
@@ -42,7 +43,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Prayer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Prayer] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Teacher, line: true, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher, line: true, column: true } }
   },
 
   [Card.MotherSuperior]: {
@@ -71,7 +72,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Prayer],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Castle } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Prayer, line: true } }
+    scoringEffect: { score: 3, condition: {type: ConditionType.PerShield, shield: BlazonType.Prayer, line: true } }
   },
 
   [Card.Templar]: {
@@ -123,7 +124,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Prayer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { banner: Place.Castle } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Prayer, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer, column: true } }
   },
 
   [Card.Architect]: {
@@ -145,7 +146,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 3,
     blazon: [BlazonType.Teacher],
     moveMessenger: true,
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Teacher, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher, column: true } }
   },
 
   [Card.Professor]: {
@@ -153,7 +154,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Teacher],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Different] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Teacher, line: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher, line: true } }
   },
 
   [Card.Officer]: {
@@ -204,7 +205,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Soldier],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { banner: Place.Castle } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Noble, line: true, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, line: true, column: true } }
   },
 
   [Card.Lookout]: {
@@ -219,7 +220,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Noble, BlazonType.Soldier],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { opponentGain: 1 } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Noble, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, column: true } }
   },
 
   [Card.Banker]: {
@@ -260,14 +261,14 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 3,
     blazon: [BlazonType.Noble],
     moveMessenger: true,
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Noble, line: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, line: true } }
   },
 
   [Card.Prince]: {
     cost: 6,
     blazon: [BlazonType.Noble],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Noble] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 4, blazonCondition: { blazonType: BlazonType.Noble, line: true } }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, line: true } }
   },
 
   [Card.HisMajesty]: {
@@ -275,7 +276,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Noble, BlazonType.Prayer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, condition: { opponentGain: 1 } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 4, blazonCondition: { blazonType: BlazonType.Noble, column: true } }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, column: true } }
   },
 
   [Card.QueenMother]: {
@@ -290,7 +291,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Noble],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 2, condition: { blazon: [BlazonType.Noble] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Noble, line: true, column: true } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, line: true, column: true } }
   },
 
   [Card.Chancellor]: {
@@ -357,7 +358,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Squire]: {
     cost: 0,
     blazon: [BlazonType.Soldier],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Worker, line: true, column: true } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerShield, shield: BlazonType.Worker, line: true, column: true } }
   },
 
   [Card.Philosopher]: {
@@ -403,7 +404,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       effect1: { type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Farmer], bestNeighbor: true } },
       effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
     }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Soldier, line: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier, line: true } }
   },
 
   [Card.Bombardier]: {
@@ -414,14 +415,14 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       effect1: { type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Worker], bestNeighbor: true } },
       effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
     }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Soldier, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier, column: true } }
   },
 
   [Card.Stonemason]: {
     cost: 3,
     blazon: [BlazonType.Worker],
     moveMessenger: true,
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Worker, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Worker, column: true } }
   },
 
   [Card.Blacksmith]: {
@@ -472,7 +473,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Worker] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Worker, line: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Worker, line: true } }
   },
 
   [Card.SpiceMerchant]: {
@@ -485,7 +486,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Armorer]: {
     cost: 3,
     blazon: [BlazonType.Worker],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Soldier, line: true, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier, line: true, column: true } }
   },
 
   [Card.Potter]: {
@@ -554,21 +555,21 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Prayer, BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Prayer] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Farmer, line: true, column: true } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer, line: true, column: true } }
   },
 
   [Card.Beggar]: {
     cost: 0,
     blazon: [BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { filledOrEmpty: SpaceFilling.Filled } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 2, blazonCondition: { blazonType: BlazonType.Prayer, line: true, column: true } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer, line: true, column: true } }
   },
 
   [Card.StableBoy]: {
     cost: 4,
     blazon: [BlazonType.Farmer, BlazonType.Noble],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Noble] } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Farmer, column: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer, column: true } }
   },
 
   [Card.Winemaker]: {
@@ -583,7 +584,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { filledOrEmpty: SpaceFilling.Empty } }],
-    scoringEffect: { type: ScoringType.ByBlazon, value: 3, blazonCondition: { blazonType: BlazonType.Farmer, line: true } }
+    scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer, line: true } }
   },
 
   [Card.Usurper]: {
