@@ -1,7 +1,7 @@
 import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Place, places } from '../material/Card'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Place, places } from '../material/Place'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 

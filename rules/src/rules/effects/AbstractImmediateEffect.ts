@@ -1,6 +1,6 @@
 import { MaterialMove, PlayerTurnRule } from "@gamepark/rules-api";
-import { Place } from '../../material/Card'
 import { MaterialType } from "../../material/MaterialType";
+import { Place } from '../../material/Place'
 import { Memory } from "../Memory";
 import { LocationType } from "../../material/LocationType";
 import { BlazonType, getCost } from "../../CardCharacteristics";

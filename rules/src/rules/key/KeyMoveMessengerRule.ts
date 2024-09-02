@@ -1,7 +1,7 @@
 import { ItemMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { Place } from '../../material/Card'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { Place } from '../../material/Place'
 import { RuleId } from '../RuleId'
 
 export class KeyMoveMessengerRule extends PlayerTurnRule {

@@ -1,6 +1,7 @@
-import { Card, Place } from './material/Card'
+import { Card } from './material/Card'
 import { ImmediateEffectType } from './material/ImmediateEffectType'
 import { MaterialType } from './material/MaterialType'
+import { Place } from './material/Place'
 import { Sign, SpaceFilling } from './rules/effects/AbstractImmediateEffect'
 import { PutMethod } from './rules/effects/ImmediatePutGoldOnCardEffect'
 import { ScoringType } from './rules/EndGameRule'

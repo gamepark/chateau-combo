@@ -1,7 +1,7 @@
 import { Location, MaterialGame, MaterialRulesPart } from "@gamepark/rules-api";
-import { Place } from '../../material/Card'
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
+import { Place } from '../../material/Place'
 
 export class EndOfRiverHelper extends MaterialRulesPart {
 

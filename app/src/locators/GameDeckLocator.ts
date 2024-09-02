@@ -1,4 +1,4 @@
-import { Place } from '@gamepark/chateau-combo/material/Card'
+import { Place } from '@gamepark/chateau-combo/material/Place'
 import { DeckLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { chateauComboCardDescription } from '../material/ChateauComboCardDescription'

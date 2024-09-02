@@ -1,9 +1,10 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
-import { Card, castles, Place, places, villages } from './material/Card'
+import { Card, castles, villages } from './material/Card'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
+import { Place, places } from './material/Place'
 import { PlayerId } from './PlayerId'
 import { RuleId } from './rules/RuleId'
 
