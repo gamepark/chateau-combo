@@ -51,6 +51,8 @@ export class Tableau extends MaterialRulesPart {
         ).length
       case ConditionType.IfShieldMissing:
         return this.cards.some(card => card && cardCharacteristics[card].blazon.some(shield => shield === condition.shield)) ? 0 : 1
+      case ConditionType.PerShieldsSet:
+        return this.countSets(condition.shields, this.cards.flatMap(card => card ? cardCharacteristics[card].blazon : []))
       default:
         return 0
     }
@@ -65,5 +67,18 @@ export class Tableau extends MaterialRulesPart {
 
   get cards() {
     return this.tableau.flatMap(l => l)
+  }
+
+  countSets(set: number[], values: number[]) {
+    let sets = 0
+    search: while (values.length > set.length) {
+      for (const item of set) {
+        const itemIndex = values.indexOf(item)
+        if (itemIndex === -1) break search
+        values.splice(itemIndex, 1)
+      }
+      sets++
+    }
+    return sets
   }
 }

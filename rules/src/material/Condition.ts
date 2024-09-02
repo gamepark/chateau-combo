@@ -5,7 +5,9 @@ export enum ConditionType {
   PerDifferentShieldType,
   PerMissingShieldType,
   IfShieldMissing,
-  PerSet,
+  PerShieldsSet,
+  PerIdenticalShieldsSet,
+  PerBannersSet,
   PerCardWithShieldCount,
   PerCardWithCost,
   PerCardWithDiscount,
@@ -16,7 +18,7 @@ export enum ConditionType {
   IfPosition
 }
 
-export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing
+export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -38,4 +40,9 @@ export type PerMissingShieldType = {
 export type IfShieldMissing = {
   type: ConditionType.IfShieldMissing
   shield: BlazonType
+}
+
+export type PerShieldsSet = {
+  type: ConditionType.PerShieldsSet
+  shields: BlazonType[]
 }

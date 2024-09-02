@@ -164,7 +164,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Soldier],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Noble, BlazonType.Soldier] } }],
-    scoringEffect: { type: ScoringType.ByBlazonGroup, value: 4, blazonGroupType: [BlazonType.Noble, BlazonType.Soldier] }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerShieldsSet, shields: [BlazonType.Noble, BlazonType.Soldier] } }
   },
 
   [Card.Captain]: {
@@ -257,7 +257,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Worker],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Prayer, BlazonType.Worker] } }],
-    scoringEffect: { type: ScoringType.ByBlazonGroup, value: 4, blazonGroupType: [BlazonType.Prayer, BlazonType.Worker] }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerShieldsSet, shields: [BlazonType.Prayer, BlazonType.Worker] } }
   },
 
   [Card.Princess]: {
@@ -314,7 +314,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 7,
     blazon: [BlazonType.Noble],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Noble] } }],
-    scoringEffect: { type: ScoringType.ByBlazonGroup, value: 10, blazonGroupType: [BlazonType.Noble, BlazonType.Teacher, BlazonType.Worker] }
+    scoringEffect: { score: 10, condition: { type: ConditionType.PerShieldsSet, shields: [BlazonType.Noble, BlazonType.Teacher, BlazonType.Worker] } }
   },
 
   [Card.Duchess]: {
@@ -375,7 +375,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Teacher],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Teacher, BlazonType.Farmer] } }],
-    scoringEffect: { type: ScoringType.ByBlazonGroup, value: 4, blazonGroupType: [BlazonType.Teacher, BlazonType.Farmer] }
+    scoringEffect: { score: 4, condition: { type: ConditionType.PerShieldsSet, shields: [BlazonType.Teacher, BlazonType.Farmer] } }
   },
 
   [Card.Executioner]: {
@@ -450,7 +450,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 6,
     blazon: [BlazonType.Soldier, BlazonType.Farmer],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Different] } }],
-    scoringEffect: { type: ScoringType.ByBlazonGroup, value: 7, blazonGroupType: [BlazonType.Prayer, BlazonType.Soldier, BlazonType.Farmer] }
+    scoringEffect: { score: 7, condition: { type: ConditionType.PerShieldsSet, shields: [BlazonType.Prayer, BlazonType.Soldier, BlazonType.Farmer] } }
   },
 
   [Card.Innkeeper]: {
