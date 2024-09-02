@@ -250,7 +250,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     scoringEffect: { type: ScoringType.ByCost, cardCost: { cost: 4, sign: Sign.Equal } }
   },
 
-  [Card.Chetelaine]: {
+  [Card.Chatelaine]: {
     cost: 2,
     blazon: [BlazonType.Noble, BlazonType.Worker],
     canSwapMessengerToken: false,
@@ -319,7 +319,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     scoringEffect: { type: ScoringType.IfMissingBlazon, value: 10, missingBlazonType: BlazonType.Farmer }
   },
 
-  [Card.HerMajestytheQueen]: {
+  [Card.HerMajestyTheQueen]: {
     cost: 7,
     blazon: [BlazonType.Noble],
     canSwapMessengerToken: false,
@@ -327,7 +327,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     scoringEffect: { type: ScoringType.ByBlazonGroup, value: 10, blazonGroupType: [BlazonType.Noble, BlazonType.Teacher, BlazonType.Worker] }
   },
 
-  [Card.Duchesse]: {
+  [Card.Duchess]: {
     cost: 5,
     blazon: [BlazonType.Noble, BlazonType.Noble],
     canSwapMessengerToken: false,
@@ -393,7 +393,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     scoringEffect: { type: ScoringType.ByBlazonGroup, value: 4, blazonGroupType: [BlazonType.Teacher, BlazonType.Farmer] }
   },
 
-  [Card.Executionner]: {
+  [Card.Executioner]: {
     cost: 0,
     blazon: [BlazonType.Soldier],
     canSwapMessengerToken: true,
@@ -635,7 +635,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
 
   [Card.Farmhand]: { cost: 0, blazon: [BlazonType.Farmer], canSwapMessengerToken: true, scoringEffect: { type: ScoringType.ByGoldOnCard, value: 2, limit: 5 } },
 
-  [Card.Revolutionnary]: {
+  [Card.Revolutionary]: {
     cost: 4,
     blazon: [BlazonType.Farmer],
     canSwapMessengerToken: true,
@@ -643,7 +643,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     scoringEffect: { type: ScoringType.IfMissingBlazon, value: 9, missingBlazonType: BlazonType.Noble }
   },
 
-  [Card.Firsherman]: {
+  [Card.Fisherman]: {
     cost: 2,
     blazon: [BlazonType.Farmer, BlazonType.Farmer],
     canSwapMessengerToken: false,
@@ -677,7 +677,7 @@ export const getBlazons = (card: Card) => cardCharacteristics[card].blazon
 export const countBlazonsOfType = (card: Card, blazon: BlazonType) => cardCharacteristics[card].blazon.filter((b) => b === blazon).length
 export const countBlazons = (card: Card) => cardCharacteristics[card].blazon.length
 
-const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chetelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Firsherman, Card.Princess, Card.Baron]
+const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chatelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Fisherman, Card.Princess, Card.Baron]
 const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card.Captain, Card.Squire, Card.Stonemason, Card.Armorer, Card.Farmhand, Card.Baron]
 export const isCastleDiscount = (card: Card) => nobleDiscountArray.includes(card)
 export const isVillageDiscount = (card: Card) => villageDiscountArray.includes(card)
