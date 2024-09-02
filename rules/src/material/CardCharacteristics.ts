@@ -343,7 +343,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 6,
     blazon: [BlazonType.Noble, BlazonType.Teacher],
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Teacher] } }],
-    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
+    scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
   [Card.Baron]: {

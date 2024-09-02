@@ -1,4 +1,5 @@
 import { getEnumValues } from '@gamepark/rules-api'
+import { Place } from './Place'
 
 export enum Card {
   //Castle
@@ -85,3 +86,8 @@ export enum Card {
 
 export const cards = getEnumValues(Card)
 export const getCardPlace = (card: Card) => Math.floor(card / 100) + 1
+
+export type CardId = {
+  front?: Card
+  back: Place
+}

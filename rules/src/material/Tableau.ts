@@ -2,7 +2,7 @@ import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
-import { Card, getCardPlace } from './Card'
+import { Card, CardId, getCardPlace } from './Card'
 import { BlazonType, cardCharacteristics, isDiscount, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
@@ -19,7 +19,8 @@ export class Tableau extends MaterialRulesPart {
     const yMin = cards.minBy(item => item.location.y!).getItem()?.location.y ?? 0
     for (let x = 0; x < 3; x++) {
       for (let y = 0; y < 3; y++) {
-        this.tableau[y][x] = cards.location(l => l.x === x + xMin && l.y === y + yMin).getItem()?.id.front ?? null
+        const card = cards.location(l => l.x === x + xMin && l.y === y + yMin).getItem<CardId>()
+        this.tableau[y][x] = card?.id?.front && !card?.location.rotation ? card.id.front : null
       }
     }
   }
