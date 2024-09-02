@@ -51,6 +51,11 @@ export class KeyEffectRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
+    if (isMoveItemType(MaterialType.MessengerToken)(move)) {
+      return [
+        this.startRule(RuleId.BuyCard)
+      ]
+    }
     if (isMoveItemType(MaterialType.Card)(move)) {
       if (move.location.type === LocationType.Discard && this.river.length === 2) {
         return this.discardRiver()
