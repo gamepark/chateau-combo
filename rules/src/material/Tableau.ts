@@ -49,6 +49,8 @@ export class Tableau extends MaterialRulesPart {
             card && cardCharacteristics[card].blazon.some(cardShield => cardShield === shield)
           )
         ).length
+      case ConditionType.IfShieldMissing:
+        return this.cards.some(card => card && cardCharacteristics[card].blazon.some(shield => shield === condition.shield)) ? 0 : 1
       default:
         return 0
     }

@@ -26,7 +26,6 @@ import {
   ScoringByKeys,
   ScoringByPosition,
   ScoringIfHiddenCard,
-  ScoringIfMissingBlazon,
   ScoringType
 } from './material/Scoring'
 import { Tableau } from './material/Tableau'
@@ -126,8 +125,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
           return this.getScoreByBanner(card, panorama)
         case ScoringType.ByBlazonGroup:
           return this.getScoreByBlazonGroup(card, panorama)
-        case ScoringType.IfMissingBlazon:
-          return this.getScoreByMissingBlazon(card, panorama)
         case ScoringType.ByDiscount:
           return this.getScoreByDiscountCards(card, panorama)
         case ScoringType.ByCost:
@@ -208,22 +205,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
       console.log('score : ', value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazonToCount), 0))))
       return value * Math.min(...blazonGroup.map(blazonToCount => panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, blazonToCount), 0)))
     }
-  }
-
-  getScoreByMissingBlazon(card: MaterialItem, panorama: MaterialItem[]): number {
-    console.log('score carte n° ', card.id.front)
-    const cardCaracs = cardCharacteristics[card.id.front]
-    const scoringEffect = cardCaracs.scoringEffect as ScoringIfMissingBlazon
-    const value = scoringEffect.value
-    const missingBlazon = scoringEffect.missingBlazonType
-    const howManyDifferentBlazons: BlazonType[] = []
-    panorama.forEach(item => {
-      getBlazons(item.id.front).forEach(blazon => !howManyDifferentBlazons.includes(blazon) && howManyDifferentBlazons.push(blazon))
-    })
-    console.log('score : ', panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value)
-    return missingBlazon === BlazonType.Different
-      ? value * (6 - howManyDifferentBlazons.length)
-      : panorama.reduce((cardAcc, currentCard) => cardAcc + countBlazonsOfType(currentCard.id.front, missingBlazon), 0) > 0 ? 0 : value
   }
 
   getScoreByBlazonQuantity(card: MaterialItem, panorama: MaterialItem[]): number {

@@ -119,7 +119,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Prayer],
     immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 1, condition: { filledOrEmpty: SpaceFilling.Empty } }],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 10, missingBlazonType: BlazonType.Worker }
+    scoringEffect: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Worker } }
   },
 
   [Card.Nun]: {
@@ -307,7 +307,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Baron]: {
     cost: 3,
     blazon: [BlazonType.Noble],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 10, missingBlazonType: BlazonType.Farmer }
+    scoringEffect: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Farmer } }
   },
 
   [Card.HerMajestyTheQueen]: {
@@ -367,7 +367,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Philosopher]: {
     cost: 2,
     blazon: [BlazonType.Teacher],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 10, missingBlazonType: BlazonType.Soldier }
+    scoringEffect: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Soldier } }
   },
 
   [Card.Doctor]: {
@@ -395,7 +395,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       effect1: { type: ImmediateEffectType.GetCoins, value: 1, condition: { blazon: [BlazonType.Teacher], bestNeighbor: true } },
       effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
     }],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 10, missingBlazonType: BlazonType.Teacher }
+    scoringEffect: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Teacher } }
   },
 
   [Card.Militiaman]: {
@@ -532,7 +532,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
       value: 1,
       condition: { blazon: [BlazonType.Prayer], bestNeighbor: true }
     }],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 9, missingBlazonType: BlazonType.Prayer }
+    scoringEffect: { score: 9, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Prayer } }
   },
 
   [Card.Brigand]: {
@@ -612,7 +612,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Village } }],
-    scoringEffect: { type: ScoringType.IfMissingBlazon, value: 9, missingBlazonType: BlazonType.Noble }
+    scoringEffect: { score: 9, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Noble } }
   },
 
   [Card.Fisherman]: {
