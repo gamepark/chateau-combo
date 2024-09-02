@@ -10,16 +10,18 @@ import { MaterialType } from './MaterialType'
 import { hasPurse } from './Scoring'
 
 export class Tableau extends MaterialRulesPart {
+  xMin: number
+  yMin: number
   tableau: (Card | null)[][] = [[], [], []]
 
   constructor(game: MaterialGame, private player: PlayerId) {
     super(game)
     const cards = this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(player)
-    const xMin = cards.minBy(item => item.location.x!).getItem()?.location.x ?? 0
-    const yMin = cards.minBy(item => item.location.y!).getItem()?.location.y ?? 0
+    this.xMin = cards.minBy(item => item.location.x!).getItem()?.location.x ?? 0
+    this.yMin = cards.minBy(item => item.location.y!).getItem()?.location.y ?? 0
     for (let x = 0; x < 3; x++) {
       for (let y = 0; y < 3; y++) {
-        const card = cards.location(l => l.x === x + xMin && l.y === y + yMin).getItem<CardId>()
+        const card = cards.location(l => l.x === x + this.xMin && l.y === y + this.yMin).getItem<CardId>()
         this.tableau[y][x] = card?.id?.front && !card?.location.rotation ? card.id.front : null
       }
     }
@@ -30,7 +32,7 @@ export class Tableau extends MaterialRulesPart {
   }
 
   getCardScore(x: number, y: number) {
-    const card = this.tableau[x][y]
+    const card = this.tableau[y][x]
     if (card === null) return 0
     const scoring = cardCharacteristics[card].scoringEffect as { score: number, condition: Condition } // TODO remove cast once refactoring is complete
     if (!scoring.score) return 0 // TODO: remove once refactoring is complete
@@ -75,9 +77,10 @@ export class Tableau extends MaterialRulesPart {
         return this.cards.every(isNotNull) ? 0 : 1
       case ConditionType.PerCardWithPurse:
         return this.countCards(hasPurse)
-      case ConditionType.PerGoldInPurse:
-        // TODO: store gold on the card (parent item)
-        return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).location(l => l.x === x && l.y === y).getQuantity()
+      case ConditionType.PerGoldInPurse: {
+        return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
+          .location(l => l.x === x + this.xMin && l.y === y + this.yMin).getQuantity()
+      }
       case ConditionType.PerGoldInAllPurses:
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getQuantity()
       case ConditionType.IfPosition:
