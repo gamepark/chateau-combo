@@ -12,7 +12,7 @@ import { RuleId } from './RuleId'
 export class ImmediateEffectRule extends PlayerTurnRule {
   onRuleStart() {
     const card = this.placedCard
-    const immediateEffect = cardCharacteristics[card.id.front].immediateEffect
+    const immediateEffect = cardCharacteristics[card.id.front].effects
     const moves: MaterialMove[] = []
 
     // Si on a pas d'effets, alors on les calcule

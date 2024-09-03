@@ -30,13 +30,13 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
   }
 
   get discardPlace() {
-    return (cardCharacteristics[this.placedCard.id.front].immediateEffect![0] as DiscardFromRiver).river
+    return (cardCharacteristics[this.placedCard.id.front].effects[0] as DiscardFromRiver).river
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Discard) return []
 
-    const effect = cardCharacteristics[this.placedCard.id.front].immediateEffect![0] as DiscardFromRiver
+    const effect = cardCharacteristics[this.placedCard.id.front].effects[0] as DiscardFromRiver
     const discardedCardId = this.material(MaterialType.Card).getItem(move.itemIndex)!.id.front
     const discardedCardCost = cardCharacteristics[discardedCardId].cost
     const moves: MaterialMove[] = []
