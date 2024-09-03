@@ -1,4 +1,4 @@
-import { BlazonType } from './CardCharacteristics'
+import { Shield } from './CardCharacteristics'
 import { Place } from './Place'
 
 export enum ConditionType {
@@ -30,7 +30,7 @@ export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldTyp
 
 export type PerShield = {
   type: ConditionType.PerShield
-  shield: BlazonType
+  shield: Shield
   line?: boolean
   column?: boolean
 }
@@ -47,12 +47,12 @@ export type PerMissingShieldType = {
 
 export type IfShieldMissing = {
   type: ConditionType.IfShieldMissing
-  shield: BlazonType
+  shield: Shield
 }
 
 export type PerShieldsSet = {
   type: ConditionType.PerShieldsSet
-  shields: BlazonType[]
+  shields: Shield[]
 }
 
 export type PerIdenticalShieldsSet = {

@@ -3,7 +3,7 @@ import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card, CardId, getCardPlace } from './Card'
-import { BlazonType, cardCharacteristics, isDiscount, shields } from './CardCharacteristics'
+import { Shield, cardCharacteristics, isDiscount, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
@@ -44,17 +44,17 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerShield:
         return this.countShields(condition.shield, this.getConsideredCards(condition, x, y))
       case ConditionType.PerDifferentShieldType:
-        return uniq(this.getConsideredCards(condition, x, y).flatMap(card => card ? cardCharacteristics[card].blazon : [])).length
+        return uniq(this.getConsideredCards(condition, x, y).flatMap(card => card ? cardCharacteristics[card].shields : [])).length
       case ConditionType.PerMissingShieldType:
         return shields.filter(shield =>
           !this.cards.some(card =>
-            card && cardCharacteristics[card].blazon.some(cardShield => cardShield === shield)
+            card && cardCharacteristics[card].shields.some(cardShield => cardShield === shield)
           )
         ).length
       case ConditionType.IfShieldMissing:
-        return this.cards.some(card => card && cardCharacteristics[card].blazon.some(shield => shield === condition.shield)) ? 0 : 1
+        return this.cards.some(card => card && cardCharacteristics[card].shields.some(shield => shield === condition.shield)) ? 0 : 1
       case ConditionType.PerShieldsSet:
-        return this.countSets(condition.shields, this.cards.flatMap(card => card ? cardCharacteristics[card].blazon : []))
+        return this.countSets(condition.shields, this.cards.flatMap(card => card ? cardCharacteristics[card].shields : []))
       case ConditionType.PerIdenticalShieldsSet:
         return sumBy(shields, shield => Math.floor(this.countShields(shield) / condition.count))
       case ConditionType.PerKey:
@@ -64,7 +64,7 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerBannersSet:
         return this.countSets(condition.banners, this.cards.filter(isNotNull).map(getCardPlace))
       case ConditionType.PerCardWithShieldCount:
-        return this.countCards(card => cardCharacteristics[card].blazon.length === condition.count)
+        return this.countCards(card => cardCharacteristics[card].shields.length === condition.count)
       case ConditionType.PerCardWithCost:
         if (condition.orGreater) {
           return this.countCards(card => cardCharacteristics[card].cost >= condition.cost)
@@ -107,8 +107,8 @@ export class Tableau extends MaterialRulesPart {
     return this.tableau.flatMap(l => l)
   }
 
-  countShields(shield: BlazonType, cards = this.cards) {
-    return sumBy(cards, card => card ? cardCharacteristics[card].blazon.filter(s => s === shield).length : 0)
+  countShields(shield: Shield, cards = this.cards) {
+    return sumBy(cards, card => card ? cardCharacteristics[card].shields.filter(s => s === shield).length : 0)
   }
 
   countSets(set: number[], values: number[]) {
