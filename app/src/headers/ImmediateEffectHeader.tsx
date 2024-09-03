@@ -39,7 +39,7 @@ const PlayerImmediateEffectHeader = ({ activePlayer }: { activePlayer: number })
 
 function getEffectHeader(effect:ImmediateEffectType | undefined, who:string):string{
     switch (effect){
-        case ImmediateEffectType.GetCoins:
+        case ImmediateEffectType.GainGold:
             return 'header.'+who+'.immediate.gold.effect'
         case ImmediateEffectType.GetKeys:
             return 'header.'+who+'.immediate.key.effect'

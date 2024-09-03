@@ -1,24 +1,25 @@
 import { Sign, SpaceFilling } from '../rules/effects/AbstractImmediateEffect'
 import { PutGoldOnCardEffect } from '../rules/effects/ImmediatePutGoldOnCardEffect'
 import { BlazonType } from './CardCharacteristics'
+import { Condition } from './Condition'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
 
 export enum ImmediateEffectType {
-    GetCoins = 1,
+    GainGold = 1,
     GetKeys,
     DiscardFromRiver,
     ChooseBetween,
     PutGoldOnCard
 }
 
-export type ImmediateEffect = GetCoinsEffect | GetKeysEffect | DiscardFromRiverEffect | ChooseBetweenEffect | PutGoldOnCardEffect
+export type ImmediateEffect = GainGold | GetKeysEffect | DiscardFromRiverEffect | ChooseBetweenEffect | PutGoldOnCardEffect
 
-export type GetCoinsEffect = {
-    type: ImmediateEffectType.GetCoins
-    value: number
-    opponentGain?: number
-    condition?: ConditionOld
+export type GainGold = {
+    type: ImmediateEffectType.GainGold
+    gain: number
+    opponentsGain?: number
+    condition?: Condition
 }
 
 export type GetKeysEffect = {

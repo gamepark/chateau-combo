@@ -39,7 +39,7 @@ export class Tableau extends MaterialRulesPart {
     return scoring.score * this.countCondition(scoring.condition, x, y)
   }
 
-  countCondition(condition: Condition, x: number, y: number): number {
+  countCondition(condition: Condition, x?: number, y?: number): number {
     switch (condition.type) {
       case ConditionType.PerShield:
         return this.countShields(condition.shield, this.getConsideredCards(condition, x, y))
@@ -79,7 +79,7 @@ export class Tableau extends MaterialRulesPart {
         return this.countCards(hasPurse)
       case ConditionType.PerGoldInPurse: {
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
-          .location(l => l.x === x + this.xMin && l.y === y + this.yMin).getQuantity()
+          .location(l => l.x === x! + this.xMin && l.y === y! + this.yMin).getQuantity()
       }
       case ConditionType.PerGoldInAllPurses:
         return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getQuantity()
@@ -88,18 +88,18 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerEmptyPosition:
         return 9 - this.countCards()
       case ConditionType.IfPosition:
-        return condition.position[y][x] ? 1 : 0
+        return condition.position[y!][x!] ? 1 : 0
       case ConditionType.BestNeighbor:
-        return Math.max(...this.neighbors.map(neighbor => new Tableau(this.game, neighbor).countCondition(condition.condition, x, y)))
+        return Math.max(...this.neighbors.map(neighbor => new Tableau(this.game, neighbor).countCondition(condition.condition)))
       default:
         return 0
     }
   }
 
-  getConsideredCards({ line, column }: { line?: boolean, column?: boolean }, x: number, y: number) {
+  getConsideredCards({ line, column }: { line?: boolean, column?: boolean }, x?: number, y?: number) {
     if (line && column) return this.tableau.flatMap((l, y2) => l.filter((_, x2) => y === y2 || x === x2))
-    if (line && !column) return this.tableau[y]
-    if (!line && column) return this.tableau.map(l => l[x])
+    if (line && !column) return this.tableau[y!]
+    if (!line && column) return this.tableau.map(l => l[x!])
     return this.cards
   }
 
