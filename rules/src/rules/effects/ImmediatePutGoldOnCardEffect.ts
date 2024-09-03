@@ -17,10 +17,10 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
 
     if (!effect.cardsLimit) {
       const cardsToPutGoldOn = panorama.filter(item => item.location.rotation === undefined
-        && cardCharacteristics[item.id.front].scoringEffect !== undefined
+        && cardCharacteristics[item.id.front].scoring !== undefined
         && hasPurse(item.id.front))
       cardsToPutGoldOn.getItems().forEach(card => {
-        const goldCardCanStore = (cardCharacteristics[card.id.front].scoringEffect.condition as PerGoldInPurse).limit
+        const goldCardCanStore = (cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit
         const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
           .filter(gold => gold.location.x === card.location.x && gold.location.y === card.location.y).getQuantity()
         if (goldCardCanStore - goldAlreadyOnCard !== 0) {
@@ -38,15 +38,15 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
 
     } else if (effect.cardsLimit === 2) {
       const cardsToPutGoldOn = panorama.filter(item => item.location.rotation === undefined
-        && cardCharacteristics[item.id.front].scoringEffect !== undefined
+        && cardCharacteristics[item.id.front].scoring !== undefined
         && hasPurse(item.id.front))
 
       const getBestTwoCardsToPutGoldOn = cardsToPutGoldOn.getItems().sort((card1, card2) => {
-        const goldCard1CanStore = (cardCharacteristics[card1.id.front].scoringEffect.condition as PerGoldInPurse).limit
+        const goldCard1CanStore = (cardCharacteristics[card1.id.front].scoring.condition as PerGoldInPurse).limit
         const goldAlreadyOnCard1 = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
           .filter(gold => gold.location.x === card1.location.x && gold.location.y === card1.location.y).getQuantity()
         const goldMissingOnCard1 = goldCard1CanStore - goldAlreadyOnCard1
-        const goldCard2CanStore = (cardCharacteristics[card2.id.front].scoringEffect.condition as PerGoldInPurse).limit
+        const goldCard2CanStore = (cardCharacteristics[card2.id.front].scoring.condition as PerGoldInPurse).limit
         const goldAlreadyOnCard2 = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
           .filter(gold => gold.location.x === card2.location.x && gold.location.y === card2.location.y).getQuantity()
         const goldMissingOnCard2 = goldCard2CanStore - goldAlreadyOnCard2
@@ -55,7 +55,7 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
       }).splice(0, 2)
 
       getBestTwoCardsToPutGoldOn.forEach(card => {
-        const goldCardCanStore = (cardCharacteristics[card.id.front].scoringEffect.condition as PerGoldInPurse).limit
+        const goldCardCanStore = (cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit
         const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
           .filter(gold => gold.location.x === card.location.x && gold.location.y === card.location.y).getQuantity()
         moves.push(this.material(MaterialType.GoldCoin).createItem({

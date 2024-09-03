@@ -7,4 +7,4 @@ export type Scoring = {
   condition: Condition
 }
 
-export const hasPurse = (card: Card) => (cardCharacteristics[card].scoringEffect).condition.type === ConditionType.PerGoldInPurse
+export const hasPurse = (card: Card) => (cardCharacteristics[card].scoring).condition.type === ConditionType.PerGoldInPurse

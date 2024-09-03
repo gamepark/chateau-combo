@@ -34,8 +34,7 @@ export class Tableau extends MaterialRulesPart {
   getCardScore(x: number, y: number) {
     const card = this.tableau[y][x]
     if (card === null) return 0
-    const scoring = cardCharacteristics[card].scoringEffect as { score: number, condition: Condition } // TODO remove cast once refactoring is complete
-    if (!scoring.score) return 0 // TODO: remove once refactoring is complete
+    const scoring = cardCharacteristics[card].scoring
     return scoring.score * this.countCondition(scoring.condition, x, y)
   }
 

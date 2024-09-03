@@ -21,7 +21,7 @@ export class EndGameRule extends MaterialRulesPart {
         if (playerGoldStock.getQuantity() === 0) return
 
         const goldAlreadyOnCard = this.countPlayerGoldOnCard(player, card)
-        if (goldAlreadyOnCard < (cardCharacteristics[card.id.front].scoringEffect.condition as PerGoldInPurse).limit) {
+        if (goldAlreadyOnCard < (cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit) {
           moves.push(
             ...playerGoldStock
               .moveItems(
@@ -30,7 +30,7 @@ export class EndGameRule extends MaterialRulesPart {
                   player,
                   x: card.location.x,
                   y: card.location.y
-                }, Math.min((cardCharacteristics[card.id.front].scoringEffect.condition as PerGoldInPurse).limit - goldAlreadyOnCard, playerGoldStock.getQuantity())
+                }, Math.min((cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit - goldAlreadyOnCard, playerGoldStock.getQuantity())
               ))
         }
       })
