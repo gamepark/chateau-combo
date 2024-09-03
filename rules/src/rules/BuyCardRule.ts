@@ -7,6 +7,7 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
+import { ImmediateEffectRule } from './ImmediateEffectRule'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -89,8 +90,6 @@ export class BuyCardRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.PlayerBoard) return []
 
-    const item = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)!
-    this.memorize(Memory.PlacedCard, move.itemIndex)
     const moves: MaterialMove[] = []
     this
       .material(MaterialType.Card)
@@ -116,7 +115,10 @@ export class BuyCardRule extends PlayerTurnRule {
       return moves
     }
 
-    moves.push(this.startRule(RuleId.ImmediateEffect))
+    const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
+    this.memorize(Memory.PlacedCard, move.itemIndex)
+    this.memorize(Memory.PendingEffects, cardCharacteristics[card.id!.front!].effects)
+    moves.push(...new ImmediateEffectRule(this.game).getPendingEffectsMoves())
 
     return moves
   }

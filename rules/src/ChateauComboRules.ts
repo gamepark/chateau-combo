@@ -8,12 +8,10 @@ import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
 import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
 import { EndGameRule } from './rules/EndGameRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
-import { ImmediateEffectRule } from './rules/ImmediateEffectRule'
 import { KeyEffectRule } from './rules/KeyEffectRule'
 import { MoveMessengerRule } from './rules/MoveMessengerRule'
 import { RuleId } from './rules/RuleId'
 import { SpendKeyRule } from './rules/SpendKeyRule'
-
 
 /**
  * This class implements the rules of the board game.
@@ -27,7 +25,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
     [RuleId.BuyCard]: BuyCardRule,
     [RuleId.MoveMessenger]: MoveMessengerRule,
     [RuleId.EndOfTurn]: EndOfTurnRule,
-    [RuleId.ImmediateEffect]: ImmediateEffectRule,
     [RuleId.DiscardFromRiver]: DiscardFromRiverRule,
     [RuleId.ChooseBetween]: ChooseBetweenRule,
     [RuleId.EndGame]: EndGameRule

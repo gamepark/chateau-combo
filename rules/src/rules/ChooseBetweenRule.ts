@@ -1,10 +1,10 @@
 import { CustomMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { ChooseBetween, EffectType } from '../material/Effect'
+import { ChooseBetween, Effect } from '../material/Effect'
 import { MaterialType } from '../material/MaterialType'
 import { CustomMoveType } from './CustomMoveType'
+import { ImmediateEffectRule } from './ImmediateEffectRule'
 import { Memory } from './Memory'
-import { RuleId } from './RuleId'
 
 export class ChooseBetweenRule extends PlayerTurnRule {
 
@@ -15,10 +15,9 @@ export class ChooseBetweenRule extends PlayerTurnRule {
     ]
   }
 
-  startImmediateEffect(effect:({ type: EffectType } & Record<any, any>)[]): MaterialMove[]{
-    this.forget(Memory.ImmediateEffectsToPlay)
-    this.memorize(Memory.ImmediateEffectsToPlay, effect)
-    return [this.startRule(RuleId.ImmediateEffect)]
+  startImmediateEffect(effect: Effect): MaterialMove[] {
+    this.memorize(Memory.PendingEffects, effects => [effect, ...effects])
+    return new ImmediateEffectRule(this.game).getPendingEffectsMoves()
   }
 
   get placedCard() {
@@ -28,11 +27,11 @@ export class ChooseBetweenRule extends PlayerTurnRule {
   }
 
   get effect1ToPlay() {
-    return [(cardCharacteristics[this.placedCard.id.front].effects[0] as ChooseBetween).effect1]
+    return (cardCharacteristics[this.placedCard.id.front].effects[0] as ChooseBetween).effect1
   }
 
   get effect2ToPlay() {
-    return [(cardCharacteristics[this.placedCard.id.front].effects[0] as ChooseBetween).effect2]
+    return (cardCharacteristics[this.placedCard.id.front].effects[0] as ChooseBetween).effect2
   }
 
 
@@ -40,9 +39,9 @@ export class ChooseBetweenRule extends PlayerTurnRule {
   onCustomMove(move: CustomMove): MaterialMove[] {
     if (move.type === CustomMoveType.Choice){
       return this.startImmediateEffect(move.data)
-    } 
+    }
     return []
-    
+
   }
 
 

@@ -15,7 +15,6 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.BuyCard]: BuyCardHeader, // TODO header plus spécifique
   [RuleId.DiscardFromRiver]: DiscardFromRiverHeader,
   [RuleId.ChooseBetween]: ChooseBetweenHeader,
-  [RuleId.ImmediateEffect]: BuyCardHeader,
   [RuleId.EndOfTurn]: EndOfTurnHeader,
   [RuleId.EndGame]:EndGameHeader
 }

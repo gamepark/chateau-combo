@@ -52,7 +52,7 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
           quantity: discardedCardCost
         }))
 
-    this.forget(Memory.ImmediateEffectsToPlay)
+    this.forget(Memory.PendingEffects)
     moves.push(this.startRule(RuleId.EndOfTurn))
 
     return moves

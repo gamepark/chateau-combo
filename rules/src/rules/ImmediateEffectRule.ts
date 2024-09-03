@@ -1,7 +1,5 @@
 import { MaterialGame, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { cardCharacteristics } from '../material/CardCharacteristics'
-import { EffectType } from '../material/Effect'
-import { MaterialType } from '../material/MaterialType'
+import { Effect, EffectType } from '../material/Effect'
 import { AbstractImmediateEffect } from './effects/AbstractImmediateEffect'
 import { ImmediateGainCoinEffect } from './effects/ImmediateGainCoinEffect'
 import { ImmediateGainKeyEffect } from './effects/ImmediateGainKeyEffect'
@@ -10,31 +8,22 @@ import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class ImmediateEffectRule extends PlayerTurnRule {
-  onRuleStart() {
-    const card = this.placedCard
-    const immediateEffect = cardCharacteristics[card.id.front].effects
+  getPendingEffectsMoves() {
     const moves: MaterialMove[] = []
 
-    // Si on a pas d'effets, alors on les calcule
-    if (this.remind(Memory.ImmediateEffectsToPlay) === undefined) {
-      if (immediateEffect === undefined) {
-        moves.push(this.startRule(RuleId.MoveMessenger))
-      } else {
-        this.memorize(Memory.ImmediateEffectsToPlay, immediateEffect)
-      }
-    }
+    // Scroll through the list of effects to be played, and select the necessary rules.
+    const effects = this.remind<Effect[]>(Memory.PendingEffects) ?? []
+    if (effects.length === 0) return []
 
-    // On parcourt la liste des effets à jouer, et on va dans les rules nécessaires
-    const effects = this.remind(Memory.ImmediateEffectsToPlay)
-    const firstEffect = effects.shift()
-    const firstEffectType: EffectType = firstEffect.type
+    const firstEffect = effects.shift()!
+    const firstEffectType = firstEffect.type
 
-    // Si c'est un effet gérable immédiatement, on le fait
+    // If the effect is immediately manageable, we do it.
     if (firstEffectType in ImmediateEffects) {
       moves.push(
         ...new ImmediateEffects[firstEffectType]!(this.game).getEffectMoves(firstEffect)
       )
-    } // Sinon, on pousse une rule spécifique dans laquelle passer
+    } // Otherwise, we push a specific rule into which to pass
     else {
       if (firstEffectType === EffectType.DiscardFromRiver) {
         moves.push(this.startRule(RuleId.DiscardFromRiver))
@@ -47,22 +36,14 @@ export class ImmediateEffectRule extends PlayerTurnRule {
       }
     }
 
-    // Dans tous les cas, on supprime l'élément du tableau mémorisé, car traité
+    // In all cases, the element is deleted from the stored array, as it has been processed.
     if (effects.length) {
-      this.memorize(Memory.ImmediateEffectsToPlay, effects)
-      moves.push(this.startRule(RuleId.ImmediateEffect))
+      moves.push(...this.getPendingEffectsMoves())
     } else {
-      this.forget(Memory.ImmediateEffectsToPlay)
       moves.push(this.startRule(RuleId.MoveMessenger))
     }
 
     return moves
-  }
-
-  get placedCard() {
-    return this
-      .material(MaterialType.Card)
-      .getItem(this.remind(Memory.PlacedCard))!
   }
 }
 
