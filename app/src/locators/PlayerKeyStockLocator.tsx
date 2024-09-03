@@ -3,6 +3,7 @@ import { ItemContext, PileLocator, getRelativePlayerIndex } from '@gamepark/reac
 import { Location } from '@gamepark/rules-api'
 
 class PlayerKeyStockLocator extends PileLocator {
+  radius = 2
   // TODO: better management of animations + limits ?
   limit = 1000
 
