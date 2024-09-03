@@ -18,14 +18,14 @@ export type GetCoinsEffect = {
     type: ImmediateEffectType.GetCoins
     value: number
     opponentGain?: number
-    condition?: Condition
+    condition?: ConditionOld
 }
 
 export type GetKeysEffect = {
     type: ImmediateEffectType.GetKeys
     value: number
     opponentGain?: number
-    condition?: Condition
+    condition?: ConditionOld
 }
 
 export type DiscardFromRiverEffect = {
@@ -40,7 +40,7 @@ export type ChooseBetweenEffect = {
     effect2: ImmediateEffect
 }
 
-type Condition = BlazonCondition | BlazonNumberCondition | BannerCondition | BlazonBestNeighborCondition | FilledOrEmptyCondition
+type ConditionOld = BlazonCondition | BlazonNumberCondition | BannerCondition | BlazonBestNeighborCondition | FilledOrEmptyCondition
   | CardCostCondition | OnStockCardCondition
 
 type BlazonCondition = {

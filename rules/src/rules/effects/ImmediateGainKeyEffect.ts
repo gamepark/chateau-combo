@@ -3,13 +3,13 @@ import { BlazonType, canStockCoins, countBlazons, countBlazonsOfType, getBlazons
 import { ImmediateEffectType } from '../../material/ImmediateEffect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { AbstractImmediateEffect, Condition, isRespectingCostCondition, SpaceFilling } from './AbstractImmediateEffect'
+import { AbstractImmediateEffect, ConditionOld, isRespectingCostCondition, SpaceFilling } from './AbstractImmediateEffect'
 
 export type GainKeyEffect = {
   type: ImmediateEffectType.GetKeys,
   value: number;
   opponentGain?: number
-  condition?: Condition
+  condition?: ConditionOld
 }
 
 export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffect> {

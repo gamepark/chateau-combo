@@ -43,7 +43,7 @@ export abstract class AbstractImmediateEffect<T> extends PlayerTurnRule {
     }
 }
 
-export type Condition = {
+export type ConditionOld = {
     banner?: Place,
     blazon?: BlazonType[]
     blazonNumber?: number
