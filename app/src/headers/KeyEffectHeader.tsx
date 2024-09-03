@@ -12,7 +12,7 @@ export const KeyEffectHeader = () => {
   const player = usePlayerId()
   const itsMe = rules.getActivePlayer() === player
   const legalMoves = useLegalMoves<MaterialMove>()
-  const moveMessenger = legalMoves.find((move) => isMoveItemType(MaterialType.MessengerToken)(move))
+  const moveMessenger = legalMoves.find((move) => isMoveItemType(MaterialType.MessengerPawn)(move))
   const discardCards = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard)
 
   return (

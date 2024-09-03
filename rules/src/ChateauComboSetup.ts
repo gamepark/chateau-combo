@@ -16,15 +16,15 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   Rules = ChateauComboRules
 
   setupMaterial() {
-    this.setupMessengerToken()
+    this.setupMessengerPawn()
     this.setupPlayers()
     this.setupDecks()
     this.setupRiver()
   }
 
-  setupMessengerToken() {
+  setupMessengerPawn() {
     this
-      .material(MaterialType.MessengerToken)
+      .material(MaterialType.MessengerPawn)
       .createItem({
         location: {
           type: LocationType.EndOfRiver,

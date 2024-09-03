@@ -11,7 +11,7 @@ export class EndOfRiverHelper extends MaterialRulesPart {
 
     get getEmptySpace():Location[]{
 
-        const messengerTokenLocation = this.material(MaterialType.MessengerToken).location(LocationType.EndOfRiver).getItem()
+        const messengerTokenLocation = this.material(MaterialType.MessengerPawn).location(LocationType.EndOfRiver).getItem()
         if (messengerTokenLocation!.id === Place.Castle){
             return [{type:LocationType.EndOfRiver, id:Place.Village}]
         } else {

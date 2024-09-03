@@ -43,7 +43,7 @@ export class BuyCardRule extends PlayerTurnRule {
 
   get riverCards() {
     const banner = this
-      .material(MaterialType.MessengerToken)
+      .material(MaterialType.MessengerPawn)
       .getItem()!.location.id
 
     return this

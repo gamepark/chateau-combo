@@ -1,5 +1,5 @@
 export enum MaterialType {
-    MessengerToken = 1,
+    MessengerPawn = 1,
     Card,
     GoldCoin,
     Key

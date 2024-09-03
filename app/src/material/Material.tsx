@@ -1,7 +1,7 @@
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { MaterialDescription } from '@gamepark/react-game'
 import { frenchCardDescription } from './FrenchChateauComboCardDescription'
-import { messengerTokenDescription } from './MessengerTokenDescription'
+import { messengerPawnDescription } from './MessengerPawnDescription'
 import { chateauComboCardDescription } from './ChateauComboCardDescription'
 import { goldCoinDescription } from './GoldCoinDescription'
 import { keyDescription } from './KeyDescription'
@@ -9,7 +9,7 @@ import { keyDescription } from './KeyDescription'
 
 export const Material: Record<MaterialType, MaterialDescription> = {
 
-    [MaterialType.MessengerToken]: messengerTokenDescription,
+    [MaterialType.MessengerPawn]: messengerPawnDescription,
     [MaterialType.Card]:chateauComboCardDescription,
     [MaterialType.GoldCoin]:goldCoinDescription,
     [MaterialType.Key]:keyDescription

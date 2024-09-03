@@ -18,7 +18,7 @@ export class CardRotateButtonLocator extends Locator {
     const rule = rules.game.rule
     const canBuyCard = rule?.player === player && (rule?.id === RuleId.SpendKey || rule?.id === RuleId.BuyCard)
     if (!canBuyCard) return []
-    const messenger = rules.material(MaterialType.MessengerToken).getItem()!.location.id
+    const messenger = rules.material(MaterialType.MessengerPawn).getItem()!.location.id
     const riverCards = rules.material(MaterialType.Card).location(LocationType.River).locationId(messenger)
     return riverCards.getIndexes()
       .map((index) => ({
@@ -29,7 +29,7 @@ export class CardRotateButtonLocator extends Locator {
 
   placeLocation(location: Location, context: LocationContext): string[] {
     const { rules, locators } = context
-    const messenger = rules.material(MaterialType.MessengerToken).getItem()!.location.id
+    const messenger = rules.material(MaterialType.MessengerPawn).getItem()!.location.id
     const card = rules.material(MaterialType.Card).getItem(location.parent!)!
     return [
       ...riverLocator.placeItem(card, { ...context, type: MaterialType.Card, index: location.parent!, displayIndex: location.parent! }),

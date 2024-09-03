@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { TokenDescription } from '@gamepark/react-game'
-import messengerToken from '../images/messengerToken.png'
+import MessengerPawn from '../images/MessengerPawn.png'
 
-class MessengerTokenDescription extends TokenDescription {
+class MessengerPawnDescription extends TokenDescription {
   width = 4
   height = 5
-  image = messengerToken
+  image = MessengerPawn
 
   getFrontExtraCss() {
     return borderRadiusCss
@@ -17,4 +17,4 @@ const borderRadiusCss = css`
   border-radius: 2em 3em 1em 2em;
 `
 
-export const messengerTokenDescription = new MessengerTokenDescription()
+export const messengerPawnDescription = new MessengerPawnDescription()

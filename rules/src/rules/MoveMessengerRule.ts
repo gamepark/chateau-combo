@@ -25,7 +25,7 @@ export class MoveMessengerRule extends PlayerTurnRule {
 
   get messenger() {
     return this
-      .material(MaterialType.MessengerToken)
+      .material(MaterialType.MessengerPawn)
       .location(LocationType.EndOfRiver)
   }
 

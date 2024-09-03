@@ -16,7 +16,7 @@ export class KeyEffectRule extends PlayerTurnRule {
   }
 
   get messenger() {
-    return this.material(MaterialType.MessengerToken)
+    return this.material(MaterialType.MessengerPawn)
   }
 
   get messengerPlace(): Place {
@@ -51,7 +51,7 @@ export class KeyEffectRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.MessengerToken)(move)) {
+    if (isMoveItemType(MaterialType.MessengerPawn)(move)) {
       return [
         this.startRule(RuleId.BuyCard)
       ]
