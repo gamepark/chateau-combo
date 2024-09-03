@@ -1,7 +1,7 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../../material/CardCharacteristics'
 import { PerGoldInPurse } from '../../material/Condition'
-import { PutGoldOnCard } from '../../material/ImmediateEffect'
+import { PutGoldOnCard } from '../../material/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { hasPurse } from '../../material/Scoring'

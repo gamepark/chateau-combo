@@ -1,6 +1,6 @@
 import { CustomMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { ChooseBetween, ImmediateEffectType } from '../material/ImmediateEffect'
+import { ChooseBetween, EffectType } from '../material/Effect'
 import { MaterialType } from '../material/MaterialType'
 import { CustomMoveType } from './CustomMoveType'
 import { Memory } from './Memory'
@@ -15,7 +15,7 @@ export class ChooseBetweenRule extends PlayerTurnRule {
     ]
   }
 
-  startImmediateEffect(effect:({ type: ImmediateEffectType } & Record<any, any>)[]): MaterialMove[]{
+  startImmediateEffect(effect:({ type: EffectType } & Record<any, any>)[]): MaterialMove[]{
     this.forget(Memory.ImmediateEffectsToPlay)
     this.memorize(Memory.ImmediateEffectsToPlay, effect)
     return [this.startRule(RuleId.ImmediateEffect)]

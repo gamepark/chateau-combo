@@ -3,8 +3,9 @@ import { range, uniq } from 'lodash'
 import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card, CardId, getCardPlace } from './Card'
-import { Shield, cardCharacteristics, isDiscount, shields } from './CardCharacteristics'
+import { cardCharacteristics, Shield, shields } from './CardCharacteristics'
 import { Condition, ConditionType } from './Condition'
+import { EffectType } from './Effect'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
 import { hasPurse } from './Scoring'
@@ -71,7 +72,7 @@ export class Tableau extends MaterialRulesPart {
           return this.countCards(card => cardCharacteristics[card].cost === condition.cost)
         }
       case ConditionType.PerCardWithDiscount:
-        return this.countCards(isDiscount)
+        return this.countCards(card => cardCharacteristics[card].effects.some(effect => effect.type === EffectType.Discount))
       case ConditionType.IfCardFlippedDown:
         return this.cards.every(isNotNull) ? 0 : 1
       case ConditionType.PerCardWithPurse:

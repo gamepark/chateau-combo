@@ -1,7 +1,7 @@
 import { getEnumValues } from '@gamepark/rules-api'
 import { Card } from './Card'
 import { ConditionType } from './Condition'
-import { ImmediateEffect, ImmediateEffectType } from './ImmediateEffect'
+import { Effect, EffectType } from './Effect'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
 import { Scoring } from './Scoring'
@@ -21,11 +21,10 @@ const X = true, _ = false
 export const shields = getEnumValues(Shield)
 
 export type CardPattern = {
-  //banner:BannerType
   cost: number
   shields: Shield[]
   moveMessenger?: boolean
-  immediateEffect?: ImmediateEffect[]
+  effects: Effect[]
   scoring: Scoring
 }
 
@@ -33,7 +32,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Steward]: {
     cost: 0,
     shields: [Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, cardsLimit: 2 }],
+    effects: [{ type: EffectType.PutGoldOnCard, cardsLimit: 2 }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 3 } }
   },
 
@@ -41,14 +40,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Faith],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship, line: true, column: true } }
   },
 
   [Card.MotherSuperior]: {
     cost: 5,
     shields: [Shield.Faith, Shield.Faith],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 4 }],
+    effects: [{ type: EffectType.GainKeys, gain: 4 }],
     scoring: {
       score: 5, condition: {
         type: ConditionType.IfPosition, position: [
@@ -63,7 +62,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.HisHoliness]: {
     cost: 7,
     shields: [Shield.Faith],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 3, opponentsGain: 1 }],
+    effects: [{ type: EffectType.GainKeys, gain: 3, opponentsGain: 1 }],
     scoring: { score: 6, condition: { type: ConditionType.PerMissingShieldType } }
   },
 
@@ -71,14 +70,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Faith],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 1 } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 1 } }],
     scoring: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
   },
 
   [Card.Cardinal]: {
     cost: 4,
     shields: [Shield.Faith],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Faith, line: true } }
   },
 
@@ -86,13 +85,13 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Faith, Shield.Military],
     moveMessenger: true,
-    immediateEffect: [
+    effects: [
       {
-        type: ImmediateEffectType.GainGold, gain: 1, condition: {
+        type: EffectType.GainGold, gain: 1, condition: {
           type: ConditionType.BestNeighbor, condition: { type: ConditionType.PerShield, shield: Shield.Faith }
         }
       },
-      { type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }
+      { type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }
     ],
     scoring: { score: 1, condition: { type: ConditionType.PerKey } }
   },
@@ -100,18 +99,20 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Gravedigger]: {
     cost: 4,
     shields: [Shield.Faith, Shield.Scholarship],
-    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.GoldCoin }],
+    effects: [{ type: EffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.GoldCoin }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 8 } }
   },
 
   [Card.Alchemist]: {
     cost: 6, shields: [Shield.Scholarship],
+    effects: [{ type: EffectType.Discount, castle: 1, village: 1 }],
     scoring: { score: 4, condition: { type: ConditionType.PerCardWithDiscount } }
   },
 
   [Card.Astronomer]: {
     cost: 5,
     shields: [Shield.Scholarship, Shield.Scholarship],
+    effects: [{ type: EffectType.Discount, castle: 1 }],
     scoring: {
       score: 8, condition: {
         type: ConditionType.IfPosition, position: [
@@ -127,13 +128,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 6,
     shields: [Shield.Faith],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, village: 1 }],
     scoring: { score: 4, condition: { type: ConditionType.PerDifferentShieldType, line: true } }
   },
 
   [Card.Devout]: {
     cost: 4,
     shields: [Shield.Faith],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerEmptyPosition } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerEmptyPosition } }],
     scoring: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: Shield.Craftsmanship } }
   },
 
@@ -141,7 +143,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Faith],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Faith, column: true } }
   },
 
@@ -149,6 +151,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Scholarship],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, village: 1 }],
     scoring: { score: 2, condition: { type: ConditionType.PerDifferentShieldType } }
   },
 
@@ -156,7 +159,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Scholarship, Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 2 } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 2 } }],
     scoring: {
       score: 6, condition: {
         type: ConditionType.IfPosition, position: [
@@ -172,6 +175,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Scholarship],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, castle: 1 }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship, column: true } }
   },
 
@@ -179,16 +183,16 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Scholarship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship, line: true } }
   },
 
   [Card.Officer]: {
     cost: 5,
     shields: [Shield.Military],
-    immediateEffect: [
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } },
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }
+    effects: [
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } },
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }
     ],
     scoring: { score: 4, condition: { type: ConditionType.PerShieldsSet, shields: [Shield.Nobility, Shield.Military] } }
   },
@@ -197,6 +201,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Military, Shield.Military],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, village: 1 }],
     scoring: {
       score: 8, condition: {
         type: ConditionType.IfPosition, position: [
@@ -212,14 +217,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Scholarship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 2 }],
+    effects: [{ type: EffectType.GainKeys, gain: 2 }],
     scoring: { score: 3, condition: { type: ConditionType.PerBannersSet, banners: [Place.Castle, Place.Village] } }
   },
 
   [Card.Patron]: {
     cost: 7,
     shields: [Shield.Scholarship],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 0, opponentsGain: 2 }],
+    effects: [{ type: EffectType.GainGold, gain: 0, opponentsGain: 2 }],
     scoring: { score: 5, condition: { type: ConditionType.PerCardWithCost, cost: 5, orGreater: true } }
   },
 
@@ -227,7 +232,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Craftsmanship, Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.Key }],
+    effects: [{ type: EffectType.DiscardFromRiver, river: Place.Village, token: MaterialType.Key }],
     scoring: {
       score: 5, condition: {
         type: ConditionType.IfPosition, position: [
@@ -242,21 +247,21 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.General]: {
     cost: 7,
     shields: [Shield.Military],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
     scoring: { score: 6, condition: { type: ConditionType.PerIdenticalShieldsSet, count: 3 } }
   },
 
   [Card.Knight]: {
     cost: 5,
     shields: [Shield.Military],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Nobility, line: true, column: true } }
   },
 
   [Card.Lookout]: {
     cost: 6,
     shields: [Shield.Military],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }],
     scoring: { score: 4, condition: { type: ConditionType.PerDifferentShieldType, column: true } }
   },
 
@@ -264,7 +269,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Nobility, Shield.Military],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, opponentsGain: 1 }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, opponentsGain: 1 }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Nobility, column: true } }
   },
 
@@ -272,10 +277,10 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 7,
     shields: [Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{
-      type: ImmediateEffectType.ChooseBetween,
-      effect1: { type: ImmediateEffectType.PutGoldOnCard, gold: 2 },
-      effect2: { type: ImmediateEffectType.GainKeys, gain: 3 }
+    effects: [{
+      type: EffectType.ChooseBetween,
+      effect1: { type: EffectType.PutGoldOnCard, gold: 2 },
+      effect2: { type: EffectType.GainKeys, gain: 3 }
     }],
     scoring: { score: 1, condition: { type: ConditionType.PerGoldInAllPurses } }
   },
@@ -284,13 +289,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithCost, cost: 4 } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithCost, cost: 4 } }],
     scoring: { score: 3, condition: { type: ConditionType.PerCardWithCost, cost: 4 } }
   },
 
   [Card.Chatelaine]: {
     cost: 2,
     shields: [Shield.Nobility, Shield.Craftsmanship],
+    effects: [{ type: EffectType.Discount, castle: 1 }],
     scoring: { score: 2, condition: { type: ConditionType.PerDifferentShieldType, line: true } }
   },
 
@@ -298,9 +304,9 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } },
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }
+    effects: [
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } },
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }
     ],
     scoring: { score: 4, condition: { type: ConditionType.PerShieldsSet, shields: [Shield.Faith, Shield.Craftsmanship] } }
   },
@@ -309,13 +315,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Nobility],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, castle: 1 }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Nobility, line: true } }
   },
 
   [Card.Prince]: {
     cost: 6,
     shields: [Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
     scoring: { score: 4, condition: { type: ConditionType.PerShield, shield: Shield.Nobility, line: true } }
   },
 
@@ -323,14 +330,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 6,
     shields: [Shield.Nobility, Shield.Faith],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 0, opponentsGain: 1 }],
+    effects: [{ type: EffectType.GainGold, gain: 0, opponentsGain: 1 }],
     scoring: { score: 4, condition: { type: ConditionType.PerShield, shield: Shield.Nobility, column: true } }
   },
 
   [Card.QueenMother]: {
     cost: 3,
     shields: [Shield.Nobility, Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, gold: 2 }],
+    effects: [{ type: EffectType.PutGoldOnCard, gold: 2 }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
   },
 
@@ -338,34 +345,35 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Nobility],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
+    effects: [{ type: EffectType.GainGold, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
     scoring: { score: 2, condition: { type: ConditionType.PerShield, shield: Shield.Nobility, line: true, column: true } }
   },
 
   [Card.Chancellor]: {
     cost: 6,
     shields: [Shield.Nobility, Shield.Scholarship],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } }],
     scoring: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
   [Card.Baron]: {
     cost: 3,
     shields: [Shield.Nobility],
+    effects: [{ type: EffectType.Discount, castle: 1, village: 1 }],
     scoring: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: Shield.Peasantry } }
   },
 
   [Card.HerMajestyTheQueen]: {
     cost: 7,
     shields: [Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
     scoring: { score: 10, condition: { type: ConditionType.PerShieldsSet, shields: [Shield.Nobility, Shield.Scholarship, Shield.Craftsmanship] } }
   },
 
   [Card.Duchess]: {
     cost: 5,
     shields: [Shield.Nobility, Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 2 }],
+    effects: [{ type: EffectType.GainKeys, gain: 2 }],
     scoring: {
       score: 8, condition: {
         type: ConditionType.IfPosition, position: [
@@ -380,17 +388,17 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Inventor]: {
     cost: 2,
     shields: [Shield.Scholarship, Shield.Scholarship],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } }],
     scoring: { score: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
   },
 
   [Card.Spy]: {
     cost: 4,
     shields: [Shield.Scholarship, Shield.Military],
-    immediateEffect: [
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } },
+    effects: [
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } },
       {
-        type: ImmediateEffectType.GainKeys, gain: 1, condition: {
+        type: EffectType.GainKeys, gain: 1, condition: {
           type: ConditionType.BestNeighbor,
           condition: { type: ConditionType.PerShield, shield: Shield.Military }
         }
@@ -411,7 +419,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 0,
     shields: [Shield.Faith],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
   },
 
@@ -419,19 +427,21 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Faith, Shield.Faith],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithPurse } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithPurse } }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   },
 
   [Card.Squire]: {
     cost: 0,
     shields: [Shield.Military],
+    effects: [{ type: EffectType.Discount, castle: 1, village: 1 }],
     scoring: { score: 2, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship, line: true, column: true } }
   },
 
   [Card.Philosopher]: {
     cost: 2,
     shields: [Shield.Scholarship],
+    effects: [{ type: EffectType.Discount, castle: 1 }],
     scoring: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: Shield.Military } }
   },
 
@@ -439,9 +449,9 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Scholarship],
     moveMessenger: true,
-    immediateEffect: [
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } },
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }
+    effects: [
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } },
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }
     ],
     scoring: { score: 4, condition: { type: ConditionType.PerShieldsSet, shields: [Shield.Scholarship, Shield.Peasantry] } }
   },
@@ -450,7 +460,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 0,
     shields: [Shield.Military],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.DiscardFromRiver, river: Place.Castle, token: MaterialType.GoldCoin }],
+    effects: [{ type: EffectType.DiscardFromRiver, river: Place.Castle, token: MaterialType.GoldCoin }],
     scoring: { score: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
@@ -458,15 +468,15 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 2,
     shields: [Shield.Military],
     moveMessenger: true,
-    immediateEffect: [{
-      type: ImmediateEffectType.ChooseBetween,
+    effects: [{
+      type: EffectType.ChooseBetween,
       effect1: {
-        type: ImmediateEffectType.GainGold, gain: 1, condition: {
+        type: EffectType.GainGold, gain: 1, condition: {
           type: ConditionType.BestNeighbor,
           condition: { type: ConditionType.PerShield, shield: Shield.Scholarship }
         }
       },
-      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
+      effect2: { type: EffectType.GainKeys, gain: 2 }
     }],
     scoring: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: Shield.Scholarship } }
   },
@@ -475,15 +485,15 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 2,
     shields: [Shield.Military],
     moveMessenger: true,
-    immediateEffect: [{
-      type: ImmediateEffectType.ChooseBetween,
+    effects: [{
+      type: EffectType.ChooseBetween,
       effect1: {
-        type: ImmediateEffectType.GainGold, gain: 1, condition: {
+        type: EffectType.GainGold, gain: 1, condition: {
           type: ConditionType.BestNeighbor,
           condition: { type: ConditionType.PerShield, shield: Shield.Peasantry }
         }
       },
-      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
+      effect2: { type: EffectType.GainKeys, gain: 2 }
     }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Military, line: true } }
   },
@@ -491,15 +501,15 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Bombardier]: {
     cost: 2,
     shields: [Shield.Military],
-    immediateEffect: [{
-      type: ImmediateEffectType.ChooseBetween,
+    effects: [{
+      type: EffectType.ChooseBetween,
       effect1: {
-        type: ImmediateEffectType.GainGold, gain: 1, condition: {
+        type: EffectType.GainGold, gain: 1, condition: {
           type: ConditionType.BestNeighbor,
           condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship }
         }
       },
-      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
+      effect2: { type: EffectType.GainKeys, gain: 2 }
     }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Military, column: true } }
   },
@@ -508,21 +518,22 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Craftsmanship],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, village: 1 }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship, column: true } }
   },
 
   [Card.Blacksmith]: {
     cost: 5,
     shields: [Shield.Military, Shield.Craftsmanship],
-    immediateEffect: [{
-      type: ImmediateEffectType.ChooseBetween,
+    effects: [{
+      type: EffectType.ChooseBetween,
       effect1: {
-        type: ImmediateEffectType.GainGold, gain: 1, condition: {
+        type: EffectType.GainGold, gain: 1, condition: {
           type: ConditionType.BestNeighbor,
           condition: { type: ConditionType.PerShield, shield: Shield.Nobility }
         }
       },
-      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
+      effect2: { type: EffectType.GainKeys, gain: 2 }
     }],
     scoring: { score: 2, condition: { type: ConditionType.PerCardWithShieldCount, count: 2 } }
   },
@@ -530,30 +541,30 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.MasterAtArms]: {
     cost: 2,
     shields: [Shield.Military, Shield.Military],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Military } }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   },
 
   [Card.Mercenary]: {
     cost: 6,
     shields: [Shield.Military, Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
     scoring: { score: 7, condition: { type: ConditionType.PerShieldsSet, shields: [Shield.Faith, Shield.Military, Shield.Peasantry] } }
   },
 
   [Card.Innkeeper]: {
     cost: 0,
     shields: [Shield.Craftsmanship],
-    immediateEffect: [
-      { type: ImmediateEffectType.PutGoldOnCard, gold: 2 },
-      { type: ImmediateEffectType.GainGold, gain: 0, opponentsGain: 2 }],
+    effects: [
+      { type: EffectType.PutGoldOnCard, gold: 2 },
+      { type: EffectType.GainGold, gain: 0, opponentsGain: 2 }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 6 } }
-  }, // TODO
+  },
   [Card.Sculptor]: {
     cost: 3,
     shields: [Shield.Faith, Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 7 } }
   },
 
@@ -561,14 +572,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship, line: true } }
   },
 
   [Card.SpiceMerchant]: {
     cost: 0,
     shields: [Shield.Craftsmanship],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }],
+    effects: [{ type: EffectType.GainGold, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }],
     scoring: {
       score: 5, condition: {
         type: ConditionType.IfPosition, position: [
@@ -583,6 +594,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Armorer]: {
     cost: 3,
     shields: [Shield.Craftsmanship],
+    effects: [{ type: EffectType.Discount, castle: 1, village: 1 }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Military, line: true, column: true } }
   },
 
@@ -590,14 +602,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 2,
     shields: [Shield.Craftsmanship, Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, gold: 2 }],
+    effects: [{ type: EffectType.PutGoldOnCard, gold: 2 }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
-  }, // TODO
+  },
   [Card.Farmer]: {
     cost: 5,
     shields: [Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }],
     scoring: {
       score: 7, condition: {
         type: ConditionType.IfPosition, position: [
@@ -613,7 +625,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Craftsmanship, Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }],
     scoring: { score: 1, condition: { type: ConditionType.PerKey } }
   },
 
@@ -621,7 +633,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 0,
     shields: [Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerMissingShieldType } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerMissingShieldType } }],
     scoring: { score: 8, condition: { type: ConditionType.IfCardFlippedDown } }
   },
 
@@ -629,8 +641,8 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }, {
-      type: ImmediateEffectType.GainKeys,
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }, {
+      type: EffectType.GainKeys,
       gain: 1,
       condition: {
         type: ConditionType.BestNeighbor,
@@ -643,8 +655,8 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Brigand]: {
     cost: 7,
     shields: [Shield.Peasantry],
-    immediateEffect: [{
-      type: ImmediateEffectType.GainKeys, gain: 1, condition: {
+    effects: [{
+      type: EffectType.GainKeys, gain: 1, condition: {
         type: ConditionType.BestNeighbor,
         condition: { type: ConditionType.PerBanner, banner: Place.Castle }
       }
@@ -655,7 +667,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Woodcutter]: {
     cost: 0,
     shields: [Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerFullPosition } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerFullPosition } }],
     scoring: {
       score: 5, condition: {
         type: ConditionType.IfPosition, position: [
@@ -671,28 +683,28 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Faith, Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
     scoring: { score: 2, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry, line: true, column: true } }
   },
 
   [Card.Beggar]: {
     cost: 0,
     shields: [Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerFullPosition } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerFullPosition } }],
     scoring: { score: 2, condition: { type: ConditionType.PerShield, shield: Shield.Faith, line: true, column: true } }
   },
 
   [Card.StableBoy]: {
     cost: 4,
     shields: [Shield.Peasantry, Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Nobility } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry, column: true } }
   },
 
   [Card.Winemaker]: {
     cost: 2,
     shields: [Shield.Scholarship, Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
     scoring: { score: 2, condition: { type: ConditionType.PerDifferentShieldType, column: true } }
   },
 
@@ -700,7 +712,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerEmptyPosition } }],
+    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerEmptyPosition } }],
     scoring: { score: 3, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry, line: true } }
   },
 
@@ -708,14 +720,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 5,
     shields: [Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 1 } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 1 } }],
     scoring: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
   [Card.Traveler]: {
     cost: 0,
     shields: [Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 3, condition: { type: ConditionType.PerCardWithCost, cost: 0 } }],
+    effects: [{ type: EffectType.GainGold, gain: 3, condition: { type: ConditionType.PerCardWithCost, cost: 0 } }],
     scoring: { score: 2, condition: { type: ConditionType.PerCardWithCost, cost: 0 } }
   },
 
@@ -723,6 +735,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 0,
     shields: [Shield.Peasantry],
     moveMessenger: true,
+    effects: [{ type: EffectType.Discount, village: 1 }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
   },
 
@@ -730,13 +743,14 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 4,
     shields: [Shield.Peasantry],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
     scoring: { score: 9, condition: { type: ConditionType.IfShieldMissing, shield: Shield.Nobility } }
   },
 
   [Card.Fisherman]: {
     cost: 2,
     shields: [Shield.Peasantry, Shield.Peasantry],
+    effects: [{ type: EffectType.Discount, castle: 1 }],
     scoring: {
       score: 4, condition: {
         type: ConditionType.IfPosition, position: [
@@ -751,9 +765,9 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Baker]: {
     cost: 0,
     shields: [Shield.Peasantry],
-    immediateEffect: [
-      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } },
-      { type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
+    effects: [
+      { type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } },
+      { type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
     ],
     scoring: {
       score: 3, condition: {
@@ -769,14 +783,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Beekeeper]: {
     cost: 2,
     shields: [Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, gold: 2 }],
+    effects: [{ type: EffectType.PutGoldOnCard, gold: 2 }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 9 } }
   }
 }
-
-const nobleDiscountArray = [Card.Alchemist, Card.Astronomer, Card.Apothecary, Card.Chatelaine, Card.Squire, Card.Philosopher, Card.Armorer, Card.Fisherman, Card.Princess, Card.Baron]
-const villageDiscountArray = [Card.Alchemist, Card.Pilgrim, Card.Architect, Card.Captain, Card.Squire, Card.Stonemason, Card.Armorer, Card.Farmhand, Card.Baron]
-export const isCastleDiscount = (card: Card) => nobleDiscountArray.includes(card)
-export const isVillageDiscount = (card: Card) => villageDiscountArray.includes(card)
-export const isDiscountForPlace = (possessedCard: Card, place: Place) => place === Place.Castle ? isCastleDiscount(possessedCard) : isVillageDiscount(possessedCard)
-export const isDiscount = (card: Card) => isCastleDiscount(card) || isVillageDiscount(card)

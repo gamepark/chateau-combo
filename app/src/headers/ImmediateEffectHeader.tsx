@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
-import { ImmediateEffectType } from "@gamepark/chateau-combo/material/ImmediateEffect"
+import { EffectType } from "@gamepark/chateau-combo/material/Effect"
 import { MaterialType } from "@gamepark/chateau-combo/material/MaterialType"
 import { Memory } from "@gamepark/chateau-combo/rules/Memory"
 import { usePlayerId, useRules } from "@gamepark/react-game"
@@ -37,13 +37,13 @@ const PlayerImmediateEffectHeader = ({ activePlayer }: { activePlayer: number })
   return <span>{ t(getEffectHeader(actualImmediateEffect, 'player'), {activePlayer, placedCard}) }</span>
 }
 
-function getEffectHeader(effect:ImmediateEffectType | undefined, who:string):string{
+function getEffectHeader(effect:EffectType | undefined, who:string):string{
     switch (effect){
-        case ImmediateEffectType.GainGold:
+        case EffectType.GainGold:
             return 'header.'+who+'.immediate.gold.effect'
-        case ImmediateEffectType.GainKeys:
+        case EffectType.GainKeys:
             return 'header.'+who+'.immediate.key.effect'
-        case ImmediateEffectType.PutGoldOnCard:
+        case EffectType.PutGoldOnCard:
             return 'header.'+who+'.immediate.put.gold.effect'
         default:
             return 'header.'+who+'.immediate.default.effect'

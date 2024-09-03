@@ -1,7 +1,11 @@
-import { isDeleteItemType, isMoveItemType, ItemMove, Location, MaterialItem, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { cardCharacteristics, isDiscountForPlace } from '../material/CardCharacteristics'
+import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import sumBy from 'lodash/sumBy'
+import { Card, CardId } from '../material/Card'
+import { cardCharacteristics } from '../material/CardCharacteristics'
+import { EffectType } from '../material/Effect'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { Place } from '../material/Place'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -15,7 +19,7 @@ export class BuyCardRule extends PlayerTurnRule {
 
     const cards = this.riverCards
     const buyableCards = cards
-      .filter((item) => cardCharacteristics[item.id.front].cost - this.getDiscount(item) <= gold)
+      .filter((item) => cardCharacteristics[item.id.front].cost - this.getDiscount(item.id.back) <= gold)
 
     moves.push(
       ...availableSpaces.flatMap((space) => {
@@ -47,13 +51,20 @@ export class BuyCardRule extends PlayerTurnRule {
       .locationId(banner)
   }
 
-  getDiscount(item: MaterialItem) {
-    return this
+  getDiscount(place: Place) {
+    let tableau = this
       .material(MaterialType.Card)
       .location(LocationType.PlayerBoard)
       .player(this.player)
-      .filter((i) => isDiscountForPlace(i.id.front, item.id.back))
-      .length
+      .getItems<CardId>()
+    return sumBy(tableau, card => card.id?.front ? this.getCardDiscount(card.id.front, place) : 0)
+  }
+
+  getCardDiscount(card: Card, place: Place) {
+    return sumBy(cardCharacteristics[card].effects, effect => {
+      if (effect.type !== EffectType.Discount) return 0
+      return (place === Place.Castle ? effect.castle : effect.village) ?? 0
+    })
   }
 
   beforeItemMove(move: ItemMove) {
@@ -61,7 +72,7 @@ export class BuyCardRule extends PlayerTurnRule {
     const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
     const moves: MaterialMove[] = []
 
-    const discount = this.getDiscount(item)
+    const discount = this.getDiscount(item.id.back)
     if (move.location.rotation === undefined && (cardCharacteristics[item.id.front].cost - discount) > 0) {
       moves.push(
         ...this

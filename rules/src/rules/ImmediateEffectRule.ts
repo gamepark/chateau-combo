@@ -1,6 +1,6 @@
 import { MaterialGame, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { ImmediateEffectType } from '../material/ImmediateEffect'
+import { EffectType } from '../material/Effect'
 import { MaterialType } from '../material/MaterialType'
 import { AbstractImmediateEffect } from './effects/AbstractImmediateEffect'
 import { ImmediateGainCoinEffect } from './effects/ImmediateGainCoinEffect'
@@ -27,7 +27,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
     // On parcourt la liste des effets à jouer, et on va dans les rules nécessaires
     const effects = this.remind(Memory.ImmediateEffectsToPlay)
     const firstEffect = effects.shift()
-    const firstEffectType: ImmediateEffectType = firstEffect.type
+    const firstEffectType: EffectType = firstEffect.type
 
     // Si c'est un effet gérable immédiatement, on le fait
     if (firstEffectType in ImmediateEffects) {
@@ -36,12 +36,12 @@ export class ImmediateEffectRule extends PlayerTurnRule {
       )
     } // Sinon, on pousse une rule spécifique dans laquelle passer
     else {
-      if (firstEffectType === ImmediateEffectType.DiscardFromRiver) {
+      if (firstEffectType === EffectType.DiscardFromRiver) {
         moves.push(this.startRule(RuleId.DiscardFromRiver))
         return moves
       }
 
-      if (firstEffectType === ImmediateEffectType.ChooseBetween) {
+      if (firstEffectType === EffectType.ChooseBetween) {
         moves.push(this.startRule(RuleId.ChooseBetween))
         return moves
       }
@@ -67,9 +67,9 @@ export class ImmediateEffectRule extends PlayerTurnRule {
 }
 
 type EffectCreator = new (game: MaterialGame) => AbstractImmediateEffect<any>
-const ImmediateEffects: Partial<Record<ImmediateEffectType, EffectCreator>> = {
-  [ImmediateEffectType.GainGold]: ImmediateGainCoinEffect,
-  [ImmediateEffectType.GainKeys]: ImmediateGainKeyEffect,
-  [ImmediateEffectType.PutGoldOnCard]: ImmediatePutGoldOnCardEffect
+const ImmediateEffects: Partial<Record<EffectType, EffectCreator>> = {
+  [EffectType.GainGold]: ImmediateGainCoinEffect,
+  [EffectType.GainKeys]: ImmediateGainKeyEffect,
+  [EffectType.PutGoldOnCard]: ImmediatePutGoldOnCardEffect
 }
 

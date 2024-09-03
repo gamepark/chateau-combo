@@ -1,6 +1,6 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { DiscardFromRiver } from '../material/ImmediateEffect'
+import { DiscardFromRiver } from '../material/Effect'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'

@@ -1,5 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import { GainGold } from '../../material/ImmediateEffect'
+import { GainGold } from '../../material/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Tableau } from '../../material/Tableau'

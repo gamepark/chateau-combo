@@ -2,44 +2,51 @@ import { Condition } from './Condition'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
 
-export enum ImmediateEffectType {
-  GainGold = 1,
+export enum EffectType {
+  Discount ,
+  GainGold ,
   GainKeys,
   DiscardFromRiver,
   ChooseBetween,
   PutGoldOnCard
 }
 
-export type ImmediateEffect = GainGold | GainKeys | DiscardFromRiver | ChooseBetween | PutGoldOnCard
+export type Effect = Discount | GainGold | GainKeys | DiscardFromRiver | ChooseBetween | PutGoldOnCard
+
+export type Discount = {
+  type: EffectType.Discount
+  castle?: number
+  village?: number
+}
 
 export type GainGold = {
-  type: ImmediateEffectType.GainGold
+  type: EffectType.GainGold
   gain: number
   opponentsGain?: number
   condition?: Condition
 }
 
 export type GainKeys = {
-  type: ImmediateEffectType.GainKeys
+  type: EffectType.GainKeys
   gain: number
   opponentsGain?: number
   condition?: Condition
 }
 
 export type DiscardFromRiver = {
-  type: ImmediateEffectType.DiscardFromRiver
+  type: EffectType.DiscardFromRiver
   river: Place
   token: MaterialType.GoldCoin | MaterialType.Key
 }
 
 export type ChooseBetween = {
-  type: ImmediateEffectType.ChooseBetween
-  effect1: ImmediateEffect
-  effect2: ImmediateEffect
+  type: EffectType.ChooseBetween
+  effect1: Effect
+  effect2: Effect
 }
 
 export type PutGoldOnCard = {
-  type: ImmediateEffectType.PutGoldOnCard
+  type: EffectType.PutGoldOnCard
   gold?: number
   cardsLimit?: number
 }
