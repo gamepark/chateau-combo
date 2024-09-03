@@ -1,10 +1,10 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { TokenDescription } from '@gamepark/react-game'
-import Key1 from '../images/Key1.png'
+import Key1 from '../images/tokens/Key1.png'
 
 export class KeyDescription extends TokenDescription {
-    height = 6
-    width = 3.45
+    height = 3
+    width = 1.67
     image = Key1
     borderRadius = 1
 

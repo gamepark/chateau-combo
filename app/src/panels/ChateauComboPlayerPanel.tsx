@@ -1,14 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
 import { Player } from '@gamepark/react-client'
 import { CounterProps, StyledPlayerPanel, useRules } from '@gamepark/react-game'
 import { FC, HTMLAttributes, useMemo } from 'react'
-import coinImage from '../images/Coin1.png'
-import keyImage from '../images/Key1.png'
-
+import coinImage from '../images/tokens/Gold1.png'
+import keyImage from '../images/tokens/Key1.png'
 
 type ChateauComboPlayerPanelProps = {
     player: Player
