@@ -52,7 +52,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.MotherSuperior]: {
     cost: 5,
     blazon: [BlazonType.Prayer, BlazonType.Prayer],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 4 }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 4 }],
     scoringEffect: {
       score: 5, condition: {
         type: ConditionType.IfPosition, position: [
@@ -67,7 +67,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.HisHoliness]: {
     cost: 7,
     blazon: [BlazonType.Prayer],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 3, opponentGain: 1 }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 3, opponentsGain: 1 }],
     scoringEffect: { score: 6, condition: { type: ConditionType.PerMissingShieldType } }
   },
 
@@ -82,7 +82,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Cardinal]: {
     cost: 4,
     blazon: [BlazonType.Prayer],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Castle } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer, line: true } }
   },
 
@@ -96,7 +96,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
           type: ConditionType.BestNeighbor, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer }
         }
       },
-      { type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Soldier] } }
+      { type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier } }
     ],
     scoringEffect: { score: 1, condition: { type: ConditionType.PerKey } }
   },
@@ -160,7 +160,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Teacher, BlazonType.Worker],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazonNumber: 2 } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 2 } }],
     scoringEffect: {
       score: 6, condition: {
         type: ConditionType.IfPosition, position: [
@@ -216,7 +216,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Teacher],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 2 }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 2 }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerBannersSet, banners: [Place.Castle, Place.Village] } }
   },
 
@@ -246,7 +246,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.General]: {
     cost: 7,
     blazon: [BlazonType.Soldier],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Different] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerDifferentShieldType } }],
     scoringEffect: { score: 6, condition: { type: ConditionType.PerIdenticalShieldsSet, count: 3 } }
   },
 
@@ -260,7 +260,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Lookout]: {
     cost: 6,
     blazon: [BlazonType.Soldier],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Soldier] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier } }],
     scoringEffect: { score: 4, condition: { type: ConditionType.PerDifferentShieldType, column: true } }
   },
 
@@ -268,7 +268,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Noble, BlazonType.Soldier],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, opponentGain: 1 }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, opponentsGain: 1 }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, column: true } }
   },
 
@@ -279,7 +279,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     immediateEffect: [{
       type: ImmediateEffectType.ChooseBetween,
       effect1: { type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach },
-      effect2: { type: ImmediateEffectType.GetKeys, value: 3 }
+      effect2: { type: ImmediateEffectType.GainKeys, gain: 3 }
     }],
     scoringEffect: { score: 1, condition: { type: ConditionType.PerGoldInAllPurses } }
   },
@@ -349,7 +349,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Chancellor]: {
     cost: 6,
     blazon: [BlazonType.Noble, BlazonType.Teacher],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Teacher] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher } }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
@@ -362,14 +362,14 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.HerMajestyTheQueen]: {
     cost: 7,
     blazon: [BlazonType.Noble],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Noble] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble } }],
     scoringEffect: { score: 10, condition: { type: ConditionType.PerShieldsSet, shields: [BlazonType.Noble, BlazonType.Teacher, BlazonType.Worker] } }
   },
 
   [Card.Duchess]: {
     cost: 5,
     blazon: [BlazonType.Noble, BlazonType.Noble],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 2 }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 2 }],
     scoringEffect: {
       score: 8, condition: {
         type: ConditionType.IfPosition, position: [
@@ -391,11 +391,15 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Spy]: {
     cost: 4,
     blazon: [BlazonType.Teacher, BlazonType.Soldier],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher } }, {
-      type: ImmediateEffectType.GetKeys,
-      value: 1,
-      condition: { blazon: [BlazonType.Soldier], bestNeighbor: true }
-    }],
+    immediateEffect: [
+      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher } },
+      {
+        type: ImmediateEffectType.GainKeys, gain: 1, condition: {
+          type: ConditionType.BestNeighbor,
+          condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier }
+        }
+      }
+    ],
     scoringEffect: {
       score: 6, condition: {
         type: ConditionType.IfPosition, position: [
@@ -466,7 +470,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
           condition: { type: ConditionType.PerShield, shield: BlazonType.Teacher }
         }
       },
-      effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
+      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
     }],
     scoringEffect: { score: 10, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Teacher } }
   },
@@ -483,7 +487,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
           condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer }
         }
       },
-      effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
+      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
     }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier, line: true } }
   },
@@ -499,7 +503,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
           condition: { type: ConditionType.PerShield, shield: BlazonType.Worker }
         }
       },
-      effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
+      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
     }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Soldier, column: true } }
   },
@@ -522,7 +526,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
           condition: { type: ConditionType.PerShield, shield: BlazonType.Noble }
         }
       },
-      effect2: { type: ImmediateEffectType.GetKeys, value: 2 }
+      effect2: { type: ImmediateEffectType.GainKeys, gain: 2 }
     }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerCardWithShieldCount, count: 2 } }
   },
@@ -553,7 +557,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 3,
     blazon: [BlazonType.Prayer, BlazonType.Worker],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Prayer] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer } }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 7 } }
   },
 
@@ -597,7 +601,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Farmer] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer } }],
     scoringEffect: {
       score: 7, condition: {
         type: ConditionType.IfPosition, position: [
@@ -613,7 +617,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Worker, BlazonType.Farmer],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Worker] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Worker } }],
     scoringEffect: { score: 1, condition: { type: ConditionType.PerKey } }
   },
 
@@ -621,7 +625,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     blazon: [BlazonType.Worker],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.MissingDifferent] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerMissingShieldType } }],
     scoringEffect: { score: 8, condition: { type: ConditionType.IfCardFlippedDown } }
   },
 
@@ -630,9 +634,12 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
     immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer } }, {
-      type: ImmediateEffectType.GetKeys,
-      value: 1,
-      condition: { blazon: [BlazonType.Prayer], bestNeighbor: true }
+      type: ImmediateEffectType.GainKeys,
+      gain: 1,
+      condition: {
+        type: ConditionType.BestNeighbor,
+        condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer }
+      }
     }],
     scoringEffect: { score: 9, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Prayer } }
   },
@@ -640,7 +647,12 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Brigand]: {
     cost: 7,
     blazon: [BlazonType.Farmer],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Castle, bestNeighbor: true } }],
+    immediateEffect: [{
+      type: ImmediateEffectType.GainKeys, gain: 1, condition: {
+        type: ConditionType.BestNeighbor,
+        condition: { type: ConditionType.PerBanner, banner: Place.Castle }
+      }
+    }],
     scoringEffect: { score: 7, condition: { type: ConditionType.PerBannersSet, banners: [Place.Village, Place.Village, Place.Village] } }
   },
 
@@ -663,7 +675,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Prayer, BlazonType.Farmer],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Prayer] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Prayer } }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer, line: true, column: true } }
   },
 
@@ -677,7 +689,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.StableBoy]: {
     cost: 4,
     blazon: [BlazonType.Farmer, BlazonType.Noble],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazon: [BlazonType.Noble] } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble } }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer, column: true } }
   },
 
@@ -700,7 +712,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 5,
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { blazonNumber: 1 } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithShieldCount, count: 1 } }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }
   },
 
@@ -722,7 +734,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Farmer],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { banner: Place.Village } }],
+    immediateEffect: [{ type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }],
     scoringEffect: { score: 9, condition: { type: ConditionType.IfShieldMissing, shield: BlazonType.Noble } }
   },
 
@@ -743,11 +755,10 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Baker]: {
     cost: 0,
     blazon: [BlazonType.Farmer],
-    immediateEffect: [{ type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer } }, {
-      type: ImmediateEffectType.GetKeys,
-      value: 1,
-      condition: { banner: Place.Village }
-    }],
+    immediateEffect: [
+      { type: ImmediateEffectType.GainGold, gain: 1, condition: { type: ConditionType.PerShield, shield: BlazonType.Farmer } },
+      { type: ImmediateEffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Village } }
+    ],
     scoringEffect: {
       score: 3, condition: {
         type: ConditionType.IfPosition, position: [

@@ -41,7 +41,7 @@ function getEffectHeader(effect:ImmediateEffectType | undefined, who:string):str
     switch (effect){
         case ImmediateEffectType.GainGold:
             return 'header.'+who+'.immediate.gold.effect'
-        case ImmediateEffectType.GetKeys:
+        case ImmediateEffectType.GainKeys:
             return 'header.'+who+'.immediate.key.effect'
         case ImmediateEffectType.PutGoldOnCard:
             return 'header.'+who+'.immediate.put.gold.effect'
