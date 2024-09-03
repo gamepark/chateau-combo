@@ -77,12 +77,10 @@ export class Tableau extends MaterialRulesPart {
         return this.cards.every(isNotNull) ? 0 : 1
       case ConditionType.PerCardWithPurse:
         return this.countCards(hasPurse)
-      case ConditionType.PerGoldInPurse: {
-        return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player)
-          .location(l => l.x === x! + this.xMin && l.y === y! + this.yMin).getQuantity()
-      }
+      case ConditionType.PerGoldInPurse:
+        return this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(this.getCardIndex(x!, y!)).getQuantity()
       case ConditionType.PerGoldInAllPurses:
-        return this.material(MaterialType.GoldCoin).location(LocationType.PlayerBoard).player(this.player).getQuantity()
+        return this.material(MaterialType.GoldCoin).location(LocationType.OnCard).player(this.player).getQuantity()
       case ConditionType.PerFullPosition:
         return this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player).length
       case ConditionType.PerEmptyPosition:
@@ -131,6 +129,11 @@ export class Tableau extends MaterialRulesPart {
   get neighbors() {
     const index = this.game.players.indexOf(this.player)
     return this.game.players.filter((_, i, players) => Math.abs(index - i) === 1 || Math.abs(index - i) === players.length - 1)
+  }
+
+  getCardIndex(x: number, y: number) {
+    return this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player)
+      .location(l => l.x === x! + this.xMin && l.y === y! + this.yMin).getIndex()
   }
 }
 

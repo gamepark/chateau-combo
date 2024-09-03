@@ -1,4 +1,5 @@
-import { MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { PerGoldInPurse } from '../material/Condition'
 import { LocationType } from '../material/LocationType'
@@ -11,31 +12,30 @@ export class EndGameRule extends MaterialRulesPart {
     const moves: MaterialMove[] = []
 
     // Moving the remaining money
-    this.game.players.forEach(player => {
+    for (const player of this.game.players) {
       const cardsToFill = this
         .getPanoramaWithoutHiddenCards(player)
-        .filter(item => hasPurse(item.id.front))
+        .id<CardId>(id => hasPurse(id.front))
 
-      cardsToFill.forEach(card => {
+      for (const [index, card] of cardsToFill.entries) {
         const playerGoldStock = this.getPlayerGoldStock(player)
-        if (playerGoldStock.getQuantity() === 0) return
+        if (playerGoldStock.getQuantity() === 0) continue
 
-        const goldAlreadyOnCard = this.countPlayerGoldOnCard(player, card)
+        const goldAlreadyOnCard = this.countPlayerGoldOnCard(index)
         if (goldAlreadyOnCard < (cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit) {
           moves.push(
             ...playerGoldStock
               .moveItems(
                 {
-                  type: LocationType.PlayerBoard,
+                  type: LocationType.OnCard,
                   player,
-                  x: card.location.x,
-                  y: card.location.y
+                  parent: index
                 }, Math.min((cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit - goldAlreadyOnCard, playerGoldStock.getQuantity())
               ))
         }
-      })
+      }
 
-    })
+    }
 
     moves.push(this.endGame())
     return moves
@@ -48,17 +48,8 @@ export class EndGameRule extends MaterialRulesPart {
       .player(player)
   }
 
-  countPlayerGoldOnCard(player: PlayerId, card: MaterialItem) {
-    return this.getPlayerGoldOnCards(player)
-      .filter(item => item.location.x === card.location.x && item.location.y === card.location.y)
-      .getQuantity()
-  }
-
-  getPlayerGoldOnCards(player: PlayerId) {
-    return this
-      .material(MaterialType.GoldCoin)
-      .location(LocationType.PlayerBoard)
-      .player(player)
+  countPlayerGoldOnCard(cardIndex: number) {
+    return this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(cardIndex).getQuantity()
   }
 
   getPanorama(player: PlayerId) {
@@ -66,11 +57,10 @@ export class EndGameRule extends MaterialRulesPart {
       .material(MaterialType.Card)
       .location(LocationType.PlayerBoard)
       .player(player)
-      .getItems()
   }
 
   getPanoramaWithoutHiddenCards(player: PlayerId) {
-    return this.getPanorama(player).filter(item => item.location.rotation === undefined)
+    return this.getPanorama(player).location(l => l.rotation === undefined)
   }
 }
 
