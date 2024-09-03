@@ -10,7 +10,7 @@ export enum ImmediateEffectType {
   PutGoldOnCard
 }
 
-export type ImmediateEffect = GainGold | GainKeys | DiscardFromRiverEffect | ChooseBetweenEffect | PutGoldOnCard
+export type ImmediateEffect = GainGold | GainKeys | DiscardFromRiver | ChooseBetween | PutGoldOnCard
 
 export type GainGold = {
   type: ImmediateEffectType.GainGold
@@ -26,13 +26,13 @@ export type GainKeys = {
   condition?: Condition
 }
 
-export type DiscardFromRiverEffect = {
+export type DiscardFromRiver = {
   type: ImmediateEffectType.DiscardFromRiver
   river: Place
   token: MaterialType.GoldCoin | MaterialType.Key
 }
 
-export type ChooseBetweenEffect = {
+export type ChooseBetween = {
   type: ImmediateEffectType.ChooseBetween
   effect1: ImmediateEffect
   effect2: ImmediateEffect
