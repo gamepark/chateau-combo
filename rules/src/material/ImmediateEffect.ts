@@ -1,4 +1,3 @@
-import { PutGoldOnCardEffect } from '../rules/effects/ImmediatePutGoldOnCardEffect'
 import { Condition } from './Condition'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
@@ -11,7 +10,7 @@ export enum ImmediateEffectType {
   PutGoldOnCard
 }
 
-export type ImmediateEffect = GainGold | GainKeys | DiscardFromRiverEffect | ChooseBetweenEffect | PutGoldOnCardEffect
+export type ImmediateEffect = GainGold | GainKeys | DiscardFromRiverEffect | ChooseBetweenEffect | PutGoldOnCard
 
 export type GainGold = {
   type: ImmediateEffectType.GainGold
@@ -37,4 +36,10 @@ export type ChooseBetweenEffect = {
   type: ImmediateEffectType.ChooseBetween
   effect1: ImmediateEffect
   effect2: ImmediateEffect
+}
+
+export type PutGoldOnCard = {
+  type: ImmediateEffectType.PutGoldOnCard
+  gold?: number
+  cardsLimit?: number
 }

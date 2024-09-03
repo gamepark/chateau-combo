@@ -1,5 +1,4 @@
 import { getEnumValues } from '@gamepark/rules-api'
-import { PutMethod } from '../rules/effects/ImmediatePutGoldOnCardEffect'
 import { Card } from './Card'
 import { ConditionType } from './Condition'
 import { ImmediateEffect, ImmediateEffectType } from './ImmediateEffect'
@@ -35,7 +34,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Steward]: {
     cost: 0,
     shields: [Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 0, putMethod: PutMethod.onTwoBest }],
+    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, cardsLimit: 2 }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 3 } }
   },
 
@@ -276,7 +275,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     moveMessenger: true,
     immediateEffect: [{
       type: ImmediateEffectType.ChooseBetween,
-      effect1: { type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach },
+      effect1: { type: ImmediateEffectType.PutGoldOnCard, gold: 2 },
       effect2: { type: ImmediateEffectType.GainKeys, gain: 3 }
     }],
     scoringEffect: { score: 1, condition: { type: ConditionType.PerGoldInAllPurses } }
@@ -332,7 +331,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.QueenMother]: {
     cost: 3,
     shields: [Shield.Nobility, Shield.Nobility],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }],
+    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, gold: 2 }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 5 } }
   },
 
@@ -547,7 +546,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 0,
     shields: [Shield.Craftsmanship],
     immediateEffect: [
-      { type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach },
+      { type: ImmediateEffectType.PutGoldOnCard, gold: 2 },
       { type: ImmediateEffectType.GainGold, gain: 0, opponentsGain: 2 }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 6 } }
   }, // TODO
@@ -592,7 +591,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 2,
     shields: [Shield.Craftsmanship, Shield.Craftsmanship],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }],
+    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, gold: 2 }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   }, // TODO
   [Card.Farmer]: {
@@ -771,7 +770,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Beekeeper]: {
     cost: 2,
     shields: [Shield.Peasantry],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }],
+    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, gold: 2 }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 9 } }
   }
 }
