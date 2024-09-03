@@ -29,7 +29,7 @@ export type CardPattern = {
   scoring: Scoring
 }
 
-export const cardCharacteristics: Record<number, CardPattern> = {
+export const cardCharacteristics: Record<Card, CardPattern> = {
   [Card.Steward]: {
     cost: 0,
     shields: [Shield.Nobility],
