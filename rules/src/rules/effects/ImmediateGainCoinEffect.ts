@@ -9,6 +9,7 @@ import { AbstractImmediateEffect, Condition, isRespectingCostCondition, SpaceFil
 export type GainCoinEffect = {
   type: ImmediateEffectType.GetCoins,
   value: number;
+  opponentGain?: number
   condition?: Condition
 }
 
@@ -70,10 +71,10 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainCoinEff
 
     }
 
-    if (effect.condition !== undefined && effect.condition.opponentGain) {
+    if (effect.condition !== undefined && effect.opponentGain) {
       for (const player of this.game.players) {
         if (player === this.player) {
-          moves.push(...this.gainGold(effect.condition.opponentGain))
+          moves.push(...this.gainGold(effect.opponentGain))
         }
       }
     }

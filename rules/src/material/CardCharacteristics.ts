@@ -69,7 +69,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.HisHoliness]: {
     cost: 7,
     blazon: [BlazonType.Prayer],
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 3, condition: { opponentGain: 1 } }],
+    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 3, opponentGain: 1 }],
     scoringEffect: { score: 6, condition: { type: ConditionType.PerMissingShieldType } }
   },
 
@@ -219,7 +219,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Patron]: {
     cost: 7,
     blazon: [BlazonType.Teacher],
-    immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, condition: { opponentGain: 2 } }],
+    immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, opponentGain: 2 }],
     scoringEffect: { score: 5, condition: { type: ConditionType.PerCardWithCost, cost: 5, orGreater: true } }
   },
 
@@ -264,7 +264,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 4,
     blazon: [BlazonType.Noble, BlazonType.Soldier],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, condition: { opponentGain: 1 } }],
+    immediateEffect: [{ type: ImmediateEffectType.GetKeys, value: 1, opponentGain: 1 }],
     scoringEffect: { score: 3, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, column: true } }
   },
 
@@ -320,7 +320,7 @@ export const cardCharacteristics: Record<number, CardPattern> = {
     cost: 6,
     blazon: [BlazonType.Noble, BlazonType.Prayer],
     moveMessenger: true,
-    immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, condition: { opponentGain: 1 } }],
+    immediateEffect: [{ type: ImmediateEffectType.GetCoins, value: 0, opponentGain: 1 }],
     scoringEffect: { score: 4, condition: { type: ConditionType.PerShield, shield: BlazonType.Noble, column: true } }
   },
 
@@ -514,11 +514,9 @@ export const cardCharacteristics: Record<number, CardPattern> = {
   [Card.Innkeeper]: {
     cost: 0,
     blazon: [BlazonType.Worker],
-    immediateEffect: [{ type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach }, {
-      type: ImmediateEffectType.GetCoins,
-      value: 0,
-      condition: { opponentGain: 2 }
-    }],
+    immediateEffect: [
+      { type: ImmediateEffectType.PutGoldOnCard, goldPut: 2, putMethod: PutMethod.onEach },
+      { type: ImmediateEffectType.GetCoins, value: 0, opponentGain: 2 }],
     scoringEffect: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 6 } }
   }, // TODO
   [Card.Sculptor]: {

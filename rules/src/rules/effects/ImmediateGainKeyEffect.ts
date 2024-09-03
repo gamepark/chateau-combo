@@ -8,6 +8,7 @@ import { AbstractImmediateEffect, Condition, isRespectingCostCondition, SpaceFil
 export type GainKeyEffect = {
   type: ImmediateEffectType.GetKeys,
   value: number;
+  opponentGain?: number
   condition?: Condition
 }
 
@@ -66,10 +67,10 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeyEffec
       moves.push(...this.gainKeys(effect.value))
     }
 
-    if (effect.condition !== undefined && effect.condition.opponentGain) {
+    if (effect.condition !== undefined && effect.opponentGain) {
       for (const player of this.game.players) {
         if (player === this.player) continue;
-        moves.push(...this.gainKeys(effect.condition!.opponentGain!))
+        moves.push(...this.gainKeys(effect.opponentGain!))
       }
     }
 
