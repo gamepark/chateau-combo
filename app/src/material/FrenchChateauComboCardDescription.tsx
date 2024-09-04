@@ -1,8 +1,6 @@
+/** @jsxImportSource @emotion/react */
 import { Card } from '@gamepark/chateau-combo/material/Card'
-import { ItemContext, MaterialContext } from '@gamepark/react-game'
 
-//Noble
-//Noble
 import Duchesse from '../images/cards/fr/cartesChCombo_ChC.jpg'
 import Steward from '../images/cards/fr/cartesChCombo_ChC10.jpg'
 import MotherSuperior from '../images/cards/fr/cartesChCombo_ChC11.jpg'

@@ -1,10 +1,9 @@
 import { Card } from '@gamepark/chateau-combo/material/Card'
-import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
-import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
-import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
-import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { CardDescription, MaterialContext } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
+
+import Castle from '../images/cards/castle.jpg'
 import Duchesse from '../images/cards/en/cartesChCombo_ChC_eng-US.jpg'
 import Steward from '../images/cards/en/cartesChCombo_ChC_eng-US10.jpg'
 import MotherSuperior from '../images/cards/en/cartesChCombo_ChC_eng-US11.jpg'
@@ -83,9 +82,15 @@ import Baker from '../images/cards/en/cartesChCombo_ChC_eng-US77.jpg'
 import Beekeeper from '../images/cards/en/cartesChCombo_ChC_eng-US78.jpg'
 import HerMajestytheQueen from '../images/cards/en/cartesChCombo_ChC_eng-US8.jpg'
 import Baron from '../images/cards/en/cartesChCombo_ChC_eng-US9.jpg'
-
-import Castle from '../images/cards/castle.jpg'
 import Village from '../images/cards/village.jpg'
+import CraftManIcon from '../images/icons/craftman.png'
+import Faith from '../images/icons/faith.png'
+import Military from '../images/icons/military.png'
+
+import NobilityIcon from '../images/icons/nobility.png'
+import PeasantryIcon from '../images/icons/peasantry.png'
+import Scholarship from '../images/icons/scholarship.png'
+import { ChateauComboCardHelp } from './help/ChateauComboCardHelp'
 
 export class ChateauComboCardDescription extends CardDescription {
   width = 6.3
@@ -95,6 +100,8 @@ export class ChateauComboCardDescription extends CardDescription {
     [Place.Castle]: Castle,
     [Place.Village]: Village
   }
+
+  help = ChateauComboCardHelp
 
   images = {
 
@@ -182,6 +189,17 @@ export class ChateauComboCardDescription extends CardDescription {
     [Card.Baker]: Baker,
     [Card.Beekeeper]: Beekeeper
 
+  }
+
+  getImages(): string[] {
+    const images = super.getImages()
+    images.push(NobilityIcon)
+    images.push(CraftManIcon)
+    images.push(PeasantryIcon)
+    images.push(Faith)
+    images.push(Military)
+    images.push(Scholarship)
+    return images
   }
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {

@@ -8,6 +8,7 @@ import { Condition, ConditionType } from './Condition'
 import { EffectType } from './Effect'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
+import { Place } from './Place'
 import { hasPurse } from './Scoring'
 
 export class Tableau extends MaterialRulesPart {
@@ -134,6 +135,22 @@ export class Tableau extends MaterialRulesPart {
   getCardIndex(x: number, y: number) {
     return this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player)
       .location(l => l.x === x! + this.xMin && l.y === y! + this.yMin).getIndex()
+  }
+
+  getDiscount(place: Place) {
+    let tableau = this
+      .material(MaterialType.Card)
+      .location(LocationType.PlayerBoard)
+      .player(this.player)
+      .getItems<CardId>()
+    return sumBy(tableau, card => card.id?.front ? this.getCardDiscount(card.id.front, place) : 0)
+  }
+
+  getCardDiscount(card: Card, place: Place) {
+    return sumBy(cardCharacteristics[card].effects, effect => {
+      if (effect.type !== EffectType.Discount) return 0
+      return (place === Place.Castle ? effect.castle : effect.village) ?? 0
+    })
   }
 }
 

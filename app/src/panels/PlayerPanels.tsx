@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { usePlayerId, usePlayers } from '@gamepark/react-game'
+import { usePlayers } from '@gamepark/react-game'
 import { FC } from 'react'
 import { createPortal } from 'react-dom'
 import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
@@ -8,7 +8,6 @@ import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
 export const PlayerPanels: FC<any> = () => {
   const players = usePlayers({ sortFromMe: true })
   const root = document.getElementById('root')
-  const playerId = usePlayerId()
   if (!root) {
     return null
   }

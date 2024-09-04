@@ -2,7 +2,6 @@ import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepa
 import uniqBy from 'lodash/uniqBy'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
-import { BuyCardRule } from '../BuyCardRule'
 
 export class PlayerBoardHelper extends MaterialRulesPart {
 

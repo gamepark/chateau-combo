@@ -427,7 +427,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     cost: 3,
     shields: [Shield.Faith, Shield.Faith],
     moveMessenger: true,
-    effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerCardWithPurse } }],
+    effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithPurse } }],
     scoring: { score: 2, condition: { type: ConditionType.PerGoldInPurse, limit: 4 } }
   },
 

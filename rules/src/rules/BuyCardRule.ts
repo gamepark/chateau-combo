@@ -6,6 +6,7 @@ import { EffectType } from '../material/Effect'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'
+import { Tableau } from '../material/Tableau'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
 import { ImmediateEffectRule } from './ImmediateEffectRule'
 import { Memory } from './Memory'
@@ -16,11 +17,12 @@ export class BuyCardRule extends PlayerTurnRule {
   getPlayerMoves() {
     const gold = this.gold
     const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
+    const tableau = new Tableau(this.game, this.player)
     const moves: MaterialMove[] = []
 
     const cards = this.riverCards
     const buyableCards = cards
-      .filter((item) => cardCharacteristics[item.id.front].cost - this.getDiscount(item.id.back) <= gold)
+      .filter((item) => cardCharacteristics[item.id.front].cost - tableau.getDiscount(item.id.back) <= gold)
 
     moves.push(
       ...availableSpaces.flatMap((space) => {
@@ -52,28 +54,12 @@ export class BuyCardRule extends PlayerTurnRule {
       .locationId(banner)
   }
 
-  getDiscount(place: Place) {
-    let tableau = this
-      .material(MaterialType.Card)
-      .location(LocationType.PlayerBoard)
-      .player(this.player)
-      .getItems<CardId>()
-    return sumBy(tableau, card => card.id?.front ? this.getCardDiscount(card.id.front, place) : 0)
-  }
-
-  getCardDiscount(card: Card, place: Place) {
-    return sumBy(cardCharacteristics[card].effects, effect => {
-      if (effect.type !== EffectType.Discount) return 0
-      return (place === Place.Castle ? effect.castle : effect.village) ?? 0
-    })
-  }
-
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type === LocationType.River) return []
     const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
     const moves: MaterialMove[] = []
 
-    const discount = this.getDiscount(item.id.back)
+    const discount = new Tableau(this.game, this.player).getDiscount(item.id.back)
     if (move.location.rotation === undefined && (cardCharacteristics[item.id.front].cost - discount) > 0) {
       moves.push(
         ...this
