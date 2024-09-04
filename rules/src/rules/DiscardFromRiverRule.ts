@@ -1,5 +1,6 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
+import { coinsMoney } from '../material/Coin'
 import { DiscardFromRiver } from '../material/Effect'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
@@ -41,16 +42,26 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
     const discardedCardCost = cardCharacteristics[discardedCardId].cost
     const moves: MaterialMove[] = []
 
-    moves.push(
-      this
-        .material(effect.token)
-        .createItem({
-          location: {
-            type: effect.token === MaterialType.GoldCoin ? LocationType.PlayerGoldStock : LocationType.PlayerKeyStock,
-            player: this.player
-          },
-          quantity: discardedCardCost
-        }))
+    if (effect.token === MaterialType.GoldCoin) {
+      moves.push(
+        ...coinsMoney.createOrDelete(
+          this.material(MaterialType.GoldCoin),
+          { type: LocationType.PlayerGoldStock, player: this.player },
+          discardedCardCost
+        )
+      )
+    } else {
+      moves.push(
+        this
+          .material(effect.token)
+          .createItem({
+            location: {
+              type: LocationType.PlayerKeyStock,
+              player: this.player
+            },
+            quantity: discardedCardCost
+          }))
+    }
 
     this.forget(Memory.PendingEffects)
     moves.push(this.startRule(RuleId.EndOfTurn))

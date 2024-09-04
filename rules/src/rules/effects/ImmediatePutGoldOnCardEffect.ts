@@ -1,6 +1,7 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { CardId } from '../../material/Card'
 import { cardCharacteristics } from '../../material/CardCharacteristics'
+import { coinsMoney } from '../../material/Coin'
 import { PerGoldInPurse } from '../../material/Condition'
 import { PutGoldOnCard } from '../../material/Effect'
 import { LocationType } from '../../material/LocationType'
@@ -31,14 +32,14 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
     }
 
     for (const { cardIndex, space } of cardsSpace) {
-      moves.push(this.material(MaterialType.GoldCoin).createItem({
-        location: {
+      moves.push(...coinsMoney.createOrDelete(
+        this.material(MaterialType.GoldCoin),
+        {
           type: LocationType.OnCard,
           player: this.player,
           parent: cardIndex
         },
-        quantity: Math.min(effect.gold ?? Infinity, space)
-      }))
+        Math.min(effect.gold ?? Infinity, space)))
     }
 
     return moves

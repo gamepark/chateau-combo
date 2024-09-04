@@ -4,6 +4,7 @@ import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card, CardId, getCardPlace } from './Card'
 import { cardCharacteristics, Shield, shields } from './CardCharacteristics'
+import { coinsMoney } from './Coin'
 import { Condition, ConditionType } from './Condition'
 import { EffectType } from './Effect'
 import { LocationType } from './LocationType'
@@ -79,9 +80,9 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerCardWithPurse:
         return this.countCards(hasPurse)
       case ConditionType.PerGoldInPurse:
-        return this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(this.getCardIndex(x!, y!)).getQuantity()
+        return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(this.getCardIndex(x!, y!)))
       case ConditionType.PerGoldInAllPurses:
-        return this.material(MaterialType.GoldCoin).location(LocationType.OnCard).player(this.player).getQuantity()
+        return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).player(this.player))
       case ConditionType.PerFullPosition:
         return this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player).length
       case ConditionType.PerEmptyPosition:

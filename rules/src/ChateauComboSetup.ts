@@ -2,6 +2,8 @@ import { MaterialGameSetup } from '@gamepark/rules-api'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
 import { cards, getCardPlace } from './material/Card'
+import { Coin } from './material/Coin'
+import { Key } from './material/Key'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Place, places } from './material/Place'
@@ -40,19 +42,27 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   }
 
   setupPlayer(player: PlayerId) {
-    this
-      .material(MaterialType.GoldCoin)
-      .createItem({
+    this.material(MaterialType.GoldCoin).createItem({
+        id: Coin.Coin5,
         location: {
           type: LocationType.PlayerGoldStock,
           player: player
         },
-        quantity: 15
+        quantity: 2
+      })
+    this.material(MaterialType.GoldCoin).createItem({
+        id: Coin.Coin1,
+        location: {
+          type: LocationType.PlayerGoldStock,
+          player: player
+        },
+        quantity: 5
       })
 
     this
       .material(MaterialType.Key)
       .createItem({
+        id: Key.Key1,
         location: {
           type: LocationType.PlayerKeyStock,
           player: player

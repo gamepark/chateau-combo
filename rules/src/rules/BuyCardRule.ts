@@ -1,11 +1,9 @@
 import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import sumBy from 'lodash/sumBy'
-import { Card, CardId } from '../material/Card'
+import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { EffectType } from '../material/Effect'
+import { coinsMoney } from '../material/Coin'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
-import { Place } from '../material/Place'
 import { Tableau } from '../material/Tableau'
 import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
 import { ImmediateEffectRule } from './ImmediateEffectRule'
@@ -37,10 +35,9 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   get gold() {
-    return this.material(MaterialType.GoldCoin)
+    return coinsMoney.count(this.material(MaterialType.GoldCoin)
       .location(LocationType.PlayerGoldStock)
-      .player(this.player)
-      .getQuantity()
+      .player(this.player))
   }
 
   get riverCards() {
@@ -55,22 +52,15 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   beforeItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type === LocationType.River) return []
-    const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
-    const moves: MaterialMove[] = []
-
-    const discount = new Tableau(this.game, this.player).getDiscount(item.id.back)
-    if (move.location.rotation === undefined && (cardCharacteristics[item.id.front].cost - discount) > 0) {
-      moves.push(
-        ...this
-          .material(MaterialType.GoldCoin)
-          .location(LocationType.PlayerGoldStock)
-          .player(this.player)
-          .deleteItems(cardCharacteristics[item.id.front].cost - discount)
-      )
+    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.PlayerBoard && move.location.rotation === undefined) {
+      const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
+      const discount = new Tableau(this.game, this.player).getDiscount(item.id.back)
+      const cost = cardCharacteristics[item.id.front].cost - discount
+      if (cost > 0) {
+        return coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, -cost)
+      }
     }
-
-    return moves
+    return []
   }
 
   afterItemMove(move: ItemMove) {
@@ -86,11 +76,8 @@ export class BuyCardRule extends PlayerTurnRule {
 
     // Player plays a hidden card
     if (move.location.rotation) {
-      moves.push(
-        this
-          .material(MaterialType.GoldCoin)
-          .createItem({ location: { type: LocationType.PlayerGoldStock, player: this.player }, quantity: 6 })
-      )
+      moves.push(...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, 6))
+
       moves.push(
         this
           .material(MaterialType.Key)

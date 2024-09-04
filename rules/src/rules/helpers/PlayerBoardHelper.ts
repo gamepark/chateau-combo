@@ -1,5 +1,6 @@
 import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import uniqBy from 'lodash/uniqBy'
+import { coinsMoney } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -66,7 +67,7 @@ export class PlayerBoardHelper extends MaterialRulesPart {
   }
 
   get coinsQuantity(){
-    return this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player).getQuantity()
+    return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player))
   }
 
   get keyQuantity(){
