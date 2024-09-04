@@ -10,6 +10,13 @@ import { RuleId } from './RuleId'
 
 export class DiscardFromRiverRule extends PlayerTurnRule {
 
+  onRuleStart() {
+    if (this.getPlayerMoves().length === 0) {
+      return [this.startRule(RuleId.EndOfTurn)]
+    }
+    return []
+  }
+
   getPlayerMoves() {
     return this.discardRiver
       .moveItems({
@@ -61,7 +68,6 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
       )
     }
 
-    this.forget(Memory.PendingEffects)
     moves.push(this.startRule(RuleId.MoveMessenger))
 
     return moves

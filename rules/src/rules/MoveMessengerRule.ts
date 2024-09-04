@@ -12,10 +12,11 @@ export class MoveMessengerRule extends PlayerTurnRule {
     const card = this.placedCard
     const place = card.id.back
     const moves: MaterialMove[] = []
-    if (cardCharacteristics[card.id.front].moveMessenger) {
+    const otherPlace = place === Place.Castle ? Place.Village : Place.Castle
+    if (cardCharacteristics[card.id.front].moveMessenger && this.getRiver(otherPlace).length > 0) {
       moves.push(messenger.moveItem({
         type: LocationType.EndOfRiver,
-        id: place === Place.Castle ? Place.Village : Place.Castle
+        id: otherPlace
       }))
     }
 
@@ -35,4 +36,10 @@ export class MoveMessengerRule extends PlayerTurnRule {
       .getItem(this.remind(Memory.PlacedCard))!
   }
 
+  getRiver(place: Place) {
+    return this
+      .material(MaterialType.Card)
+      .location(LocationType.River)
+      .locationId(place)
+  }
 }

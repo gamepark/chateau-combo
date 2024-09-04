@@ -1,18 +1,23 @@
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { isMoveItemType, isShuffle, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'
+import { DealCardsHelper } from './helpers/DealCardsHelper'
 import { RuleId } from './RuleId'
 
 export class KeyEffectRule extends PlayerTurnRule {
   getPlayerMoves(): MaterialMove[] {
-    return [
-      this.messenger.moveItem(item => ({
-        type: LocationType.EndOfRiver,
-        id: item.location.id === Place.Castle ? Place.Village : Place.Castle
-      })),
-      ...this.discardRiver()
-    ]
+    const moves: MaterialMove[] = this.discardRiver()
+    const otherPlace = this.messengerPlace === Place.Castle ? Place.Village : Place.Castle
+    if (this.getRiver(otherPlace).length > 0) {
+      moves.push(
+        this.messenger.moveItem(item => ({
+          type: LocationType.EndOfRiver,
+          id: item.location.id === Place.Castle ? Place.Village : Place.Castle
+        }))
+      )
+    }
+    return moves
   }
 
   get messenger() {
@@ -23,31 +28,18 @@ export class KeyEffectRule extends PlayerTurnRule {
     return this.messenger.getItem()!.location.id
   }
 
-  get river() {
+  getRiver(place = this.messengerPlace) {
     return this
       .material(MaterialType.Card)
       .location(LocationType.River)
-      .locationId(this.messengerPlace)
+      .locationId(place)
   }
 
   discardRiver() {
-    return this.river.moveItems((item) => ({
+    return this.getRiver().moveItems((item) => ({
       type: LocationType.Discard,
       id: item.location.id
     }))
-  }
-
-  dealCards() {
-    const place = this.messengerPlace
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.Deck)
-      .locationId(place)
-      .deck()
-      .deal({
-        type: LocationType.River,
-        id: place
-      }, 3 - this.river.length)
   }
 
   afterItemMove(move: ItemMove) {
@@ -57,16 +49,18 @@ export class KeyEffectRule extends PlayerTurnRule {
       ]
     }
     if (isMoveItemType(MaterialType.Card)(move)) {
-      if (move.location.type === LocationType.Discard && this.river.length === 2) {
-        return this.discardRiver()
+      if (move.location.type === LocationType.Discard) {
+        const river = this.getRiver()
+        if (river.length === 2) {
+          return this.discardRiver()
+        } else if (river.length === 0) {
+          return new DealCardsHelper(this.game).completeRivers(this.startRule(RuleId.BuyCard))
+        }
       }
+    }
 
-      if (!this.river.length) {
-        return [
-          ...this.dealCards(),
-          this.startRule(RuleId.BuyCard)
-        ]
-      }
+    if (isShuffle(move)) {
+      return new DealCardsHelper(this.game).completeRivers(this.startRule(RuleId.BuyCard))
     }
 
     return []
