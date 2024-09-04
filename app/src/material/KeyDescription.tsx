@@ -16,13 +16,11 @@ export class KeyDescription extends TokenDescription {
     return itemId === 3 ? { width: 3.315, height: 3.4 } : { width: 1.67, height: 3 }
   }
 
-  getStockLocation(item: MaterialItem) {
-    return { type: LocationType.KeyStock, id: item.id ?? 1 }
-  }
+  stockLocation = { type: LocationType.KeyStock }
 
   staticItems = [
-    { id: 1, quantity: 10, location: { type: LocationType.KeyStock, id: 1 } },
-    { id: 3, quantity: 5, location: { type: LocationType.KeyStock, id: 3 } }
+    { id: 1, quantity: 10, location: this.stockLocation },
+    { id: 3, quantity: 5, location: this.stockLocation }
   ]
 
   protected getFrontId(itemId: number): number {

@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { ItemContext, PileLocator, getRelativePlayerIndex } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 
 class PlayerKeyStockLocator extends PileLocator {
   radius = 2
@@ -18,6 +18,10 @@ class PlayerKeyStockLocator extends PileLocator {
       return { x: -15 + playerIndex*getTokenDeltaX(playerNumber), y:7, z: 5 }
 
     }
+  }
+
+  getPileId(item: MaterialItem) {
+    return `${item.location.player}-${item.id}`
   }
 }
 

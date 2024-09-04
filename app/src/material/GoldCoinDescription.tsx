@@ -16,13 +16,11 @@ export class GoldCoinDescription extends TokenDescription {
     return itemId === 5 ? { width: 2.6, height: 2.6 } : { width: 1.9, height: 1.9 }
   }
 
-  getStockLocation(item: MaterialItem) {
-    return { type: LocationType.GoldStock, id: item.id ?? 1 }
-  }
+  stockLocation = { type: LocationType.GoldStock }
 
   staticItems = [
-    { id: 1, quantity: 10, location: { type: LocationType.GoldStock, id: 1 } },
-    { id: 5, quantity: 5, location: { type: LocationType.GoldStock, id: 5 } }
+    { id: 1, quantity: 10, location: this.stockLocation },
+    { id: 5, quantity: 5, location: this.stockLocation }
   ]
 
   protected getFrontId(itemId: number): number {

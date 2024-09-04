@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { getRelativePlayerIndex, MaterialContext, PileLocator } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { getTokenDeltaX } from './PlayerKeyStockLocator'
 
 class PlayerGoldStockLocator extends PileLocator {
@@ -18,6 +18,10 @@ class PlayerGoldStockLocator extends PileLocator {
     } else {
       return { x: -15 + playerIndex * getTokenDeltaX(playerNumber), y: 17, z: 5 }
     }
+  }
+
+  getPileId(item: MaterialItem) {
+    return `${item.location.player}-${item.id}`
   }
 }
 
