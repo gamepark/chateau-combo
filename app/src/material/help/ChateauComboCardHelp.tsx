@@ -7,12 +7,13 @@ import { ChooseBetween, Effect, EffectType } from '@gamepark/chateau-combo/mater
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
+import { Scoring } from '@gamepark/chateau-combo/material/Scoring'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { MaterialHelpProps, Picture, useGame, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
 import isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
-import { FC, Fragment } from 'react'
+import { FC, ReactElement } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import CraftManIcon from '../../images/icons/craftman.png'
 import Faith from '../../images/icons/faith.png'
@@ -28,7 +29,6 @@ import Scholarship from '../../images/icons/scholarship.png'
 export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
   const { item } = props
-  console.log(item)
   return (
     <>
       <h2 css={titleCss}>{t(item.id.front !== undefined ? `card.${item.id.front}` : `place.${item.id.back}`)}</h2>
@@ -48,9 +48,9 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
   const effects = characteristic.effects.filter((e) => e.type !== EffectType.ChooseBetween && e.type !== EffectType.Discount)
   const chooseBetween: ChooseBetween | undefined = characteristic.effects.find((e) => e.type === EffectType.ChooseBetween) as ChooseBetween | undefined
   const discounts = characteristic.effects.filter((e) => e.type === EffectType.Discount)
+  const scoring = characteristic.scoring
   const tableau = playerId? new Tableau(game, playerId): undefined
   const costDiscount = item.location?.type === LocationType.River? tableau?.getDiscount(item.id.back): undefined
-  console.log(costDiscount, tableau)
   const itemDiscounted = Math.max(0, characteristic.cost - (costDiscount ?? 0))
   return (
     <>
@@ -94,52 +94,57 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
         </p>
       )}
       {!!effects.length && (
-        <>
-          <p css={underlineCss}>
-            <Trans defaults="card.effect" values={{ effects: effects.length }}>
-              <strong/>
-            </Trans>
-          </p>
-          <ul css={listCss}>
-          {effects.map((effect, i) => (
-            <li key={i}>
-              {getEffectDescription(effect)}
-            </li>
-          ))}
-          </ul>
-        </>
+        <EffectList i18nKey="card.effect" effects={effects} getDescription={getEffectDescription} />
       )}
       {!!chooseBetween && (
-        <>
-          <p css={underlineCss}>
-            <Trans defaults="card.effect.choice" values={{ effects: effects.length }}>
-              <strong/>
-            </Trans>
-          </p>
-          <ul css={listCss}>
-            <li>{getEffectDescription(chooseBetween.effect1)}</li>
-            <li>{getEffectDescription(chooseBetween.effect2)}</li>
-          </ul>
-        </>
+        <EffectList i18nKey="card.effect.choice" effects={[chooseBetween.effect1, chooseBetween.effect2]} getDescription={getEffectDescription} />
       )}
       {!!discounts.length && (
+        <EffectList i18nKey="card.discount" effects={discounts} getDescription={getEffectDescription} />
+      )}
+      {!!scoring && (
         <>
           <p css={underlineCss}>
-            <Trans defaults="card.discount">
+            <Trans defaults="card.scoring">
               <strong/>
             </Trans>
           </p>
-          <ul css={listCss}>
-            {discounts.map((effect, i) => (
-              <li key={i}>
-                {getEffectDescription(effect)}
-              </li>
-            ))}
-          </ul>
+          <p css={listCss}>
+            <Trans defaults="card.scoring.condition"
+                   values={{ score: scoring.score }}
+                   components={{ condition: <ConditionDetail condition={scoring.condition} /> }} />
+          </p>
         </>
       )}
     </>
 
+  )
+}
+
+const EffectList: FC<{ i18nKey: string, effects: Effect[], getDescription: (effect: Effect) => any }> = (props) => {
+  const { i18nKey, effects, getDescription } = props
+  return (
+    <>
+      <p css={underlineCss}>
+        <Trans defaults={i18nKey} values={{ effects: effects.length }}>
+          <strong/>
+        </Trans>
+      </p>
+      {effects.length === 1 && (
+        <p css={listCss}>
+          {getDescription(effects[0])}
+        </p>
+      )}
+      {effects.length > 1 && (
+        <ul css={listCss}>
+          {effects.map((effect, i) => (
+            <li key={i}>
+              {getDescription(effect)}
+            </li>
+          ))}
+        </ul>
+      )}
+    </>
   )
 }
 
@@ -213,7 +218,7 @@ const moveMessengerImages: Record<Place, string> = {
   [Place.Castle]: MessengerCastle
 }
 
-const getEffectDescription = (effect: Effect) => {
+const getEffectDescription = (effect: Effect): ReactElement => {
   switch (effect.type) {
     case EffectType.Discount: {
       if (effect.castle && effect.village) return <Trans defaults="card.discount.both"/>
@@ -223,10 +228,20 @@ const getEffectDescription = (effect: Effect) => {
       if (effect.opponentsGain && effect.gain) return <Trans defaults="card.effect.keys.all" />
       if (effect.opponentsGain) return <Trans defaults="card.effect.keys.opponents" />
       if (!effect.condition) return <Trans defaults="card.effect.keys" values={{ keys: effect.gain }}/>
-      return <Trans defaults="card.effect.keys.per" values={{ keys: effect.gain, condition: getConditionText(effect.condition) }}/>
+      return (
+        <Trans defaults="card.effect.keys.per"
+               values={{ keys: effect.gain }}
+               components={{ condition: <ConditionDetail condition={effect.condition} /> }}
+        />
+      )
     }
     case EffectType.GainGold : {
-      if (effect.condition) return <Trans defaults="card.effect.gold.per" values={{ gold: effect.gain, condition: getConditionText(effect.condition) }}/>
+      if (effect.condition) return (
+        <Trans defaults="card.effect.gold.per"
+               values={{ gold: effect.gain }}
+               components={{ condition: <ConditionDetail condition={effect.condition} /> }}
+        />
+      )
       return <Trans defaults="card.effect.gold.opponents" values={{ gold: effect.opponentsGain }}/>
     }
     case EffectType.DiscardFromRiver: {
@@ -243,19 +258,22 @@ const getEffectDescription = (effect: Effect) => {
       )
     }
     default:
-      return ''
+      return <></>
   }
 }
 
-const getConditionText = (condition: Condition) => {
+type ConditionDetailProps = {
+  condition: Condition
+}
+const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
   switch (condition.type) {
     case ConditionType.PerMissingShieldType:
       return <Trans defaults="per.shield.diff.missing"><strong/></Trans>
     case ConditionType.PerShield: {
       let i18nKey = 'per.shield'
-      if (condition.line && condition.column) i18nKey = 'per.shield.both'
       if (condition.column) i18nKey = 'per.shield.column'
       if (condition.line) i18nKey = 'per.shield.line'
+      if (condition.line && condition.column) i18nKey = 'per.shield.both'
       return (
         <Trans defaults={i18nKey}>
           <Picture css={mini} src={shieldImages[condition.shield]}/>
@@ -264,8 +282,8 @@ const getConditionText = (condition: Condition) => {
     }
     case ConditionType.PerDifferentShieldType: {
       let i18nKey = 'per.shield.diff.line'
-      if (condition.line && condition.column) i18nKey = 'per.shield.diff'
       if (condition.column) i18nKey = 'per.shield.diff.column'
+      if (condition.line && condition.column) i18nKey = 'per.shield.diff'
       return (
         <Trans defaults={i18nKey}/>
       )
@@ -304,6 +322,7 @@ const getConditionText = (condition: Condition) => {
       )
     }
     case ConditionType.PerBannersSet: {
+      if (condition.banners.length === 3) return <Trans defaults="per.place.village.3"/>
       return (
         <Trans defaults="per.place.set.both"/>
       )
