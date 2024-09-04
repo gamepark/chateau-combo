@@ -7,6 +7,7 @@ import { cardCharacteristics, Shield, shields } from './CardCharacteristics'
 import { coinsMoney } from './Coin'
 import { Condition, ConditionType } from './Condition'
 import { EffectType } from './Effect'
+import { keysMoney } from './Key'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
@@ -60,7 +61,7 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerIdenticalShieldsSet:
         return sumBy(shields, shield => Math.floor(this.countShields(shield) / condition.count))
       case ConditionType.PerKey:
-        return this.material(MaterialType.Key).player(this.player).getQuantity()
+        return keysMoney.count(this.material(MaterialType.Key).player(this.player))
       case ConditionType.PerBanner:
         return this.countCards(card => getCardPlace(card) === condition.banner)
       case ConditionType.PerBannersSet:

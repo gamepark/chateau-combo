@@ -2,6 +2,7 @@ import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepar
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coinsMoney } from '../material/Coin'
 import { DiscardFromRiver } from '../material/Effect'
+import { keysMoney } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
@@ -52,15 +53,12 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
       )
     } else {
       moves.push(
-        this
-          .material(effect.token)
-          .createItem({
-            location: {
-              type: LocationType.PlayerKeyStock,
-              player: this.player
-            },
-            quantity: discardedCardCost
-          }))
+        ...keysMoney.createOrDelete(
+          this.material(MaterialType.Key),
+          { type: LocationType.PlayerKeyStock, player: this.player },
+          discardedCardCost
+        )
+      )
     }
 
     this.forget(Memory.PendingEffects)

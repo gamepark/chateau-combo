@@ -1,4 +1,4 @@
-import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialRulesPart } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coinsMoney } from '../material/Coin'
 import { ConditionType } from '../material/Condition'
@@ -21,7 +21,7 @@ export class EndGameRule extends MaterialRulesPart {
             if (spaceLeft > 0) {
               return coinsMoney.moveAmount(
                 this.material(MaterialType.GoldCoin),
-                {type: LocationType.PlayerGoldStock, player},
+                { type: LocationType.PlayerGoldStock, player },
                 { type: LocationType.OnCard, player, parent: index },
                 Math.min(spaceLeft, playerGold)
               )

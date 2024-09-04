@@ -1,4 +1,5 @@
 import { CompetitiveScore, FillGapStrategy, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules } from '@gamepark/rules-api'
+import { keysMoney } from './material/Key'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Tableau } from './material/Tableau'
@@ -45,6 +46,6 @@ export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialTyp
   }
 
   getScore(player: PlayerId): number {
-    return this.material(MaterialType.Key).player(player).getQuantity() + new Tableau(this.game, player).score
+    return keysMoney.count(this.material(MaterialType.Key).player(player)) + new Tableau(this.game, player).score
   }
 }

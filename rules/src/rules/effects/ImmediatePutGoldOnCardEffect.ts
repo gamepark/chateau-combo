@@ -21,7 +21,7 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
     const cardsSpace: { cardIndex: number, space: number }[] = []
     for (const [index, card] of cardsWithPurse.entries) {
       const goldCardCanStore = (cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit
-      const goldAlreadyOnCard = this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(index).getQuantity()
+      const goldAlreadyOnCard = coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(index))
       if (goldCardCanStore - goldAlreadyOnCard > 0) {
         cardsSpace.push({ cardIndex: index, space: goldCardCanStore - goldAlreadyOnCard })
       }

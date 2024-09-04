@@ -1,6 +1,7 @@
 import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import uniqBy from 'lodash/uniqBy'
 import { coinsMoney } from '../../material/Coin'
+import { keysMoney } from '../../material/Key'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -39,7 +40,7 @@ export class PlayerBoardHelper extends MaterialRulesPart {
       }
 
       const above = { x: playedCard.location.x!, y: playedCard.location.y! - 1 }
-      if (!playedCards.find(item => isAnyCardAbove(item, coordinates)) && (boundaries.yMax - above.y < 3))  {
+      if (!playedCards.find(item => isAnyCardAbove(item, coordinates)) && (boundaries.yMax - above.y < 3)) {
         availableSpaces.push({ type: LocationType.PlayerBoard, player: this.player, x: above.x, y: above.y, z: 0 })
       }
     })
@@ -66,12 +67,12 @@ export class PlayerBoardHelper extends MaterialRulesPart {
       .player(this.player)
   }
 
-  get coinsQuantity(){
+  get coinsQuantity() {
     return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player))
   }
 
-  get keyQuantity(){
-    return this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(this.player).getQuantity()
+  get keyQuantity() {
+    return keysMoney.count(this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(this.player))
   }
 
 }

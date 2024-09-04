@@ -2,6 +2,7 @@ import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from
 import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coinsMoney } from '../material/Coin'
+import { keysMoney } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tableau } from '../material/Tableau'
@@ -78,11 +79,7 @@ export class BuyCardRule extends PlayerTurnRule {
     if (move.location.rotation) {
       moves.push(...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, 6))
 
-      moves.push(
-        this
-          .material(MaterialType.Key)
-          .createItem({ location: { type: LocationType.PlayerKeyStock, player: this.player }, quantity: 2 })
-      )
+      moves.push(...keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, 2))
 
       moves.push(this.startRule(RuleId.EndOfTurn))
       return moves

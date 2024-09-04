@@ -1,5 +1,6 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { GainKeys } from '../../material/Effect'
+import { keysMoney } from '../../material/Key'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Tableau } from '../../material/Tableau'
@@ -14,7 +15,7 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeys> {
     if (effect.opponentsGain) {
       for (const player of this.game.players) {
         if (player !== this.player) {
-          moves.push(...this.gainKeys(effect.opponentsGain!))
+          moves.push(...this.gainKeys(effect.opponentsGain))
         }
       }
     }
@@ -23,16 +24,6 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeys> {
 
   gainKeys(quantity: number, player = this.player) {
     if (!quantity) return []
-    return [
-      this
-        .material(MaterialType.Key)
-        .createItem({
-          location: {
-            type: LocationType.PlayerKeyStock,
-            player
-          },
-          quantity: quantity
-        })
-    ]
+    return keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player }, quantity)
   }
 }
