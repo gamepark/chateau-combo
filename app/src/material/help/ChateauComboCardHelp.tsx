@@ -7,7 +7,6 @@ import { ChooseBetween, Effect, EffectType } from '@gamepark/chateau-combo/mater
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
-import { Scoring } from '@gamepark/chateau-combo/material/Scoring'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { MaterialHelpProps, Picture, useGame, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
@@ -49,8 +48,8 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
   const chooseBetween: ChooseBetween | undefined = characteristic.effects.find((e) => e.type === EffectType.ChooseBetween) as ChooseBetween | undefined
   const discounts = characteristic.effects.filter((e) => e.type === EffectType.Discount)
   const scoring = characteristic.scoring
-  const tableau = playerId? new Tableau(game, playerId): undefined
-  const costDiscount = item.location?.type === LocationType.River? tableau?.getDiscount(item.id.back): undefined
+  const tableau = playerId ? new Tableau(game, playerId) : undefined
+  const costDiscount = item.location?.type === LocationType.River ? tableau?.getDiscount(item.id.back) : undefined
   const itemDiscounted = Math.max(0, characteristic.cost - (costDiscount ?? 0))
   return (
     <>
@@ -69,7 +68,7 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
             </span>}
           </p>
           <p css={flexRowCss}>
-            <span>{t('card.shield')}</span>
+            <span>{t('card.shield', { shields: characteristic.shields.length })}</span>
             {characteristic.shields.map((shield, i) => (
               <Picture key={i} css={mini} src={shieldImages[shield]}/>
             ))}
@@ -94,13 +93,13 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
         </p>
       )}
       {!!effects.length && (
-        <EffectList i18nKey="card.effect" effects={effects} getDescription={getEffectDescription} />
+        <EffectList i18nKey="card.effect" effects={effects} getDescription={getEffectDescription}/>
       )}
       {!!chooseBetween && (
-        <EffectList i18nKey="card.effect.choice" effects={[chooseBetween.effect1, chooseBetween.effect2]} getDescription={getEffectDescription} />
+        <EffectList i18nKey="card.effect.choice" effects={[chooseBetween.effect1, chooseBetween.effect2]} getDescription={getEffectDescription}/>
       )}
       {!!discounts.length && (
-        <EffectList i18nKey="card.discount" effects={discounts} getDescription={getEffectDescription} />
+        <EffectList i18nKey="card.discount" effects={discounts} getDescription={getEffectDescription}/>
       )}
       {!!scoring && (
         <>
@@ -112,7 +111,7 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
           <p css={listCss}>
             <Trans defaults="card.scoring.condition"
                    values={{ score: scoring.score }}
-                   components={{ condition: <ConditionDetail condition={scoring.condition} /> }} />
+                   components={{ condition: <ConditionDetail condition={scoring.condition}/> }}/>
           </p>
         </>
       )}
@@ -225,13 +224,13 @@ const getEffectDescription = (effect: Effect): ReactElement => {
       return <Trans defaults="card.discount.place" values={{ place: effect.village ? Place.Village : Place.Castle }}/>
     }
     case EffectType.GainKeys: {
-      if (effect.opponentsGain && effect.gain) return <Trans defaults="card.effect.keys.all" />
-      if (effect.opponentsGain) return <Trans defaults="card.effect.keys.opponents" />
+      if (effect.opponentsGain && effect.gain) return <Trans defaults="card.effect.keys.all"/>
+      if (effect.opponentsGain) return <Trans defaults="card.effect.keys.opponents"/>
       if (!effect.condition) return <Trans defaults="card.effect.keys" values={{ keys: effect.gain }}/>
       return (
         <Trans defaults="card.effect.keys.per"
                values={{ keys: effect.gain }}
-               components={{ condition: <ConditionDetail condition={effect.condition} /> }}
+               components={{ condition: <ConditionDetail condition={effect.condition}/> }}
         />
       )
     }
@@ -239,7 +238,7 @@ const getEffectDescription = (effect: Effect): ReactElement => {
       if (effect.condition) return (
         <Trans defaults="card.effect.gold.per"
                values={{ gold: effect.gain }}
-               components={{ condition: <ConditionDetail condition={effect.condition} /> }}
+               components={{ condition: <ConditionDetail condition={effect.condition}/> }}
         />
       )
       return <Trans defaults="card.effect.gold.opponents" values={{ gold: effect.opponentsGain }}/>
@@ -253,7 +252,7 @@ const getEffectDescription = (effect: Effect): ReactElement => {
       return (
         <Trans defaults="card.effect.purse">
           <strong/>
-          <em />
+          <em/>
         </Trans>
       )
     }
@@ -401,6 +400,7 @@ const underlineCss = css`
 
 const listCss = css`
   margin-top: 0em !important;
+
   > li {
     margin-bottom: 0.5em;
   }

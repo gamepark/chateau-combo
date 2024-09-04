@@ -219,7 +219,7 @@
       "card.tableau.player": "Cette carte est dans le tableau de {player}.",
       "card.cost": "Coût en or : <0>{cost}</0>",
       "card.cost.discount": "(Après réduction: <0>{discount}</0>)",
-      "card.shield": "Blason :",
+      "card.shield": "{shields, plural, one{Blason} other{Blasons}} :",
       "card.shield.help": "Il existe 6 types de blasons :\nNoble : <0/>, Religieux : <1/>, Érudit : <2/> (plutôt au Château)\r\nMilitaire : <3/>, Artisan : <4/>, Paysan : <5/> (plutôt au Village)",
       "card.messenger": "<0/> : si cette carte est achetée, le Messager ira au {place, select, 1{Château} other{Village}}",
       "card.effect": "{effects, plural, one{Effet déclenché} other{Effets déclenchés}} à l'achat :",
