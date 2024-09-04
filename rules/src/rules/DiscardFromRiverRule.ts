@@ -64,7 +64,7 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
     }
 
     this.forget(Memory.PendingEffects)
-    moves.push(this.startRule(RuleId.EndOfTurn))
+    moves.push(this.startRule(RuleId.MoveMessenger))
 
     return moves
   }
