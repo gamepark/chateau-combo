@@ -5,6 +5,8 @@ import Key1 from '../images/tokens/Key1.png'
 import Key3 from '../images/tokens/Key3.png'
 
 export class KeyDescription extends TokenDescription {
+  borderRadius = 0.5
+
   images = {
     1: Key1,
     3: Key3

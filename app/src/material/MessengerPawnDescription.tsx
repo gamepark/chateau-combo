@@ -6,6 +6,7 @@ import MessengerPawn from '../images/MessengerPawn.png'
 class MessengerPawnDescription extends TokenDescription {
   width = 4
   height = 5
+  borderRadius = 1 // for the drop area
   image = MessengerPawn
 
   getFrontExtraCss() {

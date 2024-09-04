@@ -5,6 +5,8 @@ import Gold1 from '../images/tokens/Gold1.png'
 import Gold5 from '../images/tokens/Gold5.png'
 
 export class GoldCoinDescription extends TokenDescription {
+  borderRadius = 2
+
   images = {
     1: Gold1,
     5: Gold5
