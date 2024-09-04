@@ -424,7 +424,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   },
 
   [Card.MiraculouslyCured]: {
-    cost: 3,
+    cost: 2,
     shields: [Shield.Faith, Shield.Faith],
     moveMessenger: true,
     effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerCardWithPurse } }],

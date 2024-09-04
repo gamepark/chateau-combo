@@ -41,15 +41,17 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
 const VisibleCard: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
   const { item } = props
+  const playerId = usePlayerId()
   const game = useGame<MaterialGame>()!
   if (!item.id.front) return null
   const characteristic: CardPattern = cardCharacteristics[item.id.front]
   const effects = characteristic.effects.filter((e) => e.type !== EffectType.ChooseBetween && e.type !== EffectType.Discount)
   const chooseBetween: ChooseBetween | undefined = characteristic.effects.find((e) => e.type === EffectType.ChooseBetween) as ChooseBetween | undefined
   const discounts = characteristic.effects.filter((e) => e.type === EffectType.Discount)
-  const tableau = item.location?.player? new Tableau(game, item.location.player): undefined
-  const costDiscount = item.location?.type === LocationType.River? tableau?.getCardDiscount(item.id.front, item.id.back): undefined
-  const itemDiscounted = Math.min(0, characteristic.cost - (costDiscount ?? 0))
+  const tableau = playerId? new Tableau(game, playerId): undefined
+  const costDiscount = item.location?.type === LocationType.River? tableau?.getDiscount(item.id.back): undefined
+  console.log(costDiscount, tableau)
+  const itemDiscounted = Math.max(0, characteristic.cost - (costDiscount ?? 0))
   return (
     <>
       {!!characteristic.shields?.length && (
@@ -117,6 +119,22 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
           <ul css={listCss}>
             <li>{getEffectDescription(chooseBetween.effect1)}</li>
             <li>{getEffectDescription(chooseBetween.effect2)}</li>
+          </ul>
+        </>
+      )}
+      {!!discounts.length && (
+        <>
+          <p css={underlineCss}>
+            <Trans defaults="card.discount">
+              <strong/>
+            </Trans>
+          </p>
+          <ul css={listCss}>
+            {discounts.map((effect, i) => (
+              <li key={i}>
+                {getEffectDescription(effect)}
+              </li>
+            ))}
           </ul>
         </>
       )}
@@ -216,9 +234,9 @@ const getEffectDescription = (effect: Effect) => {
       return <Trans defaults="card.effect.discard.keys" values={{ place: effect.river }}/>
     }
     case EffectType.PutGoldOnCard: {
-      if (effect.cardsLimit) return <Trans defaults="card.effect.purse"/>
+      if (effect.cardsLimit) return <Trans defaults="card.effect.purse.fill"/>
       return (
-        <Trans defaults="card.effect.purse.fill">
+        <Trans defaults="card.effect.purse">
           <strong/>
           <em />
         </Trans>
