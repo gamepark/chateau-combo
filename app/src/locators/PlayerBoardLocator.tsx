@@ -1,15 +1,24 @@
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
-import { Coordinates, isMoveItem, Location, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItem, Location, MaterialMove } from '@gamepark/rules-api'
 import { chateauComboCardDescription } from '../material/ChateauComboCardDescription'
-import { getPosition } from './PlayerLocation'
+
+export enum Position {
+  TopLeft, TopCenter, TopRight, BottomLeft, BottomRight
+}
+
+export const playerPositions = [
+  [Position.BottomLeft, Position.BottomRight], // 2 players
+  [Position.BottomLeft, Position.TopCenter, Position.BottomRight], // 3 players
+  [Position.BottomLeft, Position.TopLeft, Position.TopRight, Position.BottomRight], // 4 players
+  [Position.BottomLeft, Position.TopLeft, Position.TopCenter, Position.TopRight, Position.BottomRight] // 4 players
+]
 
 export class PlayerBoardLocator extends Locator {
 
-  getCoordinates(location: Location, context: MaterialContext): Coordinates {
+  getCoordinates(location: Location, context: MaterialContext) {
     const boundaries = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
-    const playerIndex = getRelativePlayerIndex(context, location.player)
-    const baseCoordinates = getPosition(context.rules.players.length, playerIndex)
+    const baseCoordinates = this.getBaseCoordinates(location, context)
     baseCoordinates.x += location.x! * (chateauComboCardDescription.width + 0.2)
     if (boundaries.xMin < -1) baseCoordinates.x += (chateauComboCardDescription.width)
     if (boundaries.xMax > 1) baseCoordinates.x -= (chateauComboCardDescription.width)
@@ -21,7 +30,25 @@ export class PlayerBoardLocator extends Locator {
     return baseCoordinates
   }
 
-  locationDescription  = new PlayerBoardDescription()
+  getBaseCoordinates(location: Location, context: MaterialContext) {
+    const playerIndex = getRelativePlayerIndex(context, location.player)
+    const position = playerPositions[context.rules.players.length - 2][playerIndex]
+    const players = context.rules.players.length
+    switch (position) {
+      case Position.TopLeft:
+        return { x: -33, y: -40 }
+      case Position.TopCenter:
+        return { x: 7.5, y: -40 }
+      case Position.TopRight:
+        return { x: 33, y: -40 }
+      case Position.BottomLeft:
+        return players === 2 ? { x: -30, y: 7 } : { x: -33, y: -9 }
+      case Position.BottomRight:
+        return players === 2 ? { x: 33, y: 7 } : { x: 33, y: -9 }
+    }
+  }
+
+  locationDescription = new PlayerBoardDescription()
 }
 
 export class PlayerBoardDescription extends DropAreaDescription {
