@@ -48,7 +48,7 @@ export class ImmediateEffectRule extends PlayerTurnRule {
 }
 
 type EffectCreator = new (game: MaterialGame) => AbstractImmediateEffect<any>
-const ImmediateEffects: Partial<Record<EffectType, EffectCreator>> = {
+export const ImmediateEffects: Partial<Record<EffectType, EffectCreator>> = {
   [EffectType.GainGold]: ImmediateGainCoinEffect,
   [EffectType.GainKeys]: ImmediateGainKeyEffect,
   [EffectType.PutGoldOnCard]: ImmediatePutGoldOnCardEffect

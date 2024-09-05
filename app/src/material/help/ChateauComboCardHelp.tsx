@@ -61,7 +61,7 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
               <strong/>
             </Trans>
             </span>&nbsp;
-            {costDiscount !== undefined && <span>
+            {!!costDiscount && <span>
             <Trans defaults="card.cost.discount" values={{ discount: itemDiscounted }}>
               <strong/>
             </Trans>

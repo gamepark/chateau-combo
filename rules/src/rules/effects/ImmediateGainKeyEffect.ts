@@ -10,12 +10,14 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeys> {
 
   getEffectMoves(effect: GainKeys) {
     const moves: MaterialMove[] = []
-    const multiplier = effect.condition ? new Tableau(this.game, this.player).countCondition(effect.condition) : 1
-    moves.push(...this.gainKeys(effect.gain * multiplier))
-    if (effect.opponentsGain) {
+    const myGain = this.getMyGain(effect)
+    const opponentsGain = this.getOpponentsGain(effect)
+
+    moves.push(...this.gainKeys(myGain))
+    if (opponentsGain) {
       for (const player of this.game.players) {
         if (player !== this.player) {
-          moves.push(...this.gainKeys(effect.opponentsGain))
+          moves.push(...this.gainKeys(opponentsGain))
         }
       }
     }
@@ -25,5 +27,18 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeys> {
   gainKeys(quantity: number, player = this.player) {
     if (!quantity) return []
     return keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player }, quantity)
+  }
+
+  getMyGain(effect: GainKeys) {
+    const multiplier = effect.condition ? new Tableau(this.game, this.player).countCondition(effect.condition) : 1
+    if (effect.gain) {
+      return effect.gain * multiplier
+    }
+
+    return 0
+  }
+
+  getOpponentsGain(effect: GainKeys) {
+    return effect.opponentsGain ?? 0
   }
 }

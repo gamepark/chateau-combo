@@ -10,13 +10,13 @@ export class ChooseBetweenRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     return [
-      this.customMove(CustomMoveType.Choice, this.effect1ToPlay),
-      this.customMove(CustomMoveType.Choice, this.effect2ToPlay)
+      this.customMove(CustomMoveType.Choice, 1),
+      this.customMove(CustomMoveType.Choice, 2)
     ]
   }
 
   startImmediateEffect(effect: Effect): MaterialMove[] {
-    this.memorize(Memory.PendingEffects, effects => [effect, ...effects])
+    this.memorize(Memory.PendingEffects, (effects: Effect[]) => [effect, ...effects])
     return new ImmediateEffectRule(this.game).getPendingEffectsMoves()
   }
 
@@ -38,7 +38,8 @@ export class ChooseBetweenRule extends PlayerTurnRule {
 
   onCustomMove(move: CustomMove): MaterialMove[] {
     if (move.type === CustomMoveType.Choice){
-      return this.startImmediateEffect(move.data)
+      const effect = move.data === 1? this.effect1ToPlay: this.effect2ToPlay
+      return this.startImmediateEffect(effect)
     }
     return []
 

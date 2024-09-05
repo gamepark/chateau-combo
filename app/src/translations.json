@@ -2,7 +2,7 @@
   "en": {
     "translation": {
       "Name": "Château Combo",
-      "effect.banker": "<0>{goldPut}</0> on each <1/>",
+      "effect.banker": "{count} <gold/> sur chaque <1/>",
       "card.1": "Steward",
       "card.2": "His Holiness",
       "card.3": "Chaplain",
@@ -208,8 +208,9 @@
       "move-messenger": "Le Messager se déplace et les lieux sont complétés",
       "discard.you": "Défaussez une des 3 cartes du {place, select, 1{Château} other{Village}}",
       "discard.player": "{player} doit défaussez une des 3 cartes du {place, select, 1{Château} other{Village}}",
-      "choose-effect.you": "{card} : <0>{effect1}</0> ou <1>{effect2}</1>",
-      "effect.banker": "<0>{goldPut}</0> sur chaque <1/>",
+      "choose-effect.you": "{card} : <0/> ou <1/>",
+      "effect.gain.me": "<item/> x {count}",
+      "effect.banker": "{count} x <gold/> sur chaque <bag/>",
       "choose-effect.player": "{card} : {player} doit choisir l'un des effets",
       "end-game": "Les joueurs placent l'or qui leur reste sur les cartes Bourse",
       "card.deck": "Il reste {number, plural, one{# carte} other{# cartes}} dans la pioche de cartes {place, select, 1{Château} other{Village}}.",

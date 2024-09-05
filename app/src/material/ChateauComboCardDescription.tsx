@@ -92,6 +92,7 @@ import Military from '../images/icons/military.png'
 import NobilityIcon from '../images/icons/nobility.png'
 import PeasantryIcon from '../images/icons/peasantry.png'
 import Scholarship from '../images/icons/scholarship.png'
+import Bag from '../images/icons/bag.png'
 import { ChateauComboCardHelp } from './help/ChateauComboCardHelp'
 
 export class ChateauComboCardDescription extends CardDescription {
@@ -201,6 +202,7 @@ export class ChateauComboCardDescription extends CardDescription {
     images.push(Faith)
     images.push(Military)
     images.push(Scholarship)
+    images.push(Bag)
     return images
   }
 
