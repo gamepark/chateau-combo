@@ -20,13 +20,13 @@ export class BuyCardRule extends PlayerTurnRule {
     const moves: MaterialMove[] = []
 
     const cards = this.riverCards
-    const buyableCards = cards
+    const affordableCards = cards
       .filter((item) => cardCharacteristics[item.id.front].cost - tableau.getDiscount(item.id.back) <= gold)
 
     moves.push(
       ...availableSpaces.flatMap((space) => {
         return [
-          ...buyableCards.moveItems(space),
+          ...affordableCards.moveItems(space),
           ...cards.moveItems({ ...space, rotation: true })
         ]
       })
