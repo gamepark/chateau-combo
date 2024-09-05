@@ -7,7 +7,7 @@ import { CustomMoveType } from '@gamepark/chateau-combo/rules/CustomMoveType'
 import { ImmediateGainCoinEffect } from '@gamepark/chateau-combo/rules/effects/ImmediateGainCoinEffect'
 import { ImmediateGainKeyEffect } from '@gamepark/chateau-combo/rules/effects/ImmediateGainKeyEffect'
 import { ImmediateEffects } from '@gamepark/chateau-combo/rules/ImmediateEffectRule'
-import { Picture, PlayMoveButton, useGame, useLegalMove, usePlayerId, useRules } from '@gamepark/react-game'
+import { Picture, PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -21,6 +21,7 @@ export const ChooseBetweenHeader = () => {
   const chooseBetweenRule = new ChooseBetweenRule(rules.game)
   const player = usePlayerId()
   const activePlayer = rules.getActivePlayer()!
+  const name = usePlayerName(activePlayer)
   const itsMe = activePlayer === player
   const effect1 = chooseBetweenRule.effect1ToPlay
   const effect2 = chooseBetweenRule.effect2ToPlay
@@ -40,13 +41,9 @@ export const ChooseBetweenHeader = () => {
     )
   }
 
-
-  if (player === activePlayer) {
-    return <MyChooseBetweenHeader/>
-  } else {
-    return <PlayerChooseBetweenHeader activePlayer={activePlayer}/>
-  }
-
+  return (
+    <Trans defaults="choose-effect.player" values={{ player: name }} />
+  )
 }
 
 const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }) => {

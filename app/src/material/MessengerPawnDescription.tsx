@@ -15,7 +15,7 @@ class MessengerPawnDescription extends TokenDescription {
 }
 
 const borderRadiusCss = css`
-  border-radius: 2em 3em 1em 2em;
+  border-bottom-right-radius: 0.5em !important;
 `
 
 export const messengerPawnDescription = new MessengerPawnDescription()
