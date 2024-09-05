@@ -15,10 +15,14 @@ export default function App() {
   const loading = !game || isJustDisplayed || isImagesLoading
   return (
     <>
-      { !!game && <GameDisplay players={game.players.length} /> }
-      <LoadingScreen display={loading} author="Grégory GRARD & Mathieu ROUSSEL" artist="Stéphane ESCAPA" publisher="Catch Up Games" developer="Théo GREGORIO & Game Park"/>
+      {!!game && <GameDisplay players={game.players.length}/>}
+      <LoadingScreen display={loading}
+                     author={['Grégory Grard', 'Mathieu Roussel']}
+                     artist="Stéphane Escapa"
+                     publisher="Catch Up Games"
+                     developer={['Théo Grégorio', 'Game Park']}/>
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading}/>
-      <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
+      <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)}/>
       <Menu/>
       <FailuresDialog/>
       <FullscreenDialog/>
