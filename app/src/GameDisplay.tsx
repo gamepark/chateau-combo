@@ -17,10 +17,17 @@ export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
     yMax={tableSized.yMax}
     margin={{ top: 7, left: 0, right: 30, bottom: 0 }}
     css={process.env.NODE_ENV === 'development' && css`border: 1px solid white;`}>
-    <GameTableNavigation/>
+    <GameTableNavigation css={navigationCss}/>
     <PlayerPanels/>
   </GameTable>
 }
+
+const navigationCss = css`
+  top: auto;
+  bottom: 2em;
+  left: 50%;
+  transform: translateX(-50%)
+`
 
 function getTableSize(playerNumber: number): { xMin: number, xMax: number, yMin: number, yMax: number } {
   switch (playerNumber) {
