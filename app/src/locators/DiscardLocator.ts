@@ -7,12 +7,10 @@ export class DiscardLocator extends PileLocator {
 
   locationDescription = new DropAreaDescription(chateauComboCardDescription)
   maxAngle = 10
+
   getCoordinates(location: Location) {
-    const gameDeck = gameDeckLocator.getCoordinates(location)
-    return {
-      x: gameDeck.x - (chateauComboCardDescription.width + 1.5),
-      y: gameDeck.y
-    }
+    const { x, y } = gameDeckLocator.getCoordinates(location)
+    return { x: x - chateauComboCardDescription.width - 1.5, y }
   }
 }
 
