@@ -374,8 +374,8 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     case ConditionType.IfPosition: {
       if (isBorder(condition.position)) return <Trans defaults="if.position.border"/>
       if (isCorner(condition.position)) return <Trans defaults="if.position.corner"/>
-      if (isColumn(condition.position)) return <Trans defaults="if.position.column"/>
-      return <Trans defaults="if.position.line"/>
+      if (isColumn(condition.position)) return <Trans defaults="if.position.column" values={{column: condition.position[0].indexOf(X) + 1}}/>
+      return <Trans defaults="if.position.line" values={{line: condition.position.findIndex(v => v[0]) + 1}}/>
     }
     case ConditionType.BestNeighbor: {
       if (condition.condition.type === ConditionType.PerShield) {
