@@ -7,6 +7,7 @@ import { DiscardFromRiverHeader } from './DiscardFromRiverHeader'
 import { EndGameHeader } from './EndGameHeader'
 import { EndOfTurnHeader } from './EndOfTurnHeader'
 import { KeyEffectHeader } from './KeyEffectHeader'
+import { MoveMessengerHeader } from './MoveMessengerHeader'
 import { SpendKeyHeader } from './SpendKeyHeader'
 
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
@@ -15,6 +16,7 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.BuyCard]: BuyCardHeader, // TODO header plus spécifique
   [RuleId.DiscardFromRiver]: DiscardFromRiverHeader,
   [RuleId.ChooseBetween]: ChooseBetweenHeader,
+  [RuleId.MoveMessenger]: MoveMessengerHeader,
   [RuleId.EndOfTurn]: EndOfTurnHeader,
-  [RuleId.EndGame]:EndGameHeader
+  [RuleId.EndGame]: EndGameHeader
 }
