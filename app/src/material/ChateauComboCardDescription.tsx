@@ -205,7 +205,7 @@ export class ChateauComboCardDescription extends CardDescription {
   }
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
-    return item.location?.rotation || super.isFlipped(item, context)
+    return item.location?.rotation || item.location?.type === LocationType.Deck || super.isFlippedOnTable(item, context)
   }
 
   canDrag(move: MaterialMove, context: ItemContext): boolean {
