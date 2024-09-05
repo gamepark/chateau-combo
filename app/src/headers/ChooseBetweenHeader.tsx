@@ -11,9 +11,9 @@ import { Picture, PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerN
 import { CustomMove, isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import Bag from '../images/icons/bag.png'
 import { goldCoinDescription } from '../material/GoldCoinDescription'
 import { keyDescription } from '../material/KeyDescription'
-import Bag from '../images/icons/bag.png'
 
 export const ChooseBetweenHeader = () => {
   const { t } = useTranslation()
@@ -42,7 +42,10 @@ export const ChooseBetweenHeader = () => {
   }
 
   return (
-    <Trans defaults="choose-effect.player" values={{ player: name }} />
+    <Trans defaults="choose-effect.player" values={{
+      card: t(`card.${chooseBetweenRule.placedCard.id.front}`),
+      player: name
+    }}/>
   )
 }
 
