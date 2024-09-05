@@ -280,9 +280,9 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
       )
     }
     case ConditionType.PerDifferentShieldType: {
-      let i18nKey = 'per.shield.diff.line'
+      let i18nKey = 'per.shield.diff'
       if (condition.column) i18nKey = 'per.shield.diff.column'
-      if (condition.line && condition.column) i18nKey = 'per.shield.diff'
+      if (condition.line) i18nKey = 'per.shield.diff.line'
       return (
         <Trans defaults={i18nKey}/>
       )
