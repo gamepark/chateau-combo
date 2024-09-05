@@ -3,8 +3,8 @@ import { MaterialItem } from '@gamepark/rules-api'
 
 
 export class GoldStockLocator extends PileLocator {
-  coordinates = { x: -33, y: -13, z: 0 }
-  radius = 2
+  coordinates = { x: 8, y: 1 }
+  radius = 3
 
   getPileId(item: MaterialItem) {
     return item.id

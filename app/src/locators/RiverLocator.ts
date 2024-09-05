@@ -8,7 +8,7 @@ export class RiverLocator extends ListLocator {
   }
 
   getRiverY(place: Place) {
-    return place === Place.Castle ? -8 : -18
+    return place === Place.Castle ? -18 : -8
   }
 
   gap = { x: 7 }
