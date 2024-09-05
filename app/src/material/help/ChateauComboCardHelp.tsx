@@ -297,7 +297,7 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     case ConditionType.PerShieldsSet: {
       return (
         <Trans defaults={`per.shield.set.${condition.shields.length}`}>
-          <p css={flexRowCss}>
+          <p css={[flexRowCss, inlineBlocCss]}>
             {condition.shields.map((shield) => (
               <Picture css={mini} src={shieldImages[shield]}/>
             ))}
@@ -392,6 +392,11 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     }
   }
 }
+
+const inlineBlocCss = css`
+  display: inline-block;
+  width: auto;
+`
 
 const underlineCss = css`
   text-decoration: underline;
