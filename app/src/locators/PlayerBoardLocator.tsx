@@ -1,7 +1,7 @@
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, Location, MaterialMove } from '@gamepark/rules-api'
-import { chateauComboCardDescription } from '../material/ChateauComboCardDescription'
+import { cardDescription } from '../material/ChateauComboCardDescription'
 
 export enum Position {
   TopLeft, TopCenter, TopRight, BottomLeft, BottomRight
@@ -17,17 +17,14 @@ export const playerPositions = [
 export class PlayerBoardLocator extends Locator {
 
   getCoordinates(location: Location, context: MaterialContext) {
-    const boundaries = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
-    const baseCoordinates = this.getBaseCoordinates(location, context)
-    baseCoordinates.x += location.x! * (chateauComboCardDescription.width + 0.2)
-    if (boundaries.xMin < -1) baseCoordinates.x += (chateauComboCardDescription.width)
-    if (boundaries.xMax > 1) baseCoordinates.x -= (chateauComboCardDescription.width)
-    baseCoordinates.y += location.y! * (chateauComboCardDescription.height + 0.2)
-    if (boundaries.yMin < -1) baseCoordinates.y += (chateauComboCardDescription.height)
-    if (boundaries.yMax > 1) baseCoordinates.y -= (chateauComboCardDescription.height)
-
-
-    return baseCoordinates
+    const { xMax, xMin, yMax, yMin } = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
+    const { x, y } = this.getBaseCoordinates(location, context)
+    const deltaX = (xMin + xMax) / 2
+    const deltaY = (yMin + yMax) / 2
+    return {
+      x: x + (location.x! - deltaX) * (cardDescription.width + 0.2),
+      y: y + (location.y! - deltaY) * (cardDescription.height + 0.2)
+    }
   }
 
   getBaseCoordinates(location: Location, context: MaterialContext) {
@@ -53,7 +50,7 @@ export class PlayerBoardLocator extends Locator {
 
 export class PlayerBoardDescription extends DropAreaDescription {
   constructor() {
-    super(chateauComboCardDescription)
+    super(cardDescription)
   }
 
   getBestDropMove(moves: MaterialMove[], _location: Location, context: ItemContext): MaterialMove {

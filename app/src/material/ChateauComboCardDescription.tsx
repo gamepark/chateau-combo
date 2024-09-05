@@ -207,4 +207,4 @@ export class ChateauComboCardDescription extends CardDescription {
   }
 }
 
-export const chateauComboCardDescription = new ChateauComboCardDescription()
+export const cardDescription = new ChateauComboCardDescription()
