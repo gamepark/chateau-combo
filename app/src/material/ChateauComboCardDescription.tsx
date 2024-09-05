@@ -1,7 +1,9 @@
 import { Card } from '@gamepark/chateau-combo/material/Card'
+import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
-import { CardDescription, MaterialContext } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { isMoveItem, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 
 import Castle from '../images/cards/castle.jpg'
 import Duchesse from '../images/cards/en/cartesChCombo_ChC_eng-US.jpg'
@@ -204,6 +206,14 @@ export class ChateauComboCardDescription extends CardDescription {
 
   isFlippedOnTable(item: Partial<MaterialItem>, context: MaterialContext): boolean {
     return item.location?.rotation || super.isFlipped(item, context)
+  }
+
+  canDrag(move: MaterialMove, context: ItemContext): boolean {
+    const isFaceDown = isMoveItem(move) && move.itemType === MaterialType.Card && move.location.type === LocationType.PlayerBoard && move.location.rotation
+    if (isFaceDown && !context.rules.material(MaterialType.Card).getItem(move.itemIndex).location.rotation) {
+      return false
+    }
+    return super.canDrag(move, context)
   }
 }
 
