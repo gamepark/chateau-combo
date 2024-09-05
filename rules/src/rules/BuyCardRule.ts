@@ -52,44 +52,31 @@ export class BuyCardRule extends PlayerTurnRule {
       .locationId(banner)
   }
 
-  beforeItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.PlayerBoard && move.location.rotation === undefined) {
-      const item = this.material(MaterialType.Card).getItem(move.itemIndex)!
-      const discount = new Tableau(this.game, this.player).getDiscount(item.id.back)
-      const cost = cardCharacteristics[item.id.front].cost - discount
-      if (cost > 0) {
-        return coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, -cost)
-      }
-    }
-    return []
-  }
-
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.PlayerBoard) return []
 
-    const moves: MaterialMove[] = []
-    this
-      .material(MaterialType.Card)
-      .location((l) => l.type === LocationType.River)
-      .rotation(true)
-      .getItems()
-      .forEach((item) => delete item.location.rotation)
+    const rotatedRiveItems = this.material(MaterialType.Card).location(LocationType.River).rotation(true).getItems()
+    for (const item of rotatedRiveItems) {
+      delete item.location.rotation
+    }
 
     // Player plays a hidden card
     if (move.location.rotation) {
-      moves.push(...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, 6))
-
-      moves.push(...keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, 2))
-
-      moves.push(this.startRule(RuleId.EndOfTurn))
-      return moves
+      return [
+        ...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, 6),
+        ...keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, 2),
+        this.startRule(RuleId.EndOfTurn)
+      ]
+    } else {
+      const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
+      const discount = new Tableau(this.game, this.player).getDiscount(card.id!.back)
+      const cost = Math.max(cardCharacteristics[card.id!.front!].cost - discount, 0)
+      this.memorize(Memory.PlacedCard, move.itemIndex)
+      this.memorize(Memory.PendingEffects, cardCharacteristics[card.id!.front!].effects)
+      return [
+        ...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, -cost),
+        ...new ImmediateEffectRule(this.game).getPendingEffectsMoves()
+      ]
     }
-
-    const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
-    this.memorize(Memory.PlacedCard, move.itemIndex)
-    this.memorize(Memory.PendingEffects, cardCharacteristics[card.id!.front!].effects)
-    moves.push(...new ImmediateEffectRule(this.game).getPendingEffectsMoves())
-
-    return moves
   }
 }
