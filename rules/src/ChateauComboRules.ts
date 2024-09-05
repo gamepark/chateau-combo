@@ -1,4 +1,4 @@
-import { CompetitiveScore, FillGapStrategy, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy, SecretMaterialRules } from '@gamepark/rules-api'
+import { CompetitiveScore, FillGapStrategy, HiddenMaterialRules, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy } from '@gamepark/rules-api'
 import { coinsMoney } from './material/Coin'
 import { keysMoney } from './material/Key'
 import { LocationType } from './material/LocationType'
@@ -19,7 +19,7 @@ import { SpendKeyRule } from './rules/SpendKeyRule'
  * This class implements the rules of the board game.
  * It must follow Game Park "Rules" API so that the Game Park server can enforce the rules.
  */
-export class ChateauComboRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
+export class ChateauComboRules extends HiddenMaterialRules<PlayerId, MaterialType, LocationType>
   implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
   rules = {
     [RuleId.SpendKey]: SpendKeyRule,
