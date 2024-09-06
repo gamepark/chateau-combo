@@ -4,6 +4,6 @@ import { useTranslation } from "react-i18next"
 
 export const EndGameHeader = () => {
     const { t } = useTranslation()
-    return <span>{t('header.end.game')}</span>
+    return <span>{t('end-game')}</span>
 }
 
