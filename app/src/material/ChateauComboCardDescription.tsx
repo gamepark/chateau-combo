@@ -210,6 +210,10 @@ export class ChateauComboCardDescription extends CardDescription {
     return item.location?.rotation || item.location?.type === LocationType.Deck || super.isFlippedOnTable(item, context)
   }
 
+  isFlippedInDialog(item: Partial<MaterialItem>, context: MaterialContext): boolean {
+    return (item.location?.rotation && item.location.type === LocationType.PlayerBoard) || super.isFlippedInDialog(item, context)
+  }
+
   canDrag(move: MaterialMove, context: ItemContext): boolean {
     const isFaceDown = isMoveItem(move) && move.itemType === MaterialType.Card && move.location.type === LocationType.PlayerBoard && move.location.rotation
     if (isFaceDown && !context.rules.material(MaterialType.Card).getItem(move.itemIndex).location.rotation) {
