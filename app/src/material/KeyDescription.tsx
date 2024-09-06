@@ -3,6 +3,7 @@ import { ComponentSize, TokenDescription } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 import Key1 from '../images/tokens/Key1.png'
 import Key3 from '../images/tokens/Key3.png'
+import { KeyHelp } from './help/KeyHelp'
 
 export class KeyDescription extends TokenDescription {
   borderRadius = 0.5
@@ -26,6 +27,8 @@ export class KeyDescription extends TokenDescription {
   protected getFrontId(itemId: number): number {
     return itemId ?? 1
   }
+
+  help = KeyHelp
 }
 
 export const keyDescription = new KeyDescription()

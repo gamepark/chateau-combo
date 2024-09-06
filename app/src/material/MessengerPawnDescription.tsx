@@ -2,6 +2,7 @@
 import { css } from '@emotion/react'
 import { TokenDescription } from '@gamepark/react-game'
 import MessengerPawn from '../images/MessengerPawn.png'
+import { MessengerPawnHelp } from './help/MessengerPawnHelp'
 
 class MessengerPawnDescription extends TokenDescription {
   width = 4
@@ -12,6 +13,8 @@ class MessengerPawnDescription extends TokenDescription {
   getFrontExtraCss() {
     return borderRadiusCss
   }
+
+  help = MessengerPawnHelp
 }
 
 const borderRadiusCss = css`

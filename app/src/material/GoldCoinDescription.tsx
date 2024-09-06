@@ -1,8 +1,8 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { ComponentSize, TokenDescription } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
 import Gold1 from '../images/tokens/Gold1.png'
 import Gold5 from '../images/tokens/Gold5.png'
+import { GoldCoinHelp } from './help/GoldCoinHelp'
 
 export class GoldCoinDescription extends TokenDescription {
   borderRadius = 2
@@ -26,6 +26,8 @@ export class GoldCoinDescription extends TokenDescription {
   protected getFrontId(itemId: number): number {
     return itemId ?? 1
   }
+
+  help = GoldCoinHelp
 }
 
 export const goldCoinDescription = new GoldCoinDescription()
