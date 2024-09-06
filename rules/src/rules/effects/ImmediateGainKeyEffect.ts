@@ -17,7 +17,7 @@ export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeys> {
     if (opponentsGain) {
       for (const player of this.game.players) {
         if (player !== this.player) {
-          moves.push(...this.gainKeys(opponentsGain))
+          moves.push(...this.gainKeys(opponentsGain, player))
         }
       }
     }
