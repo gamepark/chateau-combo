@@ -302,7 +302,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
-        filter: (move, game) => isMoveItemType(MaterialType.Card)(move)
+        filter: (move, game) => isMoveItemType(MaterialType.Card)(move) && !move.location.rotation
           && this.material(game, MaterialType.Card).id((id: { front: Card }) => id.front === Card.Duchess).getIndex() === move.itemIndex
       }
     },
@@ -436,7 +436,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         }
       }),
       move: {
-        filter: (move, game) => isMoveItemType(MaterialType.Card)(move) && this.material(game, MaterialType.Card).id((id: {
+        filter: (move, game) => isMoveItemType(MaterialType.Card)(move)  && !move.location.rotation && this.material(game, MaterialType.Card).id((id: {
           front: Card
         }) => id.front === Card.Potter).getIndex() === move.itemIndex,
         interrupt: (move) => isCreateItemType(MaterialType.GoldCoin)(move)
