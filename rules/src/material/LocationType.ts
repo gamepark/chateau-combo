@@ -10,4 +10,9 @@ export enum LocationType {
     PlayerBoard,
     OnCard,
     CardRotate,
+    GoldIcon,
+    Effect,
+    MessengerIcon,
+    ScoringArea,
+    Shields
 }

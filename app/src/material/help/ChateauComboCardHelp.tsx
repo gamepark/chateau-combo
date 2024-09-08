@@ -8,29 +8,35 @@ import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
-import { MaterialHelpProps, Picture, useGame, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
+import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { isMoveItemType } from '@gamepark/rules-api'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
 import isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
 import { FC, ReactElement } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
-import CraftManIcon from '../../images/icons/craftman.png'
-import Faith from '../../images/icons/faith.png'
-import MessengerCastle from '../../images/icons/messenger-castle.png'
-import MessengerVillage from '../../images/icons/messenger-village.png'
-import Military from '../../images/icons/military.png'
-
-
-import NobilityIcon from '../../images/icons/nobility.png'
-import PeasantryIcon from '../../images/icons/peasantry.png'
-import Scholarship from '../../images/icons/scholarship.png'
+import { moveMessengerImages, shieldImages } from './Images'
 
 export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
-  const { item } = props
+  const game = useGame<MaterialGame>()!
+  const { item, itemIndex, closeDialog } = props
+  const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
+  const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
   return (
     <>
       <h2 css={titleCss}>{t(item.id.front !== undefined ? `card.${item.id.front}` : `place.${item.id.back}`)}</h2>
+      {!!discardOneFromRiver && (
+        <p>
+          <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard-one')}</PlayMoveButton>
+        </p>
+      )}
+      {!!discardRiver && (
+        <p>
+          <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { place: discardRiver.location.id })}</PlayMoveButton>
+        </p>
+      )}
       <VisibleCard {...props} />
       <CardLocation {...props} />
     </>
@@ -202,20 +208,6 @@ const mini = css`
   height: 1.05em;
   margin-bottom: -0.17em;
 `
-
-const shieldImages: Record<Shield, string> = {
-  [Shield.Nobility]: NobilityIcon,
-  [Shield.Craftsmanship]: CraftManIcon,
-  [Shield.Peasantry]: PeasantryIcon,
-  [Shield.Faith]: Faith,
-  [Shield.Military]: Military,
-  [Shield.Scholarship]: Scholarship
-}
-
-const moveMessengerImages: Record<Place, string> = {
-  [Place.Village]: MessengerVillage,
-  [Place.Castle]: MessengerCastle
-}
 
 const getEffectDescription = (effect: Effect): ReactElement => {
   switch (effect.type) {
@@ -390,11 +382,6 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     }
   }
 }
-
-const inlineBlocCss = css`
-  display: inline-block;
-  width: auto;
-`
 
 const underlineCss = css`
   text-decoration: underline;

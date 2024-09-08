@@ -4,7 +4,7 @@ import { faRotateRight } from '@fortawesome/free-solid-svg-icons/faRotateRight'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { pointerCursorCss, useAnimation, usePlay, useRules } from '@gamepark/react-game'
+import { pointerCursorCss, useAnimation, useLegalMove, usePlay, useRules } from '@gamepark/react-game'
 import { isMoveItemType, Location } from '@gamepark/rules-api'
 import { FC, useCallback } from 'react'
 
@@ -17,9 +17,10 @@ export const CardRotateButton: FC<{ location: Location }> = ({ location }) => {
     event.preventDefault()
     play(card.rotateItem(!rotation), { local: true })
   }, [rotation])
+  const canRotate = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.rotation)
   const animation = useAnimation((animation) =>
     isMoveItemType(MaterialType.Card)(animation.move) && animation.move.itemIndex === location.parent)
-  if (animation) return null
+  if (animation || !canRotate) return null
   return (
     <>
       <div css={[button]} onClick={flip}>
