@@ -24,6 +24,7 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const { item, itemIndex, closeDialog } = props
   const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
   const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
+  const isFlipped = !!item.location?.rotation
   return (
     <>
       <h2 css={titleCss}>{t(item.id.front !== undefined ? `card.${item.id.front}` : `place.${item.id.back}`)}</h2>
@@ -37,8 +38,13 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
           <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { place: discardRiver.location.id })}</PlayMoveButton>
         </p>
       )}
-      <VisibleCard {...props} />
+      {!isFlipped && <VisibleCard {...props} />}
       <CardLocation {...props} />
+      {isFlipped && (
+        <p>
+          <Trans defaults="card.tableau.face-down" />
+        </p>
+      )}
     </>
   )
 }
@@ -161,7 +167,7 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
   const name = usePlayerName(location?.player)
 
   return (
-    <>
+    <p>
       {location?.type === LocationType.Deck && (
         <Trans defaults="card.deck" values={{
           number: rules.material(MaterialType.Card).location(LocationType.Deck).locationId(location.id).length,
@@ -188,7 +194,7 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
           <strong/>
         </Trans>
       )}
-    </>
+    </p>
   )
 }
 
