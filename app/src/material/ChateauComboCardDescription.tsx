@@ -92,6 +92,15 @@ import Military from '../images/icons/military.png'
 import NobilityIcon from '../images/icons/nobility.png'
 import PeasantryIcon from '../images/icons/peasantry.png'
 import Scholarship from '../images/icons/scholarship.png'
+import Tableau0_0 from '../images/icons/scoring/tableau_0_0.jpg'
+import Tableau0_1 from '../images/icons/scoring/tableau_0_1.jpg'
+import Tableau0_2 from '../images/icons/scoring/tableau_0_2.jpg'
+import Tableau1_0 from '../images/icons/scoring/tableau_1_0.jpg'
+import Tableau1_1 from '../images/icons/scoring/tableau_1_1.jpg'
+import Tableau1_2 from '../images/icons/scoring/tableau_1_2.jpg'
+import Tableau2_0 from '../images/icons/scoring/tableau_2_0.jpg'
+import Tableau2_1 from '../images/icons/scoring/tableau_2_1.jpg'
+import Tableau2_2 from '../images/icons/scoring/tableau_2_2.jpg'
 import Bag from '../images/icons/bag.png'
 import { ChateauComboCardHelp } from './help/ChateauComboCardHelp'
 
@@ -203,6 +212,15 @@ export class ChateauComboCardDescription extends CardDescription {
     images.push(Military)
     images.push(Scholarship)
     images.push(Bag)
+    images.push(Tableau0_0)
+    images.push(Tableau0_1)
+    images.push(Tableau0_2)
+    images.push(Tableau1_0)
+    images.push(Tableau1_1)
+    images.push(Tableau1_2)
+    images.push(Tableau2_0)
+    images.push(Tableau2_1)
+    images.push(Tableau2_2)
     return images
   }
 

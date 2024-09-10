@@ -8,6 +8,7 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
+import { ChateauComboScoringDescription } from './scoring/ChateauComboScoringDescription'
 import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
 import { TutorialAI } from './tutorial/TutorialAI'
@@ -26,6 +27,7 @@ ReactDOM.render(
       materialI18n={materialI18n}
       animations={new MaterialGameAnimations()}
       tutorial={new Tutorial()}
+      scoring={new ChateauComboScoringDescription()}
       ai={TutorialAI}>
       <App/>
     </GameProvider>
