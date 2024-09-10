@@ -5,6 +5,7 @@ import { ChateauComboSetup } from '@gamepark/chateau-combo/ChateauComboSetup'
 import { GameProvider, MaterialGameAnimations, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import { chateauComboAnimations } from './animations/ChateauComboAnimations'
 import App from './App'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
@@ -25,7 +26,7 @@ ReactDOM.render(
       material={Material}
       locators={Locators}
       materialI18n={materialI18n}
-      animations={new MaterialGameAnimations()}
+      animations={chateauComboAnimations}
       tutorial={new Tutorial()}
       scoring={new ChateauComboScoringDescription()}
       ai={TutorialAI}>
