@@ -1,9 +1,12 @@
-import { PileLocator } from '@gamepark/react-game'
+import { LocationDescription, PileLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { cardDescription } from '../material/ChateauComboCardDescription'
+import { DiscardHelp } from './component/DiscardHelp'
 import { gameDeckLocator } from './GameDeckLocator'
 
 export class DiscardLocator extends PileLocator {
+
+  locationDescription = new DiscardDescription(cardDescription)
 
   maxAngle = 10
 
@@ -11,6 +14,10 @@ export class DiscardLocator extends PileLocator {
     const { x, y } = gameDeckLocator.getCoordinates(location)
     return { x: x - cardDescription.width - 1.5, y }
   }
+}
+
+class DiscardDescription extends LocationDescription {
+  help = DiscardHelp
 }
 
 export const discardLocator = new DiscardLocator()

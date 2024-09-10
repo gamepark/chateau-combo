@@ -3,7 +3,7 @@ import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
 import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
-import { isMoveItem, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItem, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 
 import Castle from '../images/cards/castle.jpg'
 import Duchesse from '../images/cards/en/cartesChCombo_ChC_eng-US.jpg'
@@ -103,6 +103,7 @@ import Tableau2_1 from '../images/icons/scoring/tableau_2_1.jpg'
 import Tableau2_2 from '../images/icons/scoring/tableau_2_2.jpg'
 import Bag from '../images/icons/bag.png'
 import { ChateauComboCardHelp } from './help/ChateauComboCardHelp'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 export class ChateauComboCardDescription extends CardDescription {
   width = 6.3
@@ -238,6 +239,11 @@ export class ChateauComboCardDescription extends CardDescription {
       return false
     }
     return super.canDrag(move, context)
+  }
+
+  displayHelp(item: MaterialItem, context: ItemContext) {
+    if (item.location.type === LocationType.Discard) return displayLocationHelp(item.location)
+    return super.displayHelp(item, context)
   }
 }
 
