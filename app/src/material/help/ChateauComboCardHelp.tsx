@@ -70,11 +70,6 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
       }
       {!isFlipped && <VisibleCard {...props} />}
       <CardLocation {...props} />
-      {isFlipped && (
-        <p>
-          <Trans defaults="card.tableau.face-down"/>
-        </p>
-      )}
     </>
   )
 }
@@ -215,15 +210,21 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
         </Trans>
       )}
       {location?.type === LocationType.River && (
-        <Trans defaults="card.river">
-          <strong/>
-        </Trans>
+        location.rotation ?
+          <Trans defaults="card.river.face-down"><strong/></Trans>
+          : <Trans defaults="card.river"><strong/></Trans>
       )}
-      {location?.type === LocationType.PlayerBoard && (
+      {location?.type === LocationType.PlayerBoard && <>
         <Trans defaults={itsMine ? 'card.tableau.you' : 'card.tableau.player'} values={{ player: name }}>
           <strong/>
         </Trans>
-      )}
+        {location.rotation && (
+          <>
+            <br/>
+            <Trans defaults="card.tableau.face-down"/>
+          </>
+        )}
+      </>}
     </p>
   )
 }

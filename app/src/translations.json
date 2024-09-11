@@ -298,6 +298,7 @@
       "help.discard": "Défausse de cartes {place, select, 1{Château} other{Village}}",
       "help.discard.count": "Il y a {number, plural, one{# carte} other{# cartes}} dans cette défausse.",
       "card.river": "Cette carte est dans la rivière. Elle peut être achetée si le pion Messager se trouve en face.\nElle peut aussi être retournée avant d'être placée dans votre tableau, afin de gagner 6 Or et 2 Clés.",
+      "card.river.face-down": "Vous pouvez placer cette carte face cachée dans votre tableau, afin de gagner 6 Or et 2 Clés.",
       "card.tableau.you": "Cette carte est dans votre tableau.",
       "card.tableau.player": "Cette carte est dans le tableau de {player}.",
       "card.tableau.face-down": "Cette carte a été ajouté face cachée dans le tableau. Son propriétaire a gagné 6 Or et 2 Clés ce faisant, mais elle n'aura pas d'effet lors du calcul des scores.",
