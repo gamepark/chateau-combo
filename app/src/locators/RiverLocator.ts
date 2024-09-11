@@ -1,6 +1,6 @@
 import { Place } from '@gamepark/chateau-combo/material/Place'
-import { ListLocator } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { ItemContext, ListLocator } from '@gamepark/react-game'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 
 export class RiverLocator extends ListLocator {
   getCoordinates(location: Location) {
@@ -12,6 +12,12 @@ export class RiverLocator extends ListLocator {
   }
 
   gap = { x: 7 }
+
+  getItemCoordinates(item: MaterialItem, context: ItemContext) {
+    const coordinates = super.getItemCoordinates(item, context)
+    if (item.selected) coordinates.y! -= 1
+    return coordinates
+  }
 }
 
 export const riverLocator = new RiverLocator()

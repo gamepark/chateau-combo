@@ -1,6 +1,8 @@
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
-import { isMoveItem, Location, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItem, isMoveItemType, Location, MaterialMove } from '@gamepark/rules-api'
+import isEqual from 'lodash/isEqual'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 
 export enum Position {
@@ -15,6 +17,16 @@ export const playerPositions = [
 ]
 
 export class PlayerBoardLocator extends Locator {
+
+  getLocations({ rules, player }: MaterialContext) {
+    const selectedCard = rules.material(MaterialType.Card).selected(true)
+    if (!!player && selectedCard.length) {
+      return rules.getLegalMoves(player).filter(isMoveItemType(MaterialType.Card))
+        .filter(move => move.itemIndex === selectedCard.getIndex() && move.location.rotation === selectedCard.getItem()?.location.rotation)
+        .map(move => move.location) as Location[]
+    }
+    return []
+  }
 
   getCoordinates(location: Location, context: MaterialContext) {
     const { xMax, xMin, yMax, yMin } = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
@@ -51,6 +63,13 @@ export class PlayerBoardLocator extends Locator {
 export class PlayerBoardDescription extends DropAreaDescription {
   constructor() {
     super(cardDescription)
+  }
+
+  canShortClick(move: MaterialMove, location: Location, {rules}: MaterialContext) {
+    return isMoveItemType(MaterialType.Card)(move)
+      && isEqual(move.location, location)
+      && rules.material(MaterialType.Card).getItem(move.itemIndex).selected === true
+
   }
 
   getBestDropMove(moves: MaterialMove[], _location: Location, context: ItemContext): MaterialMove {

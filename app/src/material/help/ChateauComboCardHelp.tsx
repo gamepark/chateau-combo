@@ -9,22 +9,42 @@ import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
-import { MaterialHelpProps, Picture, PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import {
+  MaterialHelpProps,
+  Picture,
+  PlayMoveButton,
+  useGame,
+  useLegalMove,
+  useLegalMoves,
+  usePlayerId,
+  usePlayerName,
+  useRules,
+  useUndo
+} from '@gamepark/react-game'
 import { isMoveItemType } from '@gamepark/rules-api'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
 import isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
-import { FC, ReactElement } from 'react'
+import { FC, ReactElement, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { moveMessengerImages, shieldImages } from './Images'
 
 export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
-  const game = useGame<MaterialGame>()!
+  const rules = useRules<ChateauComboRules>()!
+  const game = rules.game
   const { item, itemIndex, closeDialog } = props
   const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
   const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
   const isFlipped = !!item.location?.rotation
+  const buy = useLegalMoves(move => !isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.PlayerBoard && !move.location.rotation)
+  const takeFaceDown = useLegalMoves(move => isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.PlayerBoard && move.location.rotation)
+  const [undo] = useUndo()
+  const undoSelect = useCallback(() => {
+    const selectedCard = rules.material(MaterialType.Card).selected(true)
+    if (selectedCard.length) undo(move => isEqual(move, selectedCard.selectItem()))
+    closeDialog()
+  }, [undo])
   return (
     <>
       <h2 css={titleCss}>{t(item.id.front !== undefined ? `card.${item.id.front}` : `place.${item.id.back}`)}</h2>
@@ -38,11 +58,21 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
           <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { place: discardRiver.location.id })}</PlayMoveButton>
         </p>
       )}
+      {buy.length === 1 &&
+        <p><PlayMoveButton move={buy[0]} onPlay={closeDialog}>{t('move.buy')}</PlayMoveButton></p>
+      }
+      {takeFaceDown.length === 1 &&
+        <p><PlayMoveButton move={takeFaceDown[0]} onPlay={closeDialog}>{t('move.place-down')}</PlayMoveButton></p>
+      }
+      {(buy.length > 1 || takeFaceDown.length > 1) &&
+        <p><PlayMoveButton move={rules.material(MaterialType.Card).index(itemIndex).selectItem()}
+                           onPlay={undoSelect} local>{t('move.select')}</PlayMoveButton></p>
+      }
       {!isFlipped && <VisibleCard {...props} />}
       <CardLocation {...props} />
       {isFlipped && (
         <p>
-          <Trans defaults="card.tableau.face-down" />
+          <Trans defaults="card.tableau.face-down"/>
         </p>
       )}
     </>
@@ -295,9 +325,9 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     case ConditionType.PerShieldsSet: {
       return (
         <Trans defaults={`per.shield.set.${condition.shields.length}`}>
-            {condition.shields.map((shield) => (
-              <Picture key={shield} css={mini} src={shieldImages[shield]}/>
-            ))}
+          {condition.shields.map((shield) => (
+            <Picture key={shield} css={mini} src={shieldImages[shield]}/>
+          ))}
         </Trans>
       )
     }
@@ -370,8 +400,8 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     case ConditionType.IfPosition: {
       if (isBorder(condition.position)) return <Trans defaults="if.position.border"/>
       if (isCorner(condition.position)) return <Trans defaults="if.position.corner"/>
-      if (isColumn(condition.position)) return <Trans defaults="if.position.column" values={{column: condition.position[0].indexOf(X) + 1}}/>
-      return <Trans defaults="if.position.line" values={{line: condition.position.findIndex(v => v[0]) + 1}}/>
+      if (isColumn(condition.position)) return <Trans defaults="if.position.column" values={{ column: condition.position[0].indexOf(X) + 1 }}/>
+      return <Trans defaults="if.position.line" values={{ line: condition.position.findIndex(v => v[0]) + 1 }}/>
     }
     case ConditionType.BestNeighbor: {
       if (condition.condition.type === ConditionType.PerShield) {
@@ -395,7 +425,7 @@ const underlineCss = css`
 `
 
 const listCss = css`
-  margin-top: 0em !important;
+  margin-top: 0 !important;
 
   > li {
     margin-bottom: 0.5em;
