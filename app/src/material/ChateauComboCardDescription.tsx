@@ -2,6 +2,7 @@ import { Card } from '@gamepark/chateau-combo/material/Card'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
+import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 
@@ -85,6 +86,7 @@ import Beekeeper from '../images/cards/en/cartesChCombo_ChC_eng-US78.jpg'
 import HerMajestytheQueen from '../images/cards/en/cartesChCombo_ChC_eng-US8.jpg'
 import Baron from '../images/cards/en/cartesChCombo_ChC_eng-US9.jpg'
 import Village from '../images/cards/village.jpg'
+import Bag from '../images/icons/bag.png'
 import CraftManIcon from '../images/icons/craftman.png'
 import Faith from '../images/icons/faith.png'
 import Military from '../images/icons/military.png'
@@ -101,7 +103,6 @@ import Tableau1_2 from '../images/icons/scoring/tableau_1_2.jpg'
 import Tableau2_0 from '../images/icons/scoring/tableau_2_0.jpg'
 import Tableau2_1 from '../images/icons/scoring/tableau_2_1.jpg'
 import Tableau2_2 from '../images/icons/scoring/tableau_2_2.jpg'
-import Bag from '../images/icons/bag.png'
 import { ChateauComboCardHelp } from './help/ChateauComboCardHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
@@ -244,6 +245,16 @@ export class ChateauComboCardDescription extends CardDescription {
   displayHelp(item: MaterialItem, context: ItemContext) {
     if (item.location.type === LocationType.Discard) return displayLocationHelp(item.location)
     return super.displayHelp(item, context)
+  }
+
+  getLocations({ location }: MaterialItem, { rules, index }: ItemContext) {
+    if (!rules.isOver() || location.type !== LocationType.PlayerBoard || location.rotation) return []
+    const tableau = new Tableau(rules.game, location.player!)
+    return [{
+      type: LocationType.CardVictoryPoints,
+      parent: index,
+      x: tableau.getCardScore(location.x! - tableau.xMin, location.y! - tableau.yMin)
+    }]
   }
 }
 

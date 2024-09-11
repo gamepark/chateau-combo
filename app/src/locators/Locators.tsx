@@ -2,6 +2,7 @@ import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Locator, PileLocator } from '@gamepark/react-game'
 import { cardRotateButtonLocator } from './CardRotateButtonLocator'
+import { cardVictoryPointsLocator } from './CardVictoryPointsLocator'
 import { discardLocator } from './DiscardLocator'
 import { effectLocator } from './EffectLocator'
 import { endOfRiverLocator } from './EndOfRiverLocator'
@@ -33,6 +34,7 @@ export const Locators: Partial<Record<LocationType, Locator>> = {
   [LocationType.Shields]: shieldsLocator,
   [LocationType.Effect]: effectLocator,
   [LocationType.MessengerIcon]: messengerIconDescription,
-  [LocationType.ScoringArea]: scoringLocator
+  [LocationType.ScoringArea]: scoringLocator,
+  [LocationType.CardVictoryPoints]: cardVictoryPointsLocator
 }
 
