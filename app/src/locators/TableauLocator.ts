@@ -57,6 +57,8 @@ class TableauLocator extends Locator {
     }
   }
 
+  getHoverTransform = () => ['translateZ(10em)', 'scale(2)']
+
   locationDescription = new TableauSpotDescription()
 }
 

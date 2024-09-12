@@ -18,6 +18,8 @@ class RiverLocator extends ListLocator {
     if (item.selected) coordinates.y! -= 1
     return coordinates
   }
+
+  getHoverTransform = () => ['translateZ(10em)', 'scale(2)']
 }
 
 export const riverLocator = new RiverLocator()
