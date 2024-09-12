@@ -50,7 +50,7 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
       <h2 css={titleCss}>{t(item.id.front !== undefined ? `card.${item.id.front}` : `place.${item.id.back}`)}</h2>
       {!!discardOneFromRiver && (
         <p>
-          <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard-one')}</PlayMoveButton>
+          <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard')}</PlayMoveButton>
         </p>
       )}
       {!!discardRiver && (
