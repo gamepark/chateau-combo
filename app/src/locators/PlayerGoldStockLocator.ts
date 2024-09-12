@@ -20,9 +20,9 @@ class PlayerGoldStockLocator extends PileLocator {
       case Position.TopRight:
         return { x: 58, y: -40 }
       case Position.BottomLeft:
-        return players === 2 ? { x: -25, y: -11 } : { x: -48, y: -9 }
+        return players === 2 ? { x: -25, y: -11 } : players === 3 ? { x: -30, y: -9 } : { x: -48, y: -9 }
       case Position.BottomRight:
-        return players === 2 ? { x: 38, y: -11 } : { x: 58, y: -9 }
+        return players === 2 ? { x: 38, y: -11 } : players === 3 ? { x: 40, y: -9 } : { x: 58, y: -9 }
     }
   }
 

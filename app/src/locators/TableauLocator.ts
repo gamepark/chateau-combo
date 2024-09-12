@@ -51,9 +51,9 @@ class TableauLocator extends Locator {
       case Position.TopRight:
         return { x: 33, y: -40 }
       case Position.BottomLeft:
-        return players === 2 ? { x: -30, y: 7 } : { x: -33, y: -9 }
+        return players === 2 ? { x: -30, y: 7 } : players === 3 ? { x: -35, y: -28 } : { x: -33, y: -9 }
       case Position.BottomRight:
-        return players === 2 ? { x: 33, y: 7 } : { x: 33, y: -9 }
+        return players === 2 ? { x: 33, y: 7 } : players === 3 ? { x: 35, y: -28 } : { x: 33, y: -9 }
     }
   }
 
@@ -65,7 +65,7 @@ export class TableauSpotDescription extends DropAreaDescription {
     super(cardDescription)
   }
 
-  canShortClick(move: MaterialMove, location: Location, {rules}: MaterialContext) {
+  canShortClick(move: MaterialMove, location: Location, { rules }: MaterialContext) {
     return isMoveItemType(MaterialType.Card)(move)
       && isEqual(move.location, location)
       && rules.material(MaterialType.Card).getItem(move.itemIndex).selected === true
