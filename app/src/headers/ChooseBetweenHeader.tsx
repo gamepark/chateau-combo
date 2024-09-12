@@ -56,13 +56,7 @@ const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }
       const gainKeyRule = new ImmediateGainKeyEffect(game)
       return (
         <PlayMoveButton move={move}>
-          <div css={flexRowCss}>
-            <Trans defaults="effect.gain.me" values={{ count: gainKeyRule.getMyGain(effect) }}
-                   components={{
-                     item: <Picture css={mini} src={keyDescription.images[1]}/>
-                   }}
-            />
-          </div>
+          <div css={flexRowCss}><Picture css={mini} src={keyDescription.images[1]}/> x {gainKeyRule.getMyGain(effect)}</div>
         </PlayMoveButton>
       )
     }
@@ -70,13 +64,7 @@ const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }
       const gainCoinRule = new ImmediateGainCoinEffect(game)
       return (
         <PlayMoveButton move={move}>
-          <div css={flexRowCss}>
-            <Trans defaults="effect.gain.me" values={{ count: gainCoinRule.getMyGain(effect) }}
-                   components={{
-                     item: <Picture css={mini} src={goldCoinDescription.images[1]}/>
-                   }}
-            />
-          </div>
+          <div css={flexRowCss}><Picture css={mini} src={goldCoinDescription.images[1]}/> x {gainCoinRule.getMyGain(effect)}</div>
         </PlayMoveButton>
       )
     }
@@ -97,29 +85,6 @@ const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }
     default:
       return <></>
   }
-}
-
-const MyChooseBetweenHeader = () => {
-  const { t } = useTranslation()
-  const rules = useRules<ChateauComboRules>()!
-  const player = usePlayerId()
-  const legalMoves = rules.getLegalMoves(player)
-
-
-  return <>
-    <span>{t('header.you.choose.between')}</span>
-    {legalMoves.map((move, index) =>
-      move.type === CustomMoveType.Choice && <PlayMoveButton key={index} move={move}> {t('coucou')} </PlayMoveButton>
-    )}
-  </>
-
-}
-
-const PlayerChooseBetweenHeader = ({ activePlayer }: { activePlayer: number }) => {
-  const { t } = useTranslation()
-  return <>
-    <span>{t('header.player.choose.between', { activePlayer })}</span>
-  </>
 }
 
 const flexRowCss = css`
