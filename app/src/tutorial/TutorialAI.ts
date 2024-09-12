@@ -12,9 +12,9 @@ export const TutorialAI: GameAI = (game: MaterialGame, player: number) => {
     case RuleId.SpendKey:
       // Do not spend keys
       legalMoves = legalMoves.filter(move => !(isDeleteItem(move) && move.itemType === MaterialType.Key))
-      if (legalMoves.some(move => isMoveItem(move) && move.location.type === LocationType.PlayerBoard && !move.location.rotation)) {
+      if (legalMoves.some(move => isMoveItem(move) && move.location.type === LocationType.Tableau && !move.location.rotation)) {
         // Do not pick face down card if I can take one face up
-        legalMoves = legalMoves.filter(move => !(isMoveItem(move) && move.location.type === LocationType.PlayerBoard && move.location.rotation))
+        legalMoves = legalMoves.filter(move => !(isMoveItem(move) && move.location.type === LocationType.Tableau && move.location.rotation))
       }
       break
   }

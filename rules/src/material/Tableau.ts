@@ -20,7 +20,7 @@ export class Tableau extends MaterialRulesPart {
 
   constructor(game: MaterialGame, private player: PlayerId) {
     super(game)
-    const cards = this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(player)
+    const cards = this.material(MaterialType.Card).location(LocationType.Tableau).player(player)
     this.xMin = cards.minBy(item => item.location.x!).getItem()?.location.x ?? 0
     this.yMin = cards.minBy(item => item.location.y!).getItem()?.location.y ?? 0
     for (let x = 0; x < 3; x++) {
@@ -85,9 +85,9 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerGoldInAllPurses:
         return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).player(this.player))
       case ConditionType.PerFullPosition:
-        return this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player).length
+        return this.material(MaterialType.Card).location(LocationType.Tableau).player(this.player).length
       case ConditionType.PerEmptyPosition:
-        return 9 - this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player).length
+        return 9 - this.material(MaterialType.Card).location(LocationType.Tableau).player(this.player).length
       case ConditionType.IfPosition:
         return condition.position[y!][x!] ? 1 : 0
       case ConditionType.BestNeighbor:
@@ -135,14 +135,14 @@ export class Tableau extends MaterialRulesPart {
   }
 
   getCardIndex(x: number, y: number) {
-    return this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(this.player)
+    return this.material(MaterialType.Card).location(LocationType.Tableau).player(this.player)
       .location(l => l.x === x! + this.xMin && l.y === y! + this.yMin).getIndex()
   }
 
   getDiscount(place: Place) {
     let tableau = this
       .material(MaterialType.Card)
-      .location(LocationType.PlayerBoard)
+      .location(LocationType.Tableau)
       .player(this.player)
       .getItems<CardId>()
     return sumBy(tableau, card => card.id?.front ? this.getCardDiscount(card.id.front, place) : 0)

@@ -11,7 +11,7 @@ import { goldIconLocator } from './GoldIconLocator'
 import { goldStockLocator } from './GoldStockLocator'
 import { keyStockLocator } from './KeyStockLocator'
 import { messengerIconDescription } from './MessengerIconLocator'
-import { playerBoardLocator } from './PlayerBoardLocator'
+import { tableauLocator } from './TableauLocator'
 import { playerGoldStockLocator } from './PlayerGoldStockLocator'
 import { playerKeyStockLocator } from './PlayerKeyStockLocator'
 import { riverLocator } from './RiverLocator'
@@ -22,7 +22,7 @@ export const Locators: Partial<Record<LocationType, Locator>> = {
   [LocationType.EndOfRiver]: endOfRiverLocator,
   [LocationType.River]: riverLocator,
   [LocationType.Deck]: gameDeckLocator,
-  [LocationType.PlayerBoard]: playerBoardLocator,
+  [LocationType.Tableau]: tableauLocator,
   [LocationType.PlayerGoldStock]: playerGoldStockLocator,
   [LocationType.GoldStock]: goldStockLocator,
   [LocationType.PlayerKeyStock]: playerKeyStockLocator,

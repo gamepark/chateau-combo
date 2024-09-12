@@ -37,8 +37,8 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
   const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
   const isFlipped = !!item.location?.rotation
-  const buy = useLegalMoves(move => !isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.PlayerBoard && !move.location.rotation)
-  const takeFaceDown = useLegalMoves(move => isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.PlayerBoard && move.location.rotation)
+  const buy = useLegalMoves(move => !isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Tableau && !move.location.rotation)
+  const takeFaceDown = useLegalMoves(move => isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Tableau && move.location.rotation)
   const [undo] = useUndo()
   const undoSelect = useCallback(() => {
     const selectedCard = rules.material(MaterialType.Card).selected(true)
@@ -214,7 +214,7 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
           <Trans defaults="card.river.face-down"><strong/></Trans>
           : <Trans defaults="card.river"><strong/></Trans>
       )}
-      {location?.type === LocationType.PlayerBoard && <>
+      {location?.type === LocationType.Tableau && <>
         <Trans defaults={itsMine ? 'card.tableau.you' : 'card.tableau.player'} values={{ player: name }}>
           <strong/>
         </Trans>

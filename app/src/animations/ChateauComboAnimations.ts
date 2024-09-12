@@ -27,7 +27,7 @@ chateauComboAnimations
 
 chateauComboAnimations
   .when()
-  .move((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.PlayerBoard)
+  .move((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tableau)
   .mine()
   .duration(0.5)
 

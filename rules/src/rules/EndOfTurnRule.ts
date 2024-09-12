@@ -12,7 +12,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
 
   get nextRuleMove() {
     const playersWithRemainingSpots = this.game.players.filter(player =>
-      this.material(MaterialType.Card).location(LocationType.PlayerBoard).player(player).getItems().length !== 9
+      this.material(MaterialType.Card).location(LocationType.Tableau).player(player).getItems().length !== 9
     )
 
     if (playersWithRemainingSpots.length === 0) {

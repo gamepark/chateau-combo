@@ -6,7 +6,7 @@ import { keysMoney } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tableau } from '../material/Tableau'
-import { PlayerBoardHelper } from './helpers/PlayerBoardHelper'
+import { TableauHelper } from './helpers/TableauHelper'
 import { ImmediateEffectRule } from './ImmediateEffectRule'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -15,7 +15,7 @@ export class BuyCardRule extends PlayerTurnRule {
 
   getPlayerMoves() {
     const gold = this.gold
-    const availableSpaces: Location[] = new PlayerBoardHelper(this.game, this.player).availableSpaces
+    const availableSpaces: Location[] = new TableauHelper(this.game, this.player).availableSpaces
     const tableau = new Tableau(this.game, this.player)
     const moves: MaterialMove[] = []
 
@@ -53,7 +53,7 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.PlayerBoard) return []
+    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Tableau) return []
 
     const rotatedRiveItems = this.material(MaterialType.Card).location(LocationType.River).rotation(true).getItems()
     for (const item of rotatedRiveItems) {

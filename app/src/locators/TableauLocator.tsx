@@ -1,5 +1,5 @@
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
+import { TableauHelper } from '@gamepark/chateau-combo/rules/helpers/TableauHelper'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, isMoveItemType, Location, MaterialMove } from '@gamepark/rules-api'
 import isEqual from 'lodash/isEqual'
@@ -16,7 +16,7 @@ export const playerPositions = [
   [Position.BottomLeft, Position.TopLeft, Position.TopCenter, Position.TopRight, Position.BottomRight] // 4 players
 ]
 
-export class PlayerBoardLocator extends Locator {
+export class TableauLocator extends Locator {
 
   getLocations({ rules, player }: MaterialContext) {
     const selectedCard = rules.material(MaterialType.Card).selected(true)
@@ -29,7 +29,7 @@ export class PlayerBoardLocator extends Locator {
   }
 
   getCoordinates(location: Location, context: MaterialContext) {
-    const { xMax, xMin, yMax, yMin } = new PlayerBoardHelper(context.rules.game, location.player!).boundaries
+    const { xMax, xMin, yMax, yMin } = new TableauHelper(context.rules.game, location.player!).boundaries
     const { x, y } = this.getBaseCoordinates(location, context)
     const deltaX = (xMin + xMax) / 2
     const deltaY = (yMin + yMax) / 2
@@ -57,10 +57,10 @@ export class PlayerBoardLocator extends Locator {
     }
   }
 
-  locationDescription = new PlayerBoardDescription()
+  locationDescription = new TableauSpotDescription()
 }
 
-export class PlayerBoardDescription extends DropAreaDescription {
+export class TableauSpotDescription extends DropAreaDescription {
   constructor() {
     super(cardDescription)
   }
@@ -80,4 +80,4 @@ export class PlayerBoardDescription extends DropAreaDescription {
   }
 }
 
-export const playerBoardLocator = new PlayerBoardLocator()
+export const tableauLocator = new TableauLocator()

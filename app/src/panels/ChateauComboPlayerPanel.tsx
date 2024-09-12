@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { PlayerBoardHelper } from '@gamepark/chateau-combo/rules/helpers/PlayerBoardHelper'
+import { TableauHelper } from '@gamepark/chateau-combo/rules/helpers/TableauHelper'
 import { Player } from '@gamepark/react-client'
 import { CounterProps, StyledPlayerPanel, useRules } from '@gamepark/react-game'
 import { FC, HTMLAttributes, useMemo } from 'react'
@@ -15,7 +15,7 @@ type ChateauComboPlayerPanelProps = {
 export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props) => {
   const { player, ...rest } = props
   const rules = useRules<ChateauComboRules>()!
-  const state = useMemo(() => new PlayerBoardHelper(rules.game, player.id), [rules.game, player.id])
+  const state = useMemo(() => new TableauHelper(rules.game, player.id), [rules.game, player.id])
 
   const counters: CounterProps[] = [{
     image: rules.isOver() ? pointImage : keyImage,

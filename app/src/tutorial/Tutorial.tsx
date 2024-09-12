@@ -134,7 +134,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           this.material(game, MaterialType.Card).id((id: { front: Card }) => id.front === Card.Stonemason)
         ],
         locations: [
-          this.location(LocationType.PlayerBoard).player(me).x(0).y(0).location
+          this.location(LocationType.Tableau).player(me).x(0).y(0).location
         ],
         margin: {
           top: 1,
@@ -423,10 +423,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           this.material(game, MaterialType.Card).id((id: { front: Card }) => id.front === Card.Potter)
         ],
         locations: [
-          this.location(LocationType.PlayerBoard).player(me).x(-1).y(0).location,
-          this.location(LocationType.PlayerBoard).player(me).x(1).y(0).location,
-          this.location(LocationType.PlayerBoard).player(me).x(0).y(-1).location,
-          this.location(LocationType.PlayerBoard).player(me).x(0).y(1).location
+          this.location(LocationType.Tableau).player(me).x(-1).y(0).location,
+          this.location(LocationType.Tableau).player(me).x(1).y(0).location,
+          this.location(LocationType.Tableau).player(me).x(0).y(-1).location,
+          this.location(LocationType.Tableau).player(me).x(0).y(1).location
         ],
         margin: {
           top: 5,

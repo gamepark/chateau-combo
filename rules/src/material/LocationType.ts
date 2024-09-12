@@ -7,7 +7,7 @@ export enum LocationType {
     PlayerGoldStock,
     KeyStock,
     PlayerKeyStock,
-    PlayerBoard,
+    Tableau,
     OnCard,
     CardRotate,
     GoldIcon,

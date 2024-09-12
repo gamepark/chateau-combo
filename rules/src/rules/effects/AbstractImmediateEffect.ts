@@ -8,7 +8,7 @@ export abstract class AbstractImmediateEffect<T> extends PlayerTurnRule {
   get panorama() {
     return this
       .material(MaterialType.Card)
-      .location(LocationType.PlayerBoard)
+      .location(LocationType.Tableau)
       .player(this.player)
   }
 

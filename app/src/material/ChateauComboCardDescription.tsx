@@ -231,11 +231,11 @@ export class ChateauComboCardDescription extends CardDescription {
   }
 
   isFlippedInDialog(item: Partial<MaterialItem>, context: MaterialContext): boolean {
-    return (item.location?.rotation && item.location.type === LocationType.PlayerBoard) || super.isFlippedInDialog(item, context)
+    return (item.location?.rotation && item.location.type === LocationType.Tableau) || super.isFlippedInDialog(item, context)
   }
 
   canDrag(move: MaterialMove, context: ItemContext): boolean {
-    const isFaceDown = isMoveItem(move) && move.itemType === MaterialType.Card && move.location.type === LocationType.PlayerBoard && move.location.rotation
+    const isFaceDown = isMoveItem(move) && move.itemType === MaterialType.Card && move.location.type === LocationType.Tableau && move.location.rotation
     if (isFaceDown && !context.rules.material(MaterialType.Card).getItem(move.itemIndex).location.rotation) {
       return false
     }
@@ -248,7 +248,7 @@ export class ChateauComboCardDescription extends CardDescription {
   }
 
   getLocations({ location }: MaterialItem, { rules, index }: ItemContext) {
-    if (!rules.isOver() || location.type !== LocationType.PlayerBoard || location.rotation) return []
+    if (!rules.isOver() || location.type !== LocationType.Tableau || location.rotation) return []
     const tableau = new Tableau(rules.game, location.player!)
     return [{
       type: LocationType.CardVictoryPoints,

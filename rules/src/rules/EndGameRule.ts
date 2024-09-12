@@ -47,7 +47,7 @@ export class EndGameRule extends MaterialRulesPart {
   getPanorama(player: PlayerId) {
     return this
       .material(MaterialType.Card)
-      .location(LocationType.PlayerBoard)
+      .location(LocationType.Tableau)
       .player(player)
   }
 
