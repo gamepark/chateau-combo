@@ -1,11 +1,10 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
-import { ComponentSize, TokenDescription } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
+import { ComponentSize, MoneyDescription } from '@gamepark/react-game'
 import Key1 from '../images/tokens/Key1.png'
 import Key3 from '../images/tokens/Key3.png'
 import { KeyHelp } from './help/KeyHelp'
 
-export class KeyDescription extends TokenDescription {
+export class KeyDescription extends MoneyDescription {
   borderRadius = 0.5
 
   images = {
@@ -23,10 +22,6 @@ export class KeyDescription extends TokenDescription {
     { id: 1, quantity: 10, location: this.stockLocation },
     { id: 3, quantity: 5, location: this.stockLocation }
   ]
-
-  protected getFrontId(itemId: number): number {
-    return itemId ?? 1
-  }
 
   help = KeyHelp
 }
