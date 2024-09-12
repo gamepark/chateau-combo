@@ -1,4 +1,4 @@
-import { LocationDescription, PileLocator } from '@gamepark/react-game'
+import { DropAreaDescription, PileLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 import { DiscardHelp } from './component/DiscardHelp'
@@ -16,7 +16,7 @@ class DiscardLocator extends PileLocator {
   }
 }
 
-class DiscardDescription extends LocationDescription {
+class DiscardDescription extends DropAreaDescription {
   help = DiscardHelp
 }
 
