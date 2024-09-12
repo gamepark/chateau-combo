@@ -2,7 +2,7 @@ import { Place } from '@gamepark/chateau-combo/material/Place'
 import { ItemContext, ListLocator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 
-export class RiverLocator extends ListLocator {
+class RiverLocator extends ListLocator {
   getCoordinates(location: Location) {
     return { y: this.getRiverY(location.id) }
   }

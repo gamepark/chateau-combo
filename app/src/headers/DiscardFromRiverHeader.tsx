@@ -1,11 +1,9 @@
 /** @jsxImportSource @emotion/react */
-
-import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
 import { DiscardFromRiverRule } from '@gamepark/chateau-combo/rules/DiscardFromRiverRule'
-import { useGame, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { useGame, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
 import { useMemo } from 'react'
-import { Trans, useTranslation } from 'react-i18next'
+import { Trans } from 'react-i18next'
 
 export const DiscardFromRiverHeader = () => {
   const game = useGame<MaterialGame>()!

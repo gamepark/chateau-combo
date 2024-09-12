@@ -4,7 +4,7 @@ import { LocationDescription, Locator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import VictoryPoints from '../images/icons/VictoryPoints.png'
 
-export class CardVictoryPointsLocator extends Locator {
+class CardVictoryPointsLocator extends Locator {
   locationDescription = new CardVictoryPointsLocatorDescription()
   parentItemType = MaterialType.Card
   positionOnParent = { x: 90, y: 50 }

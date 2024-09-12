@@ -3,7 +3,7 @@ import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 
-export class ShieldsLocator extends Locator {
+class ShieldsLocator extends Locator {
   locationDescription = new ShieldsDescription()
   parentItemType = MaterialType.Card
 

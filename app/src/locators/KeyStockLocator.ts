@@ -1,9 +1,8 @@
 import { PileLocator } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 
-
-export class GoldStockLocator extends PileLocator {
-  coordinates = { x: 8, y: 1 }
+class KeyStockLocator extends PileLocator {
+  coordinates = { x: -3, y: 1 }
   radius = 3
 
   getPileId(item: MaterialItem) {
@@ -11,4 +10,4 @@ export class GoldStockLocator extends PileLocator {
   }
 }
 
-export const goldStockLocator = new GoldStockLocator()
+export const keyStockLocator = new KeyStockLocator()

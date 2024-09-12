@@ -8,11 +8,8 @@ import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { PlayerId } from '@gamepark/chateau-combo/PlayerId'
 import { ScoringDescription } from '@gamepark/react-client'
 import { Picture } from '@gamepark/react-game'
-import { keyBy, orderBy } from 'lodash'
 import React from 'react'
 import { Trans } from 'react-i18next'
-import Key from '../images/tokens/Key1.png'
-import Gold from '../images/tokens/Gold1.png'
 import Tableau0_0 from '../images/icons/scoring/tableau_0_0.jpg'
 import Tableau0_1 from '../images/icons/scoring/tableau_0_1.jpg'
 import Tableau0_2 from '../images/icons/scoring/tableau_0_2.jpg'
@@ -22,6 +19,8 @@ import Tableau1_2 from '../images/icons/scoring/tableau_1_2.jpg'
 import Tableau2_0 from '../images/icons/scoring/tableau_2_0.jpg'
 import Tableau2_1 from '../images/icons/scoring/tableau_2_1.jpg'
 import Tableau2_2 from '../images/icons/scoring/tableau_2_2.jpg'
+import Gold from '../images/tokens/Gold1.png'
+import Key from '../images/tokens/Key1.png'
 
 enum ScoringKeys {
   Tableau0_0 = 1,
@@ -39,7 +38,7 @@ enum ScoringKeys {
 }
 
 export class ChateauComboScoringDescription implements ScoringDescription {
-  getScoringKeys(rules: ChateauComboRules) {
+  getScoringKeys() {
 
     return [
       ScoringKeys.Tableau0_0,
@@ -137,8 +136,6 @@ export class ChateauComboScoringDescription implements ScoringDescription {
 
   getScoringPlayerData(key: ScoringKeys, player: PlayerId, rules: ChateauComboRules) {
     const tableau = new Tableau(rules.game, player)
-    const minX = tableau.xMin
-    const minY = tableau.yMin
     switch (key) {
       case ScoringKeys.Tableau0_0:
         return tableau.getCardScore(0, 0)

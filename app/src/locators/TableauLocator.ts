@@ -16,7 +16,7 @@ export const playerPositions = [
   [Position.BottomLeft, Position.TopLeft, Position.TopCenter, Position.TopRight, Position.BottomRight] // 4 players
 ]
 
-export class TableauLocator extends Locator {
+class TableauLocator extends Locator {
 
   getLocations({ rules, player }: MaterialContext) {
     const selectedCard = rules.material(MaterialType.Card).selected(true)

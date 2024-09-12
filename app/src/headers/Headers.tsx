@@ -13,7 +13,7 @@ import { SpendKeyHeader } from './SpendKeyHeader'
 export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.SpendKey]: SpendKeyHeader,
   [RuleId.KeyEffect]: KeyEffectHeader,
-  [RuleId.BuyCard]: BuyCardHeader, // TODO header plus spécifique
+  [RuleId.BuyCard]: BuyCardHeader,
   [RuleId.DiscardFromRiver]: DiscardFromRiverHeader,
   [RuleId.ChooseBetween]: ChooseBetweenHeader,
   [RuleId.MoveMessenger]: MoveMessengerHeader,

@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-
 import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
 import { EffectType } from "@gamepark/chateau-combo/material/Effect"
 import { MaterialType } from "@gamepark/chateau-combo/material/MaterialType"
@@ -7,7 +6,7 @@ import { Memory } from "@gamepark/chateau-combo/rules/Memory"
 import { usePlayerId, useRules } from "@gamepark/react-game"
 import { useTranslation } from "react-i18next"
 
-export const ImmediateEffectHeader = () => {
+const ImmediateEffectHeader = () => {
   const rules = useRules<ChateauComboRules>()!
   const player = usePlayerId()
   const activePlayer = rules.getActivePlayer()!

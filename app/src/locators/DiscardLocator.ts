@@ -4,7 +4,7 @@ import { cardDescription } from '../material/ChateauComboCardDescription'
 import { DiscardHelp } from './component/DiscardHelp'
 import { gameDeckLocator } from './GameDeckLocator'
 
-export class DiscardLocator extends PileLocator {
+class DiscardLocator extends PileLocator {
 
   locationDescription = new DiscardDescription(cardDescription)
 

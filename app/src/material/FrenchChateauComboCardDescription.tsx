@@ -1,14 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { Card } from '@gamepark/chateau-combo/material/Card'
-
-import Duchesse from '../images/cards/fr/cartesChCombo_ChC.jpg'
+import Duchess from '../images/cards/fr/cartesChCombo_ChC.jpg'
 import Steward from '../images/cards/fr/cartesChCombo_ChC10.jpg'
 import MotherSuperior from '../images/cards/fr/cartesChCombo_ChC11.jpg'
 import Scribe from '../images/cards/fr/cartesChCombo_ChC12.jpg'
 import Gravedigger from '../images/cards/fr/cartesChCombo_ChC13.jpg'
 import Templar from '../images/cards/fr/cartesChCombo_ChC14.jpg'
 import Cardinal from '../images/cards/fr/cartesChCombo_ChC15.jpg'
-import Chapelain from '../images/cards/fr/cartesChCombo_ChC16.jpg'
+import Chaplain from '../images/cards/fr/cartesChCombo_ChC16.jpg'
 import HisHoliness from '../images/cards/fr/cartesChCombo_ChC17.jpg'
 import Nun from '../images/cards/fr/cartesChCombo_ChC18.jpg'
 import Devout from '../images/cards/fr/cartesChCombo_ChC19.jpg'
@@ -35,7 +34,6 @@ import Chatelaine from '../images/cards/fr/cartesChCombo_ChC37.jpg'
 import Pawnbroker from '../images/cards/fr/cartesChCombo_ChC38.jpg'
 import Banker from '../images/cards/fr/cartesChCombo_ChC39.jpg'
 import Princess from '../images/cards/fr/cartesChCombo_ChC4.jpg'
-//Vilage
 import MiraculouslyCured from '../images/cards/fr/cartesChCombo_ChC40.jpg'
 import Vicar from '../images/cards/fr/cartesChCombo_ChC41.jpg'
 import Spy from '../images/cards/fr/cartesChCombo_ChC42.jpg'
@@ -47,7 +45,7 @@ import Bombardier from '../images/cards/fr/cartesChCombo_ChC47.jpg'
 import Militiaman from '../images/cards/fr/cartesChCombo_ChC48.jpg'
 import Barbarian from '../images/cards/fr/cartesChCombo_ChC49.jpg'
 import Chancellor from '../images/cards/fr/cartesChCombo_ChC5.jpg'
-import Executionner from '../images/cards/fr/cartesChCombo_ChC50.jpg'
+import Executioner from '../images/cards/fr/cartesChCombo_ChC50.jpg'
 import Mercenary from '../images/cards/fr/cartesChCombo_ChC51.jpg'
 import MasterAtArms from '../images/cards/fr/cartesChCombo_ChC52.jpg'
 import Blacksmith from '../images/cards/fr/cartesChCombo_ChC53.jpg'
@@ -68,28 +66,25 @@ import Witch from '../images/cards/fr/cartesChCombo_ChC66.jpg'
 import Beggar from '../images/cards/fr/cartesChCombo_ChC67.jpg'
 import Monk from '../images/cards/fr/cartesChCombo_ChC68.jpg'
 import Shepherd from '../images/cards/fr/cartesChCombo_ChC69.jpg'
-import Queenmother from '../images/cards/fr/cartesChCombo_ChC7.jpg'
+import QueenMother from '../images/cards/fr/cartesChCombo_ChC7.jpg'
 import Winemaker from '../images/cards/fr/cartesChCombo_ChC70.jpg'
 import StableBoy from '../images/cards/fr/cartesChCombo_ChC71.jpg'
 import Farmhand from '../images/cards/fr/cartesChCombo_ChC72.jpg'
 import Traveler from '../images/cards/fr/cartesChCombo_ChC73.jpg'
 import Usurper from '../images/cards/fr/cartesChCombo_ChC74.jpg'
 import Fisherman from '../images/cards/fr/cartesChCombo_ChC75.jpg'
-import Revolutionnary from '../images/cards/fr/cartesChCombo_ChC76.jpg'
+import Revolutionary from '../images/cards/fr/cartesChCombo_ChC76.jpg'
 import Baker from '../images/cards/fr/cartesChCombo_ChC77.jpg'
 import Beekeeper from '../images/cards/fr/cartesChCombo_ChC78.jpg'
-import HerMajestytheQueen from '../images/cards/fr/cartesChCombo_ChC8.jpg'
+import HerMajestyTheQueen from '../images/cards/fr/cartesChCombo_ChC8.jpg'
 import Baron from '../images/cards/fr/cartesChCombo_ChC9.jpg'
 import { ChateauComboCardDescription } from './ChateauComboCardDescription'
 
-export class FrenchChateauComboCardDescription extends ChateauComboCardDescription {
+class FrenchChateauComboCardDescription extends ChateauComboCardDescription {
   images = {
-
-    // Noble
-
     [Card.Steward]: Steward,
     [Card.HisHoliness]: HisHoliness,
-    [Card.Chaplain]: Chapelain,
+    [Card.Chaplain]: Chaplain,
     [Card.Cardinal]: Cardinal,
     [Card.Templar]: Templar,
     [Card.Gravedigger]: Gravedigger,
@@ -118,17 +113,14 @@ export class FrenchChateauComboCardDescription extends ChateauComboCardDescripti
     [Card.Princess]: Princess,
     [Card.Prince]: Prince,
     [Card.HisMajesty]: HisMajesty,
-    [Card.QueenMother]: Queenmother,
+    [Card.QueenMother]: QueenMother,
     [Card.Jester]: Jester,
     [Card.Chancellor]: Chancellor,
     [Card.Baron]: Baron,
-    [Card.HerMajestyTheQueen]: HerMajestytheQueen,
-    [Card.Duchess]: Duchesse,
+    [Card.HerMajestyTheQueen]: HerMajestyTheQueen,
+    [Card.Duchess]: Duchess,
     [Card.Scribe]: Scribe,
     [Card.MotherSuperior]: MotherSuperior,
-
-    // Village
-
     [Card.Inventor]: Inventor,
     [Card.Spy]: Spy,
     [Card.Vicar]: Vicar,
@@ -136,7 +128,7 @@ export class FrenchChateauComboCardDescription extends ChateauComboCardDescripti
     [Card.Squire]: Squire,
     [Card.Philosopher]: Philosopher,
     [Card.Doctor]: Doctor,
-    [Card.Executioner]: Executionner,
+    [Card.Executioner]: Executioner,
     [Card.Barbarian]: Barbarian,
     [Card.Militiaman]: Militiaman,
     [Card.Bombardier]: Bombardier,
@@ -164,11 +156,10 @@ export class FrenchChateauComboCardDescription extends ChateauComboCardDescripti
     [Card.Usurper]: Usurper,
     [Card.Traveler]: Traveler,
     [Card.Farmhand]: Farmhand,
-    [Card.Revolutionary]: Revolutionnary,
+    [Card.Revolutionary]: Revolutionary,
     [Card.Fisherman]: Fisherman,
     [Card.Baker]: Baker,
     [Card.Beekeeper]: Beekeeper
-
   }
 }
 

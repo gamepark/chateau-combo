@@ -4,7 +4,7 @@ import Key1 from '../images/tokens/Key1.png'
 import Key3 from '../images/tokens/Key3.png'
 import { KeyHelp } from './help/KeyHelp'
 
-export class KeyDescription extends MoneyDescription {
+class KeyDescription extends MoneyDescription {
   borderRadius = 0.5
 
   images = {

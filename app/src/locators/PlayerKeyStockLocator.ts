@@ -31,18 +31,4 @@ class PlayerKeyStockLocator extends PileLocator {
   }
 }
 
-export function getTokenDeltaX(playerNumber: number): number {
-  switch (playerNumber) {
-    case 2:
-      return 60
-    case 3:
-      return 30
-    case 4:
-      return 22
-    default :
-      return 20
-  }
-}
-
-
 export const playerKeyStockLocator = new PlayerKeyStockLocator()

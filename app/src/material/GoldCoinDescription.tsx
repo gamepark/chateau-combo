@@ -4,7 +4,7 @@ import Gold1 from '../images/tokens/Gold1.png'
 import Gold5 from '../images/tokens/Gold5.png'
 import { GoldCoinHelp } from './help/GoldCoinHelp'
 
-export class GoldCoinDescription extends MoneyDescription {
+class GoldCoinDescription extends MoneyDescription {
   borderRadius = 2
 
   images = {

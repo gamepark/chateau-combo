@@ -9,7 +9,6 @@ import { AbstractImmediateEffect } from './AbstractImmediateEffect'
 export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainGold> {
 
   getEffectMoves(effect: GainGold) {
-    const multiplier = effect.condition ? new Tableau(this.game, this.player).countCondition(effect.condition) : 1
     const moves: MaterialMove[] = []
     const myGain = this.getMyGain(effect)
     const opponentsGain = this.getOpponentsGain(effect)

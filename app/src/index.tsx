@@ -2,7 +2,7 @@
 import { ChateauComboOptionsSpec } from '@gamepark/chateau-combo/ChateauComboOptions'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { ChateauComboSetup } from '@gamepark/chateau-combo/ChateauComboSetup'
-import { GameProvider, MaterialGameAnimations, setupTranslation } from '@gamepark/react-game'
+import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { chateauComboAnimations } from './animations/ChateauComboAnimations'
