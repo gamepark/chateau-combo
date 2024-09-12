@@ -2,6 +2,7 @@ import { cardCharacteristics } from '@gamepark/chateau-combo/material/CardCharac
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
+import { ShieldDistributionHelp } from './component/ShieldDistributionHelp'
 
 class ShieldsLocator extends Locator {
   locationDescription = new ShieldsDescription()
@@ -24,6 +25,8 @@ class ShieldsDescription extends LocationDescription {
   }
 
   borderRadius = 0.3
+
+  help = ShieldDistributionHelp
 }
 
 export const shieldsLocator = new ShieldsLocator()

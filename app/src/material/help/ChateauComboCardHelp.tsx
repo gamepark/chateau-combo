@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { cardCharacteristics, CardPattern, Shield } from '@gamepark/chateau-combo/material/CardCharacteristics'
+import { cardCharacteristics, CardPattern } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { Condition, ConditionType } from '@gamepark/chateau-combo/material/Condition'
 import { ChooseBetween, Effect, EffectType } from '@gamepark/chateau-combo/material/Effect'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
@@ -21,13 +21,14 @@ import {
   useRules,
   useUndo
 } from '@gamepark/react-game'
-import { isMoveItemType } from '@gamepark/rules-api'
+import { isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
 import isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
 import { FC, ReactElement, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { moveMessengerImages, shieldImages } from './Images'
+import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
@@ -109,16 +110,7 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
             {characteristic.shields.map((shield, i) => (
               <Picture key={i} css={mini} src={shieldImages[shield]}/>
             ))}
-          </p>
-          <p>
-            <Trans defaults="card.shield.help">
-              <Picture css={mini} src={shieldImages[Shield.Nobility]}/>
-              <Picture css={mini} src={shieldImages[Shield.Faith]}/>
-              <Picture css={mini} src={shieldImages[Shield.Scholarship]}/>
-              <Picture css={mini} src={shieldImages[Shield.Military]}/>
-              <Picture css={mini} src={shieldImages[Shield.Craftsmanship]}/>
-              <Picture css={mini} src={shieldImages[Shield.Peasantry]}/>
-            </Trans>
+            <PlayMoveButton move={displayLocationHelp({ type: LocationType.Shields })} local>{t('help.shield-distribution')}</PlayMoveButton>
           </p>
         </>
       )}
@@ -236,6 +228,7 @@ const titleCss = css`
 const flexRowCss = css`
   display: flex;
   flex-direction: row;
+  align-items: center;
   width: 100%;
   gap: 0.3em;
   margin-bottom: 0.5em;
