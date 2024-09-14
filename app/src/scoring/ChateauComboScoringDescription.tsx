@@ -140,19 +140,19 @@ export class ChateauComboScoringDescription implements ScoringDescription {
       case ScoringKeys.Tableau0_0:
         return tableau.getCardScore(0, 0)
       case ScoringKeys.Tableau0_1:
-        return tableau.getCardScore(0, 1)
-      case ScoringKeys.Tableau0_2:
-        return tableau.getCardScore(0, 2)
-      case ScoringKeys.Tableau1_0:
         return tableau.getCardScore(1, 0)
+      case ScoringKeys.Tableau0_2:
+        return tableau.getCardScore(2, 0)
+      case ScoringKeys.Tableau1_0:
+        return tableau.getCardScore(0, 1)
       case ScoringKeys.Tableau1_1:
         return tableau.getCardScore( 1, 1)
       case ScoringKeys.Tableau1_2:
-        return tableau.getCardScore(1, 2)
-      case ScoringKeys.Tableau2_0:
-        return tableau.getCardScore(2, 0)
-      case ScoringKeys.Tableau2_1:
         return tableau.getCardScore(2, 1)
+      case ScoringKeys.Tableau2_0:
+        return tableau.getCardScore(0, 2)
+      case ScoringKeys.Tableau2_1:
+        return tableau.getCardScore(1, 2)
       case ScoringKeys.Tableau2_2:
         return tableau.getCardScore(2, 2)
       case ScoringKeys.Gold:
