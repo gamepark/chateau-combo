@@ -69,7 +69,7 @@ export class BuyCardRule extends PlayerTurnRule {
       ]
     } else {
       const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
-      const discount = new Tableau(this.game, this.player).getDiscount(card.id!.back)
+      const discount = new Tableau(this.game, this.player).getDiscount(card.id!.back, move.itemIndex)
       const cost = Math.max(cardCharacteristics[card.id!.front!].cost - discount, 0)
       this.memorize(Memory.PlacedCard, move.itemIndex)
       this.memorize(Memory.PendingEffects, cardCharacteristics[card.id!.front!].effects)
