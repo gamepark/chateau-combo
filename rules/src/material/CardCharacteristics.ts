@@ -607,7 +607,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
   },
   [Card.Farmer]: {
     cost: 5,
-    shields: [Shield.Peasantry],
+    shields: [Shield.Peasantry, Shield.Peasantry],
     moveMessenger: true,
     effects: [{ type: EffectType.GainKeys, gain: 1, condition: { type: ConditionType.PerShield, shield: Shield.Peasantry } }],
     scoring: {
