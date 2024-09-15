@@ -7,6 +7,11 @@ import { FC, HTMLAttributes, useMemo } from 'react'
 import pointImage from '../images/icons/point.png'
 import coinImage from '../images/tokens/Gold1.png'
 import keyImage from '../images/tokens/Key1.png'
+import Panel1 from '../images/panels/panel.1.jpg'
+import Panel2 from '../images/panels/panel.2.jpg'
+import Panel3 from '../images/panels/panel.3.jpg'
+import Panel4 from '../images/panels/panel.4.jpg'
+import Panel5 from '../images/panels/panel.5.jpg'
 
 type ChateauComboPlayerPanelProps = {
   player: Player
@@ -30,8 +35,17 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
       activeRing
       player={player}
       counters={counters}
+      backgroundImage={panelBackgrounds[player.id]}
       countersPerLine={2}
       {...rest}
     />
   )
+}
+
+const panelBackgrounds = {
+  [1]: Panel1,
+  [2]: Panel2,
+  [3]: Panel3,
+  [4]: Panel4,
+  [5]: Panel5,
 }
