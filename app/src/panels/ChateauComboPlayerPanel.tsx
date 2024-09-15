@@ -36,7 +36,7 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
       locations: [],
       margin: {
         left: (!isBottomPlayers && rules.players.length === 5)? 17: 0,
-        top: 1,
+        top: rules.players.length === 2? 6: 1,
         bottom: 1
       },
       animationTime: 500

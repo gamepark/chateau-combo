@@ -61,7 +61,7 @@ class TableauLocator extends Locator {
     const { rules } = context
     const player = item.location.player
     const index = getRelativePlayerIndex(context, player)
-    const isBottomPlayers = rules.players.length === 5? (index === 0 || index === 4): (rules.players.length === 4? (index === 0 || index === 3): index === 0)
+    const isBottomPlayers = rules.players.length === 2 || (rules.players.length === 5? (index === 0 || index === 4): (rules.players.length === 4? (index === 0 || index === 3): index === 0))
     const helper =  new TableauHelper(context.rules.game, item.location.player!).boundaries
     const transform = ['translateZ(10em)', 'scale(2)']
     if (!isBottomPlayers && helper.yMin === item.location.y) transform.push('translateY(25%)')
