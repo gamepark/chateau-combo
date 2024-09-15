@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { coinsMoney } from '@gamepark/chateau-combo/material/Coin'
 import { keysMoney } from '@gamepark/chateau-combo/material/Key'
+import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { PlayerId } from '@gamepark/chateau-combo/PlayerId'
@@ -156,12 +157,12 @@ export class ChateauComboScoringDescription implements ScoringDescription {
       case ScoringKeys.Tableau2_2:
         return tableau.getCardScore(2, 2)
       case ScoringKeys.Gold:
-        return coinsMoney.count(rules.material(MaterialType.GoldCoin).player(player))
+        return coinsMoney.count(rules.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(player))
       case ScoringKeys.Keys:
-        return keysMoney.count(rules.material(MaterialType.Key).player(player))
+        return keysMoney.count(rules.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(player))
       case ScoringKeys.Total:
       default:
-        return tableau.score
+        return tableau.score + keysMoney.count(rules.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(player))
     }
   }
 }
