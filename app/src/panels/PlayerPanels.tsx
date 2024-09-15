@@ -15,7 +15,7 @@ export const PlayerPanels: FC<any> = () => {
   return createPortal(
     <>
       {players.map((player, index) =>
-        <ChateauComboPlayerPanel player={player} key={player.id} css={[absolute, positionCss[players.length - 2][index]]}/>
+        <ChateauComboPlayerPanel player={player} key={player.id} index={index} css={[absolute, positionCss[players.length - 2][index]]}/>
       )}
     </>,
     root

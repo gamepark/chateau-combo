@@ -1,7 +1,7 @@
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { TableauHelper } from '@gamepark/chateau-combo/rules/helpers/TableauHelper'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
-import { isMoveItem, isMoveItemType, Location, MaterialMove } from '@gamepark/rules-api'
+import { isMoveItem, isMoveItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import isEqual from 'lodash/isEqual'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 
@@ -57,7 +57,18 @@ class TableauLocator extends Locator {
     }
   }
 
-  getHoverTransform = () => ['translateZ(10em)', 'scale(2)']
+  getHoverTransform = (item: MaterialItem, context: ItemContext) => {
+    const { rules } = context
+    const player = item.location.player
+    const index = getRelativePlayerIndex(context, player)
+    const isBottomPlayers = rules.players.length === 5? (index === 0 || index === 4): (rules.players.length === 4? (index === 0 || index === 3): index === 0)
+    const helper =  new TableauHelper(context.rules.game, item.location.player!).boundaries
+    const transform = ['translateZ(10em)', 'scale(2)']
+    if (!isBottomPlayers && helper.yMin === item.location.y) transform.push('translateY(25%)')
+    if (isBottomPlayers && helper.yMax === item.location.y) transform.push('translateY(-25%)')
+
+    return transform
+  }
 
   locationDescription = new TableauSpotDescription()
 }
