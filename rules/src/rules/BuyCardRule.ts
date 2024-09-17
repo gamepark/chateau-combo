@@ -52,11 +52,21 @@ export class BuyCardRule extends PlayerTurnRule {
       .locationId(banner)
   }
 
+  beforeItemMove(move: ItemMove) {
+    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tableau && !move.location.rotation) {
+      const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
+      const discount = new Tableau(this.game, this.player).getDiscount(card.id!.back)
+      const cost = Math.max(cardCharacteristics[card.id!.front!].cost - discount, 0)
+      return coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, -cost)
+    }
+    return []
+  }
+
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Tableau) return []
 
-    const rotatedRiveItems = this.material(MaterialType.Card).location(LocationType.River).rotation(true).getItems()
-    for (const item of rotatedRiveItems) {
+    const rotatedRiverItems = this.material(MaterialType.Card).location(LocationType.River).rotation(true).getItems()
+    for (const item of rotatedRiverItems) {
       delete item.location.rotation
     }
 
@@ -69,14 +79,9 @@ export class BuyCardRule extends PlayerTurnRule {
       ]
     } else {
       const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
-      const discount = new Tableau(this.game, this.player).getDiscount(card.id!.back, move.itemIndex)
-      const cost = Math.max(cardCharacteristics[card.id!.front!].cost - discount, 0)
       this.memorize(Memory.PlacedCard, move.itemIndex)
       this.memorize(Memory.PendingEffects, cardCharacteristics[card.id!.front!].effects)
-      return [
-        ...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, -cost),
-        ...new ImmediateEffectRule(this.game).getPendingEffectsMoves()
-      ]
+      return new ImmediateEffectRule(this.game).getPendingEffectsMoves()
     }
   }
 }

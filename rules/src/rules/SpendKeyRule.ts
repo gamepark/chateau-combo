@@ -16,11 +16,11 @@ export class SpendKeyRule extends BuyCardRule {
     return super.getPlayerMoves()
   }
 
-  beforeItemMove(move: ItemMove): MaterialMove[] {
+  beforeItemMove(move: ItemMove) {
     if (isDeleteItemType(MaterialType.Key)(move) && this.material(MaterialType.Key).getItem(move.itemIndex).id === Key.Key3) {
       return keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, 2)
     }
-    return []
+    return super.beforeItemMove(move)
   }
 
   afterItemMove(move: ItemMove) {

@@ -139,12 +139,11 @@ export class Tableau extends MaterialRulesPart {
       .location(l => l.x === x! + this.xMin && l.y === y! + this.yMin).getIndex()
   }
 
-  getDiscount(place: Place, ignoredItemIndex?: number) {
+  getDiscount(place: Place) {
     let tableau = this
       .material(MaterialType.Card)
       .location(LocationType.Tableau)
       .player(this.player)
-      .index((index) => ignoredItemIndex === undefined || index !== ignoredItemIndex)
       .getItems<CardId>()
     return sumBy(tableau, card => card.id?.front ? this.getCardDiscount(card.id.front, place) : 0)
   }
