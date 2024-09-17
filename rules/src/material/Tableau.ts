@@ -4,10 +4,10 @@ import sumBy from 'lodash/sumBy'
 import { PlayerId } from '../PlayerId'
 import { Card, CardId, getCardPlace } from './Card'
 import { cardCharacteristics, Shield, shields } from './CardCharacteristics'
-import { coinsMoney } from './Coin'
+import { coins } from './Coin'
 import { Condition, ConditionType } from './Condition'
 import { EffectType } from './Effect'
-import { keysMoney } from './Key'
+import { keys } from './Key'
 import { LocationType } from './LocationType'
 import { MaterialType } from './MaterialType'
 import { Place } from './Place'
@@ -61,7 +61,7 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerIdenticalShieldsSet:
         return sumBy(shields, shield => Math.floor(this.countShields(shield) / condition.count))
       case ConditionType.PerKey:
-        return keysMoney.count(this.material(MaterialType.Key).player(this.player))
+        return this.material(MaterialType.Key).money(keys).player(this.player).count
       case ConditionType.PerBanner:
         return this.countCards(card => getCardPlace(card) === condition.banner)
       case ConditionType.PerBannersSet:
@@ -81,9 +81,9 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.PerCardWithPurse:
         return this.countCards(hasPurse)
       case ConditionType.PerGoldInPurse:
-        return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(this.getCardIndex(x!, y!)))
+        return this.material(MaterialType.GoldCoin).money(coins).location(LocationType.OnCard).parent(this.getCardIndex(x!, y!)).count
       case ConditionType.PerGoldInAllPurses:
-        return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).player(this.player))
+        return this.material(MaterialType.GoldCoin).money(coins).location(LocationType.OnCard).player(this.player).count
       case ConditionType.PerFullPosition:
         return this.material(MaterialType.Card).location(LocationType.Tableau).player(this.player).length
       case ConditionType.PerEmptyPosition:

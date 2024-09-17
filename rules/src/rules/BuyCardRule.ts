@@ -1,8 +1,8 @@
 import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { coinsMoney } from '../material/Coin'
-import { keysMoney } from '../material/Key'
+import { coins } from '../material/Coin'
+import { keys } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tableau } from '../material/Tableau'
@@ -36,9 +36,10 @@ export class BuyCardRule extends PlayerTurnRule {
   }
 
   get gold() {
-    return coinsMoney.count(this.material(MaterialType.GoldCoin)
+    return this.material(MaterialType.GoldCoin).money(coins)
       .location(LocationType.PlayerGoldStock)
-      .player(this.player))
+      .player(this.player)
+      .count
   }
 
   get riverCards() {
@@ -57,7 +58,7 @@ export class BuyCardRule extends PlayerTurnRule {
       const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
       const discount = new Tableau(this.game, this.player).getDiscount(card.id!.back)
       const cost = Math.max(cardCharacteristics[card.id!.front!].cost - discount, 0)
-      return coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, -cost)
+      return this.material(MaterialType.GoldCoin).money(coins).removeMoney(cost, { type: LocationType.PlayerGoldStock, player: this.player })
     }
     return []
   }
@@ -73,8 +74,8 @@ export class BuyCardRule extends PlayerTurnRule {
     // Player plays a hidden card
     if (move.location.rotation) {
       return [
-        ...coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player: this.player }, 6),
-        ...keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, 2),
+        ...this.material(MaterialType.GoldCoin).money(coins).addMoney(6, { type: LocationType.PlayerGoldStock, player: this.player }),
+        ...this.material(MaterialType.Key).money(keys).addMoney(2, { type: LocationType.PlayerKeyStock, player: this.player }),
         this.startRule(RuleId.EndOfTurn)
       ]
     } else {
