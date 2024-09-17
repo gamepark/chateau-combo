@@ -114,7 +114,7 @@ export class Tableau extends MaterialRulesPart {
 
   countSets(set: number[], values: number[]) {
     let sets = 0
-    search: while (values.length > set.length) {
+    search: while (values.length >= set.length) {
       for (const item of set) {
         const itemIndex = values.indexOf(item)
         if (itemIndex === -1) break search
