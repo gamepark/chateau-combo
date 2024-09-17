@@ -48,7 +48,7 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   }, [undo])
   return (
     <>
-      <h2 css={titleCss}>{t(item.id.front !== undefined ? `card.${item.id.front}` : `place.${item.id.back}`)}</h2>
+      <h2 css={titleCss}>{isFlipped ? t('card.face-down') : t(`card.${item.id.front}`)}</h2>
       {!!discardOneFromRiver && (
         <p>
           <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard')}</PlayMoveButton>
