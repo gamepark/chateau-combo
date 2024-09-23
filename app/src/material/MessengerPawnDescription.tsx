@@ -1,6 +1,8 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { TokenDescription } from '@gamepark/react-game'
+import { isMoveItemType, MaterialMove } from '@gamepark/rules-api'
 import MessengerPawn from '../images/MessengerPawn.png'
 import { MessengerPawnHelp } from './help/MessengerPawnHelp'
 
@@ -15,6 +17,10 @@ class MessengerPawnDescription extends TokenDescription {
   }
 
   help = MessengerPawnHelp
+
+  canShortClick(move: MaterialMove) {
+    return isMoveItemType(MaterialType.MessengerPawn)(move)
+  }
 }
 
 const borderRadiusCss = css`

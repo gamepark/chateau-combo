@@ -1,5 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { ClotheType, EyebrowType, EyeType, FacialHairType, MouthType, TopType } from '@gamepark/avataaars'
+import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColorName'
+import SkinColor from '@gamepark/avataaars/dist/avatar/SkinColor'
+import FacialHairColorName from '@gamepark/avataaars/dist/avatar/top/facialHair/FacialHairColorName'
+import HairColorName from '@gamepark/avataaars/dist/avatar/top/HairColorName'
 import { Card } from '@gamepark/chateau-combo/material/Card'
 import { Shield } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
@@ -19,7 +24,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   options = { players: 2 }
   setup = new TutorialSetup()
 
-  players = [{ id: me }, { id: opponent }]
+  players = [{ id: me }, {
+    id: opponent,
+    name: 'Michel',
+    avatar: {
+      topType: TopType.ShortHairShaggyMullet,
+      hairColor: HairColorName.SilverGray,
+      facialHairType: FacialHairType.MoustacheFancy,
+      facialHairColor: FacialHairColorName.BrownDark,
+      clotheType: ClotheType.CollarSweater,
+      clotheColor: ClotheColorName.PastelRed,
+      eyeType: EyeType.Squint,
+      eyebrowType: EyebrowType.FlatNatural,
+      mouthType: MouthType.Smile,
+      skinColor: SkinColor.Light
+    }
+  }]
 
   steps: TutorialStep[] = [
     {
@@ -309,6 +329,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
+          <Trans defaults="tuto.opponent.duchess"/>
+        )
+      },
+      focus: (game: MaterialGame) => ({
+        materials: [
+          this.material(game, MaterialType.Key).player(opponent),
+          this.material(game, MaterialType.Card).id((id: { front: Card }) => id.front === Card.Duchess)
+        ],
+        margin: {
+          bottom: 2
+        }
+      })
+    },
+    {
+      popup: {
+        text: () => (
           <Trans defaults="tuto.you"/>
         )
       }
@@ -365,7 +401,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.spend.key"/>
+          <Trans defaults="tuto.spend.key"
+                 components={{
+                   bold: <strong/>
+                 }}/>
         ),
         position: { x: 20, y: -10 },
         size: { width: 100 }
@@ -436,7 +475,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         }
       }),
       move: {
-        filter: (move, game) => isMoveItemType(MaterialType.Card)(move)  && !move.location.rotation && this.material(game, MaterialType.Card).id((id: {
+        filter: (move, game) => isMoveItemType(MaterialType.Card)(move) && !move.location.rotation && this.material(game, MaterialType.Card).id((id: {
           front: Card
         }) => id.front === Card.Potter).getIndex() === move.itemIndex,
         interrupt: (move) => isCreateItemType(MaterialType.GoldCoin)(move)
