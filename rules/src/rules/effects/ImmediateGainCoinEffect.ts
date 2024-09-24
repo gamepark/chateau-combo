@@ -1,5 +1,5 @@
 import { MaterialMove } from '@gamepark/rules-api'
-import { coinsMoney } from '../../material/Coin'
+import { coins } from '../../material/Coin'
 import { GainGold } from '../../material/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -45,6 +45,6 @@ export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainGold> {
   }
 
   gainGold(quantity: number, player = this.player) {
-    return coinsMoney.createOrDelete(this.material(MaterialType.GoldCoin), { type: LocationType.PlayerGoldStock, player }, quantity)
+    return this.material(MaterialType.GoldCoin).money(coins).addMoney(quantity, { type: LocationType.PlayerGoldStock, player })
   }
 }

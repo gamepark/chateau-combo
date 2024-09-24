@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { keysMoney } from '@gamepark/chateau-combo/material/Key'
+import { keys } from '@gamepark/chateau-combo/material/Key'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { MaterialHelpProps, PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
@@ -33,7 +33,11 @@ export const KeyHelp: FC<MaterialHelpProps> = (props) => {
       </p>
       {location?.type === LocationType.PlayerKeyStock && (
         <p>
-          <Trans defaults={itsMe ? 'keys.you' : 'keys.player'} values={{ player: name, keys: keysMoney.count(rules.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(item.location?.player)) }}/>
+          <Trans defaults={itsMe ? 'keys.you' : 'keys.player'}
+                 values={{
+                   player: name,
+                   keys: rules.material(MaterialType.Key).money(keys).location(LocationType.PlayerKeyStock).player(item.location?.player).count
+                 }}/>
         </p>
       )}
     </>

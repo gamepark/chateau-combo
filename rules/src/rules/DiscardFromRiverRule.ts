@@ -1,8 +1,8 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { coinsMoney } from '../material/Coin'
+import { coins } from '../material/Coin'
 import { DiscardFromRiver } from '../material/Effect'
-import { keysMoney } from '../material/Key'
+import { keys } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Memory } from './Memory'
@@ -52,19 +52,13 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
 
     if (effect.token === MaterialType.GoldCoin) {
       moves.push(
-        ...coinsMoney.createOrDelete(
-          this.material(MaterialType.GoldCoin),
-          { type: LocationType.PlayerGoldStock, player: this.player },
-          discardedCardCost
-        )
+        ...this.material(MaterialType.GoldCoin).money(coins)
+          .addMoney(discardedCardCost, { type: LocationType.PlayerGoldStock, player: this.player })
       )
     } else {
       moves.push(
-        ...keysMoney.createOrDelete(
-          this.material(MaterialType.Key),
-          { type: LocationType.PlayerKeyStock, player: this.player },
-          discardedCardCost
-        )
+        ...this.material(MaterialType.Key).money(keys)
+          .addMoney(discardedCardCost, { type: LocationType.PlayerKeyStock, player: this.player })
       )
     }
 

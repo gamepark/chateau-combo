@@ -1,7 +1,7 @@
 import { Location, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import uniqBy from 'lodash/uniqBy'
-import { coinsMoney } from '../../material/Coin'
-import { keysMoney } from '../../material/Key'
+import { coins } from '../../material/Coin'
+import { keys } from '../../material/Key'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 
@@ -68,11 +68,11 @@ export class TableauHelper extends MaterialRulesPart {
   }
 
   get coinsQuantity() {
-    return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(this.player))
+    return this.material(MaterialType.GoldCoin).money(coins).location(LocationType.PlayerGoldStock).player(this.player).count
   }
 
   get keyQuantity() {
-    return keysMoney.count(this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(this.player))
+    return this.material(MaterialType.Key).money(keys).location(LocationType.PlayerKeyStock).player(this.player).count
   }
 
 }

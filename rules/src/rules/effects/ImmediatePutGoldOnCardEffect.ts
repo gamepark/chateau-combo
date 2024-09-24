@@ -1,7 +1,7 @@
 import { MaterialMove } from '@gamepark/rules-api'
 import { CardId } from '../../material/Card'
 import { cardCharacteristics } from '../../material/CardCharacteristics'
-import { coinsMoney } from '../../material/Coin'
+import { coins } from '../../material/Coin'
 import { PerGoldInPurse } from '../../material/Condition'
 import { PutGoldOnCard } from '../../material/Effect'
 import { LocationType } from '../../material/LocationType'
@@ -19,9 +19,10 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
 
     const cardsWithPurse = panorama.location(location => !location.rotation).id<CardId>(id => hasPurse(id.front))
     const cardsSpace: { cardIndex: number, space: number }[] = []
+    const coinsMoney = this.material(MaterialType.GoldCoin).money(coins)
     for (const [index, card] of cardsWithPurse.entries) {
       const goldCardCanStore = (cardCharacteristics[card.id.front].scoring.condition as PerGoldInPurse).limit
-      const goldAlreadyOnCard = coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.OnCard).parent(index))
+      const goldAlreadyOnCard = coinsMoney.location(LocationType.OnCard).parent(index).count
       if (goldCardCanStore - goldAlreadyOnCard > 0) {
         cardsSpace.push({ cardIndex: index, space: goldCardCanStore - goldAlreadyOnCard })
       }
@@ -32,14 +33,10 @@ export class ImmediatePutGoldOnCardEffect extends AbstractImmediateEffect<PutGol
     }
 
     for (const { cardIndex, space } of cardsSpace) {
-      moves.push(...coinsMoney.createOrDelete(
-        this.material(MaterialType.GoldCoin),
-        {
-          type: LocationType.OnCard,
-          player: this.player,
-          parent: cardIndex
-        },
-        Math.min(effect.gold ?? Infinity, space)))
+      moves.push(...coinsMoney.addMoney(
+        Math.min(effect.gold ?? Infinity, space),
+        { type: LocationType.OnCard, player: this.player, parent: cardIndex })
+      )
     }
 
     return moves

@@ -1,6 +1,6 @@
 import { CompetitiveScore, FillGapStrategy, HiddenMaterialRules, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy } from '@gamepark/rules-api'
-import { coinsMoney } from './material/Coin'
-import { keysMoney } from './material/Key'
+import { coins } from './material/Coin'
+import { keys } from './material/Key'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Tableau } from './material/Tableau'
@@ -47,12 +47,12 @@ export class ChateauComboRules extends HiddenMaterialRules<PlayerId, MaterialTyp
   }
 
   getScore(player: PlayerId): number {
-    return keysMoney.count(this.material(MaterialType.Key).player(player)) + new Tableau(this.game, player).score
+    return this.material(MaterialType.Key).money(keys).player(player).count + new Tableau(this.game, player).score
   }
 
   getTieBreaker(tieBreaker: number, player: PlayerId) {
     if (tieBreaker === 1) {
-      return coinsMoney.count(this.material(MaterialType.GoldCoin).location(LocationType.PlayerGoldStock).player(player))
+      return this.material(MaterialType.GoldCoin).money(coins).location(LocationType.PlayerGoldStock).player(player).count
     }
     return
   }

@@ -1,5 +1,5 @@
 import { isDeleteItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
-import { Key, keysMoney } from '../material/Key'
+import { Key, keys } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { BuyCardRule } from './BuyCardRule'
@@ -7,10 +7,11 @@ import { RuleId } from './RuleId'
 
 export class SpendKeyRule extends BuyCardRule {
   getPlayerMoves(): MaterialMove[] {
-    const playerKeys = keysMoney.count(this.material(MaterialType.Key).location(LocationType.PlayerKeyStock).player(this.player))
+    const keysMoney = this.material(MaterialType.Key).money(keys)
+    const playerKeys = keysMoney.location(LocationType.PlayerKeyStock).player(this.player).count
     if (playerKeys > 0) {
       return super.getPlayerMoves().concat(
-        ...keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, -1)
+        ...keysMoney.removeMoney(1, { type: LocationType.PlayerKeyStock, player: this.player })
       )
     }
     return super.getPlayerMoves()
@@ -18,7 +19,7 @@ export class SpendKeyRule extends BuyCardRule {
 
   beforeItemMove(move: ItemMove) {
     if (isDeleteItemType(MaterialType.Key)(move) && this.material(MaterialType.Key).getItem(move.itemIndex).id === Key.Key3) {
-      return keysMoney.createOrDelete(this.material(MaterialType.Key), { type: LocationType.PlayerKeyStock, player: this.player }, 2)
+      return this.material(MaterialType.Key).money(keys).addMoney(2, { type: LocationType.PlayerKeyStock, player: this.player })
     }
     return super.beforeItemMove(move)
   }
