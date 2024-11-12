@@ -43,21 +43,21 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
 
   setupPlayer(player: PlayerId) {
     this.material(MaterialType.GoldCoin).createItem({
-        id: Coin.Coin5,
-        location: {
-          type: LocationType.PlayerGoldStock,
-          player: player
-        },
-        quantity: 2
-      })
+      id: Coin.Coin5,
+      location: {
+        type: LocationType.PlayerGoldStock,
+        player: player
+      },
+      quantity: 2
+    })
     this.material(MaterialType.GoldCoin).createItem({
-        id: Coin.Coin1,
-        location: {
-          type: LocationType.PlayerGoldStock,
-          player: player
-        },
-        quantity: 5
-      })
+      id: Coin.Coin1,
+      location: {
+        type: LocationType.PlayerGoldStock,
+        player: player
+      },
+      quantity: 5
+    })
 
     this
       .material(MaterialType.Key)

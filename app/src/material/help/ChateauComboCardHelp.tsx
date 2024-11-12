@@ -37,7 +37,7 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
   const { item, itemIndex, closeDialog } = props
   const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
   const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
-  const isFlipped = !!item.location?.rotation
+  const isFlipped = item.id.front === undefined || !!item.location?.rotation
   const buy = useLegalMoves(move => !isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Tableau && !move.location.rotation)
   const takeFaceDown = useLegalMoves(move => isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Tableau && move.location.rotation)
   const [undo] = useUndo()
@@ -71,6 +71,9 @@ export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
       }
       {!isFlipped && <VisibleCard {...props} />}
       <CardLocation {...props} />
+      {isFlipped && <p>
+        <PlayMoveButton move={displayLocationHelp({ type: LocationType.Shields })} local>{t('help.shield-distribution')}</PlayMoveButton>
+      </p>}
     </>
   )
 }

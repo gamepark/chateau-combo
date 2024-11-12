@@ -106,9 +106,6 @@ import { ChateauComboCardHelp } from './help/ChateauComboCardHelp'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
 export class ChateauComboCardDescription extends CardDescription {
-  width = 6.3
-  height = 8.8
-
   backImages = {
     [Place.Castle]: Castle,
     [Place.Village]: Village
