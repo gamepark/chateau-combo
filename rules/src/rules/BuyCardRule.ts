@@ -13,26 +13,19 @@ import { RuleId } from './RuleId'
 
 export class BuyCardRule extends PlayerTurnRule {
 
-  getPlayerMoves() {
+  getPlayerMoves(): MaterialMove[] {
     const gold = this.gold
     const availableSpaces: Location[] = new TableauHelper(this.game, this.player).availableSpaces
     const tableau = new Tableau(this.game, this.player)
-    const moves: MaterialMove[] = []
 
     const cards = this.riverCards
     const affordableCards = cards
-      .filter((item) => cardCharacteristics[item.id.front].cost - tableau.getDiscount(item.id.back) <= gold)
+      .filter(item => cardCharacteristics[item.id.front].cost - tableau.getDiscount(item.id.back) <= gold)
 
-    moves.push(
-      ...availableSpaces.flatMap((space) => {
-        return [
-          ...affordableCards.moveItems(space),
-          ...cards.moveItems({ ...space, rotation: true })
-        ]
-      })
-    )
-
-    return moves
+    return availableSpaces.flatMap(space => [
+      ...affordableCards.moveItems(space),
+      ...cards.moveItems({ ...space, rotation: true })
+    ])
   }
 
   get gold() {
