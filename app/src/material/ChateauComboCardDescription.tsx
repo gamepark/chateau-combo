@@ -225,9 +225,12 @@ export class ChateauComboCardDescription extends CardDescription {
   }
 
   canDrag(move: MaterialMove, context: ItemContext): boolean {
-    const isFaceDown = isMoveItem(move) && move.itemType === MaterialType.Card && move.location.type === LocationType.Tableau && move.location.rotation
-    if (isFaceDown && !context.rules.material(MaterialType.Card).getItem(move.itemIndex).location.rotation) {
-      return false
+    const itemRotation = context.rules.material(MaterialType.Card).getItem(context.index).location.rotation ?? false
+    if (isMoveItem(move) && move.itemType === MaterialType.Card && move.location.type === LocationType.Tableau) {
+      const moveRotation = move.location.rotation ?? false
+      if (itemRotation !== moveRotation) {
+        return false
+      }
     }
     return super.canDrag(move, context)
   }
