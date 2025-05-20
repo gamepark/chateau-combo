@@ -33,6 +33,14 @@ export const GoldCoinHelp: FC<MaterialHelpProps> = (props) => {
                  }}/>
         </p>
       )}
+      {location?.type === LocationType.OnCard && (
+        <p>
+          <Trans defaults={'gold.card'}
+                 values={{
+                   gold: rules.material(MaterialType.GoldCoin).money(coins).location(LocationType.OnCard).parent(item.location?.parent).count
+                 }}/>
+        </p>
+      )}
     </>
   )
 }
