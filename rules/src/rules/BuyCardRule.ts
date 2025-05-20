@@ -20,7 +20,7 @@ export class BuyCardRule extends PlayerTurnRule {
 
     const cards = this.riverCards
     const affordableCards = cards
-      .filter(item => cardCharacteristics[item.id.front].cost - tableau.getDiscount(item.id.back) <= gold)
+      .filter<CardId>(item => cardCharacteristics[item.id.front!].cost - tableau.getDiscount(item.id.back) <= gold)
 
     return availableSpaces.flatMap(space => [
       ...affordableCards.moveItems(space),
