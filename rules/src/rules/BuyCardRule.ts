@@ -74,7 +74,7 @@ export class BuyCardRule extends PlayerTurnRule {
     } else {
       const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
       this.memorize(Memory.PlacedCard, move.itemIndex)
-      this.memorize(Memory.PendingEffects, cardCharacteristics[card.id!.front!].effects)
+      this.memorize(Memory.PendingEffects, [...cardCharacteristics[card.id!.front!].effects])
       return new ImmediateEffectRule(this.game).getPendingEffectsMoves()
     }
   }
