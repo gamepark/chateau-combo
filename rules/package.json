@@ -2,6 +2,7 @@
   "name": "@gamepark/chateau-combo",
   "version": "1.0.2",
   "description": "The rules of Château Combo adapted for Game Park",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
