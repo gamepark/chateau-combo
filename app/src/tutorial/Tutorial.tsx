@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ClotheType, EyebrowType, EyeType, FacialHairType, MouthType, TopType } from '@gamepark/avataaars'
 import ClotheColorName from '@gamepark/avataaars/dist/avatar/clothes/ClotheColorName'
@@ -45,14 +44,14 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.welcome"/>
+          <Trans i18nKey="tuto.welcome"/>
         )
       }
     },
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.recruit"/>
+          <Trans i18nKey="tuto.recruit"/>
         ),
         position: {
           x: 50
@@ -75,7 +74,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.tableau"/>
+          <Trans i18nKey="tuto.tableau"/>
         ),
         position: {
           x: 45
@@ -98,7 +97,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.cost"/>
+          <Trans i18nKey="tuto.cost"/>
         ),
         position: {
           x: 45
@@ -122,7 +121,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.cost.your"/>
+          <Trans i18nKey="tuto.cost.your"/>
         ),
         position: {
           x: 50
@@ -145,7 +144,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.recruit.stonemason"/>
+          <Trans i18nKey="tuto.recruit.stonemason"/>
         ),
         position: { x: 10, y: 20 }
       },
@@ -173,7 +172,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.cost.auto"/>
+          <Trans i18nKey="tuto.cost.auto"/>
         )
       },
       focus: (game: MaterialGame) => ({
@@ -198,7 +197,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <Trans
-            defaults="tuto.discount"
+            i18nKey="tuto.discount"
             components={{
               bold: <strong/>
             }}
@@ -225,7 +224,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <Trans
-            defaults="tuto.village"
+            i18nKey="tuto.village"
             components={{
               bold: <strong/>,
               shield1: <Picture css={mini} src={shieldImages[Shield.Military]}/>,
@@ -250,7 +249,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.castle"
+          <Trans i18nKey="tuto.castle"
                  components={{
                    bold: <strong/>,
                    shield1: <Picture css={mini} src={shieldImages[Shield.Nobility]}/>,
@@ -275,7 +274,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.messenger"/>
+          <Trans i18nKey="tuto.messenger"/>
         ),
         position: { y: 20 }
       },
@@ -291,7 +290,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.messenger.stonemason"/>
+          <Trans i18nKey="tuto.messenger.stonemason"/>
         )
       },
       focus: (game: MaterialGame) => ({
@@ -315,7 +314,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.opponent"/>
+          <Trans i18nKey="tuto.opponent"/>
         )
       }
     },
@@ -329,7 +328,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.opponent.duchess"/>
+          <Trans i18nKey="tuto.opponent.duchess"/>
         )
       },
       focus: (game: MaterialGame) => ({
@@ -345,7 +344,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.you"/>
+          <Trans i18nKey="tuto.you"/>
         )
       }
     },
@@ -353,7 +352,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <Trans
-            defaults="tuto.shields.points"
+            i18nKey="tuto.shields.points"
             components={{
               shield: <Picture css={mini} src={shieldImages[Shield.Craftsmanship]}/>
             }}
@@ -381,7 +380,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.potter"
+          <Trans i18nKey="tuto.potter"
                  components={{
                    shield: <Picture css={mini} src={shieldImages[Shield.Craftsmanship]}/>
                  }}
@@ -401,7 +400,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.spend.key"
+          <Trans i18nKey="tuto.spend.key"
                  components={{
                    bold: <strong/>
                  }}/>
@@ -427,7 +426,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.move.messenger"/>
+          <Trans i18nKey="tuto.move.messenger"/>
         ),
         position: { x: 27 }
       },
@@ -449,7 +448,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <Trans
-            defaults="tuto.recruit.potter"
+            i18nKey="tuto.recruit.potter"
             components={{
               italic: <em/>
             }}
@@ -484,7 +483,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.potter.bag"/>
+          <Trans i18nKey="tuto.potter.bag"/>
         ),
         position: { x: 30 }
       },
@@ -505,7 +504,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.potter.effect"/>
+          <Trans i18nKey="tuto.potter.effect"/>
         ),
         position: { x: 30 }
       },
@@ -527,7 +526,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         text: () => (
-          <Trans defaults="tuto.end.gold"/>
+          <Trans i18nKey="tuto.end.gold"/>
         )
       }
     },
@@ -535,7 +534,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <Trans
-            defaults="tuto.hidden.card"
+            i18nKey="tuto.hidden.card"
             components={{
               bold: <strong/>
             }}
@@ -547,7 +546,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => (
           <Trans
-            defaults="tuto.card.click"
+            i18nKey="tuto.card.click"
             components={{
               bold: <strong/>
             }}

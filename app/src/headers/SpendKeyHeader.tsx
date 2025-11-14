@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
@@ -14,7 +13,7 @@ export const SpendKeyHeader = () => {
   const itsMe = player && player === activePlayer
   const playerName = usePlayerName(activePlayer)
   return (
-    <Trans defaults={itsMe ? "spend-key.you" : "spend-key.player"} values={{ player: playerName }}>
+    <Trans i18nKey={itsMe ? "spend-key.you" : "spend-key.player"} values={{ player: playerName }}>
       <PlayMoveButton move={spend}/>
     </Trans>
   )

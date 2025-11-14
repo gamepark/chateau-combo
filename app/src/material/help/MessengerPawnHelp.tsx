@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { MaterialHelpProps, PlayMoveButton, useLegalMove } from '@gamepark/react-game'
@@ -19,7 +18,7 @@ export const MessengerPawnHelp: FC<MaterialHelpProps> = (props) => {
         </p>
       )}
       <p>
-        <Trans defaults="messenger.help" values={{ place: item.location!.id }}>
+        <Trans i18nKey="messenger.help" values={{ place: item.location!.id }}>
           <strong />
         </Trans>
       </p>

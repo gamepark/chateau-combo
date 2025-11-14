@@ -1,22 +1,21 @@
-/** @jsxImportSource @emotion/react */
 import { ChateauComboOptionsSpec } from '@gamepark/chateau-combo/ChateauComboOptions'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { ChateauComboSetup } from '@gamepark/chateau-combo/ChateauComboSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
-import ReactDOM from 'react-dom'
-import { chateauComboAnimations } from './animations/ChateauComboAnimations'
-import App from './App'
+import { createRoot } from 'react-dom/client'
+import { chateauComboAnimations } from './animations/ChateauComboAnimations.ts'
+import { App } from './App'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
-import { ChateauComboScoringDescription } from './scoring/ChateauComboScoringDescription'
+import { ChateauComboScoringDescription } from './scoring/ChateauComboScoringDescription.tsx'
 import translations from './translations.json'
-import { Tutorial } from './tutorial/Tutorial'
-import { TutorialAI } from './tutorial/TutorialAI'
+import { Tutorial } from './tutorial/Tutorial.tsx'
+import { TutorialAI } from './tutorial/TutorialAI.ts'
 
 setupTranslation(translations, { debug: false })
 
-ReactDOM.render(
+createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GameProvider
       game="chateau-combo"
@@ -32,6 +31,5 @@ ReactDOM.render(
       ai={TutorialAI}>
       <App/>
     </GameProvider>
-  </StrictMode>,
-  document.getElementById('root')
+  </StrictMode>
 )

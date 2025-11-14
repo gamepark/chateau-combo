@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
@@ -16,7 +15,7 @@ export const KeyEffectHeader = () => {
   const discardCards = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard)
   const name = usePlayerName(rules.getActivePlayer())
   return (
-    <Trans defaults={itsMe ? 'key-effect.you' : 'key-effect.player'} values={{
+    <Trans i18nKey={itsMe ? 'key-effect.you' : 'key-effect.player'} values={{
       player: name,
       place: new KeyEffectRule(rules.game).messengerPlace
     }}>

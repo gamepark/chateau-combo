@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { TokenDescription } from '@gamepark/react-game'
@@ -11,6 +10,7 @@ class MessengerPawnDescription extends TokenDescription {
   height = 5
   borderRadius = 1 // for the drop area
   image = MessengerPawn
+  transparency = true
 
   getFrontExtraCss() {
     return borderRadiusCss

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { Effect, EffectType } from '@gamepark/chateau-combo/material/Effect'
@@ -30,7 +29,7 @@ export const ChooseBetweenHeader = () => {
   if (itsMe) {
     return (
       <Trans
-        defaults="choose-effect.you"
+        i18nKey="choose-effect.you"
         values={{
           card: t(`card.${chooseBetweenRule.placedCard.id.front}`)
         }}
@@ -42,7 +41,7 @@ export const ChooseBetweenHeader = () => {
   }
 
   return (
-    <Trans defaults="choose-effect.player" values={{
+    <Trans i18nKey="choose-effect.player" values={{
       card: t(`card.${chooseBetweenRule.placedCard.id.front}`),
       player: name
     }}/>
@@ -72,7 +71,7 @@ const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }
       return (
         <PlayMoveButton move={move}>
           <div css={flexRowCss}>
-            <Trans defaults="effect.banker" values={{ count: effect.gold }}
+            <Trans i18nKey="effect.banker" values={{ count: effect.gold }}
                    components={{
                      gold: <Picture css={mini} src={goldCoinDescription.images[1]}/>,
                      bag: <Picture css={mini} src={Bag}/>

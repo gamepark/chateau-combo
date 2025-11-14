@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
@@ -26,7 +25,7 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
   const state = useMemo(() => new TableauHelper(rules.game, player.id), [rules.game, player.id])
 
   const { setFocus } = useFocusContext()
-  const isBottomPlayers = rules.players.length === 5? (index === 0 || index === 4): (rules.players.length === 4? (index === 0 || index === 3): index === 0)
+  const isBottomPlayers = rules.players.length === 5 ? (index === 0 || index === 4) : (rules.players.length === 4 ? (index === 0 || index === 3) : index === 0)
   const focusPlayer = useCallback(() => {
     setFocus({
       materials: [
@@ -35,8 +34,8 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
       staticItems: [],
       locations: [],
       margin: {
-        left: (!isBottomPlayers && rules.players.length === 5)? 17: 0,
-        top: rules.players.length === 2? 6: 1,
+        left: (!isBottomPlayers && rules.players.length === 5) ? 17 : 0,
+        top: rules.players.length === 2 ? 6 : 1,
         bottom: 1
       },
       animationTime: 500
@@ -57,8 +56,8 @@ export const ChateauComboPlayerPanel: FC<ChateauComboPlayerPanelProps> = (props)
       onClick={focusPlayer}
       player={player}
       counters={counters}
-      backgroundImage={panelBackgrounds[player.id]}
-      countersPerLine={2}
+      backgroundImage={panelBackgrounds[(player.id as number) - 1]}
+      countersPerLine={3}
       css={canClick}
       {...rest}
     />
@@ -69,10 +68,4 @@ const canClick = css`
   cursor: pointer;
 `
 
-const panelBackgrounds = {
-  [1]: Panel1,
-  [2]: Panel2,
-  [3]: Panel3,
-  [4]: Panel4,
-  [5]: Panel5,
-}
+const panelBackgrounds = [Panel1, Panel2, Panel3, Panel4, Panel5]

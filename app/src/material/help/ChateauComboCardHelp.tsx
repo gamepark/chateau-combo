@@ -1,6 +1,6 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
+import { Card } from '@gamepark/chateau-combo/material/Card.ts'
 import { cardCharacteristics, CardPattern } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { Condition, ConditionType } from '@gamepark/chateau-combo/material/Condition'
 import { ChooseBetween, Effect, EffectType } from '@gamepark/chateau-combo/material/Effect'
@@ -23,14 +23,13 @@ import {
 } from '@gamepark/react-game'
 import { isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
-import isEqual from 'lodash/isEqual'
-import uniq from 'lodash/uniq'
+import { isEqual, uniq } from 'es-toolkit'
 import { FC, ReactElement, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { moveMessengerImages, shieldImages } from './Images'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
-export const ChateauComboCardHelp: FC<MaterialHelpProps> = (props) => {
+export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
   const { t } = useTranslation()
   const rules = useRules<ChateauComboRules>()!
   const game = rules.game
@@ -84,7 +83,7 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
   const playerId = usePlayerId()
   const game = useGame<MaterialGame>()!
   if (!item.id.front) return null
-  const characteristic: CardPattern = cardCharacteristics[item.id.front]
+  const characteristic: CardPattern = cardCharacteristics[item.id.front as Card]
   const effects = characteristic.effects.filter((e) => e.type !== EffectType.ChooseBetween && e.type !== EffectType.Discount)
   const chooseBetween: ChooseBetween | undefined = characteristic.effects.find((e) => e.type === EffectType.ChooseBetween) as ChooseBetween | undefined
   const discounts = characteristic.effects.filter((e) => e.type === EffectType.Discount)
@@ -98,12 +97,12 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
         <>
           <p>
             <span>
-            <Trans defaults="card.cost" values={{ cost: characteristic.cost }}>
+            <Trans i18nKey="card.cost" values={{ cost: characteristic.cost }}>
               <strong/>
             </Trans>
             </span>&nbsp;
             {!!costDiscount && <span>
-            <Trans defaults="card.cost.discount" values={{ discount: itemDiscounted }}>
+            <Trans i18nKey="card.cost.discount" values={{ discount: itemDiscounted }}>
               <strong/>
             </Trans>
             </span>}
@@ -119,7 +118,7 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
       )}
       {characteristic.moveMessenger && (
         <p>
-          <Trans defaults="card.messenger" values={{ place: item.id.back === Place.Village ? Place.Castle : Place.Village }}>
+          <Trans i18nKey="card.messenger" values={{ place: item.id.back === Place.Village ? Place.Castle : Place.Village }}>
             <Picture css={mini} src={moveMessengerImages[item.id.back === Place.Village ? Place.Castle : Place.Village]}/>
           </Trans>
         </p>
@@ -136,12 +135,12 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
       {!!scoring && (
         <>
           <p css={underlineCss}>
-            <Trans defaults="card.scoring">
+            <Trans i18nKey="card.scoring">
               <strong/>
             </Trans>
           </p>
           <p css={listCss}>
-            <Trans defaults="card.scoring.condition"
+            <Trans i18nKey="card.scoring.condition"
                    values={{ score: scoring.score }}
                    components={{ condition: <ConditionDetail condition={scoring.condition}/> }}/>
           </p>
@@ -157,7 +156,7 @@ const EffectList: FC<{ i18nKey: string, effects: Effect[], getDescription: (effe
   return (
     <>
       <p css={underlineCss}>
-        <Trans defaults={i18nKey} values={{ effects: effects.length }}>
+        <Trans i18nKey={i18nKey} values={{ effects: effects.length }}>
           <strong/>
         </Trans>
       </p>
@@ -189,7 +188,7 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
   return (
     <p>
       {location?.type === LocationType.Deck && (
-        <Trans defaults="card.deck" values={{
+        <Trans i18nKey="card.deck" values={{
           number: rules.material(MaterialType.Card).location(LocationType.Deck).locationId(location.id).length,
           place: location.id
         }}>
@@ -197,7 +196,7 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
         </Trans>
       )}
       {location?.type === LocationType.Discard && (
-        <Trans defaults="card.discard" values={{
+        <Trans i18nKey="card.discard" values={{
           number: rules.material(MaterialType.Card).location(LocationType.Discard).locationId(location.id).length,
           place: location.id
         }}>
@@ -206,17 +205,17 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
       )}
       {location?.type === LocationType.River && (
         location.rotation ?
-          <Trans defaults="card.river.face-down"><strong/></Trans>
-          : <Trans defaults="card.river"><strong/></Trans>
+          <Trans i18nKey="card.river.face-down"><strong/></Trans>
+          : <Trans i18nKey="card.river"><strong/></Trans>
       )}
       {location?.type === LocationType.Tableau && <>
-        <Trans defaults={itsMine ? 'card.tableau.you' : 'card.tableau.player'} values={{ player: name }}>
+        <Trans i18nKey={itsMine ? 'card.tableau.you' : 'card.tableau.player'} values={{ player: name }}>
           <strong/>
         </Trans>
         {location.rotation && (
           <>
             <br/>
-            <Trans defaults="card.tableau.face-down"/>
+            <Trans i18nKey="card.tableau.face-down"/>
           </>
         )}
       </>}
@@ -245,15 +244,15 @@ const mini = css`
 const getEffectDescription = (effect: Effect): ReactElement => {
   switch (effect.type) {
     case EffectType.Discount: {
-      if (effect.castle && effect.village) return <Trans defaults="card.discount.both"/>
-      return <Trans defaults="card.discount.place" values={{ place: effect.village ? Place.Village : Place.Castle }}/>
+      if (effect.castle && effect.village) return <Trans i18nKey="card.discount.both"/>
+      return <Trans i18nKey="card.discount.place" values={{ place: effect.village ? Place.Village : Place.Castle }}/>
     }
     case EffectType.GainKeys: {
-      if (effect.opponentsGain && effect.gain) return <Trans defaults="card.effect.keys.all"/>
-      if (effect.opponentsGain) return <Trans defaults="card.effect.keys.opponents"/>
-      if (!effect.condition) return <Trans defaults="card.effect.keys" values={{ keys: effect.gain }}/>
+      if (effect.opponentsGain && effect.gain) return <Trans i18nKey="card.effect.keys.all"/>
+      if (effect.opponentsGain) return <Trans i18nKey="card.effect.keys.opponents"/>
+      if (!effect.condition) return <Trans i18nKey="card.effect.keys" values={{ keys: effect.gain }}/>
       return (
-        <Trans defaults="card.effect.keys.per"
+        <Trans i18nKey="card.effect.keys.per"
                values={{ keys: effect.gain }}
                components={{ condition: <ConditionDetail condition={effect.condition}/> }}
         />
@@ -261,21 +260,21 @@ const getEffectDescription = (effect: Effect): ReactElement => {
     }
     case EffectType.GainGold : {
       if (effect.condition) return (
-        <Trans defaults="card.effect.gold.per"
+        <Trans i18nKey="card.effect.gold.per"
                values={{ gold: effect.gain }}
                components={{ condition: <ConditionDetail condition={effect.condition}/> }}
         />
       )
-      return <Trans defaults="card.effect.gold.opponents" values={{ gold: effect.opponentsGain }}/>
+      return <Trans i18nKey="card.effect.gold.opponents" values={{ gold: effect.opponentsGain }}/>
     }
     case EffectType.DiscardFromRiver: {
-      if (effect.token === MaterialType.GoldCoin) return <Trans defaults="card.effect.discard.gold" values={{ place: effect.river }}/>
-      return <Trans defaults="card.effect.discard.keys" values={{ place: effect.river }}/>
+      if (effect.token === MaterialType.GoldCoin) return <Trans i18nKey="card.effect.discard.gold" values={{ place: effect.river }}/>
+      return <Trans i18nKey="card.effect.discard.keys" values={{ place: effect.river }}/>
     }
     case EffectType.PutGoldOnCard: {
-      if (effect.cardsLimit) return <Trans defaults="card.effect.purse.fill"/>
+      if (effect.cardsLimit) return <Trans i18nKey="card.effect.purse.fill"/>
       return (
-        <Trans defaults="card.effect.purse">
+        <Trans i18nKey="card.effect.purse">
           <strong/>
           <em/>
         </Trans>
@@ -292,14 +291,14 @@ type ConditionDetailProps = {
 const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
   switch (condition.type) {
     case ConditionType.PerMissingShieldType:
-      return <Trans defaults="per.shield.diff.missing"><strong/></Trans>
+      return <Trans i18nKey="per.shield.diff.missing"><strong/></Trans>
     case ConditionType.PerShield: {
       let i18nKey = 'per.shield'
       if (condition.column) i18nKey = 'per.shield.column'
       if (condition.line) i18nKey = 'per.shield.line'
       if (condition.line && condition.column) i18nKey = 'per.shield.both'
       return (
-        <Trans defaults={i18nKey}>
+        <Trans i18nKey={i18nKey}>
           <Picture css={mini} src={shieldImages[condition.shield]}/>
         </Trans>
       )
@@ -309,19 +308,19 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
       if (condition.column) i18nKey = 'per.shield.diff.column'
       if (condition.line) i18nKey = 'per.shield.diff.line'
       return (
-        <Trans defaults={i18nKey}/>
+        <Trans i18nKey={i18nKey}/>
       )
     }
     case ConditionType.IfShieldMissing: {
       return (
-        <Trans defaults="if.shield.missing">
+        <Trans i18nKey="if.shield.missing">
           <Picture css={mini} src={shieldImages[condition.shield]}/>
         </Trans>
       )
     }
     case ConditionType.PerShieldsSet: {
       return (
-        <Trans defaults={`per.shield.set.${condition.shields.length}`}>
+        <Trans i18nKey={`per.shield.set.${condition.shields.length}`}>
           {condition.shields.map((shield) => (
             <Picture key={shield} css={mini} src={shieldImages[shield]}/>
           ))}
@@ -330,87 +329,87 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     }
     case ConditionType.PerIdenticalShieldsSet: {
       return (
-        <Trans defaults="per.shield.set.same"/>
+        <Trans i18nKey="per.shield.set.same"/>
       )
     }
     case ConditionType.PerKey: {
       return (
-        <Trans defaults="per.key"/>
+        <Trans i18nKey="per.key"/>
       )
     }
     case ConditionType.PerBanner: {
       return (
-        <Trans defaults={condition.banner === Place.Castle ? 'per.place.castle' : 'per.place.village'}/>
+        <Trans i18nKey={condition.banner === Place.Castle ? 'per.place.castle' : 'per.place.village'}/>
       )
     }
     case ConditionType.PerBannersSet: {
-      if (condition.banners.length === 3) return <Trans defaults="per.place.village.3"/>
+      if (condition.banners.length === 3) return <Trans i18nKey="per.place.village.3"/>
       return (
-        <Trans defaults="per.place.set.both"/>
+        <Trans i18nKey="per.place.set.both"/>
       )
     }
     case ConditionType.PerCardWithShieldCount: {
       return (
-        <Trans defaults={`per.card.shield.${condition.count}`}/>
+        <Trans i18nKey={`per.card.shield.${condition.count}`}/>
       )
     }
     case ConditionType.PerCardWithCost: {
       return (
-        <Trans defaults={condition.orGreater ? 'per.cost.up' : 'per.cost'} values={{ cost: condition.cost }}/>
+        <Trans i18nKey={condition.orGreater ? 'per.cost.up' : 'per.cost'} values={{ cost: condition.cost }}/>
       )
     }
     case ConditionType.PerCardWithDiscount: {
       return (
-        <Trans defaults="per.discount"/>
+        <Trans i18nKey="per.discount"/>
       )
     }
     case ConditionType.IfCardFlippedDown: {
       return (
-        <Trans defaults="if.flipped"/>
+        <Trans i18nKey="if.flipped"/>
       )
     }
     case ConditionType.PerCardWithPurse: {
       return (
-        <Trans defaults="per.card-with-purse"/>
+        <Trans i18nKey="per.card-with-purse"/>
       )
     }
     case ConditionType.PerGoldInPurse: {
       return (
-        <Trans defaults="per.purse" values={{ gold: condition.limit }}/>
+        <Trans i18nKey="per.purse" values={{ gold: condition.limit }}/>
       )
     }
     case ConditionType.PerGoldInAllPurses: {
       return (
-        <Trans defaults="per.gold-on-purse"/>
+        <Trans i18nKey="per.gold-on-purse"/>
       )
     }
     case ConditionType.PerFullPosition: {
       return (
-        <Trans defaults="per.slot.full"/>
+        <Trans i18nKey="per.slot.full"/>
       )
     }
     case ConditionType.PerEmptyPosition: {
       return (
-        <Trans defaults="per.slot.empty"/>
+        <Trans i18nKey="per.slot.empty"/>
       )
     }
     case ConditionType.IfPosition: {
-      if (isBorder(condition.position)) return <Trans defaults="if.position.border"/>
-      if (isCorner(condition.position)) return <Trans defaults="if.position.corner"/>
-      if (isColumn(condition.position)) return <Trans defaults="if.position.column" values={{ column: condition.position[0].indexOf(X) + 1 }}/>
-      return <Trans defaults="if.position.line" values={{ line: condition.position.findIndex(v => v[0]) + 1 }}/>
+      if (isBorder(condition.position)) return <Trans i18nKey="if.position.border"/>
+      if (isCorner(condition.position)) return <Trans i18nKey="if.position.corner"/>
+      if (isColumn(condition.position)) return <Trans i18nKey="if.position.column" values={{ column: condition.position[0].indexOf(X) + 1 }}/>
+      return <Trans i18nKey="if.position.line" values={{ line: condition.position.findIndex(v => v[0]) + 1 }}/>
     }
     case ConditionType.BestNeighbor: {
       if (condition.condition.type === ConditionType.PerShield) {
         return (
-          <Trans defaults="per.shield.neighbor">
+          <Trans i18nKey="per.shield.neighbor">
             <Picture css={mini} src={shieldImages[condition.condition.shield]}/>
           </Trans>
         )
       }
 
       return (
-        <Trans defaults="per.place.castle.neighbor"/>
+        <Trans i18nKey="per.place.castle.neighbor"/>
       )
     }
   }

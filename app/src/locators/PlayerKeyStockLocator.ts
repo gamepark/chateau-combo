@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { playerPositions, Position } from './TableauLocator'

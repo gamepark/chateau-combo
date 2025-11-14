@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { coins } from '@gamepark/chateau-combo/material/Coin'
@@ -121,7 +120,7 @@ export class ChateauComboScoringDescription implements ScoringDescription {
       case ScoringKeys.Gold:
         return (
           <div css={centeredCss}>
-            <Trans defaults="scoring.gold.tie"
+            <Trans i18nKey="scoring.gold.tie"
                    components={{
                      gold: <Picture css={mini} src={Gold}/>
                    }}
@@ -130,7 +129,7 @@ export class ChateauComboScoringDescription implements ScoringDescription {
         )
       case ScoringKeys.Total:
       default:
-        return <div css={[bold, centeredCss]}><Trans defaults="scoring.total"/></div>
+        return <div css={[bold, centeredCss]}><Trans i18nKey="scoring.total"/></div>
     }
   }
 

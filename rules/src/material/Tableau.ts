@@ -1,6 +1,5 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import { range, uniq } from 'lodash'
-import sumBy from 'lodash/sumBy'
+import { range, sumBy, uniq } from 'es-toolkit'
 import { PlayerId } from '../PlayerId'
 import { Card, CardId, getCardPlace } from './Card'
 import { cardCharacteristics, Shield, shields } from './CardCharacteristics'
@@ -140,7 +139,7 @@ export class Tableau extends MaterialRulesPart {
   }
 
   getDiscount(place: Place) {
-    let tableau = this
+    const tableau = this
       .material(MaterialType.Card)
       .location(LocationType.Tableau)
       .player(this.player)

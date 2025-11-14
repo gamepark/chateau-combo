@@ -2,7 +2,7 @@ import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { TableauHelper } from '@gamepark/chateau-combo/rules/helpers/TableauHelper'
 import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, isMoveItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import isEqual from 'lodash/isEqual'
+import { isEqual } from 'es-toolkit'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 
 export enum Position {

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { coins } from '@gamepark/chateau-combo/material/Coin'
@@ -20,13 +19,13 @@ export const GoldCoinHelp: FC<MaterialHelpProps> = (props) => {
     <>
       <h2 css={titleCss}>{t('gold')}</h2>
       <p>
-        <Trans defaults="gold.help" values={{ place: item.location!.id }}>
+        <Trans i18nKey="gold.help" values={{ place: item.location!.id }}>
           <strong/>
         </Trans>
       </p>
       {location?.type === LocationType.PlayerGoldStock && (
         <p>
-          <Trans defaults={itsMe ? 'gold.you' : 'gold.player'}
+          <Trans i18nKey={itsMe ? 'gold.you' : 'gold.player'}
                  values={{
                    player: name,
                    gold: rules.material(MaterialType.GoldCoin).money(coins).location(LocationType.PlayerGoldStock).player(item.location?.player).count
@@ -35,7 +34,7 @@ export const GoldCoinHelp: FC<MaterialHelpProps> = (props) => {
       )}
       {location?.type === LocationType.OnCard && (
         <p>
-          <Trans defaults={'gold.card'}
+          <Trans i18nKey={'gold.card'}
                  values={{
                    gold: rules.material(MaterialType.GoldCoin).money(coins).location(LocationType.OnCard).parent(item.location?.parent).count
                  }}/>

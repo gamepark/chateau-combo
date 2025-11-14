@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Card } from '@gamepark/chateau-combo/material/Card'
 import Duchess from '../images/cards/fr/cartesChCombo_ChC.jpg'
 import Steward from '../images/cards/fr/cartesChCombo_ChC10.jpg'

@@ -1,11 +1,10 @@
-/** @jsxImportSource @emotion/react */
 import { FailuresDialog, FullscreenDialog, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, useGame } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api'
 import { useEffect, useState } from 'react'
 import { GameDisplay } from './GameDisplay'
 import { Headers } from './headers/Headers'
 
-export default function App() {
+export function App() {
   const game = useGame<MaterialGame>()
   const [isJustDisplayed, setJustDisplayed] = useState(true)
   const [isImagesLoading, setImagesLoading] = useState(true)

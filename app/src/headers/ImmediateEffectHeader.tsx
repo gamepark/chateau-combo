@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ChateauComboRules } from "@gamepark/chateau-combo/ChateauComboRules"
 import { EffectType } from "@gamepark/chateau-combo/material/Effect"
 import { MaterialType } from "@gamepark/chateau-combo/material/MaterialType"

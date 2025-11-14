@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Shield } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { Picture } from '@gamepark/react-game'
@@ -11,7 +10,7 @@ export const ShieldDistributionHelp = () => {
   return <>
     <h2>{t('help.shield-distribution')}</h2>
     <p>
-      <Trans defaults="card.shield.help">
+      <Trans i18nKey="card.shield.help">
         <Picture css={mini} src={shieldImages[Shield.Nobility]}/>
         <Picture css={mini} src={shieldImages[Shield.Faith]}/>
         <Picture css={mini} src={shieldImages[Shield.Scholarship]}/>

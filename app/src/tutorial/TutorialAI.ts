@@ -4,7 +4,7 @@ import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import { GameAI } from '@gamepark/react-client'
 import { isDeleteItem, isMoveItem, MaterialGame } from '@gamepark/rules-api'
-import { sample } from 'lodash'
+import { sample } from 'es-toolkit'
 
 export const TutorialAI: GameAI = (game: MaterialGame, player: number) => {
   let legalMoves = new ChateauComboRules(game).getLegalMoves(player)

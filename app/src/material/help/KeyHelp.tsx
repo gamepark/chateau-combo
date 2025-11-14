@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { keys } from '@gamepark/chateau-combo/material/Key'
@@ -27,13 +26,13 @@ export const KeyHelp: FC<MaterialHelpProps> = (props) => {
         </p>
       )}
       <p>
-        <Trans defaults="keys.help" values={{ place: item.location!.id }}>
+        <Trans i18nKey="keys.help" values={{ place: item.location!.id }}>
           <strong/>
         </Trans>
       </p>
       {location?.type === LocationType.PlayerKeyStock && (
         <p>
-          <Trans defaults={itsMe ? 'keys.you' : 'keys.player'}
+          <Trans i18nKey={itsMe ? 'keys.you' : 'keys.player'}
                  values={{
                    player: name,
                    keys: rules.material(MaterialType.Key).money(keys).location(LocationType.PlayerKeyStock).player(item.location?.player).count

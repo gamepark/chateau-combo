@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
@@ -11,7 +10,7 @@ export const BuyCardHeader = () => {
   const itsMe = player && player === activePlayer
   const playerName = usePlayerName(activePlayer)
   return (
-    <Trans defaults={itsMe ? "buy.you" : "buy.player"} values={{ player: playerName }}>
+    <Trans i18nKey={itsMe ? "buy.you" : "buy.player"} values={{ player: playerName }}>
       <strong/>
     </Trans>
   )

@@ -12,6 +12,8 @@ class KeyDescription extends MoneyDescription {
     3: Key3
   }
 
+  transparency = true
+
   getSize(itemId: number): ComponentSize {
     return itemId === 3 ? { width: 3.315, height: 3.4 } : { width: 1.67, height: 3 }
   }

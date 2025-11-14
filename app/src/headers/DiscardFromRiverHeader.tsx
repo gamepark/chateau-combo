@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { DiscardFromRiverRule } from '@gamepark/chateau-combo/rules/DiscardFromRiverRule'
 import { useGame, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
@@ -13,7 +12,7 @@ export const DiscardFromRiverHeader = () => {
   const itsMe = player && player === activePlayer
   const playerName = usePlayerName(activePlayer)
   return (
-    <Trans defaults={itsMe ? "discard.you" : "discard.player"} values={{ player: playerName, place: discardRule.discardPlace }}>
+    <Trans i18nKey={itsMe ? "discard.you" : "discard.player"} values={{ player: playerName, place: discardRule.discardPlace }}>
       <strong/>
     </Trans>
   )
