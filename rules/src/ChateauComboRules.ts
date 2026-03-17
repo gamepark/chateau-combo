@@ -1,12 +1,13 @@
 import { CompetitiveScore, FillGapStrategy, HiddenMaterialRules, hideFront, MaterialGame, MaterialMove, PositiveSequenceStrategy } from '@gamepark/rules-api'
-import { coins } from './material/Coin'
-import { keys } from './material/Key'
 import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
-import { Tableau } from './material/Tableau'
+import { ScoringHelper } from './material/ScoringHelper'
 import { PlayerId } from './PlayerId'
+import { ActivateAdjacentAbilityRule } from './rules/ActivateAdjacentAbilityRule'
+import { ActivateLockAfterBuyRule } from './rules/ActivateLockAfterBuyRule'
 import { BuyCardRule } from './rules/BuyCardRule'
 import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
+import { DiscardEntireRiverRule } from './rules/DiscardEntireRiverRule'
 import { DiscardFromRiverRule } from './rules/DiscardFromRiverRule'
 import { EndGameRule } from './rules/EndGameRule'
 import { EndOfTurnRule } from './rules/EndOfTurnRule'
@@ -29,7 +30,10 @@ export class ChateauComboRules extends HiddenMaterialRules<PlayerId, MaterialTyp
     [RuleId.EndOfTurn]: EndOfTurnRule,
     [RuleId.DiscardFromRiver]: DiscardFromRiverRule,
     [RuleId.ChooseBetween]: ChooseBetweenRule,
-    [RuleId.EndGame]: EndGameRule
+    [RuleId.EndGame]: EndGameRule,
+    [RuleId.DiscardEntireRiver]: DiscardEntireRiverRule,
+    [RuleId.ActivateAdjacentAbility]: ActivateAdjacentAbilityRule,
+    [RuleId.ActivateLockAfterBuy]: ActivateLockAfterBuyRule
   }
 
   locationsStrategies = {
@@ -47,12 +51,12 @@ export class ChateauComboRules extends HiddenMaterialRules<PlayerId, MaterialTyp
   }
 
   getScore(player: PlayerId): number {
-    return this.material(MaterialType.Key).money(keys).player(player).count + new Tableau(this.game, player).score
+    return new ScoringHelper(this.game, player).totalScore
   }
 
   getTieBreaker(tieBreaker: number, player: PlayerId) {
     if (tieBreaker === 1) {
-      return this.material(MaterialType.GoldCoin).money(coins).location(LocationType.PlayerGoldStock).player(player).count
+      return new ScoringHelper(this.game, player).goldCount
     }
     return
   }

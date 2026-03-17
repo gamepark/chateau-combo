@@ -91,6 +91,24 @@ export class Tableau extends MaterialRulesPart {
         return condition.position[y!][x!] ? 1 : 0
       case ConditionType.BestNeighbor:
         return Math.max(...this.neighbors.map(neighbor => new Tableau(this.game, neighbor).countCondition(condition.condition)))
+      case ConditionType.PerDifferentCost:
+        return uniq(this.cards.filter(isNotNull).map(card => cardCharacteristics[card].cost)).length
+      case ConditionType.SumOfCostsInRow:
+        return sumBy(this.tableau[y!], card => card ? cardCharacteristics[card].cost : 0)
+      case ConditionType.SumOfCostsInColumn:
+        return sumBy(this.tableau.map(row => row[x!]), card => card ? cardCharacteristics[card].cost : 0)
+      case ConditionType.IfNoDiscount:
+        return this.cards.some(card => card && cardCharacteristics[card].effects.some(e => e.type === EffectType.Discount)) ? 0 : 1
+      case ConditionType.IfNoPurse:
+        return this.cards.some(card => card && hasPurse(card)) ? 0 : 1
+      case ConditionType.IfNoFaceDown:
+        return this.cards.every(isNotNull) ? 1 : 0
+      case ConditionType.IfShieldInRow:
+        return this.countShields(condition.shield, this.tableau[y!]) > 0 ? 1 : 0
+      case ConditionType.IfShieldInColumn:
+        return this.countShields(condition.shield, this.tableau.map(l => l[x!])) > 0 ? 1 : 0
+      case ConditionType.PerLockCard:
+        return this.countCards(card => !!cardCharacteristics[card].outOfTheOubliette)
       default:
         return 0
     }

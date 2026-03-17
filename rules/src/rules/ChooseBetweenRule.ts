@@ -1,4 +1,5 @@
 import { CustomMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { ChooseBetween, Effect } from '../material/Effect'
 import { MaterialType } from '../material/MaterialType'
@@ -23,15 +24,15 @@ export class ChooseBetweenRule extends PlayerTurnRule {
   get placedCard() {
     return this
         .material(MaterialType.Card)
-        .getItem(this.remind(Memory.PlacedCard))!
+        .getItem<CardId>(this.remind(Memory.PlacedCard))!
   }
 
   get effect1ToPlay() {
-    return (cardCharacteristics[this.placedCard.id.front].effects[0] as ChooseBetween).effect1
+    return (cardCharacteristics[this.placedCard.id.front!].effects[0] as ChooseBetween).effect1
   }
 
   get effect2ToPlay() {
-    return (cardCharacteristics[this.placedCard.id.front].effects[0] as ChooseBetween).effect2
+    return (cardCharacteristics[this.placedCard.id.front!].effects[0] as ChooseBetween).effect2
   }
 
 

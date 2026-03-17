@@ -1,4 +1,5 @@
 import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coins } from '../material/Coin'
 import { ConditionType } from '../material/Condition'
@@ -16,7 +17,7 @@ export class EndGameRule extends MaterialRulesPart {
     for (const player of this.game.players) {
       const cards = this.getPanoramaWithoutHiddenCards(player)
       for (const [index, card] of cards.entries) {
-        const scoring = cardCharacteristics[card.id.front].scoring
+        const scoring = cardCharacteristics[(card.id as CardId).front!].scoring
         if (scoring.condition.type === ConditionType.PerGoldInPurse) {
           const playerGold = coinsMoney.location(LocationType.PlayerGoldStock).player(player).count
           if (playerGold === 0) break

@@ -1,60 +1,52 @@
 import { css } from '@emotion/react'
-import { usePlayers } from '@gamepark/react-game'
+import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
+import { PlayerId } from '@gamepark/chateau-combo/PlayerId'
+import { usePlayerId, usePlayers, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
-import { createPortal } from 'react-dom'
 import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
 
-export const PlayerPanels: FC<any> = () => {
-  const players = usePlayers({ sortFromMe: true })
-  const root = document.getElementById('root')
-  if (!root) {
-    return null
-  }
+const scale = 0.6
 
-  return createPortal(
-    <>
-      {players.map((player, index) =>
-        <ChateauComboPlayerPanel player={player} key={player.id} index={index} css={[absolute, positionCss[players.length - 2][index]]}/>
-      )}
-    </>,
-    root
+export const PlayerPanels: FC = () => {
+  const players = usePlayers({ sortFromMe: true })
+  const rules = useRules<ChateauComboRules>()!
+  const me = usePlayerId()
+  const viewedPlayer = (rules as any).game.view ?? me ?? players[0]?.id
+
+  const allPlayers = rules.game.players as PlayerId[]
+  const n = allPlayers.length
+
+  // Neighbor is relative to the viewed player
+  const viewedIndex = allPlayers.indexOf(viewedPlayer as PlayerId)
+  const leftNeighborId = n > 2 ? allPlayers[(viewedIndex - 1 + n) % n] : undefined
+  const rightNeighborId = n > 2 ? allPlayers[(viewedIndex + 1) % n] : undefined
+
+  return (
+    <div css={containerCss}>
+      {players.map((player) => {
+        const pid = player.id as PlayerId
+
+        return (
+          <ChateauComboPlayerPanel
+            key={pid}
+            playerId={pid}
+            isViewed={pid === viewedPlayer}
+            isLeftNeighbor={pid === leftNeighborId}
+            isRightNeighbor={pid === rightNeighborId}
+            viewedPlayer={viewedPlayer as PlayerId}
+          />
+        )
+      })}
+    </div>
   )
 }
 
-const absolute = css`
+const containerCss = css`
   position: absolute;
+  right: ${0.5 / scale}em;
+  top: ${1 / scale}em;
+  font-size: ${scale}em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
 `
-
-const topLeft = css`
-  left: 2em;
-  top: 10em;
-`
-
-const topRight = css`
-  right: 2em;
-  top: 10em;
-`
-
-const bottomLeft = css`
-  left: 2em;
-  bottom: 2em;
-`
-
-const bottomRight = css`
-  right: 2em;
-  bottom: 2em;
-`
-
-const topCenter = css`
-  left: 50%;
-  top: 10em;
-  transform: translateX(-32em);
-`
-
-
-const positionCss = [
-  [topLeft, topRight], // 2 players
-  [bottomLeft, topCenter, bottomRight], // 3 players
-  [bottomLeft, topLeft, topRight, bottomRight], // 4 players
-  [bottomLeft, topLeft, topCenter, topRight, bottomRight] // 4 players
-]

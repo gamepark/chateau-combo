@@ -1,45 +1,63 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import { MaterialGameAnimations } from '@gamepark/react-game'
-import { isCreateItemType } from '@gamepark/rules-api/dist/material/moves/items/CreateItem'
-import { isDeleteItemType } from '@gamepark/rules-api/dist/material/moves/items/DeleteItem'
-import { isMoveItemType } from '@gamepark/rules-api/dist/material/moves/items/MoveItem'
+import { isCreateItemType, isDeleteItemType, isMoveItemType } from '@gamepark/rules-api'
+import { besidePanelLocator, onPlayerPanelLocator } from '../locators/OnPlayerPanelLocator'
+import { getViewPlayer } from '../locators/panelCoordinates'
 
 export const chateauComboAnimations = new MaterialGameAnimations()
 
-chateauComboAnimations
-  .when()
-  .rule(RuleId.KeyEffect)
-  .move((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard)
-  .duration(0.3)
+const isKeyCreate = isCreateItemType(MaterialType.Key)
+const isGoldCreate = isCreateItemType(MaterialType.GoldCoin)
+const isKeyDelete = isDeleteItemType(MaterialType.Key)
+const isGoldDelete = isDeleteItemType(MaterialType.GoldCoin)
+
+const toPanelTrajectory = () => ({
+  waypoints: [
+    { at: 0.6, locator: besidePanelLocator, location: (item) => ({ player: item.location.player }) },
+    { at: 1, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) }
+  ]
+})
 
 chateauComboAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.River)
-  .duration(0.3)
+  .configure((move, context) =>
+    isKeyCreate(move) && move.item.location.player !== getViewPlayer(context)
+  )
+  .duration(1500)
+  .trajectory(toPanelTrajectory)
 
 chateauComboAnimations
-  .when()
-  .move((move, context) => isMoveItemType(MaterialType.Card)(move)
-    && move.location.rotation !== context.rules.material(MaterialType.Card).getItem(move.itemIndex)!.location.rotation)
-  .duration(0.3)
+  .configure((move, context) =>
+    isGoldCreate(move) && move.item.location.player !== getViewPlayer(context)
+  )
+  .duration(1500)
+  .trajectory(toPanelTrajectory)
+
+// Card to tableau — other player: via beside panel then panel
+const isCardMove = isMoveItemType(MaterialType.Card)
 
 chateauComboAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tableau)
-  .mine()
-  .duration(0.5)
+  .configure((move, context) =>
+    isCardMove(move) && move.location.type === LocationType.Tableau
+    && move.location.player !== getViewPlayer(context)
+  )
+  .duration(1500)
+  .trajectory(() => ({
+    waypoints: [
+      { at: 0.6, locator: besidePanelLocator, location: (item) => ({ player: item.location.player }), offset: { x: -3 } },
+      { at: 1, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) }
+    ]
+  }))
 
-
+// Spend key/gold — other player: from panel
 chateauComboAnimations
-  .when()
-  .move((move) => isDeleteItemType(MaterialType.Key)(move))
-  .mine()
-  .duration(0.5)
-
-
-chateauComboAnimations
-  .when()
-  .move((move) => isMoveItemType(MaterialType.Key)(move) || isMoveItemType(MaterialType.GoldCoin)(move) || isCreateItemType(MaterialType.Key)(move) || isCreateItemType(MaterialType.GoldCoin)(move) || isDeleteItemType(MaterialType.GoldCoin)(move))
-  .duration(0.8)
+  .configure((move, context) =>
+    (isKeyDelete(move) || isGoldDelete(move))
+    && context.rules.material(move.itemType).getItem(move.itemIndex)?.location.player !== getViewPlayer(context)
+  )
+  .duration(1000)
+  .trajectory(() => ({
+    waypoints: [
+      { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) }
+    ]
+  }))

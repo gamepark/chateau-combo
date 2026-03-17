@@ -1,39 +1,44 @@
 import { css } from '@emotion/react'
-import { GameTable, GameTableNavigation } from '@gamepark/react-game'
-import { FC } from 'react'
+import { useDndMonitor } from '@dnd-kit/core'
+import { DevToolEntry, DevToolsHub, GameTable, GameTableNavigation, usePlay, usePlayerId } from '@gamepark/react-game'
+import { MaterialMoveBuilder } from '@gamepark/rules-api'
+import { FC, lazy, Suspense, useCallback, useState } from 'react'
 import { PlayerPanels } from './panels/PlayerPanels'
 
-type GameDisplayProps = {
-  players: number
+const CardDebugViewer = import.meta.env.DEV ? lazy(() => import('./debug/CardDebugViewer').then(m => ({ default: m.CardDebugViewer }))) : null
+
+const SwitchViewOnDrag = () => {
+  const play = usePlay()
+  const me = usePlayerId()
+  const onDragStart = useCallback(() => {
+    if (me) {
+      play(MaterialMoveBuilder.changeView(me), { transient: true })
+    }
+  }, [me, play])
+  useDndMonitor({ onDragStart })
+  return null
 }
 
-export const GameDisplay: FC<GameDisplayProps> = ({ players }) => {
-  return <GameTable {...(players === 2 ? tableSize2Players : players === 3 ? tableSize3Players : tableSize)}
-                    css={process.env.NODE_ENV === 'development' && css`border: 1px solid white;`}>
-    <GameTableNavigation css={players === 2 ? twoPlayersNavigationCss : players === 3 ? threePlayersNavigationCss : navigationCss}/>
-    <PlayerPanels/>
-  </GameTable>
+const ChateauComboDevTools: FC = () => {
+  const [showCards, setShowCards] = useState(false)
+  return (
+    <>
+      <DevToolsHub>
+        <DevToolEntry icon={'\u2726'} label="Card Viewer" desc="Browse & validate cards" onClick={() => setShowCards(!showCards)}/>
+      </DevToolsHub>
+      {showCards && CardDebugViewer && <Suspense><CardDebugViewer onClose={() => setShowCards(false)}/></Suspense>}
+    </>
+  )
 }
 
-const navigationCss = css`
-  top: 50%;
-  left: auto;
-  right: 5em;
-`
-
-const twoPlayersNavigationCss = css`
-  top: auto;
-  bottom: 3em;
-  left: 50%;
-  transform: translateX(-50%);
-`
-
-const threePlayersNavigationCss = css`
-  top: 10em;
-  left: auto;
-  right: 2em;
-`
-
-const tableSize = { xMin: -63, xMax: 63, yMin: -55, yMax: 7 }
-const tableSize2Players = { xMin: -42, xMax: 45, yMin: -25, yMax: 22 }
-const tableSize3Players = { xMin: -50, xMax: 50, yMin: -55, yMax: 7 }
+export const GameDisplay = () => {
+  return (
+    <GameTable xMin={-37} xMax={46} yMin={-18.5} yMax={22} zoom={true}
+               css={process.env.NODE_ENV === 'development' && css`border: 1px solid white;`}>
+      <GameTableNavigation/>
+      <PlayerPanels/>
+      <SwitchViewOnDrag/>
+      {import.meta.env.DEV && <ChateauComboDevTools/>}
+    </GameTable>
+  )
+}

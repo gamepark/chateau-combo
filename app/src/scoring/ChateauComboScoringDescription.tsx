@@ -1,10 +1,6 @@
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { coins } from '@gamepark/chateau-combo/material/Coin'
-import { keys } from '@gamepark/chateau-combo/material/Key'
-import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
-import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
+import { ScoringHelper } from '@gamepark/chateau-combo/material/ScoringHelper'
 import { PlayerId } from '@gamepark/chateau-combo/PlayerId'
 import { Picture, ScoringDescription } from '@gamepark/react-game'
 import React from 'react'
@@ -36,19 +32,22 @@ enum ScoringKeys {
   Total
 }
 
+const tableauImages = [
+  [Tableau0_0, Tableau0_1, Tableau0_2],
+  [Tableau1_0, Tableau1_1, Tableau1_2],
+  [Tableau2_0, Tableau2_1, Tableau2_2]
+]
+
+const tableauKeys = [
+  [ScoringKeys.Tableau0_0, ScoringKeys.Tableau0_1, ScoringKeys.Tableau0_2],
+  [ScoringKeys.Tableau1_0, ScoringKeys.Tableau1_1, ScoringKeys.Tableau1_2],
+  [ScoringKeys.Tableau2_0, ScoringKeys.Tableau2_1, ScoringKeys.Tableau2_2]
+]
+
 export class ChateauComboScoringDescription implements ScoringDescription {
   getScoringKeys() {
-
     return [
-      ScoringKeys.Tableau0_0,
-      ScoringKeys.Tableau0_1,
-      ScoringKeys.Tableau0_2,
-      ScoringKeys.Tableau1_0,
-      ScoringKeys.Tableau1_1,
-      ScoringKeys.Tableau1_2,
-      ScoringKeys.Tableau2_0,
-      ScoringKeys.Tableau2_1,
-      ScoringKeys.Tableau2_2,
+      ...tableauKeys.flat(),
       ScoringKeys.Keys,
       ScoringKeys.Total,
       ScoringKeys.Gold
@@ -56,77 +55,18 @@ export class ChateauComboScoringDescription implements ScoringDescription {
   }
 
   getScoringHeader(key: ScoringKeys) {
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (tableauKeys[y][x] === key) {
+          return <div css={centeredCss}><Picture css={mini} src={tableauImages[y][x]}/></div>
+        }
+      }
+    }
     switch (key) {
-      case ScoringKeys.Tableau0_0:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau0_0}/>
-          </div>
-        )
-      case ScoringKeys.Tableau0_1:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau0_1}/>
-          </div>
-        )
-      case ScoringKeys.Tableau0_2:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau0_2}/>
-          </div>
-        )
-      case ScoringKeys.Tableau1_0:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau1_0}/>
-          </div>
-        )
-      case ScoringKeys.Tableau1_1:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau1_1}/>
-          </div>
-        )
-      case ScoringKeys.Tableau1_2:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau1_2}/>
-          </div>
-        )
-      case ScoringKeys.Tableau2_0:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau2_0}/>
-          </div>
-        )
-      case ScoringKeys.Tableau2_1:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau2_1}/>
-          </div>
-        )
-      case ScoringKeys.Tableau2_2:
-        return (
-          <div css={centeredCss}>
-            <Picture css={mini} src={Tableau2_2}/>
-          </div>
-        )
       case ScoringKeys.Keys:
-        return (
-          <div css={centeredCss}>
-            <Picture css={[mini, keyCss ]} src={Key}/>
-          </div>
-        )
+        return <div css={centeredCss}><Picture css={[mini, keyCss]} src={Key}/></div>
       case ScoringKeys.Gold:
-        return (
-          <div css={centeredCss}>
-            <Trans i18nKey="scoring.gold.tie"
-                   components={{
-                     gold: <Picture css={mini} src={Gold}/>
-                   }}
-                   />
-          </div>
-        )
+        return <div css={centeredCss}><Trans i18nKey="scoring.gold.tie" components={{ gold: <Picture css={mini} src={Gold}/> }}/></div>
       case ScoringKeys.Total:
       default:
         return <div css={[bold, centeredCss]}><Trans i18nKey="scoring.total"/></div>
@@ -134,33 +74,22 @@ export class ChateauComboScoringDescription implements ScoringDescription {
   }
 
   getScoringPlayerData(key: ScoringKeys, player: PlayerId, rules: ChateauComboRules) {
-    const tableau = new Tableau(rules.game, player)
+    const scoring = new ScoringHelper(rules.game, player)
+    for (let y = 0; y < 3; y++) {
+      for (let x = 0; x < 3; x++) {
+        if (tableauKeys[y][x] === key) {
+          return scoring.getCardScore(x, y)
+        }
+      }
+    }
     switch (key) {
-      case ScoringKeys.Tableau0_0:
-        return tableau.getCardScore(0, 0)
-      case ScoringKeys.Tableau0_1:
-        return tableau.getCardScore(1, 0)
-      case ScoringKeys.Tableau0_2:
-        return tableau.getCardScore(2, 0)
-      case ScoringKeys.Tableau1_0:
-        return tableau.getCardScore(0, 1)
-      case ScoringKeys.Tableau1_1:
-        return tableau.getCardScore( 1, 1)
-      case ScoringKeys.Tableau1_2:
-        return tableau.getCardScore(2, 1)
-      case ScoringKeys.Tableau2_0:
-        return tableau.getCardScore(0, 2)
-      case ScoringKeys.Tableau2_1:
-        return tableau.getCardScore(1, 2)
-      case ScoringKeys.Tableau2_2:
-        return tableau.getCardScore(2, 2)
-      case ScoringKeys.Gold:
-        return rules.material(MaterialType.GoldCoin).money(coins).location(LocationType.PlayerGoldStock).player(player).count
       case ScoringKeys.Keys:
-        return rules.material(MaterialType.Key).money(keys).location(LocationType.PlayerKeyStock).player(player).count
+        return scoring.keyScore
+      case ScoringKeys.Gold:
+        return scoring.goldCount
       case ScoringKeys.Total:
       default:
-        return tableau.score + rules.material(MaterialType.Key).money(keys).location(LocationType.PlayerKeyStock).player(player).count
+        return scoring.totalScore
     }
   }
 }

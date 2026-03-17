@@ -1,4 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { Card, CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coins } from '../material/Coin'
 import { DiscardFromRiver } from '../material/Effect'
@@ -28,7 +29,7 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
   get placedCard() {
     return this
       .material(MaterialType.Card)
-      .getItem(this.remind(Memory.PlacedCard))!
+      .getItem<CardId>(this.remind(Memory.PlacedCard))!
   }
 
   get discardRiver() {
@@ -39,14 +40,14 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
   }
 
   get discardPlace() {
-    return (cardCharacteristics[this.placedCard.id.front].effects[0] as DiscardFromRiver).river
+    return (cardCharacteristics[this.placedCard.id.front!].effects[0] as DiscardFromRiver).river
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Discard) return []
 
-    const effect = cardCharacteristics[this.placedCard.id.front].effects[0] as DiscardFromRiver
-    const discardedCardId = this.material(MaterialType.Card).getItem(move.itemIndex)!.id.front
+    const effect = cardCharacteristics[this.placedCard.id.front!].effects[0] as DiscardFromRiver
+    const discardedCardId = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)!.id.front as Card
     const discardedCardCost = cardCharacteristics[discardedCardId].cost
     const moves: MaterialMove[] = []
 
