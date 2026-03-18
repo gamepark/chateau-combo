@@ -3,9 +3,13 @@ import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'
 import { DealCardsHelper } from './helpers/DealCardsHelper'
+import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
 export class KeyEffectRule extends PlayerTurnRule {
+  get returnRule() {
+    return this.remind<RuleId>(Memory.ReturnRule) ?? RuleId.BuyCard
+  }
   getPlayerMoves(): MaterialMove[] {
     const moves: MaterialMove[] = this.discardRiver()
     const otherPlace = this.messengerPlace === Place.Castle ? Place.Village : Place.Castle
@@ -45,7 +49,7 @@ export class KeyEffectRule extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.MessengerPawn)(move)) {
       return [
-        this.startRule(RuleId.BuyCard)
+        this.startRule(this.returnRule)
       ]
     }
     if (isMoveItemType(MaterialType.Card)(move)) {
@@ -54,13 +58,13 @@ export class KeyEffectRule extends PlayerTurnRule {
         if (river.length === 2) {
           return this.discardRiver()
         } else if (river.length === 0) {
-          return new DealCardsHelper(this.game).completeRivers(this.startRule(RuleId.BuyCard))
+          return new DealCardsHelper(this.game).completeRivers(this.startRule(this.returnRule))
         }
       }
     }
 
     if (isShuffle(move)) {
-      return new DealCardsHelper(this.game).completeRivers(this.startRule(RuleId.BuyCard))
+      return new DealCardsHelper(this.game).completeRivers(this.startRule(this.returnRule))
     }
 
     return []

@@ -34,13 +34,30 @@ export class ImmediateEffectRule extends PlayerTurnRule {
         moves.push(this.startRule(RuleId.ChooseBetween))
         return moves
       }
+
+      if (firstEffectType === EffectType.DiscardEntireRiver) {
+        moves.push(this.startRule(RuleId.DiscardEntireRiver))
+        return moves
+      }
+
+      if (firstEffectType === EffectType.ActivateAdjacentAbility) {
+        moves.push(this.startRule(RuleId.ActivateAdjacentAbility))
+        return moves
+      }
     }
 
     // In all cases, the element is deleted from the stored array, as it has been processed.
     if (effects.length) {
       moves.push(...this.getPendingEffectsMoves())
     } else {
-      moves.push(this.startRule(RuleId.MoveMessenger))
+      // Restore original placed card if it was changed by ActivateAdjacentAbility
+      const original = this.remind<number>(Memory.OriginalPlacedCard)
+      if (original !== undefined) {
+        this.memorize(Memory.PlacedCard, original)
+        this.forget(Memory.OriginalPlacedCard)
+      }
+      const returnRule = this.remind<RuleId>(Memory.ReturnRule)
+      moves.push(this.startRule(returnRule ?? RuleId.MoveMessenger))
     }
 
     return moves

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { LocationDescription, Locator } from '@gamepark/react-game'
+import { LocationDescription, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import VictoryPoints from '../images/icons/VictoryPoints.png'
 

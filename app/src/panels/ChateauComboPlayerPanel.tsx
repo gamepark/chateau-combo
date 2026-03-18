@@ -138,6 +138,10 @@ const outerCss = css`
   &:active {
     transition: transform 0.08s ease-out, box-shadow 0.08s ease-out;
   }
+
+  @media only screen and (max-height: 599px) {
+    font-size: 1.15em;
+  }
 `
 
 
@@ -153,7 +157,7 @@ const panelCss = (bg: string) => css`
   box-sizing: border-box;
   border-radius: 1em;
   overflow: hidden;
-  background: url(${bg}) center / cover;
+  background: url(${bg}) top center / cover;
   box-shadow: 0 0.3em 0.8em rgba(0,0,0,0.4), inset 0 0 0 0.12em rgba(255,255,255,0.12);
 `
 

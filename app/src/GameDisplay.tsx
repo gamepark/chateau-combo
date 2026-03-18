@@ -1,8 +1,12 @@
 import { css } from '@emotion/react'
 import { useDndMonitor } from '@dnd-kit/core'
+import { ChateauComboOptions } from '@gamepark/chateau-combo/ChateauComboOptions'
 import { DevToolEntry, DevToolsHub, GameTable, GameTableNavigation, usePlay, usePlayerId } from '@gamepark/react-game'
+import { useOptions } from '@gamepark/react-client'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { FC, lazy, Suspense, useCallback, useState } from 'react'
+import { ExtensionDialogContext } from './ExtensionContext'
+import { ExtensionInfoDialog, useExtensionDialog } from './material/help/ExtensionInfoDialog'
 import { PlayerPanels } from './panels/PlayerPanels'
 
 const CardDebugViewer = import.meta.env.DEV ? lazy(() => import('./debug/CardDebugViewer').then(m => ({ default: m.CardDebugViewer }))) : null
@@ -32,13 +36,20 @@ const ChateauComboDevTools: FC = () => {
 }
 
 export const GameDisplay = () => {
+  const options = useOptions<ChateauComboOptions>()
+  const hasExtension = !!options?.expansion1
+  const { show, dismiss, reopen } = useExtensionDialog(hasExtension)
+
   return (
-    <GameTable xMin={-37} xMax={46} yMin={-18.5} yMax={22} zoom={true}
-               css={process.env.NODE_ENV === 'development' && css`border: 1px solid white;`}>
-      <GameTableNavigation/>
-      <PlayerPanels/>
-      <SwitchViewOnDrag/>
-      {import.meta.env.DEV && <ChateauComboDevTools/>}
-    </GameTable>
+    <ExtensionDialogContext.Provider value={reopen}>
+      <GameTable xMin={-37} xMax={46} yMin={-18.5} yMax={22} zoom={true}
+                 css={process.env.NODE_ENV === 'development' && css`border: 1px solid white;`}>
+        <GameTableNavigation/>
+        <PlayerPanels/>
+        <SwitchViewOnDrag/>
+        {import.meta.env.DEV && <ChateauComboDevTools/>}
+      </GameTable>
+      {show && <ExtensionInfoDialog onClose={dismiss}/>}
+    </ExtensionDialogContext.Provider>
   )
 }

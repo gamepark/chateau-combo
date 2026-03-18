@@ -16,22 +16,23 @@ export const KeyHelp: FC<MaterialHelpProps> = (props) => {
   const playerId = usePlayerId()
   const itsMe = playerId === item.location?.player
   const name = usePlayerName(item.location?.player)
+  const isPlayerStock = location?.type === LocationType.PlayerKeyStock
   const spendKey = useLegalMove((move) => isDeleteItemType(MaterialType.Key)(move) && move.itemIndex === itemIndex)
   return (
     <>
       <h2 css={titleCss}>{t('keys')}</h2>
-      {!!spendKey && (
-        <p>
-          <PlayMoveButton move={spendKey} onPlay={closeDialog}>{t('move.spend-key')}</PlayMoveButton>
-        </p>
+      {isPlayerStock && !!spendKey && (
+        <div css={actionsRowCss}>
+          <PlayMoveButton move={spendKey} onPlay={closeDialog}>{t('move.spend-key', 'Spend this key')}</PlayMoveButton>
+        </div>
       )}
-      <p>
+      <div css={infoBlockCss}>
         <Trans i18nKey="keys.help" values={{ place: item.location!.id }}>
           <strong/>
         </Trans>
-      </p>
+      </div>
       {location?.type === LocationType.PlayerKeyStock && (
-        <p>
+        <p css={locationLineCss}>
           <Trans i18nKey={itsMe ? 'keys.you' : 'keys.player'}
                  values={{
                    player: name,
@@ -44,5 +45,36 @@ export const KeyHelp: FC<MaterialHelpProps> = (props) => {
 }
 
 const titleCss = css`
+  font-family: 'MedievalSharp', cursive;
+  color: #3A2410;
+  text-shadow: 0 0.06em 0 rgba(255, 255, 255, 0.3);
   margin-bottom: 0.5em !important;
+`
+
+const actionsRowCss = css`
+  display: flex;
+  gap: 0.8em;
+  flex-wrap: wrap;
+  margin-bottom: 1em;
+`
+
+const infoBlockCss = css`
+  color: #5C3A1E;
+  font-size: 0.92em;
+  line-height: 1.55;
+  padding: 0.4em 0.7em;
+  margin-bottom: 1em;
+  background: linear-gradient(135deg, rgba(140, 110, 50, 0.07), rgba(140, 110, 50, 0.02));
+  border-left: 0.25em solid #D4A828;
+  border-radius: 0 0.3em 0.3em 0;
+  box-shadow: 0 0.06em 0.18em rgba(0, 0, 0, 0.06);
+`
+
+const locationLineCss = css`
+  font-size: 0.82em;
+  color: #8B6B4A;
+  font-style: italic;
+  margin-top: auto;
+  padding-top: 0.5em;
+  border-top: 0.06em dashed rgba(140, 110, 50, 0.25);
 `

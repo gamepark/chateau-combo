@@ -1,0 +1,6 @@
+export const gold = '#D4A828'
+export const goldLight = '#E8D070'
+export const goldDark = '#8B6914'
+export const brownDark = '#3A2410'
+export const brown = '#5C3A1E'
+export const brownLight = '#8B6B4A'

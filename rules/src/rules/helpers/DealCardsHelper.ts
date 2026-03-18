@@ -32,6 +32,9 @@ export class DealCardsHelper extends MaterialRulesPart {
         }
       }
     }
+    if (moves.length === 0) {
+      moves.push(moveOnceComplete)
+    }
     return moves
   }
 

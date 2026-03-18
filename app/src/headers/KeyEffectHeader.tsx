@@ -2,9 +2,10 @@ import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { KeyEffectRule } from '@gamepark/chateau-combo/rules/KeyEffectRule'
-import { PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { isMoveItemType, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
+import { WaxSealButton } from '../theme/WaxSealButton'
 
 export const KeyEffectHeader = () => {
   const rules = useRules<ChateauComboRules>()!
@@ -19,8 +20,8 @@ export const KeyEffectHeader = () => {
       player: name,
       place: new KeyEffectRule(rules.game).messengerPlace
     }}>
-      <PlayMoveButton move={moveMessenger}/>
-      <PlayMoveButton move={discardCards}/>
+      <WaxSealButton move={moveMessenger} auto={99}/>
+      <WaxSealButton move={discardCards}/>
     </Trans>
   )
 }

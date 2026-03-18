@@ -73,9 +73,28 @@ export class BuyCardRule extends PlayerTurnRule {
       ]
     } else {
       const card = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)
+      const characteristics = cardCharacteristics[card.id!.front!]
       this.memorize(Memory.PlacedCard, move.itemIndex)
-      this.memorize(Memory.PendingEffects, [...cardCharacteristics[card.id!.front!].effects])
-      return new ImmediateEffectRule(this.game).getPendingEffectsMoves()
+
+      const moves: MaterialMove[] = []
+
+      if (characteristics.outOfTheOubliette) {
+        // Place a key from supply on the card (lock ability — effect triggered later)
+        moves.push(...this.material(MaterialType.Key).money(keys).addMoney(1, {
+          type: LocationType.KeyOnCard, player: this.player, parent: move.itemIndex
+        }))
+      }
+
+      if (characteristics.outOfTheOubliette) {
+        // Lock cards: go to ActivateLockAfterBuy to let player choose to activate or not
+        moves.push(this.startRule(RuleId.ActivateLockAfterBuy))
+      } else if (characteristics.effects.length) {
+        this.memorize(Memory.PendingEffects, [...characteristics.effects])
+        moves.push(...new ImmediateEffectRule(this.game).getPendingEffectsMoves())
+      } else {
+        moves.push(this.startRule(RuleId.MoveMessenger))
+      }
+      return moves
     }
   }
 }

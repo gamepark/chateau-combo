@@ -8,6 +8,7 @@ import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
+import { CustomMoveType } from '@gamepark/chateau-combo/rules/CustomMoveType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import {
   MaterialHelpProps,
@@ -21,11 +22,14 @@ import {
   useRules,
   useUndo
 } from '@gamepark/react-game'
-import { isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { MaterialGame } from '@gamepark/rules-api/dist/material/MaterialGame'
 import { isEqual, uniq } from 'es-toolkit'
 import { FC, ReactElement, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { useOpenExtensionDialog } from '../../ExtensionContext'
+import LockIcon from '../../images/icons/lock.png'
+import Gold from '../../images/tokens/Gold1.png'
 import { moveMessengerImages, shieldImages } from './Images'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
 
@@ -36,10 +40,14 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
   const { item, itemIndex, closeDialog } = props
   const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
   const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
+  const activateLock = useLegalMove((move) => isCustomMoveType(CustomMoveType.ActivateLock)(move) && move.data === itemIndex)
+  const activateAdjacent = useLegalMove((move) => isCustomMoveType(CustomMoveType.ActivateAdjacent)(move) && move.data === itemIndex)
   const isFlipped = item.id.front === undefined || !!item.location?.rotation
+  const canRotate = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.rotation)
   const buy = useLegalMoves(move => !isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Tableau && !move.location.rotation)
   const takeFaceDown = useLegalMoves(move => isFlipped && isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Tableau && move.location.rotation)
   const [undo] = useUndo()
+  const rotateMove = canRotate ? rules.material(MaterialType.Card).index(itemIndex).rotateItem(!item.location?.rotation) : undefined
   const undoSelect = useCallback(() => {
     const selectedCard = rules.material(MaterialType.Card).selected(true)
     if (selectedCard.length) undo(move => isEqual(move, selectedCard.selectItem()))
@@ -48,38 +56,47 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
   return (
     <>
       <h2 css={titleCss}>{isFlipped ? t('card.face-down') : t(`card.${item.id.front}`)}</h2>
-      {!!discardOneFromRiver && (
-        <p>
-          <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard')}</PlayMoveButton>
-        </p>
-      )}
-      {!!discardRiver && (
-        <p>
-          <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { place: discardRiver.location.id })}</PlayMoveButton>
-        </p>
-      )}
-      {buy.length === 1 &&
-        <p><PlayMoveButton move={buy[0]} onPlay={closeDialog}>{t('move.buy')}</PlayMoveButton></p>
-      }
-      {takeFaceDown.length === 1 &&
-        <p><PlayMoveButton move={takeFaceDown[0]} onPlay={closeDialog}>{t('move.place-down')}</PlayMoveButton></p>
-      }
-      {(buy.length > 1 || takeFaceDown.length > 1) &&
-        <p><PlayMoveButton move={rules.material(MaterialType.Card).index(itemIndex).selectItem()}
-                           onPlay={undoSelect} local>{t('move.select')}</PlayMoveButton></p>
-      }
-      {!isFlipped && <VisibleCard {...props} />}
-      <CardLocation {...props} />
+      {!isFlipped && <VisibleCard {...props} actions={
+        <div css={actionsRowCss}>
+          {!!discardOneFromRiver &&
+            <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard', 'Discard')}</PlayMoveButton>
+          }
+          {!!discardRiver &&
+            <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { defaultValue: 'Discard river', place: discardRiver.location.id })}</PlayMoveButton>
+          }
+          {!!activateLock &&
+            <PlayMoveButton move={activateLock} onPlay={closeDialog}>{t('move.activate-lock', 'Activate lock')}</PlayMoveButton>
+          }
+          {!!activateAdjacent &&
+            <PlayMoveButton move={activateAdjacent} onPlay={closeDialog}>{t('move.activate-adjacent', 'Activate this card')}</PlayMoveButton>
+          }
+          {buy.length === 1 &&
+            <PlayMoveButton move={buy[0]} onPlay={closeDialog}>{t('move.buy', 'Buy this card')}</PlayMoveButton>
+          }
+          {takeFaceDown.length === 1 &&
+            <PlayMoveButton move={takeFaceDown[0]} onPlay={closeDialog}>{t('move.place-down', 'Place face down')}</PlayMoveButton>
+          }
+          {(buy.length > 1 || takeFaceDown.length > 1) &&
+            <PlayMoveButton move={rules.material(MaterialType.Card).index(itemIndex).selectItem()}
+                            onPlay={undoSelect} local>{t('move.select', 'Select')}</PlayMoveButton>
+          }
+          {!!canRotate && rotateMove &&
+            <PlayMoveButton move={rotateMove} local>{t('move.rotate', 'Rotate this card')}</PlayMoveButton>
+          }
+        </div>
+      }/>}
       {isFlipped && <p>
         <PlayMoveButton move={displayLocationHelp({ type: LocationType.Shields })} local>{t('help.shield-distribution')}</PlayMoveButton>
       </p>}
+      <CardLocation {...props} />
     </>
   )
 }
 
-const VisibleCard: FC<MaterialHelpProps> = (props) => {
+const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement }> = (props) => {
   const { t } = useTranslation()
-  const { item } = props
+  const { item, actions } = props
+  const openExtensionDialog = useOpenExtensionDialog()
   const playerId = usePlayerId()
   const game = useGame<MaterialGame>()!
   if (!item.id.front) return null
@@ -93,38 +110,51 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
   const itemDiscounted = Math.max(0, characteristic.cost - (costDiscount ?? 0))
   return (
     <>
-      {!!characteristic.shields?.length && (
-        <>
-          <p>
-            <span>
-            <Trans i18nKey="card.cost" values={{ cost: characteristic.cost }}>
-              <strong/>
-            </Trans>
-            </span>&nbsp;
-            {!!costDiscount && <span>
-            <Trans i18nKey="card.cost.discount" values={{ discount: itemDiscounted }}>
-              <strong/>
-            </Trans>
-            </span>}
-          </p>
-          <p css={flexRowCss}>
-            <span>{t('card.shield', { shields: characteristic.shields.length })}</span>
+      <div css={shieldsCostRowCss}>
+        {!!characteristic.shields?.length && (
+          <div css={shieldsGroupCss}>
             {characteristic.shields.map((shield, i) => (
-              <Picture key={i} css={mini} src={shieldImages[shield]}/>
+              <Picture key={i} css={shieldIconCss} src={shieldImages[shield]}/>
             ))}
             <PlayMoveButton move={displayLocationHelp({ type: LocationType.Shields })} local>{t('help.shield-distribution')}</PlayMoveButton>
-          </p>
-        </>
-      )}
+          </div>
+        )}
+        <div css={costDisplayCss}>
+          <strong>{characteristic.cost}</strong> <Picture css={coinIconCss} src={Gold}/>
+          {!!costDiscount && <span css={discountCss}> → <strong>{itemDiscounted}</strong> <Picture css={coinIconCss} src={Gold}/></span>}
+        </div>
+      </div>
+
+      {actions}
+
       {characteristic.moveMessenger && (
-        <p>
+        <div css={messengerLineCss}>
+          <span css={messengerArrowCss}>&#10140;</span>
           <Trans i18nKey="card.messenger" values={{ place: item.id.back === Place.Village ? Place.Castle : Place.Village }}>
-            <Picture css={mini} src={moveMessengerImages[item.id.back === Place.Village ? Place.Castle : Place.Village]}/>
+            <Picture css={messengerIconCss} src={moveMessengerImages[item.id.back === Place.Village ? Place.Castle : Place.Village]}/>
           </Trans>
-        </p>
+        </div>
       )}
-      {!!effects.length && (
+
+      {!!effects.length && !characteristic.outOfTheOubliette && (
         <EffectList i18nKey="card.effect" effects={effects} getDescription={getEffectDescription}/>
+      )}
+      {!!effects.length && characteristic.outOfTheOubliette && (
+        <>
+          <div css={lockInfoCss}>
+            <Picture src={LockIcon} css={lockIconCss}/>
+            <span>
+              <Trans defaults="This is a <0>lock card</0>. A key is placed on it when purchased. Spend the key to activate the effect below."
+                     i18nKey="card.lock.info"><strong/></Trans>
+              {openExtensionDialog && (
+                <button css={extensionLinkCss} onClick={openExtensionDialog}>
+                  {t('extension.info', 'About this extension')}
+                </button>
+              )}
+            </span>
+          </div>
+          <EffectList i18nKey="card.lock" effects={getLockEffects(effects)} getDescription={getEffectDescription}/>
+        </>
       )}
       {!!chooseBetween && (
         <EffectList i18nKey="card.effect.choice" effects={[chooseBetween.effect1, chooseBetween.effect2]} getDescription={getEffectDescription}/>
@@ -132,22 +162,22 @@ const VisibleCard: FC<MaterialHelpProps> = (props) => {
       {!!discounts.length && (
         <EffectList i18nKey="card.discount" effects={discounts} getDescription={getEffectDescription}/>
       )}
+
       {!!scoring && (
         <>
-          <p css={underlineCss}>
-            <Trans i18nKey="card.scoring">
-              <strong/>
-            </Trans>
-          </p>
-          <p css={listCss}>
+          <div css={sectionHeaderScoringCss}>
+            <Trans i18nKey="card.scoring" defaults="Scoring"><strong/></Trans>
+            <span css={sectionLineScoringCss}/>
+          </div>
+          <div css={scoringBlockCss}>
             <Trans i18nKey="card.scoring.condition"
                    values={{ score: scoring.score }}
                    components={{ condition: <ConditionDetail condition={scoring.condition}/> }}/>
-          </p>
+          </div>
         </>
       )}
-    </>
 
+    </>
   )
 }
 
@@ -155,24 +185,27 @@ const EffectList: FC<{ i18nKey: string, effects: Effect[], getDescription: (effe
   const { i18nKey, effects, getDescription } = props
   return (
     <>
-      <p css={underlineCss}>
+      <div css={sectionHeaderCss}>
         <Trans i18nKey={i18nKey} values={{ effects: effects.length }}>
           <strong/>
         </Trans>
-      </p>
+        <span css={sectionLineCss}/>
+      </div>
       {effects.length === 1 && (
-        <p css={listCss}>
+        <div css={effectBlockCss}>
           {getDescription(effects[0])}
-        </p>
+        </div>
       )}
       {effects.length > 1 && (
-        <ul css={listCss}>
-          {effects.map((effect, i) => (
-            <li key={i}>
-              {getDescription(effect)}
-            </li>
-          ))}
-        </ul>
+        <div css={effectBlockCss}>
+          <ul css={effectListCss}>
+            {effects.map((effect, i) => (
+              <li key={i}>
+                {getDescription(effect)}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </>
   )
@@ -186,7 +219,7 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
   const name = usePlayerName(location?.player)
 
   return (
-    <p>
+    <p css={locationLineCss}>
       {location?.type === LocationType.Deck && (
         <Trans i18nKey="card.deck" values={{
           number: rules.material(MaterialType.Card).location(LocationType.Deck).locationId(location.id).length,
@@ -224,16 +257,11 @@ const CardLocation: FC<MaterialHelpProps> = (props) => {
 }
 
 const titleCss = css`
-  margin-bottom: 0.5em !important;
-`
-
-const flexRowCss = css`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  gap: 0.3em;
-  margin-bottom: 0.5em;
+  font-family: 'MedievalSharp', cursive;
+  color: #3A2410;
+  text-shadow: 0 0.06em 0 rgba(255, 255, 255, 0.3);
+  margin-bottom: 0.15em !important;
+  text-align: left !important;
 `
 
 const mini = css`
@@ -241,7 +269,20 @@ const mini = css`
   margin-bottom: -0.17em;
 `
 
-const getEffectDescription = (effect: Effect): ReactElement => {
+export const getLockEffects = (effects: Effect[]): Effect[] => {
+  const result: Effect[] = []
+  for (const effect of effects) {
+    if (effect.type === EffectType.DiscardEntireRiver) {
+      result.push({ type: EffectType.DiscardEntireRiver })
+      if (effect.bonus) result.push(effect.bonus)
+    } else {
+      result.push(effect)
+    }
+  }
+  return result
+}
+
+export const getEffectDescription = (effect: Effect): ReactElement => {
   switch (effect.type) {
     case EffectType.Discount: {
       if (effect.castle && effect.village) return <Trans i18nKey="card.discount.both"/>
@@ -280,6 +321,10 @@ const getEffectDescription = (effect: Effect): ReactElement => {
         </Trans>
       )
     }
+    case EffectType.DiscardEntireRiver:
+      return <Trans defaults="Discard all the cards from one row (Castle or Village), then refill it." i18nKey="card.effect.discard-entire-river"/>
+    case EffectType.ActivateAdjacentAbility:
+      return <Trans defaults="Activate the effect of one adjacent card (horizontally or vertically) in your tableau." i18nKey="card.effect.activate-adjacent"/>
     default:
       return <></>
   }
@@ -399,6 +444,10 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
       if (isColumn(condition.position)) return <Trans i18nKey="if.position.column" values={{ column: condition.position[0].indexOf(X) + 1 }}/>
       return <Trans i18nKey="if.position.line" values={{ line: condition.position.findIndex(v => v[0]) + 1 }}/>
     }
+    case ConditionType.SumOfCostsInRow:
+      return <Trans i18nKey="per.sum-costs.row"/>
+    case ConditionType.SumOfCostsInColumn:
+      return <Trans i18nKey="per.sum-costs.column"/>
     case ConditionType.BestNeighbor: {
       if (condition.condition.type === ConditionType.PerShield) {
         return (
@@ -415,16 +464,202 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
   }
 }
 
-const underlineCss = css`
-  text-decoration: underline;
-  margin-bottom: 0.7em !important;
+const locationLineCss = css`
+  font-size: 0.82em;
+  color: #8B6B4A;
+  font-style: italic;
+  margin-top: auto;
+  padding-top: 1em;
+  border-top: 0.06em dashed rgba(140, 110, 50, 0.25);
 `
 
-const listCss = css`
-  margin-top: 0 !important;
+/* --- Weathered Tome styles --- */
 
+const actionsRowCss = css`
+  display: flex;
+  gap: 0.8em;
+  flex-wrap: wrap;
+  margin-bottom: 0.8em;
+`
+
+const shieldsCostRowCss = css`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: 0.12em solid rgba(140, 110, 50, 0.15);
+`
+
+const shieldsGroupCss = css`
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  flex-wrap: wrap;
+`
+
+const shieldIconCss = css`
+  height: 1.6em;
+  filter: drop-shadow(0 0.06em 0.12em rgba(0, 0, 0, 0.3));
+  vertical-align: middle;
+  align-self: center;
+  margin-top: -0.1em;
+`
+
+const costDisplayCss = css`
+  display: flex;
+  align-items: center;
+  gap: 0.25em;
+  font-size: 1.3em;
+  font-weight: 700;
+  color: #3A2410;
+  text-shadow: 0 0.06em 0 rgba(255, 255, 255, 0.3);
+`
+
+const coinIconCss = css`
+  height: 1em;
+  vertical-align: text-bottom;
+  filter: drop-shadow(0 0.06em 0.12em rgba(0, 0, 0, 0.3));
+`
+
+const discountCss = css`
+  color: #2A7A30;
+  font-weight: 600;
+`
+
+const messengerLineCss = css`
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-size: 0.9em;
+  color: #5C3A1E;
+  margin-bottom: 1.2em;
+  padding: 0.3em 0.6em;
+  background: rgba(140, 110, 50, 0.06);
+  border-radius: 0.25em;
+  border: 0.06em solid rgba(140, 110, 50, 0.1);
+`
+
+const messengerArrowCss = css`
+  color: #8B6914;
+  font-weight: bold;
+  font-size: 1.1em;
+`
+
+const messengerIconCss = css`
+  height: 1.4em;
+`
+
+/* Section header with trailing gold line */
+const sectionHeaderCss = css`
+  font-family: 'Lilita One', cursive;
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #3A2410;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.4em !important;
+  margin-top: 1em !important;
+`
+
+const sectionLineCss = css`
+  flex: 1;
+  height: 0.12em;
+  background: linear-gradient(90deg, #D4A828 0%, rgba(140, 110, 50, 0.2) 50%, transparent 100%);
+  border-radius: 0.06em;
+`
+
+const sectionHeaderScoringCss = css`
+  font-family: 'Lilita One', cursive;
+  font-size: 0.72em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #7A1818;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.4em !important;
+  margin-top: 1em !important;
+`
+
+const sectionLineScoringCss = css`
+  flex: 1;
+  height: 0.12em;
+  background: linear-gradient(90deg, #A83030 0%, rgba(160, 40, 40, 0.2) 50%, transparent 100%);
+  border-radius: 0.06em;
+`
+
+/* Effect block with gold left bar */
+const effectBlockCss = css`
+  color: #5C3A1E;
+  font-size: 0.92em;
+  line-height: 1.55;
+  padding: 0.4em 0.7em;
+  margin-bottom: 1.2em !important;
+  background: linear-gradient(135deg, rgba(140, 110, 50, 0.07), rgba(140, 110, 50, 0.02));
+  border-left: 0.25em solid #D4A828;
+  border-radius: 0 0.3em 0.3em 0;
+  box-shadow: 0 0.06em 0.18em rgba(0, 0, 0, 0.06);
+`
+
+const effectListCss = css`
+  margin: 0;
+  padding-left: 1em;
   > li {
-    margin-bottom: 0.5em;
+    margin-bottom: 0.4em;
+  }
+`
+
+/* Scoring block with red left bar */
+const scoringBlockCss = css`
+  color: #5C3A1E;
+  font-size: 0.92em;
+  line-height: 1.55;
+  padding: 0.4em 0.7em;
+  margin-bottom: 1.2em !important;
+  background: linear-gradient(135deg, rgba(160, 40, 40, 0.06), rgba(160, 40, 40, 0.02));
+  border-left: 0.25em solid #A83030;
+  border-radius: 0 0.3em 0.3em 0;
+  box-shadow: 0 0.06em 0.18em rgba(0, 0, 0, 0.06);
+`
+
+const lockInfoCss = css`
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 0.85em;
+  color: #5C3A1E;
+  padding: 0.4em 0.6em;
+  margin-bottom: 0.5em;
+  background: rgba(100, 80, 50, 0.06);
+  border-radius: 0.3em;
+  border: 0.06em solid rgba(140, 110, 50, 0.12);
+  line-height: 1.4;
+`
+
+const lockIconCss = css`
+  height: 2.2em;
+  width: auto;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0.06em 0.12em rgba(0, 0, 0, 0.25));
+`
+
+const extensionLinkCss = css`
+  display: inline;
+  margin-left: 0.3em;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  color: #8B6914;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    color: #5C3A1E;
   }
 `
 

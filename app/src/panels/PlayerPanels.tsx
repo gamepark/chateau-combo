@@ -49,4 +49,5 @@ const containerCss = css`
   display: flex;
   flex-direction: column;
   gap: 0.8em;
+  transform: translateZ(1em);
 `

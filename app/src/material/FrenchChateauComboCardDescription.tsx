@@ -77,6 +77,18 @@ import Baker from '../images/cards/fr/cartesChCombo_ChC77.jpg'
 import Beekeeper from '../images/cards/fr/cartesChCombo_ChC78.jpg'
 import HerMajestyTheQueen from '../images/cards/fr/cartesChCombo_ChC8.jpg'
 import Baron from '../images/cards/fr/cartesChCombo_ChC9.jpg'
+import LadyInTheIronMask from '../images/cards/fr/Ext1Card1IronMask.jpg'
+import Toady from '../images/cards/fr/Ext1Card2Toady.jpg'
+import Conspirator from '../images/cards/fr/Ext1Card3Conspirator.jpg'
+import Playwright from '../images/cards/fr/Ext1Card4Playwright.jpg'
+import CardinalsHand from '../images/cards/fr/Ext1Card5CardinalHand.jpg'
+import Printer from '../images/cards/fr/Ext1Card6Printer.jpg'
+import KingOfBeggars from '../images/cards/fr/Ext1Card7KingOfBeggars.jpg'
+import ArtForger from '../images/cards/fr/Ext1Card8ArtForger.jpg'
+import Cutpurse from '../images/cards/fr/Ext1Card9Cutpurse.jpg'
+import Peddler from '../images/cards/fr/Ext1Card10Peddler.jpg'
+import PrinceOfThieves from '../images/cards/fr/Ext1Card11PrinceOfThieves.jpg'
+import FortuneTeller from '../images/cards/fr/Ext1Card12FortuneTeller.jpg'
 import { ChateauComboCardDescription } from './ChateauComboCardDescription'
 
 class FrenchChateauComboCardDescription extends ChateauComboCardDescription {
@@ -158,7 +170,19 @@ class FrenchChateauComboCardDescription extends ChateauComboCardDescription {
     [Card.Revolutionary]: Revolutionary,
     [Card.Fisherman]: Fisherman,
     [Card.Baker]: Baker,
-    [Card.Beekeeper]: Beekeeper
+    [Card.Beekeeper]: Beekeeper,
+    [Card.LadyInTheIronMask]: LadyInTheIronMask,
+    [Card.Toady]: Toady,
+    [Card.Conspirator]: Conspirator,
+    [Card.Playwright]: Playwright,
+    [Card.CardinalsHand]: CardinalsHand,
+    [Card.Printer]: Printer,
+    [Card.KingOfBeggars]: KingOfBeggars,
+    [Card.ArtForger]: ArtForger,
+    [Card.Cutpurse]: Cutpurse,
+    [Card.Peddler]: Peddler,
+    [Card.PrinceOfThieves]: PrinceOfThieves,
+    [Card.FortuneTeller]: FortuneTeller
   }
 }
 

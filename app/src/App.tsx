@@ -14,7 +14,7 @@ export function App() {
   const loading = !game || isJustDisplayed || isImagesLoading
   return (
     <>
-      {!!game && <GameDisplay players={game.players.length}/>}
+      {!!game && <GameDisplay/>}
       <LoadingScreen display={loading}
                      author={['Grégory Grard', 'Mathieu Roussel']}
                      artist="Stéphane Escapa"

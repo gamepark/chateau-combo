@@ -6,5 +6,8 @@ export enum RuleId {
   ChooseBetween,
   MoveMessenger,
   EndOfTurn,
-  EndGame
+  EndGame,
+  DiscardEntireRiver,
+  ActivateAdjacentAbility,
+  ActivateLockAfterBuy
 }

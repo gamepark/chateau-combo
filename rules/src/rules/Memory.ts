@@ -1,4 +1,9 @@
 export enum Memory {
   PlacedCard = 1,
-  PendingEffects
+  PendingEffects,
+  LockActivatedThisTurn,
+  ReturnRule,
+  ActivateLockReturnRule,
+  OriginalPlacedCard,
+  ChosenRiver
 }

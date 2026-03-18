@@ -6,10 +6,11 @@ import { CustomMoveType } from '@gamepark/chateau-combo/rules/CustomMoveType'
 import { ImmediateGainCoinEffect } from '@gamepark/chateau-combo/rules/effects/ImmediateGainCoinEffect'
 import { ImmediateGainKeyEffect } from '@gamepark/chateau-combo/rules/effects/ImmediateGainKeyEffect'
 import { ImmediateEffects } from '@gamepark/chateau-combo/rules/ImmediateEffectRule'
-import { Picture, PlayMoveButton, useGame, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { Picture, useGame, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { CustomMove, isCustomMoveType, MaterialGame } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { WaxSealButton } from '../theme/WaxSealButton'
 import Bag from '../images/icons/bag.png'
 import { goldCoinDescription } from '../material/GoldCoinDescription'
 import { keyDescription } from '../material/KeyDescription'
@@ -54,31 +55,29 @@ const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }
     case EffectType.GainKeys: {
       const gainKeyRule = new ImmediateGainKeyEffect(game)
       return (
-        <PlayMoveButton move={move}>
-          <div css={flexRowCss}><Picture css={mini} src={keyDescription.images[1]}/> x {gainKeyRule.getMyGain(effect)}</div>
-        </PlayMoveButton>
+        <WaxSealButton move={move} css={buttonCss}>
+          <Picture css={mini} src={keyDescription.images[1]}/> x {gainKeyRule.getMyGain(effect)}
+        </WaxSealButton>
       )
     }
     case EffectType.GainGold: {
       const gainCoinRule = new ImmediateGainCoinEffect(game)
       return (
-        <PlayMoveButton move={move}>
-          <div css={flexRowCss}><Picture css={mini} src={goldCoinDescription.images[1]}/> x {gainCoinRule.getMyGain(effect)}</div>
-        </PlayMoveButton>
+        <WaxSealButton move={move} css={buttonCss}>
+          <Picture css={mini} src={goldCoinDescription.images[1]}/> x {gainCoinRule.getMyGain(effect)}
+        </WaxSealButton>
       )
     }
     case EffectType.PutGoldOnCard: {
       return (
-        <PlayMoveButton move={move}>
-          <div css={flexRowCss}>
-            <Trans i18nKey="effect.banker" values={{ count: effect.gold }}
-                   components={{
-                     gold: <Picture css={mini} src={goldCoinDescription.images[1]}/>,
-                     bag: <Picture css={mini} src={Bag}/>
-                   }}
-            />
-          </div>
-        </PlayMoveButton>
+        <WaxSealButton move={move} css={buttonCss}>
+          <Trans i18nKey="effect.banker" values={{ count: effect.gold }}
+                 components={{
+                   gold: <Picture css={mini} src={goldCoinDescription.images[1]}/>,
+                   bag: <Picture css={mini} src={Bag}/>
+                 }}
+          />
+        </WaxSealButton>
       )
     }
     default:
@@ -86,10 +85,14 @@ const EffectButton: FC<{ effect: Effect, move: CustomMove }> = ({ effect, move }
   }
 }
 
-const flexRowCss = css`
+const buttonCss = css`
+  > button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+  }
 `
 
 const mini = css`
-  height: 1.05em;
-  margin-bottom: -0.17em;
+  height: 1.2em;
 `

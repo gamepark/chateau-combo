@@ -21,12 +21,22 @@ export enum ConditionType {
   PerFullPosition,
   PerEmptyPosition,
   IfPosition,
-  BestNeighbor
+  BestNeighbor,
+  PerDifferentCost,
+  SumOfCostsInRow,
+  SumOfCostsInColumn,
+  IfNoDiscount,
+  IfNoPurse,
+  IfNoFaceDown,
+  IfShieldInRow,
+  IfShieldInColumn,
+  PerLockCard
 }
 
 export type Condition = PerShield | PerDifferentShieldType | PerMissingShieldType | IfShieldMissing | PerShieldsSet | PerIdenticalShieldsSet
   | PerKey | PerBanner | PerBannersSet | PerCardWithShieldCount | PerCardWithCost | PerCardWithDiscount | IfCardFlippedDown
   | PerCardWithPurse | PerGoldInPurse | PerGoldInAllPurses | PerFullPosition | PerEmptyPosition | IfPosition | BestNeighbor
+  | PerDifferentCost | SumOfCostsInRow | SumOfCostsInColumn | IfNoDiscount | IfNoPurse | IfNoFaceDown | IfShieldInRow | IfShieldInColumn | PerLockCard
 
 export type PerShield = {
   type: ConditionType.PerShield
@@ -122,4 +132,42 @@ export type IfPosition = {
 export type BestNeighbor = {
   type: ConditionType.BestNeighbor
   condition: Condition
+}
+
+export type PerDifferentCost = {
+  type: ConditionType.PerDifferentCost
+}
+
+export type SumOfCostsInRow = {
+  type: ConditionType.SumOfCostsInRow
+}
+
+export type SumOfCostsInColumn = {
+  type: ConditionType.SumOfCostsInColumn
+}
+
+export type IfNoDiscount = {
+  type: ConditionType.IfNoDiscount
+}
+
+export type IfNoPurse = {
+  type: ConditionType.IfNoPurse
+}
+
+export type IfNoFaceDown = {
+  type: ConditionType.IfNoFaceDown
+}
+
+export type IfShieldInRow = {
+  type: ConditionType.IfShieldInRow
+  shield: Shield
+}
+
+export type IfShieldInColumn = {
+  type: ConditionType.IfShieldInColumn
+  shield: Shield
+}
+
+export type PerLockCard = {
+  type: ConditionType.PerLockCard
 }

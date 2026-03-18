@@ -15,5 +15,6 @@ export enum LocationType {
     MessengerIcon,
     ScoringArea,
     Shields,
-    CardVictoryPoints
+    CardVictoryPoints,
+    KeyOnCard
 }

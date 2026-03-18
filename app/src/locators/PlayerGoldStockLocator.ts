@@ -1,28 +1,16 @@
-import { getRelativePlayerIndex, ItemContext, PileLocator } from '@gamepark/react-game'
-import { Location, MaterialItem } from '@gamepark/rules-api'
-import { playerPositions, Position } from './TableauLocator'
+import { ItemContext, PileLocator } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
+import { getViewPlayer } from './panelCoordinates'
+import { TABLEAU_X } from './TableauLocator'
 
 class PlayerGoldStockLocator extends PileLocator {
+  coordinates = { x: TABLEAU_X + 5, y: 17 }
   radius = 2
-  // TODO: better management of animations + limits ?
   limit = 1000
+  navigationSorts = []
 
-  getCoordinates(location: Location, context: ItemContext) {
-    const playerIndex = getRelativePlayerIndex(context, location.player)
-    const position = playerPositions[context.rules.players.length - 2][playerIndex]
-    const players = context.rules.players.length
-    switch (position) {
-      case Position.TopLeft:
-        return { x: -48, y: -40 }
-      case Position.TopCenter:
-        return { x: -7, y: -40 }
-      case Position.TopRight:
-        return { x: 58, y: -40 }
-      case Position.BottomLeft:
-        return players === 2 ? { x: -25, y: -11 } : players === 3 ? { x: -30, y: -9 } : { x: -48, y: -9 }
-      case Position.BottomRight:
-        return players === 2 ? { x: 38, y: -11 } : players === 3 ? { x: 40, y: -9 } : { x: 58, y: -9 }
-    }
+  hide(item: MaterialItem, context: ItemContext): boolean {
+    return item.location.player !== getViewPlayer(context)
   }
 
   getPileId(item: MaterialItem) {

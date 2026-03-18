@@ -42,6 +42,13 @@ export enum Card {
   Duchess,
   Scribe,
   MotherSuperior,
+  // Castle - Out of the Oubliette
+  LadyInTheIronMask = 50,
+  Toady,
+  Conspirator,
+  Playwright,
+  CardinalsHand,
+  Printer,
   // Village
   Inventor = 100,
   Spy,
@@ -82,6 +89,13 @@ export enum Card {
   Fisherman,
   Baker,
   Beekeeper,
+  // Village - Out of the Oubliette
+  KingOfBeggars = 150,
+  ArtForger,
+  Cutpurse,
+  Peddler,
+  PrinceOfThieves,
+  FortuneTeller,
 }
 
 export const cards = getEnumValues(Card)

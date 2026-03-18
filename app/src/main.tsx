@@ -1,7 +1,7 @@
 import { ChateauComboOptionsSpec } from '@gamepark/chateau-combo/ChateauComboOptions'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { ChateauComboSetup } from '@gamepark/chateau-combo/ChateauComboSetup'
-import { GameProvider, setupTranslation } from '@gamepark/react-game'
+import { GameProvider } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { chateauComboAnimations } from './animations/ChateauComboAnimations.ts'
@@ -9,11 +9,9 @@ import { App } from './App'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
 import { ChateauComboScoringDescription } from './scoring/ChateauComboScoringDescription.tsx'
-import translations from './translations.json'
+import { theme } from './theme'
 import { Tutorial } from './tutorial/Tutorial.tsx'
 import { TutorialAI } from './tutorial/TutorialAI.ts'
-
-setupTranslation(translations, { debug: false })
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -28,7 +26,8 @@ createRoot(document.getElementById('root')!).render(
       animations={chateauComboAnimations}
       tutorial={new Tutorial()}
       scoring={new ChateauComboScoringDescription()}
-      ai={TutorialAI}>
+      ai={TutorialAI}
+      theme={theme}>
       <App/>
     </GameProvider>
   </StrictMode>

@@ -1,26 +1,27 @@
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { TableauHelper } from '@gamepark/chateau-combo/rules/helpers/TableauHelper'
-import { DropAreaDescription, getRelativePlayerIndex, ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, GridLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { isMoveItem, isMoveItemType, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { isEqual } from 'es-toolkit'
 import { cardDescription } from '../material/ChateauComboCardDescription'
+import { getViewPlayer } from './panelCoordinates'
 
-export enum Position {
-  TopLeft, TopCenter, TopRight, BottomLeft, BottomRight
-}
+export const TABLEAU_X = -23
 
-export const playerPositions = [
-  [Position.BottomLeft, Position.BottomRight], // 2 players
-  [Position.BottomLeft, Position.TopCenter, Position.BottomRight], // 3 players
-  [Position.BottomLeft, Position.TopLeft, Position.TopRight, Position.BottomRight], // 4 players
-  [Position.BottomLeft, Position.TopLeft, Position.TopCenter, Position.TopRight, Position.BottomRight] // 4 players
-]
+class TableauLocator extends GridLocator {
+  gap = { x: cardDescription.width + 0.2, y: cardDescription.height + 0.2 }
+  gridSize = { columns: 3, rows: 3 }
 
-class TableauLocator extends Locator {
+  getCoordinates(location: Location, context: MaterialContext) {
+    const coords = super.getCoordinates(location, context)
+    const result = { x: TABLEAU_X + (coords.x ?? 0), y: coords.y, z: coords.z }
+    return result
+  }
 
-  getLocations({ rules, player }: MaterialContext) {
+  getLocations(context: MaterialContext) {
+    const { rules, player } = context
+    const viewPlayer = getViewPlayer(context)
     const selectedCard = rules.material(MaterialType.Card).selected(true)
-    if (!!player && selectedCard.length) {
+    if (!!player && player === viewPlayer && selectedCard.length) {
       return rules.getLegalMoves(player).filter(isMoveItemType(MaterialType.Card))
         .filter(move => move.itemIndex === selectedCard.getIndex() && move.location.rotation === selectedCard.getItem()?.location.rotation)
         .map(move => move.location) as Location[]
@@ -28,49 +29,18 @@ class TableauLocator extends Locator {
     return []
   }
 
-  getCoordinates(location: Location, context: MaterialContext) {
-    const { xMax, xMin, yMax, yMin } = new TableauHelper(context.rules.game, location.player!).boundaries
-    const { x, y } = this.getBaseCoordinates(location, context)
-    const deltaX = (xMin + xMax) / 2
-    const deltaY = (yMin + yMax) / 2
-    return {
-      x: x + (location.x! - deltaX) * (cardDescription.width + 0.2),
-      y: y + (location.y! - deltaY) * (cardDescription.height + 0.2)
-    }
+  hide(item: MaterialItem, context: ItemContext): boolean {
+    return item.location.player !== getViewPlayer(context)
   }
 
-  getBaseCoordinates(location: Location, context: MaterialContext) {
-    const playerIndex = getRelativePlayerIndex(context, location.player)
-    const position = playerPositions[context.rules.players.length - 2][playerIndex]
-    const players = context.rules.players.length
-    switch (position) {
-      case Position.TopLeft:
-        return { x: -33, y: -40 }
-      case Position.TopCenter:
-        return { x: 7.5, y: -40 }
-      case Position.TopRight:
-        return { x: 33, y: -40 }
-      case Position.BottomLeft:
-        return players === 2 ? { x: -30, y: 7 } : players === 3 ? { x: -35, y: -28 } : { x: -33, y: -9 }
-      case Position.BottomRight:
-        return players === 2 ? { x: 33, y: 7 } : players === 3 ? { x: 35, y: -28 } : { x: 33, y: -9 }
-    }
-  }
-
-  getHoverTransform = (item: MaterialItem, context: ItemContext) => {
-    const { rules } = context
-    const player = item.location.player
-    const index = getRelativePlayerIndex(context, player)
-    const isBottomPlayers = rules.players.length === 2 || (rules.players.length === 5? (index === 0 || index === 4): (rules.players.length === 4? (index === 0 || index === 3): index === 0))
-    const helper =  new TableauHelper(context.rules.game, item.location.player!).boundaries
-    const transform = ['translateZ(10em)', 'scale(2)']
-    if (!isBottomPlayers && helper.yMin === item.location.y) transform.push('translateY(25%)')
-    if (isBottomPlayers && helper.yMax === item.location.y) transform.push('translateY(-25%)')
-
-    return transform
-  }
+  getHoverTransform = () => ['translateZ(10em)', 'scale(2)']
 
   locationDescription = new TableauSpotDescription()
+
+  getPositionDependencies(location: Location, context: MaterialContext): unknown {
+    const selectedCard = context.rules.material(MaterialType.Card).selected(true)
+    return [...super.getPositionDependencies(location, context), context.rules.game.rule?.id, selectedCard.length ? selectedCard.getIndex() : undefined]
+  }
 }
 
 export class TableauSpotDescription extends DropAreaDescription {
@@ -82,7 +52,6 @@ export class TableauSpotDescription extends DropAreaDescription {
     return isMoveItemType(MaterialType.Card)(move)
       && isEqual(move.location, location)
       && rules.material(MaterialType.Card).getItem(move.itemIndex).selected === true
-
   }
 
   getBestDropMove(moves: MaterialMove[], _location: Location, context: ItemContext): MaterialMove {

@@ -1,9 +1,10 @@
 
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
-import { PlayMoveButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { isDeleteItemType } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
+import { WaxSealButton } from '../theme/WaxSealButton'
 
 export const SpendKeyHeader = () => {
   const rules = useRules<ChateauComboRules>()!
@@ -14,7 +15,7 @@ export const SpendKeyHeader = () => {
   const playerName = usePlayerName(activePlayer)
   return (
     <Trans i18nKey={itsMe ? "spend-key.you" : "spend-key.player"} values={{ player: playerName }}>
-      <PlayMoveButton move={spend}/>
+      <WaxSealButton move={spend}/>
     </Trans>
   )
 }
