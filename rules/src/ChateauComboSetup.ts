@@ -9,6 +9,7 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { Place, places } from './material/Place'
 import { PlayerId } from './PlayerId'
+import { Memory } from './rules/Memory'
 import { RuleId } from './rules/RuleId'
 
 
@@ -19,6 +20,9 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   Rules = ChateauComboRules
 
   setupMaterial(options: ChateauComboOptions) {
+    if (options.outOfTheOubliette) {
+      this.memorize(Memory.OutOfTheOubliette, true)
+    }
     this.setupMessengerPawn()
     this.setupPlayers()
     this.setupDecks(options)
@@ -74,7 +78,7 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   }
 
   setupDecks(options: ChateauComboOptions) {
-    const allCards = options.expansion1
+    const allCards = options.outOfTheOubliette
       ? cards
       : cards.filter(card => !cardCharacteristics[card].outOfTheOubliette)
 

@@ -5,5 +5,6 @@ export enum Memory {
   ReturnRule,
   ActivateLockReturnRule,
   OriginalPlacedCard,
-  ChosenRiver
+  ChosenRiver,
+  OutOfTheOubliette
 }

@@ -6,7 +6,7 @@ import { OptionsSpec } from '@gamepark/rules-api'
  * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
  */
 export type ChateauComboOptions = {
-  expansion1: boolean
+  outOfTheOubliette: boolean
 }
 
 /**
@@ -14,9 +14,9 @@ export type ChateauComboOptions = {
  * (forms for friendly games, or forms for matchmaking preferences, for instance).
  */
 export const ChateauComboOptionsSpec: OptionsSpec<ChateauComboOptions> = {
-  expansion1: {
-    label: t => t('expansion1'),
-    help: t => t('expansion1.help'),
+  outOfTheOubliette: {
+    label: t => t('outOfTheOubliette'),
+    help: t => t('outOfTheOubliette.help'),
     subscriberRequired: true
   }
 }

@@ -1,14 +1,14 @@
 {
   "en": {
     "chateau-combo-options": {
-      "expansion1": "Out of the Oubliette",
-      "expansion1.help": "Adds 12 new characters with unique abilities"
+      "outOfTheOubliette": "Out of the Oubliette",
+      "outOfTheOubliette.help": "Adds 12 new characters with unique abilities"
     }
   },
   "fr": {
     "chateau-combo-options": {
-      "expansion1": "Sortis de l'oubliette",
-      "expansion1.help": "Ajoute 12 nouveaux personnages avec des capacités uniques"
+      "outOfTheOubliette": "Sortis de l'oubliette",
+      "outOfTheOubliette.help": "Ajoute 12 nouveaux personnages avec des capacités uniques"
     }
   },
   "es": {

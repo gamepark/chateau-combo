@@ -1,5 +1,6 @@
-import { ChateauComboOptions } from '@gamepark/chateau-combo/ChateauComboOptions'
-import { useOptions } from '@gamepark/react-client'
+import { Memory } from '@gamepark/chateau-combo/rules/Memory'
+import { usePlayerId, useRules } from '@gamepark/react-game'
+import { MaterialRules } from '@gamepark/rules-api'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 const STORAGE_KEY = 'chateau-combo-out-of-the-oubliette-seen'
@@ -9,8 +10,9 @@ export const ExtensionDialogContext = createContext<(() => void) | undefined>(un
 export const useOpenExtensionDialog = () => useContext(ExtensionDialogContext)
 
 export const useExtensionDialog = () => {
-  const options = useOptions<ChateauComboOptions>()
-  const hasExtension = !!options?.expansion1
+  const rules = useRules<MaterialRules>()
+  const playerId = usePlayerId()
+  const hasExtension = !!playerId && rules?.remind(Memory.OutOfTheOubliette) === true
   const [show, setShow] = useState(false)
 
   useEffect(() => {
