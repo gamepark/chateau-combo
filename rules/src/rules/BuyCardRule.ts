@@ -1,4 +1,5 @@
 import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { GainHelper } from './helpers/GainHelper'
 import { CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coins } from '../material/Coin'
@@ -66,9 +67,10 @@ export class BuyCardRule extends PlayerTurnRule {
 
     // Player plays a hidden card
     if (move.location.rotation) {
+      const gain = new GainHelper(this.game)
       return [
-        ...this.material(MaterialType.GoldCoin).money(coins).addMoney(6, { type: LocationType.PlayerGoldStock, player: this.player }),
-        ...this.material(MaterialType.Key).money(keys).addMoney(2, { type: LocationType.PlayerKeyStock, player: this.player }),
+        ...gain.gainGold(6, this.player),
+        ...gain.gainKeys(2, this.player),
         this.startRule(RuleId.EndOfTurn)
       ]
     } else {

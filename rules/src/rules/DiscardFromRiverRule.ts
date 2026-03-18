@@ -1,11 +1,10 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Card, CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { coins } from '../material/Coin'
 import { DiscardFromRiver } from '../material/Effect'
-import { keys } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
+import { GainHelper } from './helpers/GainHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -49,18 +48,13 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
     const effect = cardCharacteristics[this.placedCard.id.front!].effects[0] as DiscardFromRiver
     const discardedCardId = this.material(MaterialType.Card).getItem<CardId>(move.itemIndex)!.id.front as Card
     const discardedCardCost = cardCharacteristics[discardedCardId].cost
+    const gain = new GainHelper(this.game)
     const moves: MaterialMove[] = []
 
     if (effect.token === MaterialType.GoldCoin) {
-      moves.push(
-        ...this.material(MaterialType.GoldCoin).money(coins)
-          .addMoney(discardedCardCost, { type: LocationType.PlayerGoldStock, player: this.player })
-      )
+      moves.push(...gain.gainGold(discardedCardCost, this.player))
     } else {
-      moves.push(
-        ...this.material(MaterialType.Key).money(keys)
-          .addMoney(discardedCardCost, { type: LocationType.PlayerKeyStock, player: this.player })
-      )
+      moves.push(...gain.gainKeys(discardedCardCost, this.player))
     }
 
     moves.push(this.startRule(RuleId.MoveMessenger))

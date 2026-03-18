@@ -10,7 +10,7 @@ const curtainCloseCss = css`
   z-index: 10;
   width: 2em;
   height: 2.75em;
-  font-size: calc(3em * var(--gp-scale));
+  font-size: min(calc(3em * var(--gp-scale)), 2.5vh);
   background:
     radial-gradient(ellipse at 30% 0%, rgba(180, 50, 50, 0.15), transparent 60%),
     linear-gradient(180deg, #A83030 0%, #8B2020 40%, #7A1818 60%, #8B2020 80%, #6A1414 100%);

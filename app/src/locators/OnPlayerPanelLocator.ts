@@ -17,13 +17,13 @@ const gap = 0.8 * panelScale               // 0.48
 
 const panelCenterX = tableXMax - rightMargin - panelWidth / 2
 
-function hasStrip(playerIndex: number, players: any[], me: any): boolean {
+function hasStrip(playerIndex: number, players: any[], viewedPlayer: any): boolean {
   const n = players.length
-  if (me === undefined || n <= 1) return false
-  const meIdx = players.indexOf(me)
-  if (meIdx === -1) return false
-  const leftNeighbor = players[(meIdx - 1 + n) % n]
-  const rightNeighbor = players[(meIdx + 1) % n]
+  if (viewedPlayer === undefined || n <= 2) return false
+  const viewedIdx = players.indexOf(viewedPlayer)
+  if (viewedIdx === -1) return false
+  const leftNeighbor = players[(viewedIdx - 1 + n) % n]
+  const rightNeighbor = players[(viewedIdx + 1) % n]
   const player = players[playerIndex]
   return player === leftNeighbor || player === rightNeighbor
 }
@@ -49,6 +49,7 @@ class OnPlayerPanelLocator extends ListLocator {
     const panelIndex = getRelativePlayerIndex(context, location.player)
     const players = context.rules.players
     const me = context.player
+    const viewedPlayer = getViewPlayer(context)
 
     // Sorted players (same order as usePlayers({ sortFromMe: true }))
     const meIdx = me !== undefined ? players.indexOf(me) : -1
@@ -59,10 +60,10 @@ class OnPlayerPanelLocator extends ListLocator {
     // Cumulate Y offset for each panel before the target
     let y = tableYMin + topMargin
     for (let i = 0; i < panelIndex; i++) {
-      const h = basePanelHeight + (hasStrip(players.indexOf(sortedPlayers[i]), players, me) ? stripHeight : 0)
+      const h = basePanelHeight + (hasStrip(players.indexOf(sortedPlayers[i]), players, viewedPlayer) ? stripHeight : 0)
       y += h + gap
     }
-    const thisHeight = basePanelHeight + (hasStrip(players.indexOf(sortedPlayers[panelIndex]), players, me) ? stripHeight : 0)
+    const thisHeight = basePanelHeight + (hasStrip(players.indexOf(sortedPlayers[panelIndex]), players, viewedPlayer) ? stripHeight : 0)
 
     return {
       x: panelCenterX,
@@ -98,3 +99,16 @@ class BesidePanelLocator extends ListLocator {
 }
 
 export const besidePanelLocator = new BesidePanelLocator()
+
+class BesidePanelCardLocator extends BesidePanelLocator {
+  getCoordinates(location: Location, context: MaterialContext) {
+    const coords = onPlayerPanelLocator.getCoordinates(location, context)
+    return {
+      x: coords.x - panelWidth / 2 - 3.5,
+      y: coords.y,
+      z: 10
+    }
+  }
+}
+
+export const besidePanelCardLocator = new BesidePanelCardLocator()

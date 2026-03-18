@@ -3,5 +3,7 @@ export enum CustomMoveType {
     ActivateLock,
     ActivateAdjacent,
     Pass,
-    ChooseRiver
+    ChooseRiver,
+    GainGold,
+    GainKeys
 }

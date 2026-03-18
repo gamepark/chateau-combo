@@ -6,6 +6,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { chateauComboAnimations } from './animations/ChateauComboAnimations.ts'
 import { App } from './App'
+import { ChateauComboLogs } from './logs/ChateauComboLogs'
 import { Locators } from './locators/Locators'
 import { Material, materialI18n } from './material/Material'
 import { ChateauComboScoringDescription } from './scoring/ChateauComboScoringDescription.tsx'
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
       tutorial={new Tutorial()}
       scoring={new ChateauComboScoringDescription()}
       ai={TutorialAI}
+      logs={new ChateauComboLogs()}
       theme={theme}>
       <App/>
     </GameProvider>

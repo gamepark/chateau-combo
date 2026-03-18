@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import { brown, brownDark, gold, goldDark, goldLight } from './colors'
+import { journalTheme } from './journal'
 import { ParchmentCloseButton } from './ParchmentCloseButton'
 import { ParchmentNavigation } from './ParchmentNavigation'
 
@@ -154,6 +155,10 @@ export const theme = {
         0 0 0 0.3em rgba(40, 25, 10, 0.6),
         0 0 0 0.35em rgba(140, 110, 50, 0.2);
       font-family: 'Crimson Pro', Georgia, serif;
+
+      h2 {
+        font-family: 'MedievalSharp', cursive;
+      }
     `,
     content: css`
       font-family: 'Crimson Pro', Georgia, serif;
@@ -200,5 +205,16 @@ export const theme = {
   },
   dropArea: {
     backgroundColor: 'rgba(212, 168, 40, 0.3)'
-  }
+  },
+  menu: {
+    panel: css`
+      background:
+        radial-gradient(ellipse at 20% 15%, rgba(200, 170, 110, 0.3), transparent 50%),
+        radial-gradient(ellipse at 80% 85%, rgba(160, 130, 80, 0.15), transparent 50%),
+        linear-gradient(168deg, #dcc898 0%, #E8D8B4 15%, #F2E6C8 30%, #E8DCBC 50%, #E0D0A8 70%, #D8C498 100%);
+      color: ${brown};
+      font-family: 'Crimson Pro', Georgia, serif;
+    `
+  },
+  journal: journalTheme
 }

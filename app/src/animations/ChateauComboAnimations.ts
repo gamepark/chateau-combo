@@ -1,8 +1,9 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
+import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import { MaterialGameAnimations } from '@gamepark/react-game'
 import { isCreateItemType, isDeleteItemType, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
-import { besidePanelLocator, onPlayerPanelLocator } from '../locators/OnPlayerPanelLocator'
+import { besidePanelCardLocator, besidePanelLocator, onPlayerPanelLocator } from '../locators/OnPlayerPanelLocator'
 import { getViewPlayer } from '../locators/panelCoordinates'
 
 export const chateauComboAnimations = new MaterialGameAnimations()
@@ -41,13 +42,23 @@ chateauComboAnimations
     isCardMove(move) && move.location.type === LocationType.Tableau
     && move.location.player !== getViewPlayer(context)
   )
-  .duration(1500)
+  .duration(2000)
   .trajectory((_context, move) => ({
     waypoints: [
-      { at: 0.6, locator: besidePanelLocator, location: () => ({ player: move.location.player }), offset: { x: -3 } },
+      { at: 0.3, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
+      { at: 0.7, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
       { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: move.location.player }) }
     ]
   }))
+
+// End game: skip animations for non-viewed players
+chateauComboAnimations
+  .configure((move, context) =>
+    context.rules.game.rule?.id === RuleId.EndGame
+    && isMoveItemType(MaterialType.GoldCoin)(move)
+    && move.location.player !== getViewPlayer(context)
+  )
+  .skip()
 
 // Gold to OnCard — other player: skip
 const isGoldMove = isMoveItemType(MaterialType.GoldCoin)

@@ -4,20 +4,24 @@ import { keys } from '../../material/Key'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Tableau } from '../../material/Tableau'
+import { GainHelper } from '../helpers/GainHelper'
 import { AbstractImmediateEffect } from './AbstractImmediateEffect'
 
 export class ImmediateGainKeyEffect extends AbstractImmediateEffect<GainKeys> {
 
   getEffectMoves(effect: GainKeys) {
     const moves: MaterialMove[] = []
+    const gain = new GainHelper(this.game)
     const myGain = this.getMyGain(effect)
     const opponentsGain = this.getOpponentsGain(effect)
 
-    moves.push(...this.gainKeys(myGain))
+    if (myGain) {
+      moves.push(...gain.gainKeys(myGain, this.player))
+    }
     if (opponentsGain) {
       for (const player of this.game.players) {
         if (player !== this.player) {
-          moves.push(...this.gainKeys(opponentsGain, player))
+          moves.push(...gain.gainKeys(opponentsGain, player))
         }
       }
     }

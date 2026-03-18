@@ -1,7 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
-import { Card, cards, getCardPlace } from './material/Card'
+import { cards, getCardPlace } from './material/Card'
 import { cardCharacteristics } from './material/CardCharacteristics'
 import { Coin } from './material/Coin'
 import { Key } from './material/Key'
@@ -74,36 +74,17 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
   }
 
   setupDecks(options: ChateauComboOptions) {
-    // DEBUG: Cards to force into river (placed on top of deck after shuffle)
-    const debugRiverCards = [Card.Banker]
+    const allCards = options.expansion1
+      ? cards
+      : cards.filter(card => !cardCharacteristics[card].outOfTheOubliette)
 
-    const baseCards = cards.filter(card => !cardCharacteristics[card].outOfTheOubliette)
-    const baseItems = baseCards.map(card => ({
+    const items = allCards.map(card => ({
       id: { front: card, back: getCardPlace(card) },
       location: { type: LocationType.Deck, id: getCardPlace(card) }
     }))
-    this.material(MaterialType.Card).createItems(baseItems)
+    this.material(MaterialType.Card).createItems(items)
     for (const place of places) {
       this.material(MaterialType.Card).location(LocationType.Deck).locationId(place).shuffle()
-    }
-
-    // DEBUG: always include extension cards on top for testing
-    if (options.expansion1) {
-      const extensionCards = cards.filter(card => cardCharacteristics[card].outOfTheOubliette)
-      const extensionItems = extensionCards.map(card => ({
-        id: { front: card, back: getCardPlace(card) },
-        location: { type: LocationType.Deck, id: getCardPlace(card) }
-      }))
-      this.material(MaterialType.Card).createItems(extensionItems)
-    }
-
-    // DEBUG: Move debug cards to top of their deck so they appear in river
-    for (const card of debugRiverCards) {
-      const place = getCardPlace(card)
-      const deck = this.material(MaterialType.Card).location(LocationType.Deck).locationId(place)
-      const maxX = Math.max(...deck.getItems().map(i => i.location.x ?? 0))
-      const idx = deck.id((id: any) => id.front === card).getIndex()
-      this.game.items[MaterialType.Card]![idx].location.x = maxX + 1
     }
   }
 

@@ -1,36 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Picture } from '@gamepark/react-game'
-import { FC, useCallback, useEffect, useState } from 'react'
+import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import LockIcon from '../../images/icons/lock.png'
 import KeyIcon from '../../images/tokens/Key1.png'
 import { brown, brownDark, gold } from '../../theme/colors'
-
-const STORAGE_KEY = 'chateau-combo-out-of-the-oubliette-seen'
-
-export const useExtensionDialog = (hasExtension: boolean) => {
-  const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    if (!hasExtension) return
-    const seen = localStorage.getItem(STORAGE_KEY)
-    if (!seen) {
-      setShow(true)
-    }
-  }, [hasExtension])
-
-  const dismiss = useCallback(() => {
-    localStorage.setItem(STORAGE_KEY, 'true')
-    setShow(false)
-  }, [])
-
-  const reopen = useCallback(() => {
-    setShow(true)
-  }, [])
-
-  return { show, dismiss, reopen }
-}
 
 type Props = {
   onClose: () => void

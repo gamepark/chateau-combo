@@ -4,22 +4,24 @@ import { GainGold } from '../../material/Effect'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { Tableau } from '../../material/Tableau'
+import { GainHelper } from '../helpers/GainHelper'
 import { AbstractImmediateEffect } from './AbstractImmediateEffect'
 
 export class ImmediateGainCoinEffect extends AbstractImmediateEffect<GainGold> {
 
   getEffectMoves(effect: GainGold) {
     const moves: MaterialMove[] = []
+    const gain = new GainHelper(this.game)
     const myGain = this.getMyGain(effect)
     const opponentsGain = this.getOpponentsGain(effect)
     if (myGain) {
-      moves.push(...this.gainGold(myGain))
+      moves.push(...gain.gainGold(myGain, this.player))
     }
 
     if (opponentsGain) {
       for (const player of this.game.players) {
         if (player !== this.player) {
-          moves.push(...this.gainGold(opponentsGain, player))
+          moves.push(...gain.gainGold(opponentsGain, player))
         }
       }
     }
