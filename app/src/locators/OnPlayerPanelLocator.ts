@@ -1,17 +1,7 @@
 import { getRelativePlayerIndex, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
+import { panelGap, panelHeight, panelRightMargin, panelTopMargin, panelWidth, tableXMax, tableYMin } from '../panels/PanelConstants'
 import { getViewPlayer } from './panelCoordinates.ts'
-
-// GameTable bounds (must match GameDisplay.tsx)
-const tableYMin = -18.5
-
-// Panel layout in table em (must match PlayerPanels.tsx)
-const panelScale = 0.6
-const panelWidth = 22 * panelScale          // 13.2
-const basePanelHeight = 8.48 * panelScale   // 5.088
-const leftMargin = 1                        // table em from left (1/scale in panel font-size)
-const topMargin = 0.3                       // table em from top
-const gap = 0.75 * panelScale              // 0.45
 
 /**
  * Animation-only locator: positions items at a player's panel center with tiny scale.
@@ -31,16 +21,17 @@ class OnPlayerPanelLocator extends ListLocator {
 
   getCoordinates(location: Location, context: MaterialContext) {
     const panelIndex = getRelativePlayerIndex(context, location.player)
+    const totalPlayers = context.rules.players.length
 
-    // Cumulate X offset for each panel before the target
-    let x = -37 + leftMargin
-    for (let i = 0; i < panelIndex; i++) {
-      x += panelWidth + gap
-    }
+    // Panels are centered horizontally (center of table = x:0 in table coords = (xMin+xMax)/2 = 4.5)
+    const tableCenter = (-37 + 46) / 2   // (xMin + xMax) / 2
+    const totalWidth = totalPlayers * panelWidth + (totalPlayers - 1) * panelGap
+    const startX = tableCenter - totalWidth / 2
+    const x = startX + panelIndex * (panelWidth + panelGap) + panelWidth / 2
 
     return {
-      x: x + panelWidth / 2,
-      y: tableYMin + topMargin + basePanelHeight / 2,
+      x,
+      y: tableYMin + panelTopMargin + panelHeight / 2,
       z: 10
     }
   }
@@ -60,7 +51,7 @@ class BesidePanelLocator extends ListLocator {
     const coords = onPlayerPanelLocator.getCoordinates(location, context)
     return {
       x: coords.x,
-      y: coords.y + basePanelHeight / 2 + 2,
+      y: coords.y + panelHeight / 2 + 2,
       z: 10
     }
   }
@@ -77,7 +68,7 @@ class BesidePanelCardLocator extends BesidePanelLocator {
     const coords = onPlayerPanelLocator.getCoordinates(location, context)
     return {
       x: coords.x,
-      y: coords.y + basePanelHeight / 2 + 3.5,
+      y: coords.y + panelHeight / 2 + 3.5,
       z: 10
     }
   }

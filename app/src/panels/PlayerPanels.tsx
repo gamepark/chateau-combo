@@ -4,8 +4,7 @@ import { PlayerId } from '@gamepark/chateau-combo/PlayerId'
 import { usePlayerId, usePlayers, useRules } from '@gamepark/react-game'
 import { FC } from 'react'
 import { ChateauComboPlayerPanel } from './ChateauComboPlayerPanel'
-
-const scale = 0.6
+import { panelGapEm, panelRightMargin, panelScale, panelTopMargin } from './PanelConstants'
 
 export const PlayerPanels: FC = () => {
   const players = usePlayers({ sortFromMe: true })
@@ -43,12 +42,12 @@ export const PlayerPanels: FC = () => {
 
 const containerCss = css`
   position: absolute;
-  right: ${0.3 / scale}em;
-  top: ${0.3 / scale}em;
-  transform: translateZ(1em);
-  font-size: ${scale}em;
+  left: 50%;
+  top: ${panelTopMargin / panelScale}em;
+  transform: translateX(-50%) translateZ(1em);
+  font-size: ${panelScale}em;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 1.01em;
+  gap: ${panelGapEm}em;
 `

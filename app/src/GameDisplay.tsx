@@ -1,7 +1,8 @@
 import { css } from '@emotion/react'
 import { useDndMonitor } from '@dnd-kit/core'
-import { DevToolEntry, DevToolsHub, GameTable, GameTableNavigation, usePlay, usePlayerId } from '@gamepark/react-game'
-import { MaterialMoveBuilder } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
+import { DevToolEntry, DevToolsHub, GameTable, GameTableNavigation, usePlay, usePlayerId, useRules } from '@gamepark/react-game'
+import { MaterialMoveBuilder, MaterialRules } from '@gamepark/rules-api'
 import { FC, lazy, Suspense, useCallback, useState } from 'react'
 import { ExtensionDialogContext, useExtensionDialog } from './ExtensionContext'
 import { ExtensionInfoDialog } from './material/help/ExtensionInfoDialog'
@@ -12,11 +13,17 @@ const CardDebugViewer = import.meta.env.DEV ? lazy(() => import('./debug/CardDeb
 const SwitchViewOnDrag = () => {
   const play = usePlay()
   const me = usePlayerId()
+  const rules = useRules<MaterialRules>()
   const onDragStart = useCallback(() => {
     if (me) {
       play(MaterialMoveBuilder.changeView(me), { transient: true })
     }
-  }, [me, play])
+    // Deselect any selected card when dragging another
+    const selected = rules?.material(MaterialType.Card).selected(true)
+    if (selected?.length) {
+      play(selected.unselectItem(), { local: true })
+    }
+  }, [me, play, rules])
   useDndMonitor({ onDragStart })
   return null
 }
