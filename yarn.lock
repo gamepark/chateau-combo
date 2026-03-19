@@ -724,7 +724,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.0.1"
     "@fortawesome/free-solid-svg-icons": "npm:^7.0.1"
     "@fortawesome/react-fontawesome": "npm:^3.0.2"
-    "@gamepark/react-game": "npm:~7.5.13"
+    "@gamepark/react-game": "npm:~7.5.15"
     "@gamepark/rules-api": "npm:~7.5.0"
     "@types/node": "npm:^24.5.0"
     "@types/react": "npm:^19.1.13"
@@ -760,9 +760,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@gamepark/react-client@npm:^7.5.3":
-  version: 7.5.3
-  resolution: "@gamepark/react-client@npm:7.5.3"
+"@gamepark/react-client@npm:^7.5.5":
+  version: 7.5.5
+  resolution: "@gamepark/react-client@npm:7.5.5"
   dependencies:
     "@reduxjs/toolkit": "npm:^2.11.2"
     "@tanstack/react-query": "npm:^5.90.21"
@@ -783,19 +783,19 @@ __metadata:
     react-dom: ^19.2.4
     react-redux: ^9.2.0
     rxjs: ^7.8.2
-  checksum: 10c0/ecc7dbc6b580ad9208eecab86e4b7ee1703cb674845923124812f3beeacfdc8792b30410c0a079a510760740a550fc5e37941adbfb2c83ba3802225b3adebcbd
+  checksum: 10c0/ff1d6ee55a354dff1e3c25aefef395b407a42a725b6af61380c5cff546d108629e4abd69aa7f9b79e86d29693f85fc64e00882143b79b4db6c063b2d2cba9d18
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.5.13":
-  version: 7.5.13
-  resolution: "@gamepark/react-game@npm:7.5.13"
+"@gamepark/react-game@npm:~7.5.15":
+  version: 7.5.15
+  resolution: "@gamepark/react-game@npm:7.5.15"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
     "@gamepark/api-types": "npm:^1.0.0"
     "@gamepark/avataaars": "npm:^3.0.0"
-    "@gamepark/react-client": "npm:^7.5.3"
+    "@gamepark/react-client": "npm:^7.5.5"
     dayjs: "npm:^1.11.19"
     fscreen: "npm:^1.2.0"
     i18next-http-backend: "npm:^3.0.2"
@@ -823,16 +823,16 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
-  checksum: 10c0/817f631765744d2cd6836b0f6c45fb11cae62cc5fac8cae2a7ec7a286aa08fa4c80c17794d526a1aebd973296f7c462489ca8b22ba2e398ea70e6f2ff9f1f79c
+  checksum: 10c0/6823d2a1bd2750c7ae42477cefa694bc8d0873ef2bee74e3598f76eabd91cdc672c0829915d2508e0d761c19aece06a248ecb348fb5f0712baaf12f8fab34130
   languageName: node
   linkType: hard
 
 "@gamepark/rules-api@npm:~7.5.0":
-  version: 7.5.0
-  resolution: "@gamepark/rules-api@npm:7.5.0"
+  version: 7.5.1
+  resolution: "@gamepark/rules-api@npm:7.5.1"
   peerDependencies:
     es-toolkit: ^1.39.10
-  checksum: 10c0/1d47c1bd27a8d6b558b5fd50b3dd452e70ec0e0313d401be025b7cd2353660ade184e19a62a546994eee6371dcbb44121080dc43c708e4748a03924269c44834
+  checksum: 10c0/ed9250fd47a7c5b4774bae5ec6126f08f9a994bc3bc190d24c25652a4b5256af3d837be1a9b5939cd0d686f695b823255091db1621b9eee1590cfdb88877c74a
   languageName: node
   linkType: hard
 
