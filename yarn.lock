@@ -724,7 +724,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.0.1"
     "@fortawesome/free-solid-svg-icons": "npm:^7.0.1"
     "@fortawesome/react-fontawesome": "npm:^3.0.2"
-    "@gamepark/react-game": "npm:~7.5.15"
+    "@gamepark/react-game": "npm:~7.5.16"
     "@gamepark/rules-api": "npm:~7.5.0"
     "@types/node": "npm:^24.5.0"
     "@types/react": "npm:^19.1.13"
@@ -760,9 +760,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@gamepark/react-client@npm:^7.5.5":
-  version: 7.5.5
-  resolution: "@gamepark/react-client@npm:7.5.5"
+"@gamepark/react-client@npm:^7.5.6":
+  version: 7.5.6
+  resolution: "@gamepark/react-client@npm:7.5.6"
   dependencies:
     "@reduxjs/toolkit": "npm:^2.11.2"
     "@tanstack/react-query": "npm:^5.90.21"
@@ -783,19 +783,19 @@ __metadata:
     react-dom: ^19.2.4
     react-redux: ^9.2.0
     rxjs: ^7.8.2
-  checksum: 10c0/ff1d6ee55a354dff1e3c25aefef395b407a42a725b6af61380c5cff546d108629e4abd69aa7f9b79e86d29693f85fc64e00882143b79b4db6c063b2d2cba9d18
+  checksum: 10c0/8a6f9a7c4bea0b28a6d5b96220d65a26b32ba754e69e193af169a065c6f07d10a12c14efd3d0aad767edd9208f1d8f70a473934ba43644cd4ac38388038f8412
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.5.15":
-  version: 7.5.15
-  resolution: "@gamepark/react-game@npm:7.5.15"
+"@gamepark/react-game@npm:~7.5.16":
+  version: 7.5.16
+  resolution: "@gamepark/react-game@npm:7.5.16"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
     "@gamepark/api-types": "npm:^1.0.0"
     "@gamepark/avataaars": "npm:^3.0.0"
-    "@gamepark/react-client": "npm:^7.5.5"
+    "@gamepark/react-client": "npm:^7.5.6"
     dayjs: "npm:^1.11.19"
     fscreen: "npm:^1.2.0"
     i18next-http-backend: "npm:^3.0.2"
@@ -823,7 +823,7 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
-  checksum: 10c0/6823d2a1bd2750c7ae42477cefa694bc8d0873ef2bee74e3598f76eabd91cdc672c0829915d2508e0d761c19aece06a248ecb348fb5f0712baaf12f8fab34130
+  checksum: 10c0/6b8ac72fb55cb3367d1503b266dc262a40885c9224ac64c6d633d6b90460eb47b1ce4fc31dfae656e1f4fb7aa51d5d73f46128939e36090c327f122f92d35272
   languageName: node
   linkType: hard
 
