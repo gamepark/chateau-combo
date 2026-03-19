@@ -5,7 +5,7 @@ import { Location, MaterialItem } from '@gamepark/rules-api'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 
 // Rivers on the right side — first card at this x, then +gap for each next card
-export const RIVER_X = 8.5
+export const RIVER_X = 21
 
 class RiverLocator extends ListLocator {
   getCoordinates(location: Location) {
@@ -13,7 +13,7 @@ class RiverLocator extends ListLocator {
   }
 
   getRiverY(place: Place) {
-    return place === Place.Castle ? -9 : 1
+    return place === Place.Castle ? -3 : 7
   }
 
   gap = { x: 6.6 }

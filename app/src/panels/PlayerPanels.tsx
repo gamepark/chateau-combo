@@ -43,11 +43,12 @@ export const PlayerPanels: FC = () => {
 
 const containerCss = css`
   position: absolute;
-  right: ${0.5 / scale}em;
-  top: ${1 / scale}em;
+  right: ${0.3 / scale}em;
+  top: ${0.3 / scale}em;
+  transform: translateZ(1em);
   font-size: ${scale}em;
   display: flex;
-  flex-direction: column;
-  gap: 0.8em;
-  transform: translateZ(1em);
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.01em;
 `

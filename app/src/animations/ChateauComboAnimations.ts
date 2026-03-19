@@ -42,11 +42,11 @@ chateauComboAnimations
     isCardMove(move) && move.location.type === LocationType.Tableau
     && move.location.player !== getViewPlayer(context)
   )
-  .duration(2000)
+  .duration(1500)
   .trajectory((_context, move) => ({
     waypoints: [
       { at: 0.3, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
-      { at: 0.7, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
+      { at: 0.55, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
       { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: move.location.player }) }
     ]
   }))

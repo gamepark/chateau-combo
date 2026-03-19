@@ -5,7 +5,7 @@ import { isEqual } from 'es-toolkit'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 import { getViewPlayer } from './panelCoordinates'
 
-export const TABLEAU_X = -23
+export const TABLEAU_X = -20
 
 class TableauLocator extends GridLocator {
   gap = { x: cardDescription.width + 0.2, y: cardDescription.height + 0.2 }
@@ -13,13 +13,13 @@ class TableauLocator extends GridLocator {
 
   getCoordinates(location: Location, context: MaterialContext) {
     const coords = super.getCoordinates(location, context)
-    const result = { x: TABLEAU_X + (coords.x ?? 0), y: coords.y, z: coords.z }
-    return result
+    return { x: TABLEAU_X + (coords.x ?? 0), y: (coords.y ?? 0) + 6.5, z: coords.z }
   }
 
   getLocations(context: MaterialContext) {
     const { rules, player } = context
     const viewPlayer = getViewPlayer(context)
+
     const selectedCard = rules.material(MaterialType.Card).selected(true)
     if (!!player && player === viewPlayer && selectedCard.length) {
       return rules.getLegalMoves(player).filter(isMoveItemType(MaterialType.Card))

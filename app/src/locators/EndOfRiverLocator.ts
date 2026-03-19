@@ -1,6 +1,6 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
-import { DropAreaDescription, Locator, MaterialContext } from '@gamepark/react-game'
+import { DropAreaDescription, Locator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { cardDescription } from '../material/ChateauComboCardDescription'
 import { RIVER_X, riverLocator } from './RiverLocator'
@@ -12,9 +12,12 @@ class EndOfRiverLocator extends Locator {
 
   locationDescription = new DropAreaDescription({ width: 2, height: 2, borderRadius: 1 })
 
-  getLocations(_context: MaterialContext) {
+
+  getLocations() {
     return [Place.Castle, Place.Village].map(place => ({ type: LocationType.EndOfRiver, id: place }))
   }
 }
+
+
 
 export const endOfRiverLocator = new EndOfRiverLocator()

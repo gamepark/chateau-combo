@@ -4,8 +4,8 @@ import { getViewPlayer } from './panelCoordinates'
 import { TABLEAU_X } from './TableauLocator'
 
 class PlayerKeyStockLocator extends PileLocator {
-  coordinates = { x: TABLEAU_X - 5, y: 17 }
-  radius = 2
+  coordinates = { x: TABLEAU_X + 18 , y: 19 }
+  radius = 1.5
   limit = 1000
   navigationSorts = []
 

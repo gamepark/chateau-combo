@@ -2,7 +2,7 @@ import { PileLocator } from '@gamepark/react-game'
 import { MaterialItem } from '@gamepark/rules-api'
 
 class GoldStockLocator extends PileLocator {
-  coordinates = { x: 21, y: 11 }
+  coordinates = { x: 33, y: 17 }
   radius = 3
   navigationSorts = []
 

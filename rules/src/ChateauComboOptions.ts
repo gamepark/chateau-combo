@@ -17,6 +17,6 @@ export const ChateauComboOptionsSpec: OptionsSpec<ChateauComboOptions> = {
   outOfTheOubliette: {
     label: t => t('outOfTheOubliette'),
     help: t => t('outOfTheOubliette.help'),
-    subscriberRequired: true
+    subscriberRequired: true,
   }
 }

@@ -20,7 +20,7 @@ export const KeyEffectHeader = () => {
       player: name,
       place: new KeyEffectRule(rules.game).messengerPlace
     }}>
-      <WaxSealButton move={moveMessenger} auto={99}/>
+      <WaxSealButton move={moveMessenger}/>
       <WaxSealButton move={discardCards}/>
     </Trans>
   )

@@ -3,34 +3,18 @@ import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { getViewPlayer } from './panelCoordinates.ts'
 
 // GameTable bounds (must match GameDisplay.tsx)
-const tableXMax = 46
 const tableYMin = -18.5
 
 // Panel layout in table em (must match PlayerPanels.tsx)
 const panelScale = 0.6
 const panelWidth = 22 * panelScale          // 13.2
-const basePanelHeight = 8.48 * panelScale   // 5.088 — panel without strip
-const stripHeight = 1.83 * panelScale       // 1.098 — neighbor strip
-const rightMargin = 0.5                     // table em from xMax
-const topMargin = 1                         // table em from yMin
-const gap = 0.8 * panelScale               // 0.48
-
-const panelCenterX = tableXMax - rightMargin - panelWidth / 2
-
-function hasStrip(playerIndex: number, players: any[], viewedPlayer: any): boolean {
-  const n = players.length
-  if (viewedPlayer === undefined || n <= 2) return false
-  const viewedIdx = players.indexOf(viewedPlayer)
-  if (viewedIdx === -1) return false
-  const leftNeighbor = players[(viewedIdx - 1 + n) % n]
-  const rightNeighbor = players[(viewedIdx + 1) % n]
-  const player = players[playerIndex]
-  return player === leftNeighbor || player === rightNeighbor
-}
+const basePanelHeight = 8.48 * panelScale   // 5.088
+const leftMargin = 1                        // table em from left (1/scale in panel font-size)
+const topMargin = 0.3                       // table em from top
+const gap = 0.75 * panelScale              // 0.45
 
 /**
  * Animation-only locator: positions items at a player's panel center with tiny scale.
- * Used as a waypoint for trajectory animations (gold, keys, cards moving to/from non-viewed players).
  */
 class OnPlayerPanelLocator extends ListLocator {
   getGap(): Partial<Coordinates> {
@@ -47,27 +31,16 @@ class OnPlayerPanelLocator extends ListLocator {
 
   getCoordinates(location: Location, context: MaterialContext) {
     const panelIndex = getRelativePlayerIndex(context, location.player)
-    const players = context.rules.players
-    const me = context.player
-    const viewedPlayer = getViewPlayer(context)
 
-    // Sorted players (same order as usePlayers({ sortFromMe: true }))
-    const meIdx = me !== undefined ? players.indexOf(me) : -1
-    const sortedPlayers = meIdx >= 0
-      ? [...players.slice(meIdx), ...players.slice(0, meIdx)]
-      : [...players]
-
-    // Cumulate Y offset for each panel before the target
-    let y = tableYMin + topMargin
+    // Cumulate X offset for each panel before the target
+    let x = -37 + leftMargin
     for (let i = 0; i < panelIndex; i++) {
-      const h = basePanelHeight + (hasStrip(players.indexOf(sortedPlayers[i]), players, viewedPlayer) ? stripHeight : 0)
-      y += h + gap
+      x += panelWidth + gap
     }
-    const thisHeight = basePanelHeight + (hasStrip(players.indexOf(sortedPlayers[panelIndex]), players, viewedPlayer) ? stripHeight : 0)
 
     return {
-      x: panelCenterX,
-      y: y + thisHeight / 2,
+      x: x + panelWidth / 2,
+      y: tableYMin + topMargin + basePanelHeight / 2,
       z: 10
     }
   }
@@ -76,8 +49,7 @@ class OnPlayerPanelLocator extends ListLocator {
 export const onPlayerPanelLocator = new OnPlayerPanelLocator()
 
 /**
- * Animation-only locator: positions items just left of a player's panel, visible (scale ~1.5).
- * Used as a brief waypoint so tokens "appear" near the panel before traveling to the stock.
+ * Animation-only locator: positions items just below a player's panel, visible.
  */
 class BesidePanelLocator extends ListLocator {
   getGap(_location: Location, _context: MaterialContext): Partial<Coordinates> {
@@ -87,8 +59,8 @@ class BesidePanelLocator extends ListLocator {
   getCoordinates(location: Location, context: MaterialContext) {
     const coords = onPlayerPanelLocator.getCoordinates(location, context)
     return {
-      x: coords.x - panelWidth / 2 - 2,
-      y: coords.y,
+      x: coords.x,
+      y: coords.y + basePanelHeight / 2 + 2,
       z: 10
     }
   }
@@ -104,8 +76,8 @@ class BesidePanelCardLocator extends BesidePanelLocator {
   getCoordinates(location: Location, context: MaterialContext) {
     const coords = onPlayerPanelLocator.getCoordinates(location, context)
     return {
-      x: coords.x - panelWidth / 2 - 3.5,
-      y: coords.y,
+      x: coords.x,
+      y: coords.y + basePanelHeight / 2 + 3.5,
       z: 10
     }
   }

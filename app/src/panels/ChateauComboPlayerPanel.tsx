@@ -132,7 +132,7 @@ const outerCss = css`
   cursor: pointer;
   color: white;
   transform: scale(1);
-  transform-origin: right center;
+  transform-origin: center top;
   will-change: transform, box-shadow;
   transition: transform 0.4s cubic-bezier(.2,.8,.3,1), box-shadow 0.4s ease;
   &:active {
@@ -242,14 +242,15 @@ const timerCss = css`
 
 const viewedIconCss = css`
   position: absolute;
-  top: -0.8em;
-  left: -1em;
+  bottom: -1.2em;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 3;
-  font-size: 1.1em;
-  color: rgba(255,255,255,0.9);
-  background: rgba(0,0,0,0.75);
-  padding: 0.3em 0.35em;
-  border-radius: 0.4em;
+  font-size: 1.4em;
+  color: #F0D860;
+  background: rgba(0,0,0,0.85);
+  padding: 0.25em 0.5em;
+  border-radius: 0.5em;
   box-shadow: 0 0.1em 0.3em rgba(0,0,0,0.4);
 `
 

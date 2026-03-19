@@ -52,7 +52,7 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
     const selectedCard = rules.material(MaterialType.Card).selected(true)
     if (selectedCard.length) undo(move => isEqual(move, selectedCard.selectItem()))
     closeDialog()
-  }, [undo])
+  }, [closeDialog, rules, undo])
   return (
     <>
       <h2 css={titleCss}>{isFlipped ? t('card.face-down') : t(`card.${item.id.front}`)}</h2>
@@ -81,7 +81,7 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
                             onPlay={undoSelect} local>{t('move.select', 'Select')}</PlayMoveButton>
           }
           {!!canRotate && rotateMove &&
-            <PlayMoveButton move={rotateMove} local>{t('move.rotate', 'Rotate this card')}</PlayMoveButton>
+            <PlayMoveButton move={rotateMove} onPlay={closeDialog} local>{t('move.rotate', 'Rotate this card')}</PlayMoveButton>
           }
         </div>
       }/>}
@@ -260,7 +260,8 @@ const titleCss = css`
   font-family: 'MedievalSharp', cursive;
   color: #3A2410;
   text-shadow: 0 0.06em 0 rgba(255, 255, 255, 0.3);
-  margin-bottom: 0.15em !important;
+  margin: 0 0 0.15em 0 !important;
+  padding: 0;
   text-align: left !important;
 `
 
