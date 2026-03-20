@@ -1,7 +1,8 @@
-import { isMoveItemType, isShuffle, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, isShuffle, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'
+import { CustomMoveType } from './CustomMoveType'
 import { DealCardsHelper } from './helpers/DealCardsHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
@@ -11,7 +12,7 @@ export class KeyEffectRule extends PlayerTurnRule {
     return this.remind<RuleId>(Memory.ReturnRule) ?? RuleId.BuyCard
   }
   getPlayerMoves(): MaterialMove[] {
-    const moves: MaterialMove[] = this.discardRiver()
+    const moves: MaterialMove[] = [this.customMove(CustomMoveType.ChooseRiver, this.messengerPlace)]
     const otherPlace = this.messengerPlace === Place.Castle ? Place.Village : Place.Castle
     if (this.getRiver(otherPlace).length > 0) {
       moves.push(
@@ -22,6 +23,11 @@ export class KeyEffectRule extends PlayerTurnRule {
       )
     }
     return moves
+  }
+
+  onCustomMove(move: CustomMove): MaterialMove[] {
+    if (!isCustomMoveType(CustomMoveType.ChooseRiver)(move)) return []
+    return this.discardRiver()
   }
 
   get messenger() {

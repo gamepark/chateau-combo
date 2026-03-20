@@ -29,4 +29,3 @@ class KeyDescription extends MoneyDescription {
 }
 
 export const keyDescription = new KeyDescription()
-

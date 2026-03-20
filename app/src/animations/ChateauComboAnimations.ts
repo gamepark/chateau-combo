@@ -3,7 +3,7 @@ import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import { MaterialGameAnimations } from '@gamepark/react-game'
 import { isCreateItemType, isDeleteItemType, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
-import { besidePanelCardLocator, besidePanelLocator, onPlayerPanelLocator } from '../locators/OnPlayerPanelLocator'
+import { belowPanelCardLocator, belowPanelLocator, onPlayerPanelLocator } from '../locators/OnPlayerPanelLocator'
 import { getViewPlayer } from '../locators/panelCoordinates'
 
 export const chateauComboAnimations = new MaterialGameAnimations()
@@ -15,7 +15,7 @@ const isGoldDelete = isDeleteItemType(MaterialType.GoldCoin)
 
 const toPanelTrajectory = () => ({
   waypoints: [
-    { at: 0.6, locator: besidePanelLocator, location: (item: MaterialItem) => ({ player: item.location.player }) },
+    { at: 0.6, locator: belowPanelLocator, location: (item: MaterialItem) => ({ player: item.location.player }) },
     { at: 1, locator: onPlayerPanelLocator, location: (item: MaterialItem) => ({ player: item.location.player }) }
   ]
 })
@@ -34,7 +34,7 @@ chateauComboAnimations
   .duration(1500)
   .trajectory(toPanelTrajectory)
 
-// Card to tableau — other player: via beside panel then panel
+// Card to tableau — other player: via below panel then panel
 const isCardMove = isMoveItemType(MaterialType.Card)
 
 chateauComboAnimations
@@ -45,8 +45,8 @@ chateauComboAnimations
   .duration(1500)
   .trajectory((_context, move) => ({
     waypoints: [
-      { at: 0.3, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
-      { at: 0.55, locator: besidePanelCardLocator, location: () => ({ player: move.location.player }) },
+      { at: 0.3, locator: belowPanelCardLocator, location: () => ({ player: move.location.player }) },
+      { at: 0.55, locator: belowPanelCardLocator, location: () => ({ player: move.location.player }) },
       { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: move.location.player }) }
     ]
   }))
@@ -70,15 +70,16 @@ chateauComboAnimations
   )
   .skip()
 
-// Spend key/gold — other player: from panel
+// Spend key/gold — other player: from panel to stock
 chateauComboAnimations
   .configure((move, context) =>
     (isKeyDelete(move) || isGoldDelete(move))
-    && context.rules.material(move.itemType).index(move.itemIndex).getItem()?.location.player !== getViewPlayer(context)
+    && context.rules.game.items[move.itemType]?.[move.itemIndex]?.location?.player !== getViewPlayer(context)
   )
   .duration(1000)
   .trajectory(() => ({
     waypoints: [
-      { at: 0, locator: onPlayerPanelLocator, location: (item) => ({ player: item.location.player }) }
+      { at: 0, locator: onPlayerPanelLocator, location: (item: MaterialItem) => ({ player: item.location.player }) },
+      { at: 0.4, locator: belowPanelLocator, location: (item: MaterialItem) => ({ player: item.location.player }) }
     ]
   }))

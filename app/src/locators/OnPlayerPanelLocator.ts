@@ -1,6 +1,6 @@
 import { getRelativePlayerIndex, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
-import { panelGap, panelHeight, panelRightMargin, panelTopMargin, panelWidth, tableXMax, tableYMin } from '../panels/PanelConstants'
+import { getPanelX, panelHeight, panelTopMargin, tableYMin } from '../panels/PanelConstants'
 import { getViewPlayer } from './panelCoordinates.ts'
 
 /**
@@ -20,17 +20,8 @@ class OnPlayerPanelLocator extends ListLocator {
   }
 
   getCoordinates(location: Location, context: MaterialContext) {
-    const panelIndex = getRelativePlayerIndex(context, location.player)
-    const totalPlayers = context.rules.players.length
-
-    // Panels are centered horizontally (center of table = x:0 in table coords = (xMin+xMax)/2 = 4.5)
-    const tableCenter = (-37 + 46) / 2   // (xMin + xMax) / 2
-    const totalWidth = totalPlayers * panelWidth + (totalPlayers - 1) * panelGap
-    const startX = tableCenter - totalWidth / 2
-    const x = startX + panelIndex * (panelWidth + panelGap) + panelWidth / 2
-
     return {
-      x,
+      x: getPanelX(getRelativePlayerIndex(context, location.player), context.rules.players.length),
       y: tableYMin + panelTopMargin + panelHeight / 2,
       z: 10
     }
@@ -42,7 +33,7 @@ export const onPlayerPanelLocator = new OnPlayerPanelLocator()
 /**
  * Animation-only locator: positions items just below a player's panel, visible.
  */
-class BesidePanelLocator extends ListLocator {
+class BelowPanelLocator extends ListLocator {
   getGap(_location: Location, _context: MaterialContext): Partial<Coordinates> {
     return { z: 0.05 }
   }
@@ -61,9 +52,9 @@ class BesidePanelLocator extends ListLocator {
   }
 }
 
-export const besidePanelLocator = new BesidePanelLocator()
+export const belowPanelLocator = new BelowPanelLocator()
 
-class BesidePanelCardLocator extends BesidePanelLocator {
+class BelowPanelCardLocator extends BelowPanelLocator {
   getCoordinates(location: Location, context: MaterialContext) {
     const coords = onPlayerPanelLocator.getCoordinates(location, context)
     return {
@@ -74,4 +65,4 @@ class BesidePanelCardLocator extends BesidePanelLocator {
   }
 }
 
-export const besidePanelCardLocator = new BesidePanelCardLocator()
+export const belowPanelCardLocator = new BelowPanelCardLocator()

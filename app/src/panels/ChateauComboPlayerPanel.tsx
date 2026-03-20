@@ -6,7 +6,7 @@ import { Avatar, Picture, PlayerTimer, usePlay, usePlayerName, useRules } from '
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { FC } from 'react'
+import { FC, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import castleIcon from '../images/icons/messenger-castle.png'
 import villageIcon from '../images/icons/messenger-village.png'
@@ -116,12 +116,33 @@ export const ChateauComboPlayerPanel: FC<Props> = ({ playerId, isViewed, isLeftN
   )
 }
 
-const Chip: FC<{ img: string; value: number; score?: boolean }> = ({ img, value, score }) => (
-  <div css={[chipCss, score && scoreChipCss]}>
-    <Picture src={img} css={chipImgCss}/>
-    <span>{value}</span>
-  </div>
-)
+const ANIMATION_DELAY = 1200
+
+const Chip: FC<{ img: string; value: number; score?: boolean }> = ({ img, value, score }) => {
+  const prevValue = useRef(value)
+  const [displayValue, setDisplayValue] = useState(value)
+  const [pulse, setPulse] = useState(false)
+  useEffect(() => {
+    if (value !== prevValue.current) {
+      prevValue.current = value
+      const delayTimeout = setTimeout(() => {
+        setDisplayValue(value)
+        setPulse(true)
+      }, ANIMATION_DELAY)
+      const pulseTimeout = setTimeout(() => setPulse(false), ANIMATION_DELAY + 400)
+      return () => {
+        clearTimeout(delayTimeout)
+        clearTimeout(pulseTimeout)
+      }
+    }
+  }, [value])
+  return (
+    <div css={[chipCss, score && scoreChipCss, pulse && pulseCss]}>
+      <Picture src={img} css={chipImgCss}/>
+      <span>{displayValue}</span>
+    </div>
+  )
+}
 
 // ---- Styles ----
 
@@ -304,6 +325,15 @@ const chipCss = css`
 
 const scoreChipCss = css`
   background: rgba(160,40,35,0.55);
+`
+
+const pulseCss = css`
+  animation: chipPulse 0.4s ease-out;
+  @keyframes chipPulse {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.25); }
+    100% { transform: scale(1); }
+  }
 `
 
 const chipImgCss = css`

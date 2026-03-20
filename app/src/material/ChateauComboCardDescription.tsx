@@ -6,11 +6,12 @@ import { Place } from '@gamepark/chateau-combo/material/Place'
 import { Tableau } from '@gamepark/chateau-combo/material/Tableau'
 import { CustomMoveType } from '@gamepark/chateau-combo/rules/CustomMoveType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
-import { faLockOpen, faStar, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faLockOpen, faRotateRight, faStar, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { CardDescription, ItemContext, ItemMenuButton, MaterialContext } from '@gamepark/react-game'
+import { CardDescription, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { isCustomMoveType, isMoveItem, MaterialItem, MaterialMove, MaterialMoveBuilder } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
+import { SealMenuButton } from '../theme/SealMenuButton'
 import Castle from '../images/cards/castle.jpg'
 import Duchess from '../images/cards/en/cartesChCombo_ChC_eng-US.jpg'
 import Steward from '../images/cards/en/cartesChCombo_ChC_eng-US10.jpg'
@@ -274,15 +275,26 @@ export class ChateauComboCardDescription extends CardDescription {
   getItemMenu(item: MaterialItem, context: ItemContext, legalMoves: MaterialMove[]) {
     const ruleId = context.rules.game.rule?.id
 
-    // Discard entire river button (on top deck card only)
-    if (ruleId === RuleId.DiscardEntireRiver && item.location.type === LocationType.Deck) {
+    // Flip card button (on river cards during buy/spend key)
+    if ((ruleId === RuleId.BuyCard || ruleId === RuleId.SpendKey) && item.location.type === LocationType.River) {
+      const canRotate = legalMoves.some(m => isMoveItem(m) && m.itemIndex === context.index && m.location.rotation)
+      if (canRotate) {
+        const rotateMove = context.rules.material(MaterialType.Card).index(context.index).rotateItem(!item.location.rotation)
+        return <SealMenuButton move={rotateMove} options={{ local: true }} label={<Trans defaults="Flip" i18nKey="move.flip"/>} x={2.5} y={0} labelPosition="right">
+          <FontAwesomeIcon icon={faRotateRight}/>
+        </SealMenuButton>
+      }
+    }
+
+    // Discard river button (on top deck card)
+    if ((ruleId === RuleId.DiscardEntireRiver || ruleId === RuleId.KeyEffect) && item.location.type === LocationType.Deck) {
       const topIndex = context.rules.material(MaterialType.Card).location(LocationType.Deck).locationId(item.location.id).deck().getIndex()
       if (context.index === topIndex) {
-        const riverMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ChooseRiver)(m) && m.data === item.location.id)
-        if (riverMove) {
-          return <ItemMenuButton move={riverMove} label={<Trans defaults="Discard this row" i18nKey="move.discard-river"/>} x={0} y={0} labelPosition="right">
+        const discardMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ChooseRiver)(m) && m.data === item.location.id)
+        if (discardMove) {
+          return <SealMenuButton move={discardMove} label={<Trans defaults="Discard this row" i18nKey="move.discard-river"/>} x={0} y={0} labelPosition="right">
             <FontAwesomeIcon icon={faTrash}/>
-          </ItemMenuButton>
+          </SealMenuButton>
         }
       }
     }
@@ -297,9 +309,9 @@ export class ChateauComboCardDescription extends CardDescription {
         if (hasKey) {
           const lockMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ActivateLock)(m) && m.data === context.index)
           if (lockMove) {
-            return <ItemMenuButton move={lockMove} label={<Trans defaults="Activate lock" i18nKey="move.activate-lock"/>} x={0} y={0} labelPosition="right">
+            return <SealMenuButton move={lockMove} label={<Trans defaults="Activate lock" i18nKey="move.activate-lock"/>} x={0} y={0} labelPosition="right">
               <FontAwesomeIcon icon={faLockOpen}/>
-            </ItemMenuButton>
+            </SealMenuButton>
           }
         }
       }
@@ -309,11 +321,13 @@ export class ChateauComboCardDescription extends CardDescription {
     if (ruleId === RuleId.ActivateAdjacentAbility) {
       const adjacentMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ActivateAdjacent)(m) && m.data === context.index)
       if (adjacentMove) {
-        return <ItemMenuButton move={adjacentMove} label={<Trans defaults="Activate this card" i18nKey="move.activate-adjacent"/>} x={0} y={0} labelPosition="right">
+        return <SealMenuButton move={adjacentMove} label={<Trans defaults="Activate this card" i18nKey="move.activate-adjacent"/>} x={0} y={0} labelPosition="right">
           <FontAwesomeIcon icon={faStar}/>
-        </ItemMenuButton>
+        </SealMenuButton>
       }
     }
+
+    return
   }
 
   getLocations({ location }: MaterialItem, { rules, index }: ItemContext) {

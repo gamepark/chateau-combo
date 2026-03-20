@@ -1,4 +1,5 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
+import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
 import { DropAreaDescription, ItemContext, ListLocator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
@@ -24,7 +25,14 @@ class RiverLocator extends ListLocator {
     return coordinates
   }
 
-  getHoverTransform = () => ['translateZ(10em)', 'scale(2)']
+  getHoverTransform(item: MaterialItem) {
+    const z = item.location.rotation ? -10 : 10
+    return [`translateZ(${z}em)`, 'scale(2)']
+  }
+
+  getPositionDependencies(_location: Location, context: MaterialContext) {
+    return context.rules.material(MaterialType.MessengerPawn).getItem()?.location.id
+  }
 
   locationDescription = new DropAreaDescription({ ...cardDescription, borderRadius: cardDescription.borderRadius })
 

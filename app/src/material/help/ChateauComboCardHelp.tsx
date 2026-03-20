@@ -39,7 +39,7 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
   const game = rules.game
   const { item, itemIndex, closeDialog } = props
   const discardOneFromRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.DiscardFromRiver && move.itemIndex === itemIndex)
-  const discardRiver = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard && game.rule?.id === RuleId.KeyEffect && move.itemIndex === itemIndex)
+  const discardRiver = useLegalMove((move) => isCustomMoveType(CustomMoveType.ChooseRiver)(move) && move.data === item.location?.id)
   const activateLock = useLegalMove((move) => isCustomMoveType(CustomMoveType.ActivateLock)(move) && move.data === itemIndex)
   const activateAdjacent = useLegalMove((move) => isCustomMoveType(CustomMoveType.ActivateAdjacent)(move) && move.data === itemIndex)
   const isFlipped = item.id.front === undefined || !!item.location?.rotation
@@ -62,7 +62,7 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
             <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard', 'Discard')}</PlayMoveButton>
           }
           {!!discardRiver &&
-            <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { defaultValue: 'Discard river', place: discardRiver.location.id })}</PlayMoveButton>
+            <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { defaultValue: 'Discard river', place: discardRiver.data })}</PlayMoveButton>
           }
           {!!activateLock &&
             <PlayMoveButton move={activateLock} onPlay={closeDialog}>{t('move.activate-lock', 'Activate lock')}</PlayMoveButton>

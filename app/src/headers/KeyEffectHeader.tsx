@@ -1,9 +1,9 @@
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
+import { CustomMoveType } from '@gamepark/chateau-combo/rules/CustomMoveType'
 import { KeyEffectRule } from '@gamepark/chateau-combo/rules/KeyEffectRule'
 import { useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { isMoveItemType, MaterialMove } from '@gamepark/rules-api'
+import { isCustomMoveType, isMoveItemType, MaterialMove } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { WaxSealButton } from '../theme/WaxSealButton'
 
@@ -13,7 +13,7 @@ export const KeyEffectHeader = () => {
   const itsMe = rules.getActivePlayer() === player
   const legalMoves = useLegalMoves<MaterialMove>()
   const moveMessenger = legalMoves.find((move) => isMoveItemType(MaterialType.MessengerPawn)(move))
-  const discardCards = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard)
+  const discardRiver = legalMoves.find((move) => isCustomMoveType(CustomMoveType.ChooseRiver)(move))
   const name = usePlayerName(rules.getActivePlayer())
   return (
     <Trans i18nKey={itsMe ? 'key-effect.you' : 'key-effect.player'} values={{
@@ -21,7 +21,7 @@ export const KeyEffectHeader = () => {
       place: new KeyEffectRule(rules.game).messengerPlace
     }}>
       <WaxSealButton move={moveMessenger}/>
-      <WaxSealButton move={discardCards}/>
+      <WaxSealButton move={discardRiver}/>
     </Trans>
   )
 }

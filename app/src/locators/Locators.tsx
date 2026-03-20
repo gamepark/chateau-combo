@@ -1,6 +1,5 @@
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { Locator } from '@gamepark/react-game'
-import { cardRotateButtonLocator } from './CardRotateButtonLocator'
 import { cardVictoryPointsLocator } from './CardVictoryPointsLocator'
 import { discardLocator } from './DiscardLocator'
 import { effectLocator } from './EffectLocator'
@@ -18,6 +17,7 @@ import { playerKeyStockLocator } from './PlayerKeyStockLocator'
 import { riverLocator } from './RiverLocator'
 import { scoringLocator } from './ScoringLocator'
 import { shieldsLocator } from './ShieldsLocator'
+import { spendKeyButtonLocator } from './SpendKeyButtonLocator'
 
 export const Locators: Partial<Record<LocationType, Locator>> = {
   [LocationType.EndOfRiver]: endOfRiverLocator,
@@ -31,11 +31,11 @@ export const Locators: Partial<Record<LocationType, Locator>> = {
   [LocationType.Discard]: discardLocator,
   [LocationType.OnCard]: onCardLocator,
   [LocationType.KeyOnCard]: keyOnCardLocator,
-  [LocationType.CardRotate]: cardRotateButtonLocator,
-  [LocationType.GoldIcon]: goldIconLocator,
+[LocationType.GoldIcon]: goldIconLocator,
   [LocationType.Shields]: shieldsLocator,
   [LocationType.Effect]: effectLocator,
   [LocationType.MessengerIcon]: messengerIconDescription,
   [LocationType.ScoringArea]: scoringLocator,
-  [LocationType.CardVictoryPoints]: cardVictoryPointsLocator
+  [LocationType.CardVictoryPoints]: cardVictoryPointsLocator,
+  [LocationType.SpendKeyButton]: spendKeyButtonLocator
 }
