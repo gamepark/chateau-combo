@@ -122,7 +122,7 @@ export const theme = {
     fontFamily: "'Lilita One', cursive",
     background: {
       image: '/cover-1920.jpg',
-      overlay: 'rgba(0, 0, 0, 0.7)'
+      overlay: 'rgba(0, 0, 0, 0.8)'
     }
   },
   palette: {
