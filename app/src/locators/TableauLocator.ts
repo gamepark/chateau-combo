@@ -33,14 +33,13 @@ class TableauLocator extends GridLocator {
     return item.location.player !== getViewPlayer(context)
   }
 
-  getHoverTransform = () => ['translateZ(10em)', 'scale(2)']
+  getHoverTransform(item: MaterialItem) {
+    const z = item.location.rotation ? -10 : 10
+    return [`translateZ(${z}em)`, 'scale(2)']
+  }
 
   locationDescription = new TableauSpotDescription()
 
-  getPositionDependencies(location: Location, context: MaterialContext): unknown {
-    const selectedCard = context.rules.material(MaterialType.Card).selected(true)
-    return [...super.getPositionDependencies(location, context), context.rules.game.rule?.id, selectedCard.length ? selectedCard.getIndex() : undefined]
-  }
 }
 
 export class TableauSpotDescription extends DropAreaDescription {

@@ -21,7 +21,7 @@ export const PlayerPanels: FC = () => {
   const rightNeighborId = n > 2 ? allPlayers[(viewedIndex + 1) % n] : undefined
 
   return (
-    <div css={containerCss}>
+    <div css={[containerCss, n === 2 && twoPlayersCss]}>
       {players.map((player) => {
         const pid = player.id as PlayerId
 
@@ -50,4 +50,12 @@ const containerCss = css`
   flex-direction: row;
   align-items: flex-start;
   gap: ${panelGapEm}em;
+`
+
+const twoPlayersCss = css`
+  left: 0;
+  right: 0;
+  transform: translateZ(1em);
+  justify-content: space-between;
+  padding: 0 ${panelRightMargin / panelScale}em;
 `
