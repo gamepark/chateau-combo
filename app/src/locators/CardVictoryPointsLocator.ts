@@ -22,13 +22,15 @@ class CardVictoryPointsLocatorDescription extends LocationDescription {
       &:before {
         position: absolute;
         content: '${location.x}';
-        font-family: "Sriracha", cursive;
-        font-weight: 400;
+        font-family: "MedievalSharp", cursive;
+        font-weight: 700;
         font-style: normal;
         font-size: 1.4em;
-        top: 50%;
-        left: 50%;
+        top: 56%;
+        left: 53%;
         transform: translate(-50%, -50%);
+        color: #fff;
+        text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.5);
       }
     `
   }

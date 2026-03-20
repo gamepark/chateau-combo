@@ -29,6 +29,7 @@ import { FC, ReactElement, useCallback } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
 import { useOpenExtensionDialog } from '../../ExtensionContext'
 import LockIcon from '../../images/icons/lock.png'
+import VictoryPoints from '../../images/icons/VictoryPoints.png'
 import Gold from '../../images/tokens/Gold1.png'
 import { moveMessengerImages, shieldImages } from './Images'
 import displayLocationHelp = MaterialMoveBuilder.displayLocationHelp
@@ -53,10 +54,18 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
     if (selectedCard.length) undo(move => isEqual(move, selectedCard.selectItem()))
     closeDialog()
   }, [closeDialog, rules, undo])
+  const cardScore = (() => {
+    if (!rules.isOver() || item.location?.type !== LocationType.Tableau || item.location.rotation) return undefined
+    const tableau = new Tableau(rules.game, item.location.player!)
+    return tableau.getCardScore(item.location.x! - tableau.xMin, item.location.y! - tableau.yMin)
+  })()
+
   return (
     <>
-      <h2 css={titleCss}>{isFlipped ? t('card.face-down') : t(`card.${item.id.front}`)}</h2>
-      {!isFlipped && <VisibleCard {...props} actions={
+      <h2 css={titleCss}>
+        {isFlipped ? t('card.face-down') : t(`card.${item.id.front}`)}
+      </h2>
+      {!isFlipped && <VisibleCard {...props} cardScore={cardScore} actions={
         <div css={actionsRowCss}>
           {!!discardOneFromRiver &&
             <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard', 'Discard')}</PlayMoveButton>
@@ -93,9 +102,9 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
   )
 }
 
-const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement }> = (props) => {
+const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement, cardScore?: number }> = (props) => {
   const { t } = useTranslation()
-  const { item, actions } = props
+  const { item, actions, cardScore } = props
   const openExtensionDialog = useOpenExtensionDialog()
   const playerId = usePlayerId()
   const game = useGame<MaterialGame>()!
@@ -119,6 +128,12 @@ const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement }> = (props) 
             <PlayMoveButton move={displayLocationHelp({ type: LocationType.Shields })} local>{t('help.shield-distribution')}</PlayMoveButton>
           </div>
         )}
+        {cardScore !== undefined &&
+          <div css={scoreDisplayCss}>
+            <Picture src={VictoryPoints} css={scoreSealImgCss}/>
+            <span css={scoreSealValueCss}>{cardScore}</span>
+          </div>
+        }
         <div css={costDisplayCss}>
           <strong>{characteristic.cost}</strong> <Picture css={coinIconCss} src={Gold}/>
           {!!costDiscount && <span css={discountCss}> → <strong>{itemDiscounted}</strong> <Picture css={coinIconCss} src={Gold}/></span>}
@@ -263,6 +278,30 @@ const titleCss = css`
   margin: 0 0 0.15em 0 !important;
   padding: 0;
   text-align: left !important;
+`
+
+const scoreDisplayCss = css`
+  position: relative;
+  width: 2.2em;
+  height: 2.1em;
+  flex-shrink: 0;
+`
+
+const scoreSealImgCss = css`
+  width: 100%;
+  height: 100%;
+`
+
+const scoreSealValueCss = css`
+  position: absolute;
+  top: 56%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1em;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0.05em 0.1em rgba(0, 0, 0, 0.5);
 `
 
 const mini = css`
