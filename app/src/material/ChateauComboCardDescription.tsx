@@ -280,7 +280,7 @@ export class ChateauComboCardDescription extends CardDescription {
       const canRotate = legalMoves.some(m => isMoveItem(m) && m.itemIndex === context.index && m.location.rotation)
       if (canRotate) {
         const rotateMove = context.rules.material(MaterialType.Card).index(context.index).rotateItem(!item.location.rotation)
-        return <SealMenuButton move={rotateMove} options={{ local: true }} label={<Trans defaults="Flip" i18nKey="move.flip"/>} x={2.5} y={0} labelPosition="right">
+        return <SealMenuButton move={rotateMove} options={{ local: true }} x={2.5} y={0}>
           <FontAwesomeIcon icon={faRotateRight}/>
         </SealMenuButton>
       }
