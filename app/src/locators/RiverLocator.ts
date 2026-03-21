@@ -31,7 +31,7 @@ class RiverLocator extends ListLocator {
   }
 
   getPositionDependencies(_location: Location, context: MaterialContext) {
-    return context.rules.material(MaterialType.MessengerPawn).getItem()?.location.id
+    return [context.rules.material(MaterialType.MessengerPawn).getItem()?.location.id, context.rules.game.rule?.id]
   }
 
   locationDescription = new DropAreaDescription({ ...cardDescription, borderRadius: cardDescription.borderRadius })

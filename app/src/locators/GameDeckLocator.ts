@@ -16,7 +16,11 @@ class GameDeckLocator extends DeckLocator {
 
   locationDescription = new DropAreaDescription({ ...cardDescription, borderRadius: cardDescription.borderRadius })
 
-  getLocations(_context: MaterialContext) {
+  getPositionDependencies(_location: Location, context: MaterialContext): unknown {
+    return [context.rules.game.rule?.id]
+  }
+
+  getLocations() {
     return [Place.Castle, Place.Village].map(place => ({ type: LocationType.Deck, id: place }))
   }
 }
