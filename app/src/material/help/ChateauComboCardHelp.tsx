@@ -501,6 +501,28 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
         <Trans i18nKey="per.place.castle.neighbor"/>
       )
     }
+    case ConditionType.PerDifferentCost:
+      return <Trans i18nKey="per.different-cost"/>
+    case ConditionType.IfNoDiscount:
+      return <Trans i18nKey="if.no-discount"/>
+    case ConditionType.IfNoPurse:
+      return <Trans i18nKey="if.no-purse"/>
+    case ConditionType.IfNoFaceDown:
+      return <Trans i18nKey="if.no-face-down"/>
+    case ConditionType.IfShieldInRow:
+      return (
+        <Trans i18nKey="if.shield.row">
+          <Picture css={mini} src={shieldImages[condition.shield]}/>
+        </Trans>
+      )
+    case ConditionType.IfShieldInColumn:
+      return (
+        <Trans i18nKey="if.shield.column">
+          <Picture css={mini} src={shieldImages[condition.shield]}/>
+        </Trans>
+      )
+    case ConditionType.PerLockCard:
+      return <Trans i18nKey="per.lock-card"/>
   }
 }
 
