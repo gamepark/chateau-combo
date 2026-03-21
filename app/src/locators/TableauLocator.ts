@@ -16,6 +16,10 @@ class TableauLocator extends GridLocator {
     return { x: TABLEAU_X + (coords.x ?? 0), y: (coords.y ?? 0) + 6.5, z: coords.z }
   }
 
+  getPositionDependencies(location: Location, context: MaterialContext) {
+    return this.countItems(location, context)
+  }
+
   getLocations(context: MaterialContext) {
     const { rules, player } = context
     const viewPlayer = getViewPlayer(context)
