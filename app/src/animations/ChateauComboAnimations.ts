@@ -62,7 +62,7 @@ const isCardMove = isMoveItemType(MaterialType.Card)
 chateauComboAnimations
   .configure((move, context) =>
     isCardMove(move) && move.location.type === LocationType.Tableau
-    && move.location.player === getViewPlayer(context)
+    && move.location.player === context.player
   )
   .duration(600)
 
