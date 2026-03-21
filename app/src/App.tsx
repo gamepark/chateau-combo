@@ -15,11 +15,7 @@ export function App() {
   return (
     <>
       {!!game && <GameDisplay/>}
-      <LoadingScreen display={loading}
-                     author={['Grégory Grard', 'Mathieu Roussel']}
-                     artist="Stéphane Escapa"
-                     publisher="Catch Up Games"
-                     developer={['Théo Grégorio', 'Game Park']}/>
+      <LoadingScreen display={loading}/>
       <MaterialHeader rulesStepsHeaders={Headers} loading={loading}/>
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)}/>
       <Menu/>

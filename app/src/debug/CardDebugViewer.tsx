@@ -1,4 +1,4 @@
-import { Card, cards, getCardPlace } from '@gamepark/chateau-combo/material/Card'
+import { cards, getCardPlace } from '@gamepark/chateau-combo/material/Card'
 import { cardCharacteristics, Shield } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { ConditionType } from '@gamepark/chateau-combo/material/Condition'
 import { EffectType } from '@gamepark/chateau-combo/material/Effect'

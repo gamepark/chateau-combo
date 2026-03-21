@@ -2,7 +2,7 @@ import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import { MaterialGameAnimations } from '@gamepark/react-game'
-import { isCreateItemType, isDeleteItemType, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
+import { isCreateItemType, isDeleteItemType, isMoveItemType, MaterialItem, MoveItem } from '@gamepark/rules-api'
 import { belowPanelCardLocator, belowPanelLocator, onPlayerPanelLocator } from '../locators/OnPlayerPanelLocator'
 import { getViewPlayer } from '../locators/panelCoordinates'
 
@@ -43,13 +43,16 @@ chateauComboAnimations
     && move.location.player !== getViewPlayer(context)
   )
   .duration(1500)
-  .trajectory((_context, move) => ({
-    waypoints: [
-      { at: 0.3, locator: belowPanelCardLocator, location: () => ({ player: move.location.player }) },
-      { at: 0.55, locator: belowPanelCardLocator, location: () => ({ player: move.location.player }) },
-      { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: move.location.player }) }
-    ]
-  }))
+  .trajectory((_context, move) => {
+    const m = move as MoveItem
+    return {
+      waypoints: [
+        { at: 0.3, locator: belowPanelCardLocator, location: () => ({ player: m.location.player }) },
+        { at: 0.55, locator: belowPanelCardLocator, location: () => ({ player: m.location.player }) },
+        { at: 1, locator: onPlayerPanelLocator, location: () => ({ player: m.location.player }) }
+      ]
+    }
+  })
 
 // End game: skip animations for non-viewed players
 chateauComboAnimations

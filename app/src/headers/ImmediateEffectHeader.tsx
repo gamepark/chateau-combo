@@ -5,7 +5,7 @@ import { Memory } from "@gamepark/chateau-combo/rules/Memory"
 import { usePlayerId, useRules } from "@gamepark/react-game"
 import { useTranslation } from "react-i18next"
 
-const ImmediateEffectHeader = () => {
+export const ImmediateEffectHeader = () => {
   const rules = useRules<ChateauComboRules>()!
   const player = usePlayerId()
   const activePlayer = rules.getActivePlayer()!
