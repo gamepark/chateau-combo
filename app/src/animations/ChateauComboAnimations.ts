@@ -34,9 +34,39 @@ chateauComboAnimations
   .duration(1500)
   .trajectory(toPanelTrajectory)
 
-// Card to tableau — other player: via below panel then panel
+// Card rotation
+chateauComboAnimations
+  .configure((move, context) =>
+    isMoveItemType(MaterialType.Card)(move)
+    && move.location.rotation !== context.rules.material(MaterialType.Card).getItem(move.itemIndex)!.location.rotation
+  )
+  .duration(400)
+
+// Card discard
+chateauComboAnimations
+  .configure((move) =>
+    isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Discard
+  )
+  .duration(500)
+
+// River refill
+chateauComboAnimations
+  .configure((move) =>
+    isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.River
+  )
+  .duration(400)
+
+// Card to tableau
 const isCardMove = isMoveItemType(MaterialType.Card)
 
+chateauComboAnimations
+  .configure((move) =>
+    isCardMove(move) && move.location.type === LocationType.Tableau
+  )
+  .mine()
+  .duration(600)
+
+// Card to tableau — other player: via below panel then panel
 chateauComboAnimations
   .configure((move, context) =>
     isCardMove(move) && move.location.type === LocationType.Tableau
