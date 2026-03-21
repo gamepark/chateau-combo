@@ -61,9 +61,7 @@ export class KeyEffectRule extends PlayerTurnRule {
     if (isMoveItemType(MaterialType.Card)(move)) {
       if (move.location.type === LocationType.Discard) {
         const river = this.getRiver()
-        if (river.length === 2) {
-          return this.discardRiver()
-        } else if (river.length === 0) {
+        if (river.length === 0) {
           return new DealCardsHelper(this.game).completeRivers(this.startRule(this.returnRule))
         }
       }
