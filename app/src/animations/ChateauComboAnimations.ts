@@ -60,10 +60,10 @@ chateauComboAnimations
 const isCardMove = isMoveItemType(MaterialType.Card)
 
 chateauComboAnimations
-  .configure((move) =>
+  .configure((move, context) =>
     isCardMove(move) && move.location.type === LocationType.Tableau
+    && move.location.player === getViewPlayer(context)
   )
-  .mine()
   .duration(600)
 
 // Card to tableau — other player: via below panel then panel
