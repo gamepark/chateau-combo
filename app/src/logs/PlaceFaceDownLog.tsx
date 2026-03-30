@@ -5,7 +5,7 @@ import { LogPlayerName } from './LogPlayerName'
 
 export const PlaceFaceDownLog: FC<MaterialLogProps> = ({ context }) => {
   return (
-    <Trans defaults="<0/> takes a card face down" i18nKey="log.face-down">
+    <Trans i18nKey="log.face-down">
       <LogPlayerName playerId={context.action.playerId}/>
     </Trans>
   )

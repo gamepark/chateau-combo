@@ -12,7 +12,7 @@ export const DiscardCardLog: FC<MaterialLogProps> = ({ move, context }) => {
   const rules = new ChateauComboRules(context.game)
   const card = rules.material(MaterialType.Card).getItem(m.itemIndex)
   return (
-    <Trans defaults="<0/> discards <1/>" i18nKey="log.discard-card">
+    <Trans i18nKey="log.discard-card">
       <LogPlayerName playerId={context.action.playerId}/>
       <LogCardName card={card.id?.front}/>
     </Trans>

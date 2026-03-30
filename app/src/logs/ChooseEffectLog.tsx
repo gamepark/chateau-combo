@@ -20,7 +20,7 @@ export const ChooseEffectLog: FC<MaterialLogProps> = ({ move, context }) => {
   const chosenEffect = m.data === 1 ? chooseBetween.effect1 : chooseBetween.effect2
 
   return (
-    <Trans defaults="<0/> chooses: <1/>" i18nKey="log.choose-effect">
+    <Trans i18nKey="log.choose-effect">
       <LogPlayerName playerId={context.action.playerId}/>
       {getEffectDescription(chosenEffect)}
     </Trans>

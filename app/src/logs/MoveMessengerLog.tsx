@@ -10,11 +10,11 @@ export const MoveMessengerLog: FC<MaterialLogProps> = ({ move, context }) => {
   const place = m.location.id === Place.Castle ? 'Castle' : 'Village'
 
   if (context.consequenceIndex !== undefined) {
-    return <Trans defaults="The Messenger moves to {place}" i18nKey="log.messenger.auto" values={{ place }}/>
+    return <Trans i18nKey="log.messenger.auto" values={{ place }}/>
   }
 
   return (
-    <Trans defaults="<0/> moves the Messenger to {place}" i18nKey="log.messenger" values={{ place }}>
+    <Trans i18nKey="log.messenger" values={{ place }}>
       <LogPlayerName playerId={context.action.playerId}/>
     </Trans>
   )

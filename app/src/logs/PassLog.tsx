@@ -5,7 +5,7 @@ import { LogPlayerName } from './LogPlayerName'
 
 export const PassLog: FC<MaterialLogProps> = ({ context }) => {
   return (
-    <Trans defaults="<0/> passes" i18nKey="log.pass">
+    <Trans i18nKey="log.pass">
       <LogPlayerName playerId={context.action.playerId}/>
     </Trans>
   )

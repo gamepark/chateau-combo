@@ -16,7 +16,7 @@ const isKeyDelete = isDeleteItemType(MaterialType.Key)
 const SpendKeyButton = () => {
   const spendMove = useLegalMove(m => isKeyDelete(m))
   if (!spendMove) return null
-  return <SealMenuButton move={spendMove} label={<Trans defaults="Spend a key" i18nKey="move.spend-key"/>} labelPosition="right">
+  return <SealMenuButton move={spendMove} label={<Trans i18nKey="move.spend-key"/>} labelPosition="right">
     <FontAwesomeIcon icon={faKey}/>
   </SealMenuButton>
 }

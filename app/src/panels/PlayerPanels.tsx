@@ -42,20 +42,19 @@ export const PlayerPanels: FC = () => {
 
 const containerCss = css`
   position: absolute;
-  left: 50%;
+  left: 0;
+  right: 0;
   top: ${panelTopMargin / panelScale}em;
-  transform: translateX(-50%) translateZ(1em);
+  transform: translateZ(1em);
   font-size: ${panelScale}em;
   display: flex;
   flex-direction: row;
   align-items: flex-start;
+  justify-content: center;
   gap: ${panelGapEm}em;
+  padding: 0 ${panelMargin / panelScale}em;
 `
 
 const twoPlayersCss = css`
-  left: 0;
-  right: 0;
-  transform: translateZ(1em);
   justify-content: space-between;
-  padding: 0 ${panelMargin / panelScale}em;
 `

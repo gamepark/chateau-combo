@@ -292,7 +292,7 @@ export class ChateauComboCardDescription extends CardDescription {
       if (context.index === topIndex) {
         const discardMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ChooseRiver)(m) && m.data === item.location.id)
         if (discardMove) {
-          return <SealMenuButton move={discardMove} label={<Trans defaults="Discard this row" i18nKey="move.discard-river"/>} x={0} y={0} labelPosition="right">
+          return <SealMenuButton move={discardMove} label={<Trans i18nKey="move.discard-river"/>} x={0} y={0} labelPosition="right">
             <FontAwesomeIcon icon={faTrash}/>
           </SealMenuButton>
         }
@@ -309,7 +309,7 @@ export class ChateauComboCardDescription extends CardDescription {
         if (hasKey) {
           const lockMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ActivateLock)(m) && m.data === context.index)
           if (lockMove) {
-            return <SealMenuButton move={lockMove} label={<Trans defaults="Activate lock" i18nKey="move.activate-lock"/>} x={0} y={0} labelPosition="right">
+            return <SealMenuButton move={lockMove} label={<Trans i18nKey="move.activate-lock"/>} x={0} y={0} labelPosition="right">
               <FontAwesomeIcon icon={faLockOpen}/>
             </SealMenuButton>
           }
@@ -321,7 +321,7 @@ export class ChateauComboCardDescription extends CardDescription {
     if (ruleId === RuleId.ActivateAdjacentAbility) {
       const adjacentMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ActivateAdjacent)(m) && m.data === context.index)
       if (adjacentMove) {
-        return <SealMenuButton move={adjacentMove} label={<Trans defaults="Activate this card" i18nKey="move.activate-adjacent"/>} x={0} y={0} labelPosition="right">
+        return <SealMenuButton move={adjacentMove} label={<Trans i18nKey="move.activate-adjacent"/>} x={0} y={0} labelPosition="right">
           <FontAwesomeIcon icon={faStar}/>
         </SealMenuButton>
       }

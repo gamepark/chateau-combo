@@ -68,29 +68,29 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
       {!isFlipped && <VisibleCard {...props} cardScore={cardScore} actions={
         <div css={actionsRowCss}>
           {!!discardOneFromRiver &&
-            <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard', 'Discard')}</PlayMoveButton>
+            <PlayMoveButton move={discardOneFromRiver} onPlay={closeDialog}>{t('move.discard')}</PlayMoveButton>
           }
           {!!discardRiver &&
-            <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { defaultValue: 'Discard river', place: discardRiver.data })}</PlayMoveButton>
+            <PlayMoveButton move={discardRiver} onPlay={closeDialog}>{t('move.discard.river', { place: discardRiver.data })}</PlayMoveButton>
           }
           {!!activateLock &&
-            <PlayMoveButton move={activateLock} onPlay={closeDialog}>{t('move.activate-lock', 'Activate lock')}</PlayMoveButton>
+            <PlayMoveButton move={activateLock} onPlay={closeDialog}>{t('move.activate-lock')}</PlayMoveButton>
           }
           {!!activateAdjacent &&
-            <PlayMoveButton move={activateAdjacent} onPlay={closeDialog}>{t('move.activate-adjacent', 'Activate this card')}</PlayMoveButton>
+            <PlayMoveButton move={activateAdjacent} onPlay={closeDialog}>{t('move.activate-adjacent')}</PlayMoveButton>
           }
           {buy.length === 1 &&
-            <PlayMoveButton move={buy[0]} onPlay={closeDialog}>{t('move.buy', 'Buy this card')}</PlayMoveButton>
+            <PlayMoveButton move={buy[0]} onPlay={closeDialog}>{t('move.buy')}</PlayMoveButton>
           }
           {takeFaceDown.length === 1 &&
-            <PlayMoveButton move={takeFaceDown[0]} onPlay={closeDialog}>{t('move.place-down', 'Place face down')}</PlayMoveButton>
+            <PlayMoveButton move={takeFaceDown[0]} onPlay={closeDialog}>{t('move.place-down')}</PlayMoveButton>
           }
           {(buy.length > 1 || takeFaceDown.length > 1) &&
             <PlayMoveButton move={rules.material(MaterialType.Card).index(itemIndex).selectItem()}
-                            onPlay={undoSelect} local>{t('move.select', 'Select')}</PlayMoveButton>
+                            onPlay={undoSelect} local>{t('move.select')}</PlayMoveButton>
           }
           {!!canRotate && rotateMove &&
-            <PlayMoveButton move={rotateMove} onPlay={closeDialog} local>{t('move.rotate', 'Rotate this card')}</PlayMoveButton>
+            <PlayMoveButton move={rotateMove} onPlay={closeDialog} local>{t('move.rotate')}</PlayMoveButton>
           }
         </div>
       }/>}
@@ -159,11 +159,10 @@ const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement, cardScore?: 
           <div css={lockInfoCss}>
             <Picture src={LockIcon} css={lockIconCss}/>
             <span>
-              <Trans defaults="This is a <0>lock card</0>. A key is placed on it when purchased. Spend the key to activate the effect below."
-                     i18nKey="card.lock.info"><strong/></Trans>
+              <Trans i18nKey="card.lock.info"><strong/></Trans>
               {openExtensionDialog && (
                 <button css={extensionLinkCss} onClick={openExtensionDialog}>
-                  {t('extension.info', 'About this extension')}
+                  {t('extension.info')}
                 </button>
               )}
             </span>
@@ -181,7 +180,7 @@ const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement, cardScore?: 
       {!!scoring && (
         <>
           <div css={sectionHeaderScoringCss}>
-            <Trans i18nKey="card.scoring" defaults="Scoring"><strong/></Trans>
+            <Trans i18nKey="card.scoring"><strong/></Trans>
             <span css={sectionLineScoringCss}/>
           </div>
           <div css={scoringBlockCss}>
@@ -362,9 +361,9 @@ export const getEffectDescription = (effect: Effect): ReactElement => {
       )
     }
     case EffectType.DiscardEntireRiver:
-      return <Trans defaults="Discard all the cards from one row (Castle or Village), then refill it." i18nKey="card.effect.discard-entire-river"/>
+      return <Trans i18nKey="card.effect.discard-entire-river"/>
     case EffectType.ActivateAdjacentAbility:
-      return <Trans defaults="Activate the effect of one adjacent card (horizontally or vertically) in your tableau." i18nKey="card.effect.activate-adjacent"/>
+      return <Trans i18nKey="card.effect.activate-adjacent"/>
     default:
       return <></>
   }

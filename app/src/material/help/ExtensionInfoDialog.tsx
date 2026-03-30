@@ -19,8 +19,8 @@ export const ExtensionInfoDialog: FC<Props> = ({ onClose }) => {
         <div css={headerCss}>
           <Picture src={LockIcon} css={headerIconCss}/>
           <div>
-            <h2 css={titleCss}>{t('extension.title', 'Out of the Oubliette')}</h2>
-            <p css={introCss}>{t('extension.intro', 'This game includes the Out of the Oubliette extension! It adds 12 new cards with a lock mechanic.')}</p>
+            <h2 css={titleCss}>{t('extension.title')}</h2>
+            <p css={introCss}>{t('extension.intro')}</p>
           </div>
         </div>
 
@@ -28,38 +28,38 @@ export const ExtensionInfoDialog: FC<Props> = ({ onClose }) => {
           <div css={sectionCss}>
             <div css={sectionHeaderCss}>
               <Picture src={LockIcon} css={sectionIconCss}/>
-              {t('extension.lock.title', 'Lock cards')}
+              {t('extension.lock.title')}
               <span css={sectionLineCss}/>
             </div>
             <div css={blockCss}>
-              {t('extension.lock.desc', 'Some cards have a lock ability. When you buy one, a key is automatically placed on it.')}
+              {t('extension.lock.desc')}
             </div>
           </div>
 
           <div css={sectionCss}>
             <div css={sectionHeaderCss}>
               <Picture src={KeyIcon} css={sectionIconCss}/>
-              {t('extension.activate.title', 'Activating a lock')}
+              {t('extension.activate.title')}
               <span css={sectionLineCss}/>
             </div>
             <div css={blockCss}>
-              {t('extension.activate.desc', 'Once per turn, you can spend the key on a lock card to trigger its effect. The key is consumed.')}
+              {t('extension.activate.desc')}
             </div>
           </div>
 
           <div css={sectionCss}>
             <div css={sectionHeaderCss}>
-              {t('extension.scoring.title', 'Scoring')}
+              {t('extension.scoring.title')}
               <span css={sectionLineCss}/>
             </div>
             <div css={blockCss}>
-              {t('extension.scoring.desc', 'At the end of the game, each unused key still on a lock card is worth 1 point.')}
+              {t('extension.scoring.desc')}
             </div>
           </div>
         </div>
 
         <button css={closeBtnCss} onClick={onClose}>
-          {t('extension.ok', 'Got it!')}
+          {t('extension.ok')}
         </button>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { LogPlayerName } from './LogPlayerName'
 
 export const PlaceRemainingGoldLog: FC<MaterialLogProps> = ({ context }) => {
   return (
-    <Trans defaults="<0/> places remaining <1/> on purse cards" i18nKey="log.place-remaining">
+    <Trans i18nKey="log.place-remaining">
       <LogPlayerName playerId={context.action.playerId}/>
       <GoldIcon/>
     </Trans>

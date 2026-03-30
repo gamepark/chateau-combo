@@ -9,7 +9,7 @@ export const GainGoldLog: FC<MaterialLogProps> = ({ move }) => {
   const m = move as CustomMove
   const { player, quantity } = m.data as { player: number, quantity: number }
   return (
-    <Trans defaults="<0/> gains {quantity} <1/>" i18nKey="log.gain-gold" values={{ quantity }}>
+    <Trans i18nKey="log.gain-gold" values={{ quantity }}>
       <LogPlayerName playerId={player}/>
       <GoldIcon/>
     </Trans>

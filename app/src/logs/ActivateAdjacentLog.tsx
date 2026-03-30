@@ -12,7 +12,7 @@ export const ActivateAdjacentLog: FC<MaterialLogProps> = ({ move, context }) => 
   const rules = new ChateauComboRules(context.game)
   const card = rules.material(MaterialType.Card).getItem(m.data)
   return (
-    <Trans defaults="<0/> activates <1/>'s ability" i18nKey="log.activate-adjacent">
+    <Trans i18nKey="log.activate-adjacent">
       <LogPlayerName playerId={context.action.playerId}/>
       <LogCardName card={card.id?.front}/>
     </Trans>

@@ -107,8 +107,8 @@ export const ChateauComboPlayerPanel: FC<Props> = ({ playerId, isViewed, isLeftN
         </div>
         {/* Neighbor banner strip */}
         <div css={[neighborStripCss, !isLeftNeighbor && !isRightNeighbor && neighborStripHiddenCss]}>
-          {isLeftNeighbor ? t('neighbor.left', '◄ {player}\'s left neighbor', { player: viewedName })
-            : isRightNeighbor ? t('neighbor.right', '{player}\'s right neighbor ►', { player: viewedName })
+          {isLeftNeighbor ? t('neighbor.left', { player: viewedName })
+            : isRightNeighbor ? t('neighbor.right', { player: viewedName })
             : '\u00A0'}
         </div>
       </div>

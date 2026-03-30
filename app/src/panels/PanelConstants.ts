@@ -15,8 +15,8 @@ export const panelWidth = panelEmWidth * panelScale
 export const panelHeight = panelEmHeight * panelScale
 
 // Panel positioning
-export const panelMargin = 0.3 // table em from edges
-export const panelTopMargin = panelMargin
+export const panelMargin = 1 // table em from left/right edges
+export const panelTopMargin = 0.3 // table em from top edge
 export const panelGapEm = 1.01 // gap in panel font-size em
 export const panelGap = panelGapEm * panelScale // gap in table em
 

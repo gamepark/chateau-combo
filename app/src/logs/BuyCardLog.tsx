@@ -12,7 +12,7 @@ export const BuyCardLog: FC<MaterialLogProps> = ({ move, context }) => {
   const rules = new ChateauComboRules(context.game)
   const card = rules.material(MaterialType.Card).getItem(m.itemIndex)
   return (
-    <Trans defaults="<0/> buys <1/>" i18nKey="log.buy">
+    <Trans i18nKey="log.buy">
       <LogPlayerName playerId={context.action.playerId}/>
       <LogCardName card={card.id?.front}/>
     </Trans>

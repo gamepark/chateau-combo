@@ -32,7 +32,7 @@ class MessengerPawnDescription extends TokenDescription {
     const moveMessenger = legalMoves.find(m => isMoveItemType(MaterialType.MessengerPawn)(m))
     if (!moveMessenger) return
     const goesToCastle = item.location.id === Place.Village
-    return <SealMenuButton move={moveMessenger} label={<Trans defaults={goesToCastle ? 'To Castle' : 'To Village'} i18nKey={goesToCastle ? 'move.messenger.castle' : 'move.messenger.village'}/>} x={-1.5} y={4} labelPosition="right">
+    return <SealMenuButton move={moveMessenger} label={<Trans i18nKey={goesToCastle ? 'move.messenger.castle' : 'move.messenger.village'}/>} x={-1.5} y={4} labelPosition="right">
       <FontAwesomeIcon icon={goesToCastle ? faArrowUp : faArrowDown}/>
     </SealMenuButton>
   }

@@ -11,7 +11,6 @@ export const ActivateAdjacentAbilityHeader = () => {
 
   return (
     <Trans
-      defaults={itsMe ? 'Choose an adjacent card to activate its ability' : '{player} must choose an adjacent card to activate'}
       i18nKey={itsMe ? 'activate-adjacent.you' : 'activate-adjacent.player'}
       values={{ player: name }}
     />

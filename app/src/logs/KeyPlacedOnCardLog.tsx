@@ -14,7 +14,7 @@ export const KeyPlacedOnCardLog: FC<MaterialLogProps> = ({ move, context }) => {
     ? rules.material(MaterialType.Card).getItem(m.item.location.parent)
     : undefined
   return (
-    <Trans defaults="A <0/> is placed on <1/> <2/>" i18nKey="log.key-placed">
+    <Trans i18nKey="log.key-placed">
       <KeyIcon/>
       <LogCardName card={parentCard?.id?.front}/>
       <LockIcon/>

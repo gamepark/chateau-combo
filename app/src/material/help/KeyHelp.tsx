@@ -23,7 +23,7 @@ export const KeyHelp: FC<MaterialHelpProps> = (props) => {
       <h2 css={titleCss}>{t('keys')}</h2>
       {isPlayerStock && !!spendKey && (
         <div css={actionsRowCss}>
-          <PlayMoveButton move={spendKey} onPlay={closeDialog}>{t('move.spend-key', 'Spend this key')}</PlayMoveButton>
+          <PlayMoveButton move={spendKey} onPlay={closeDialog}>{t('move.spend-key')}</PlayMoveButton>
         </div>
       )}
       <div css={infoBlockCss}>

@@ -13,7 +13,7 @@ export const ActivateLockLog: FC<MaterialLogProps> = ({ move, context }) => {
   const rules = new ChateauComboRules(context.game)
   const card = rules.material(MaterialType.Card).getItem(m.data)
   return (
-    <Trans defaults="<0/> activates the lock <1/> on <2/>" i18nKey="log.activate-lock">
+    <Trans i18nKey="log.activate-lock">
       <LogPlayerName playerId={context.action.playerId}/>
       <LockIcon/>
       <LogCardName card={card.id?.front}/>

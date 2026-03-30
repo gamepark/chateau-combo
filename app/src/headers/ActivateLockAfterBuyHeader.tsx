@@ -13,8 +13,7 @@ export const ActivateLockAfterBuyHeader = () => {
   const itsMe = player && player === activePlayer
   const playerName = usePlayerName(activePlayer)
   return (
-    <Trans defaults={itsMe ? 'You may activate a lock ability or <0>continue</0>' : '{player} may activate a lock ability or continue'}
-           i18nKey={itsMe ? 'activate-lock-after-buy.you' : 'activate-lock-after-buy.player'}
+    <Trans i18nKey={itsMe ? 'activate-lock-after-buy.you' : 'activate-lock-after-buy.player'}
            values={{ player: playerName }}>
       <WaxSealButton move={itsMe ? pass : undefined} auto={30}/>
     </Trans>

@@ -16,7 +16,7 @@ export const PlaceGoldOnCardLog: FC<MaterialLogProps> = ({ move, context }) => {
     ? rules.material(MaterialType.Card).getItem(m.item.location.parent)
     : undefined
   return (
-    <Trans defaults="<0/> places {quantity} <1/> on <2/>" i18nKey="log.place-gold" values={{ quantity }}>
+    <Trans i18nKey="log.place-gold" values={{ quantity }}>
       <LogPlayerName playerId={m.item.location.player}/>
       <GoldIcon/>
       <LogCardName card={parentCard?.id?.front}/>

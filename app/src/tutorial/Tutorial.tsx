@@ -319,6 +319,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      view: opponent,
       move: {
         player: opponent,
         filter: (move, game) => isMoveItemType(MaterialType.Card)(move) && !move.location.rotation
@@ -326,6 +327,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      view: opponent,
       popup: {
         text: () => (
           <Trans i18nKey="tuto.opponent.duchess"/>
@@ -342,6 +344,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       })
     },
     {
+      view: me,
       popup: {
         text: () => (
           <Trans i18nKey="tuto.you"/>
@@ -428,7 +431,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         text: () => (
           <Trans i18nKey="tuto.move.messenger"/>
         ),
-        position: { x: 27 }
+        position: { x: 0 }
       },
       focus: (game) => ({
         materials: [

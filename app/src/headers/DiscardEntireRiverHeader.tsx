@@ -15,8 +15,7 @@ export const DiscardEntireRiverHeader = () => {
   const itsMe = player && player === activePlayer
   const playerName = usePlayerName(activePlayer)
   return (
-    <Trans defaults={itsMe ? 'Choose a row to discard: <0>Castle</0> or <1>Village</1>' : '{player} must choose a row to discard'}
-           i18nKey={itsMe ? 'discard-entire-river.you' : 'discard-entire-river.player'}
+    <Trans i18nKey={itsMe ? 'discard-entire-river.you' : 'discard-entire-river.player'}
            values={{ player: playerName }}>
       <WaxSealButton move={itsMe ? castle : undefined}/>
       <WaxSealButton move={itsMe ? village : undefined}/>
