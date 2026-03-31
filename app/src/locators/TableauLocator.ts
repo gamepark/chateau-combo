@@ -9,7 +9,6 @@ export const TABLEAU_X = -20
 
 class TableauLocator extends GridLocator {
   gap = { x: cardDescription.width + 0.2, y: cardDescription.height + 0.2 }
-  gridSize = { columns: 3, rows: 2 }
 
   getCoordinates(location: Location, context: MaterialContext) {
     const coords = super.getCoordinates(location, context)
