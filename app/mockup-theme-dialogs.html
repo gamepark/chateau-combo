@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chateau Combo - Dialog Theming Proposals</title>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=MedievalSharp&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A828;
+    --gold-light: #E8D070;
+    --gold-dark: #8B6914;
+    --brown-dark: #3A2410;
+    --brown: #5C3A1E;
+    --brown-light: #8B6B4A;
+    --parchment: #F0E4C8;
+    --parchment-dark: #D4C4A0;
+    --stone: #7A7568;
+    --stone-dark: #4A463E;
+    --stone-light: #9E998E;
+    --burgundy: #5C1A2A;
+    --burgundy-light: #8B2A40;
+    --purple-deep: #2A1030;
+    --nobility: #2878B8;
+    --faith: #8848A0;
+    --scholarship: #6EAA1E;
+    --military: #C83232;
+    --craftsmanship: #D88828;
+    --peasantry: #BEA528;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1510;
+    color: #e8e0d0;
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-family: 'Lilita One', cursive;
+    text-align: center;
+    font-size: 2.4rem;
+    color: var(--gold);
+    text-shadow: 0 2px 8px rgba(212,168,40,0.3);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: var(--stone-light);
+    font-style: italic;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+  }
+
+  .proposals {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .proposal-label {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.3rem;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .proposal-desc {
+    color: var(--stone-light);
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+
+  /* Shared dialog layout: card image left + content right */
+  .dialog-layout {
+    display: flex;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .dialog-card-side {
+    flex-shrink: 0;
+    width: 200px;
+    display: flex;
+    align-items: stretch;
+  }
+
+  .dialog-card-side img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .dialog-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Shield badge */
+  .shield-badge {
+    display: inline-flex;
+    width: 22px;
+    height: 24px;
+    clip-path: polygon(0 0, 100% 0, 100% 65%, 50% 100%, 0 65%);
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+    font-family: 'Lilita One', cursive;
+    vertical-align: middle;
+  }
+
+  /* Inline coin icon */
+  .coin {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle at 40% 35%, #F0D050, #C89020);
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    font-weight: bold;
+    color: var(--brown-dark);
+    vertical-align: middle;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    font-family: 'Lilita One', cursive;
+  }
+
+  /* Navigation arrows */
+  .nav-arrows {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .nav-arrow {
+    width: 28px;
+    height: 28px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  /* Close button shared */
+  .dialog-close {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 2;
+    transition: color 0.15s;
+    line-height: 1;
+  }
+
+  /* ============================
+     A) PARCHMENT
+     ============================ */
+  .dialog-a {
+    box-shadow: 0 6px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(160,130,70,0.3);
+  }
+
+  .dialog-a .dialog-content {
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(180,155,110,0.2), transparent 50%),
+      linear-gradient(168deg, #E8D8B4 0%, #F2E6C8 20%, #E0D0A8 50%, #F0E4C0 80%, #D8C8A0 100%);
+    padding: 1.2rem 1.4rem;
+  }
+
+  /* Curtain close button for style A */
+  .dialog-a .dialog-close {
+    top: 0;
+    right: 12px;
+    width: 32px;
+    height: 44px;
+    background:
+      radial-gradient(ellipse at 30% 0%, rgba(180,50,50,0.15), transparent 60%),
+      linear-gradient(180deg, #A83030 0%, #8B2020 40%, #7A1818 60%, #8B2020 80%, #6A1414 100%);
+    clip-path: polygon(
+      0% 0%, 100% 0%,
+      100% 75%,
+      85% 82%, 95% 90%, 75% 85%, 80% 95%, 60% 88%, 50% 100%,
+      40% 88%, 20% 95%, 25% 85%, 5% 90%, 15% 82%, 0% 75%
+    );
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 10px;
+    font-size: 1rem;
+    color: rgba(255,200,200,0.6);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    transition: all 0.2s;
+  }
+  .dialog-a .dialog-close::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(180deg, var(--gold), var(--gold-dark));
+    border-radius: 0;
+  }
+  .dialog-a .dialog-close:hover {
+    color: rgba(255,230,230,0.9);
+    background:
+      radial-gradient(ellipse at 30% 0%, rgba(200,60,60,0.2), transparent 60%),
+      linear-gradient(180deg, #B83838 0%, #9B2828 40%, #8A2020 60%, #9B2828 80%, #7A1A1A 100%);
+  }
+
+  .dialog-a h3 {
+    font-family: 'MedievalSharp', cursive;
+    color: var(--brown-dark);
+    font-size: 1.35rem;
+    margin-bottom: 0.15rem;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  }
+
+  .dialog-a .shields-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0.8rem;
+  }
+
+  .dialog-a .section-title {
+    font-family: 'Lilita One', cursive;
+    color: var(--brown-dark);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 3px;
+  }
+
+  .dialog-a .effect-text {
+    color: var(--brown);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    padding-left: 0.6rem;
+    border-left: 3px solid rgba(140,110,50,0.25);
+  }
+
+  .dialog-a .scoring-box {
+    background: rgba(140,110,50,0.08);
+    border: 1px solid rgba(140,110,50,0.15);
+    border-radius: 3px;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .dialog-a .scoring-badge {
+    width: 36px;
+    height: 36px;
+    background: radial-gradient(circle at 40% 40%, #A83030, #6A1010);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lilita One', cursive;
+    font-size: 1.1rem;
+    color: #F0D0D0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+  }
+
+  .dialog-a .scoring-desc {
+    font-size: 0.85rem;
+    color: var(--brown);
+  }
+
+  .dialog-a .nav-arrow {
+    background: rgba(140,110,50,0.12);
+    color: var(--brown);
+    border: 1px solid rgba(140,110,50,0.2);
+  }
+  .dialog-a .nav-arrow:hover { background: rgba(140,110,50,0.2); }
+
+  .dialog-a .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dialog-a .cost-line {
+    font-size: 0.85rem;
+    color: var(--brown-light);
+  }
+
+  /* ============================
+     B) STONE WALL
+     ============================ */
+  .dialog-b {
+    box-shadow: 0 6px 30px rgba(0,0,0,0.6), 0 0 0 2px rgba(40,35,25,0.8), 0 0 0 4px rgba(80,70,50,0.3);
+  }
+
+  .dialog-b .dialog-content {
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 46px, rgba(0,0,0,0.06) 46px, rgba(0,0,0,0.06) 48px),
+      linear-gradient(170deg, #5E584E 0%, #504A40 40%, #585248 100%);
+    padding: 1.2rem 1.4rem;
+  }
+
+  .dialog-b .dialog-close { color: #6A6050; }
+  .dialog-b .dialog-close:hover { color: var(--gold); }
+
+  .dialog-b h3 {
+    font-family: 'Lilita One', cursive;
+    color: #E8D8B8;
+    font-size: 1.3rem;
+    margin-bottom: 0.15rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5), 0 0 15px rgba(255,180,60,0.06);
+  }
+
+  .dialog-b .shields-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0.8rem;
+  }
+
+  .dialog-b .section-title {
+    font-family: 'Lilita One', cursive;
+    color: var(--gold);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+  }
+
+  .dialog-b .effect-text {
+    color: #C8BCA8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    padding-left: 0.6rem;
+    border-left: 3px solid rgba(212,168,40,0.25);
+  }
+
+  .dialog-b .scoring-box {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 4px;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .dialog-b .scoring-badge {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(145deg, #4A4030, #3A3020);
+    border: 2px solid var(--gold-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lilita One', cursive;
+    font-size: 1.1rem;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .dialog-b .scoring-desc {
+    font-size: 0.85rem;
+    color: #B8AA90;
+  }
+
+  .dialog-b .nav-arrow {
+    background: rgba(0,0,0,0.3);
+    color: #7A7060;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .dialog-b .nav-arrow:hover { background: rgba(0,0,0,0.4); color: var(--gold); }
+
+  .dialog-b .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .dialog-b .cost-line {
+    font-size: 0.85rem;
+    color: #8A7E6A;
+  }
+
+  /* ============================
+     C) ROYAL TAPESTRY
+     ============================ */
+  .dialog-c {
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,168,40,0.25), 0 0 0 3px rgba(42,16,32,0.8), 0 0 0 4px rgba(212,168,40,0.1);
+  }
+
+  .dialog-c .dialog-content {
+    background:
+      url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 4 L23 12 L31 12 L25 17 L27 25 L20 20 L13 25 L15 17 L9 12 L17 12Z' fill='none' stroke='rgba(212,168,40,0.04)' stroke-width='0.5'/%3E%3C/svg%3E"),
+      linear-gradient(170deg, #3A1525 0%, #481A30 30%, #361020 60%, #3E1528 100%);
+    padding: 1.2rem 1.4rem;
+    position: relative;
+  }
+
+  .dialog-c .dialog-content::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,168,40,0.05), transparent 60%);
+    pointer-events: none;
+  }
+
+  .dialog-c .dialog-close { color: rgba(212,168,40,0.35); }
+  .dialog-c .dialog-close:hover { color: var(--gold-light); }
+
+  .dialog-c h3 {
+    font-family: 'Lilita One', cursive;
+    color: var(--gold-light);
+    font-size: 1.3rem;
+    margin-bottom: 0.15rem;
+    text-shadow: 0 0 12px rgba(212,168,40,0.2);
+    position: relative;
+  }
+
+  .dialog-c .shields-row {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+
+  .dialog-c .section-title {
+    font-family: 'Lilita One', cursive;
+    color: var(--gold);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+    position: relative;
+  }
+
+  .dialog-c .effect-text {
+    color: #D0C0B0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    padding-left: 0.6rem;
+    border-left: 2px solid rgba(212,168,40,0.2);
+    position: relative;
+  }
+
+  .dialog-c .scoring-box {
+    background: rgba(212,168,40,0.05);
+    border: 1px solid rgba(212,168,40,0.1);
+    border-radius: 4px;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.8rem;
+    position: relative;
+  }
+
+  .dialog-c .scoring-badge {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(145deg, var(--burgundy-light), var(--burgundy));
+    border: 2px solid rgba(212,168,40,0.35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lilita One', cursive;
+    font-size: 1.1rem;
+    color: var(--gold-light);
+    box-shadow: 0 0 8px rgba(212,168,40,0.08);
+    flex-shrink: 0;
+  }
+
+  .dialog-c .scoring-desc {
+    font-size: 0.85rem;
+    color: #B8A898;
+  }
+
+  .dialog-c .nav-arrow {
+    background: rgba(212,168,40,0.06);
+    color: rgba(212,168,40,0.4);
+    border: 1px solid rgba(212,168,40,0.1);
+  }
+  .dialog-c .nav-arrow:hover { background: rgba(212,168,40,0.12); color: var(--gold-light); }
+
+  .dialog-c .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  .dialog-c .cost-line {
+    font-size: 0.85rem;
+    color: rgba(212,168,40,0.5);
+  }
+
+  /* Buy button variants */
+  .btn-buy {
+    font-family: 'Lilita One', cursive;
+    font-size: 0.8rem;
+    padding: 0.4rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+
+  .dialog-a .btn-buy {
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), transparent), var(--gold);
+    color: #2A1A08;
+    border: 2px solid var(--gold-dark);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .dialog-a .btn-buy:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.25), transparent), var(--gold-light);
+  }
+
+  .dialog-b .btn-buy {
+    background: linear-gradient(180deg, rgba(212,168,40,0.25), rgba(212,168,40,0.12));
+    color: var(--gold);
+    border: 1px solid rgba(212,168,40,0.35);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .dialog-b .btn-buy:hover {
+    background: linear-gradient(180deg, rgba(212,168,40,0.35), rgba(212,168,40,0.18));
+    box-shadow: 0 2px 12px rgba(212,168,40,0.1);
+  }
+
+  .dialog-c .btn-buy {
+    background: linear-gradient(180deg, rgba(212,168,40,0.2), rgba(212,168,40,0.08));
+    color: var(--gold-light);
+    border: 1px solid rgba(212,168,40,0.3);
+    box-shadow: 0 0 10px rgba(212,168,40,0.06);
+  }
+  .dialog-c .btn-buy:hover {
+    background: linear-gradient(180deg, rgba(212,168,40,0.3), rgba(212,168,40,0.12));
+    box-shadow: 0 0 16px rgba(212,168,40,0.1);
+  }
+</style>
+</head>
+<body>
+
+<h1>Chateau Combo - Dialog Theming</h1>
+<p class="subtitle">Card help popup with card image left, content right — three style proposals</p>
+
+<div class="proposals">
+
+  <!-- ==================== A) PARCHMENT ==================== -->
+  <div>
+    <div class="proposal-label">A) Parchment</div>
+    <div class="proposal-desc">Aged paper, ink & quill, curtain close button</div>
+
+    <div class="dialog-layout dialog-a">
+      <div class="dialog-card-side">
+        <img src="src/images/cards/en/cartesChCombo_ChC_eng-US2.jpg" alt="His Majesty">
+      </div>
+      <div class="dialog-content">
+        <button class="dialog-close">&times;</button>
+        <h3>His Majesty</h3>
+        <div class="shields-row">
+          <span class="shield-badge" style="background:var(--nobility);">&#9813;</span>
+          <span class="shield-badge" style="background:var(--faith);">&#10013;</span>
+        </div>
+
+        <div class="section-title">Cost</div>
+        <div class="effect-text"><strong>6</strong> <span class="coin">6</span></div>
+
+        <div class="section-title">Immediate Effect</div>
+        <div class="effect-text">Your opponents gain <span class="coin">1</span></div>
+
+        <div class="section-title">Scoring</div>
+        <div class="scoring-box">
+          <div class="scoring-badge">4</div>
+          <div class="scoring-desc">
+            <strong>4 pts</strong> per <span class="shield-badge" style="background:var(--nobility);width:16px;height:18px;font-size:0.45rem;">&#9813;</span> Nobility shield in this column
+          </div>
+        </div>
+
+        <div class="footer">
+          <span class="cost-line">Move messenger to Village</span>
+          <div class="nav-arrows">
+            <button class="nav-arrow">&larr;</button>
+            <button class="nav-arrow">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== B) STONE WALL ==================== -->
+  <div>
+    <div class="proposal-label">B) Stone Wall</div>
+    <div class="proposal-desc">Castle dungeon, iron accents, torch-lit warmth</div>
+
+    <div class="dialog-layout dialog-b">
+      <div class="dialog-card-side">
+        <img src="src/images/cards/en/cartesChCombo_ChC_eng-US40.jpg" alt="Miraculously Cured">
+      </div>
+      <div class="dialog-content">
+        <button class="dialog-close">&times;</button>
+        <h3>Miraculously Cured</h3>
+        <div class="shields-row">
+          <span class="shield-badge" style="background:var(--faith);">&#10013;</span>
+          <span class="shield-badge" style="background:var(--faith);">&#10013;</span>
+        </div>
+
+        <div class="section-title">Cost</div>
+        <div class="effect-text"><strong>2</strong> <span class="coin">2</span></div>
+
+        <div class="section-title">Immediate Effect</div>
+        <div class="effect-text">Gain <span style="color:var(--military);font-weight:bold;">1 key</span> per face-down card</div>
+
+        <div class="section-title">Scoring</div>
+        <div class="scoring-box">
+          <div class="scoring-badge">2</div>
+          <div class="scoring-desc">
+            <strong>2 pts</strong> per purse card (max 4)
+          </div>
+        </div>
+
+        <div class="footer">
+          <span class="cost-line">Move messenger to Castle</span>
+          <div class="nav-arrows">
+            <button class="nav-arrow">&larr;</button>
+            <button class="nav-arrow">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== C) ROYAL TAPESTRY ==================== -->
+  <div>
+    <div class="proposal-label">C) Royal Tapestry</div>
+    <div class="proposal-desc">Burgundy velvet, gold filigree, regal elegance</div>
+
+    <div class="dialog-layout dialog-c">
+      <div class="dialog-card-side">
+        <img src="src/images/cards/en/Ext1Card1IronMask.jpg" alt="Lady in the Iron Mask">
+      </div>
+      <div class="dialog-content">
+        <button class="dialog-close">&times;</button>
+        <h3>Lady in the Iron Mask</h3>
+        <div class="shields-row">
+          <span class="shield-badge" style="background:var(--nobility);">&#9813;</span>
+          <span class="shield-badge" style="background:var(--military);">&#9876;</span>
+          <span class="shield-badge" style="background:var(--scholarship);">&#9998;</span>
+        </div>
+
+        <div class="section-title">Cost</div>
+        <div class="effect-text"><strong>8</strong> <span class="coin">8</span></div>
+
+        <div class="section-title">Lock Ability</div>
+        <div class="effect-text">Discard entire Castle river, gain <span style="color:var(--military);font-weight:bold;">2 keys</span> per <span class="shield-badge" style="background:var(--military);width:16px;height:18px;font-size:0.45rem;">&#9876;</span></div>
+
+        <div class="section-title">Scoring</div>
+        <div class="scoring-box">
+          <div class="scoring-badge">3</div>
+          <div class="scoring-desc">
+            <strong>3 pts</strong> per different cost value in tableau
+          </div>
+        </div>
+
+        <div class="footer">
+          <button class="btn-buy">Buy &bull; 8 <span class="coin" style="width:14px;height:14px;font-size:0.5rem;">8</span></button>
+          <div class="nav-arrows">
+            <button class="nav-arrow">&larr;</button>
+            <button class="nav-arrow">&rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chateau Combo - Header Theming Proposals</title>
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=MedievalSharp&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A828;
+    --gold-light: #E8D070;
+    --gold-dark: #8B6914;
+    --brown-dark: #3A2410;
+    --brown: #5C3A1E;
+    --parchment: #F0E4C8;
+    --parchment-dark: #D4C4A0;
+    --stone: #7A7568;
+    --stone-dark: #4A463E;
+    --burgundy: #5C1A2A;
+    --nobility: #2878B8;
+    --faith: #8848A0;
+    --military: #C83232;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1510;
+    color: #e8e0d0;
+    font-family: 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    padding: 2rem;
+  }
+
+  h1 {
+    font-family: 'Lilita One', cursive;
+    text-align: center;
+    font-size: 2.4rem;
+    color: var(--gold);
+    text-shadow: 0 2px 8px rgba(212,168,40,0.3);
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: #9E998E;
+    font-style: italic;
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+  }
+
+  .proposals {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .proposal-label {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.3rem;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .proposal-desc {
+    color: #9E998E;
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+
+  /* ============================
+     A) PARCHMENT BANNER
+     ============================ */
+  .header-parchment {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(200,180,140,0.15), transparent 70%),
+      linear-gradient(90deg, #D8C8A0, #E8DCBC 20%, #F0E4C8 50%, #E8DCBC 80%, #D8C8A0);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    box-shadow:
+      0 3px 12px rgba(0,0,0,0.4),
+      inset 0 -1px 0 rgba(0,0,0,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.4);
+    border-top: 3px solid var(--gold);
+    border-bottom: 3px solid rgba(160,130,70,0.4);
+  }
+
+  /* Torn paper edge effect */
+  .header-parchment::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: url("data:image/svg+xml,%3Csvg width='20' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 Q5 6 10 2 Q15 7 20 0' fill='%23E8DCBC' stroke='none'/%3E%3C/svg%3E") repeat-x;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.2));
+  }
+
+  .header-parchment .msg {
+    font-family: 'MedievalSharp', 'Lilita One', cursive;
+    font-size: 1.25rem;
+    color: var(--brown-dark);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  .header-parchment .msg strong {
+    color: var(--military);
+  }
+
+  .btn-parchment {
+    font-family: 'Lilita One', cursive;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.2rem;
+    border: 2px solid rgba(140,110,50,0.4);
+    border-radius: 4px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.2), transparent),
+      var(--parchment-dark);
+    color: var(--brown-dark);
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.3);
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .btn-parchment:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.3), transparent), var(--parchment);
+    border-color: var(--gold);
+    box-shadow: 0 2px 8px rgba(212,168,40,0.2);
+  }
+  .btn-parchment.primary {
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), transparent), var(--gold);
+    color: #2A1A08;
+    border-color: var(--gold-dark);
+  }
+  .btn-parchment.primary:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.25), transparent), var(--gold-light);
+  }
+
+  /* ============================
+     B) STONE ARCH
+     ============================ */
+  .header-stone {
+    position: relative;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent, transparent 120px,
+        rgba(0,0,0,0.04) 120px, rgba(0,0,0,0.04) 122px
+      ),
+      linear-gradient(180deg, #504A40 0%, #3E3830 40%, #464038 100%);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.06),
+      inset 0 -2px 0 rgba(0,0,0,0.3);
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  /* Warm glow behind text */
+  .header-stone::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 100%;
+    background: radial-gradient(ellipse, rgba(255,180,60,0.06), transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-stone .msg {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.2rem;
+    color: #D8C8A8;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5), 0 0 20px rgba(255,180,60,0.08);
+    letter-spacing: 0.03em;
+  }
+
+  .header-stone .msg strong {
+    color: var(--gold);
+  }
+
+  .btn-stone {
+    font-family: 'Lilita One', cursive;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,0,0,0.1));
+    color: #B8AA90;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .btn-stone:hover {
+    background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(0,0,0,0.05));
+    border-color: rgba(212,168,40,0.3);
+    color: #E8D8B8;
+  }
+  .btn-stone.primary {
+    background: linear-gradient(180deg, rgba(212,168,40,0.3), rgba(212,168,40,0.15));
+    border-color: rgba(212,168,40,0.4);
+    color: var(--gold-light);
+  }
+  .btn-stone.primary:hover {
+    background: linear-gradient(180deg, rgba(212,168,40,0.4), rgba(212,168,40,0.2));
+    box-shadow: 0 2px 12px rgba(212,168,40,0.15);
+  }
+
+  /* ============================
+     C) ROYAL DECREE
+     ============================ */
+  .header-decree {
+    position: relative;
+    background:
+      linear-gradient(180deg, #28183A 0%, #1E1030 50%, #281840 100%);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    box-shadow:
+      0 4px 20px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(212,168,40,0.15);
+    border-top: 2px solid var(--gold);
+    border-bottom: 2px solid rgba(212,168,40,0.2);
+  }
+
+  /* Subtle shimmer */
+  .header-decree::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,168,40,0.06), transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Gold line separators */
+  .header-decree .decree-line {
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,168,40,0.3), transparent);
+  }
+
+  .header-decree .msg {
+    font-family: 'Lilita One', cursive;
+    font-size: 1.2rem;
+    color: #E8D8C8;
+    text-shadow: 0 0 20px rgba(212,168,40,0.15);
+    letter-spacing: 0.04em;
+  }
+
+  .header-decree .msg strong {
+    color: var(--gold-light);
+  }
+
+  .btn-decree {
+    font-family: 'Lilita One', cursive;
+    font-size: 0.85rem;
+    padding: 0.5rem 1.4rem;
+    border: 1px solid rgba(212,168,40,0.25);
+    border-radius: 4px;
+    background: rgba(212,168,40,0.08);
+    color: rgba(212,168,40,0.7);
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .btn-decree:hover {
+    background: rgba(212,168,40,0.15);
+    border-color: rgba(212,168,40,0.4);
+    color: var(--gold-light);
+  }
+  .btn-decree.primary {
+    background: linear-gradient(180deg, rgba(212,168,40,0.25), rgba(212,168,40,0.12));
+    border-color: rgba(212,168,40,0.4);
+    color: var(--gold-light);
+    box-shadow: 0 0 12px rgba(212,168,40,0.1);
+  }
+  .btn-decree.primary:hover {
+    background: linear-gradient(180deg, rgba(212,168,40,0.35), rgba(212,168,40,0.18));
+    box-shadow: 0 0 20px rgba(212,168,40,0.15);
+  }
+
+  /* ============================
+     HEADER VARIANT: "It's your turn"
+     ============================ */
+  .header-variant {
+    margin-top: 1.5rem;
+    opacity: 0.7;
+    font-size: 0.85rem;
+    text-align: center;
+    color: #8A8070;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Chateau Combo - Header Theming</h1>
+<p class="subtitle">Three proposals for the header bar showing game messages and action buttons</p>
+
+<div class="proposals">
+
+  <!-- ==================== A) PARCHMENT BANNER ==================== -->
+  <div>
+    <div class="proposal-label">A) Parchment Banner</div>
+    <div class="proposal-desc">Warm cream tones, torn edges, ink & quill aesthetic</div>
+
+    <div class="header-parchment">
+      <span class="msg">Choose a card from the <strong>River</strong></span>
+      <button class="btn-parchment primary">Buy Card</button>
+      <button class="btn-parchment">Flip</button>
+    </div>
+
+    <div class="header-variant">Variant: opponent's turn</div>
+    <div class="header-parchment" style="opacity:0.85;">
+      <span class="msg"><strong>Alice</strong> must choose a card from the River</span>
+    </div>
+  </div>
+
+  <!-- ==================== B) STONE ARCH ==================== -->
+  <div>
+    <div class="proposal-label">B) Stone Arch</div>
+    <div class="proposal-desc">Dark castle stone, warm torch glow, carved text feel</div>
+
+    <div class="header-stone">
+      <span class="msg">Choose a card from the <strong>River</strong></span>
+      <button class="btn-stone primary">Buy Card</button>
+      <button class="btn-stone">Flip</button>
+    </div>
+
+    <div class="header-variant">Variant: opponent's turn</div>
+    <div class="header-stone" style="opacity:0.85;">
+      <span class="msg"><strong>Alice</strong> must choose a card from the River</span>
+    </div>
+  </div>
+
+  <!-- ==================== C) ROYAL DECREE ==================== -->
+  <div>
+    <div class="proposal-label">C) Royal Decree</div>
+    <div class="proposal-desc">Deep purple twilight, gold accents, regal authority</div>
+
+    <div class="header-decree">
+      <div class="decree-line"></div>
+      <span class="msg">Choose a card from the <strong>River</strong></span>
+      <button class="btn-decree primary">Buy Card</button>
+      <button class="btn-decree">Flip</button>
+      <div class="decree-line"></div>
+    </div>
+
+    <div class="header-variant">Variant: opponent's turn</div>
+    <div class="header-decree" style="opacity:0.85;">
+      <div class="decree-line"></div>
+      <span class="msg"><strong>Alice</strong> must choose a card from the River</span>
+      <div class="decree-line"></div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

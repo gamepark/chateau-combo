@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Château Combo — Layout Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --table-bg: #1a1208;
+    --felt: #1e1a0e;
+    --card-w: 63px;
+    --card-h: 88px;
+    --card-bg: #2a2418;
+    --card-border: #5a4a2e;
+    --gold: #c8a23c;
+    --gold-dim: #8a7028;
+    --gold-bright: #e8c84c;
+    --panel-bg: #181208;
+    --panel-border: #3a2e1a;
+    --text: #d4c8a0;
+    --text-dim: #8a7e60;
+    --castle: #4a6a8a;
+    --village: #5a7a4a;
+    --river-label: #6a5a3a;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--table-bg);
+    color: var(--text);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    overflow: hidden;
+  }
+
+  /* ═══ LAYOUT SWITCHER ═══ */
+  .switcher {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+    padding: 10px 20px;
+    background: linear-gradient(180deg, rgba(10,8,4,0.95) 0%, rgba(10,8,4,0.7) 80%, transparent 100%);
+  }
+
+  .switcher button {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: rgba(40,34,20,0.8);
+    border: 1px solid var(--panel-border);
+    padding: 8px 18px;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+  .switcher button:first-child { border-radius: 4px 0 0 4px; }
+  .switcher button:last-child { border-radius: 0 4px 4px 0; }
+  .switcher button.active {
+    color: var(--gold-bright);
+    background: rgba(80,64,28,0.5);
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 12px rgba(200,162,60,0.15);
+  }
+  .switcher button:hover:not(.active) {
+    color: var(--text);
+    border-color: var(--gold-dim);
+  }
+
+  /* ═══ TABLE ═══ */
+  .table {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 120% 80% at 40% 50%, rgba(42,36,20,0.4) 0%, transparent 70%),
+      repeating-conic-gradient(rgba(30,26,14,0.03) 0% 25%, transparent 0% 50%) 0 0 / 80px 80px,
+      var(--felt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 10px 10px;
+  }
+
+  /* Felt texture overlay */
+  .table::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ═══ GAME AREA ═══ */
+  .game-area {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    height: calc(100vh - 70px);
+    max-height: 640px;
+    display: grid;
+    gap: 16px;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Layout grids */
+  .game-area[data-layout="A"] {
+    grid-template-columns: 1fr 1.2fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: "rivers tableau panels";
+  }
+  .game-area[data-layout="B"] {
+    grid-template-columns: 1.2fr 1fr auto;
+    grid-template-rows: 1fr;
+    grid-template-areas: "tableau rivers panels";
+  }
+  .game-area[data-layout="C"] {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "rivers panels"
+      "tableau panels";
+  }
+
+  /* ═══ RIVERS ZONE ═══ */
+  .rivers-zone {
+    grid-area: rivers;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .river-group {
+    position: relative;
+  }
+
+  .river-label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--river-label);
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+  .river-label .dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .river-label .dot.castle { background: var(--castle); }
+  .river-label .dot.village { background: var(--village); }
+
+  .river-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* ═══ CARDS ═══ */
+  .card {
+    width: var(--card-w);
+    height: var(--card-h);
+    border-radius: 4px;
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cinzel', serif;
+    font-size: 7px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    position: relative;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+
+  .card.river-card {
+    background: linear-gradient(145deg, #2e281c 0%, #1e1a12 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .card.river-card.castle {
+    border-color: rgba(74,106,138,0.4);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4), inset 0 0 20px rgba(74,106,138,0.06);
+  }
+  .card.river-card.village {
+    border-color: rgba(90,122,74,0.4);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4), inset 0 0 20px rgba(90,122,74,0.06);
+  }
+  .card.river-card:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    border-color: var(--gold-dim);
+  }
+
+  .card.deck-card {
+    background: repeating-linear-gradient(
+      45deg,
+      #1a1610 0px, #1a1610 4px,
+      #1e1a12 4px, #1e1a12 8px
+    );
+    border-color: #3a3020;
+  }
+  .card.deck-card::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid rgba(90,74,46,0.2);
+    border-radius: 2px;
+  }
+
+  .card.discard-card {
+    background: linear-gradient(145deg, #22201a 0%, #181610 100%);
+    border-color: #302a1e;
+    opacity: 0.7;
+  }
+
+  .card.tableau-card {
+    background: linear-gradient(145deg, #2a2418 0%, #1e1a10 100%);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
+  .card.tableau-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 16px rgba(200,162,60,0.15);
+    transform: scale(1.03);
+  }
+
+  /* Card number badge */
+  .card .num {
+    position: absolute;
+    top: 3px; left: 4px;
+    font-size: 9px;
+    color: var(--gold-dim);
+    font-weight: 400;
+  }
+
+  /* Messenger pawn */
+  .messenger {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--gold-bright), var(--gold-dim));
+    border: 2px solid var(--gold);
+    box-shadow: 0 2px 8px rgba(200,162,60,0.3), inset 0 -2px 4px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    margin-left: 4px;
+    position: relative;
+  }
+  .messenger::after {
+    content: '♟';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #1a1208;
+  }
+
+  /* ═══ TABLEAU ZONE ═══ */
+  .tableau-zone {
+    grid-area: tableau;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 10px;
+  }
+
+  .tableau-label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+  }
+  .tableau-label span {
+    color: var(--gold-bright);
+  }
+
+  .tableau-grid {
+    display: grid;
+    grid-template-columns: repeat(3, var(--card-w));
+    grid-template-rows: repeat(3, var(--card-h));
+    gap: 4px;
+  }
+
+  /* Resources row */
+  .resources {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 4px;
+  }
+
+  .resource-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .resource-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+  .resource-icon.gold {
+    background: radial-gradient(circle at 35% 35%, #e8c84c, #a08020);
+    border: 1.5px solid #c8a23c;
+    box-shadow: 0 1px 4px rgba(200,162,60,0.3);
+    color: #3a2e10;
+  }
+  .resource-icon.key {
+    background: radial-gradient(circle at 35% 35%, #c0c0c0, #808080);
+    border: 1.5px solid #a0a0a0;
+    box-shadow: 0 1px 4px rgba(160,160,160,0.3);
+    color: #2a2a2a;
+  }
+
+  .resource-count {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .resource-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* Common stocks */
+  .stocks {
+    display: flex;
+    gap: 12px;
+    margin-top: 6px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: rgba(30,26,14,0.5);
+    border: 1px solid rgba(60,50,30,0.3);
+  }
+
+  .stock-pile {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .stock-pile .mini-icon {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .stock-pile .mini-icon.gold { background: #a08020; border: 1px solid #8a7018; }
+  .stock-pile .mini-icon.key { background: #808080; border: 1px solid #6a6a6a; }
+  .stock-pile span {
+    font-size: 9px;
+    color: var(--text-dim);
+    font-family: 'Cinzel', serif;
+  }
+
+  /* ═══ PLAYER PANELS ═══ */
+  .panels-zone {
+    grid-area: panels;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 0;
+    justify-content: flex-start;
+  }
+
+  .player-panel {
+    width: 120px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: linear-gradient(145deg, rgba(28,24,14,0.9), rgba(18,14,8,0.9));
+    border: 1px solid var(--panel-border);
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .player-panel:hover {
+    border-color: var(--gold-dim);
+    background: linear-gradient(145deg, rgba(38,34,20,0.9), rgba(24,20,12,0.9));
+  }
+  .player-panel.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(200,162,60,0.15);
+  }
+  .player-panel.active::before {
+    content: '';
+    position: absolute;
+    left: -3px;
+    top: 6px; bottom: 6px;
+    width: 3px;
+    border-radius: 2px;
+    background: var(--gold);
+  }
+
+  .panel-top {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 5px;
+  }
+
+  .panel-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .panel-avatar.p1 {
+    background: linear-gradient(135deg, #8b4513, #a0522d);
+    border: 2px solid #cd853f;
+  }
+  .panel-avatar.p2 {
+    background: linear-gradient(135deg, #2e4a1e, #3a6028);
+    border: 2px solid #5a8a3e;
+  }
+  .panel-avatar.p3 {
+    background: linear-gradient(135deg, #1e3a5a, #2a4a6a);
+    border: 2px solid #4a7aaa;
+  }
+  .panel-avatar.p4 {
+    background: linear-gradient(135deg, #5a1a3a, #7a2a4a);
+    border: 2px solid #aa4a7a;
+  }
+  .player-panel.active .panel-avatar {
+    box-shadow: 0 0 8px rgba(200,162,60,0.4);
+  }
+
+  .panel-name {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.1;
+  }
+
+  .panel-stats {
+    display: flex;
+    gap: 8px;
+    padding-left: 33px;
+  }
+  .panel-stat {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .panel-stat .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .panel-stat .dot.gold { background: #c8a23c; }
+  .panel-stat .dot.key { background: #a0a0a0; }
+
+  /* ═══ SEPARATOR ═══ */
+  .vsep {
+    width: 1px;
+    align-self: stretch;
+    margin: 20px 0;
+    background: linear-gradient(180deg, transparent, rgba(90,74,46,0.3), transparent);
+  }
+
+  /* ═══ LAYOUT C: horizontal rivers ═══ */
+  .game-area[data-layout="C"] .rivers-zone {
+    flex-direction: row;
+    justify-content: center;
+    gap: 30px;
+    padding: 4px 10px;
+  }
+
+  .game-area[data-layout="C"] .river-group {
+    flex-shrink: 0;
+  }
+
+  /* ═══ INFO BADGE ═══ */
+  .info {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background: rgba(10,8,4,0.8);
+    padding: 6px 18px;
+    border-radius: 4px;
+    border: 1px solid var(--panel-border);
+    z-index: 100;
+    transition: opacity 0.3s;
+    text-align: center;
+    max-width: 500px;
+  }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 900px) {
+    :root {
+      --card-w: 48px;
+      --card-h: 67px;
+    }
+    .player-panel { width: 100px; }
+    .switcher button { font-size: 9px; padding: 6px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="switcher">
+  <button class="active" onclick="setLayout('A')">A · Rivers Left</button>
+  <button onclick="setLayout('B')">B · Tableau Left</button>
+  <button onclick="setLayout('C')">C · Rivers Top</button>
+</div>
+
+<div class="table">
+  <div class="game-area" id="gameArea" data-layout="A">
+
+    <!-- ═══ RIVERS ═══ -->
+    <div class="rivers-zone">
+      <!-- Castle River -->
+      <div class="river-group">
+        <div class="river-label"><span class="dot castle"></span>Castle River</div>
+        <div class="river-row">
+          <div class="card discard-card">Discard</div>
+          <div class="card deck-card">Deck</div>
+          <div class="card river-card castle"><span class="num">3</span>Castle</div>
+          <div class="card river-card castle"><span class="num">1</span>Castle</div>
+          <div class="card river-card castle"><span class="num">4</span>Castle</div>
+          <div class="messenger"></div>
+        </div>
+      </div>
+      <!-- Village River -->
+      <div class="river-group">
+        <div class="river-label"><span class="dot village"></span>Village River</div>
+        <div class="river-row">
+          <div class="card discard-card">Discard</div>
+          <div class="card deck-card">Deck</div>
+          <div class="card river-card village"><span class="num">2</span>Village</div>
+          <div class="card river-card village"><span class="num">0</span>Village</div>
+          <div class="card river-card village"><span class="num">5</span>Village</div>
+          <div class="messenger" style="opacity:0.3"></div>
+        </div>
+      </div>
+
+      <!-- Common Stocks -->
+      <div class="stocks">
+        <div class="stock-pile">
+          <div class="mini-icon gold"></div>
+          <div class="mini-icon gold" style="margin-left:-8px"></div>
+          <div class="mini-icon gold" style="margin-left:-8px"></div>
+          <span>Gold</span>
+        </div>
+        <div class="stock-pile">
+          <div class="mini-icon key"></div>
+          <div class="mini-icon key" style="margin-left:-8px"></div>
+          <span>Keys</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ TABLEAU ═══ -->
+    <div class="tableau-zone">
+      <div class="tableau-label">Tableau of <span id="viewedPlayer">Player 1</span></div>
+      <div class="tableau-grid">
+        <div class="card tableau-card"><span class="num">2</span>Steward</div>
+        <div class="card tableau-card"><span class="num">4</span>Cardinal</div>
+        <div class="card tableau-card"><span class="num">1</span>Nun</div>
+        <div class="card tableau-card"><span class="num">3</span>Officer</div>
+        <div class="card tableau-card"><span class="num">5</span>Architect</div>
+        <div class="card tableau-card"><span class="num">0</span>Beggar</div>
+        <div class="card tableau-card" style="opacity:0.3;border-style:dashed">Empty</div>
+        <div class="card tableau-card" style="opacity:0.3;border-style:dashed">Empty</div>
+        <div class="card tableau-card" style="opacity:0.3;border-style:dashed">Empty</div>
+      </div>
+      <div class="resources">
+        <div class="resource-group">
+          <div class="resource-icon gold">●</div>
+          <div class="resource-icon gold" style="margin-left:-8px">●</div>
+          <div class="resource-count">12</div>
+          <div class="resource-label">Gold</div>
+        </div>
+        <div class="resource-group">
+          <div class="resource-icon key">⚷</div>
+          <div class="resource-count">3</div>
+          <div class="resource-label">Keys</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANELS ═══ -->
+    <div class="panels-zone">
+      <div class="player-panel active" onclick="selectPlayer(0)">
+        <div class="panel-top">
+          <div class="panel-avatar p1"></div>
+          <div class="panel-name">Player 1</div>
+        </div>
+        <div class="panel-stats">
+          <div class="panel-stat"><div class="dot gold"></div>12</div>
+          <div class="panel-stat"><div class="dot key"></div>3</div>
+        </div>
+      </div>
+      <div class="player-panel" onclick="selectPlayer(1)">
+        <div class="panel-top">
+          <div class="panel-avatar p2"></div>
+          <div class="panel-name">Player 2</div>
+        </div>
+        <div class="panel-stats">
+          <div class="panel-stat"><div class="dot gold"></div>8</div>
+          <div class="panel-stat"><div class="dot key"></div>1</div>
+        </div>
+      </div>
+      <div class="player-panel" onclick="selectPlayer(2)">
+        <div class="panel-top">
+          <div class="panel-avatar p3"></div>
+          <div class="panel-name">Player 3</div>
+        </div>
+        <div class="panel-stats">
+          <div class="panel-stat"><div class="dot gold"></div>15</div>
+          <div class="panel-stat"><div class="dot key"></div>2</div>
+        </div>
+      </div>
+      <div class="player-panel" onclick="selectPlayer(3)">
+        <div class="panel-top">
+          <div class="panel-avatar p4"></div>
+          <div class="panel-name">Player 4</div>
+        </div>
+        <div class="panel-stats">
+          <div class="panel-stat"><div class="dot gold"></div>10</div>
+          <div class="panel-stat"><div class="dot key"></div>0</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="info" id="info">
+  <strong>Layout A</strong> — Rivers left · Tableau right · Panels far-right
+</div>
+
+<script>
+const descriptions = {
+  A: 'Rivers left · Tableau right · Panels far-right',
+  B: 'Tableau left · Rivers right · Panels far-right',
+  C: 'Rivers top (compact) · Tableau center · Panels far-right'
+}
+
+function setLayout(layout) {
+  document.getElementById('gameArea').dataset.layout = layout
+  document.querySelectorAll('.switcher button').forEach((btn, i) => {
+    btn.classList.toggle('active', btn.textContent.includes(layout))
+  })
+  document.getElementById('info').innerHTML =
+    `<strong>Layout ${layout}</strong> — ${descriptions[layout]}`
+}
+
+const playerNames = ['Player 1', 'Player 2', 'Player 3', 'Player 4']
+
+function selectPlayer(index) {
+  document.querySelectorAll('.player-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === index)
+  })
+  document.getElementById('viewedPlayer').textContent = playerNames[index]
+}
+</script>
+
+</body>
+</html>

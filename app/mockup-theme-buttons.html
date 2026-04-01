@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chateau Combo - Button Style Proposals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Crimson+Pro:wght@400;600;700&family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --gold: #D4A828;
+      --gold-light: #E8D070;
+      --gold-dark: #8B6914;
+      --brown-dark: #3A2410;
+      --brown: #5C3A1E;
+      --brown-light: #8B6B4A;
+      --parchment: #F0E4C8;
+      --parchment-dark: #D4C4A0;
+      --burgundy: #5C1A2A;
+      --burgundy-light: #8B2A40;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1510;
+      color: var(--parchment);
+      font-family: 'Crimson Pro', serif;
+      padding: 40px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-family: 'Lilita One', cursive;
+      text-align: center;
+      font-size: 2.5rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--brown-light);
+      margin-bottom: 50px;
+    }
+
+    .proposal {
+      background: rgba(60, 40, 20, 0.3);
+      border: 1px solid var(--brown);
+      border-radius: 12px;
+      padding: 40px;
+      margin-bottom: 50px;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .proposal-title {
+      font-family: 'Lilita One', cursive;
+      font-size: 1.8rem;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+    }
+
+    .proposal-desc {
+      font-size: 1rem;
+      color: var(--brown-light);
+      margin-bottom: 30px;
+      font-style: italic;
+    }
+
+    .button-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .button-row .label {
+      font-size: 0.85rem;
+      color: var(--brown-light);
+      min-width: 80px;
+      text-align: right;
+    }
+
+    /* Context block: show buttons on parchment like in dialog */
+    .context-block {
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(180,155,110,0.2), transparent 50%),
+        linear-gradient(168deg, #E8D8B4 0%, #F2E6C8 20%, #E0D0A8 50%, #F0E4C0 80%, #D8C8A0 100%);
+      border-radius: 8px;
+      padding: 30px;
+      margin-top: 20px;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+
+    .context-label {
+      font-size: 0.8rem;
+      color: var(--brown-light);
+      font-style: italic;
+      margin-top: 16px;
+      margin-bottom: 4px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 40px auto;
+      max-width: 400px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brown), transparent);
+    }
+
+    .divider-icon {
+      color: var(--gold);
+      font-size: 1.2rem;
+    }
+
+    /* ===================== */
+    /* PROPOSAL A: WAX SEAL  */
+    /* ===================== */
+
+    .wax-seal-btn {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1rem;
+      padding: 14px 36px;
+      border: 2px solid var(--gold);
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+      background:
+        linear-gradient(135deg, var(--parchment) 0%, #e6d6b0 40%, #dcc898 100%);
+      color: var(--brown-dark);
+      box-shadow:
+        0 2px 6px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.4),
+        inset 0 -1px 0 rgba(0,0,0,0.1);
+      text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+      letter-spacing: 0.5px;
+    }
+
+    .wax-seal-btn::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle at 40% 35%, #c43a3a 0%, var(--burgundy-light) 50%, var(--burgundy) 100%);
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 -1px 2px rgba(0,0,0,0.3);
+    }
+
+    .wax-seal-btn:hover, .wax-seal-btn.hover {
+      background: linear-gradient(135deg, #f5edd5 0%, var(--parchment) 40%, #e6d6b0 100%);
+      border-color: var(--gold-light);
+      box-shadow:
+        0 4px 12px rgba(212,168,40,0.3),
+        0 2px 6px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.5);
+      transform: translateY(-1px);
+    }
+
+    .wax-seal-btn:hover::after, .wax-seal-btn.hover::after {
+      background: radial-gradient(circle at 40% 35%, #d94a4a 0%, #a03048 50%, #7a2238 100%);
+      box-shadow: 0 2px 8px rgba(200,50,60,0.4), inset 0 -1px 2px rgba(0,0,0,0.3);
+    }
+
+    .wax-seal-btn.small {
+      font-size: 0.9rem;
+      padding: 9px 24px;
+    }
+
+    .wax-seal-btn.small::after {
+      width: 16px;
+      height: 16px;
+      right: -6px;
+    }
+
+    .wax-seal-btn.disabled {
+      background: linear-gradient(135deg, #b8b0a0 0%, #a8a090 100%);
+      border-color: #888070;
+      color: #706858;
+      cursor: not-allowed;
+      box-shadow: none;
+      text-shadow: none;
+    }
+
+    .wax-seal-btn.disabled::after {
+      background: radial-gradient(circle at 40% 35%, #807070 0%, #605050 100%);
+      border-color: #888070;
+      box-shadow: none;
+    }
+
+    /* ================================= */
+    /* PROPOSAL B: GILDED SCROLL         */
+    /* ================================= */
+
+    .gilded-btn {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1rem;
+      padding: 12px 32px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      background: linear-gradient(180deg,
+        var(--gold-light) 0%, var(--gold) 15%, var(--gold-dark) 85%, #6a5010 100%);
+      color: var(--brown-dark);
+      border-radius: 3px;
+      text-shadow: 0 1px 0 rgba(255,255,200,0.4);
+      letter-spacing: 0.5px;
+      box-shadow:
+        0 1px 0 rgba(255,255,200,0.3) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 3px 8px rgba(0,0,0,0.4);
+    }
+
+    /* Gold inset border */
+    .gilded-btn::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 1px solid rgba(255,255,200,0.3);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Corner accents */
+    .gilded-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 3px;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(255,255,200,0.25) 0%, transparent 20%),
+        radial-gradient(circle at 100% 0%, rgba(255,255,200,0.15) 0%, transparent 20%),
+        radial-gradient(circle at 0% 100%, rgba(255,255,200,0.1) 0%, transparent 20%),
+        radial-gradient(circle at 100% 100%, rgba(255,255,200,0.2) 0%, transparent 20%);
+      pointer-events: none;
+    }
+
+    .gilded-btn:hover, .gilded-btn.hover {
+      background: linear-gradient(180deg,
+        #f0dc80 0%, var(--gold-light) 15%, var(--gold) 85%, var(--gold-dark) 100%);
+      box-shadow:
+        0 1px 0 rgba(255,255,200,0.4) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 4px 12px rgba(212,168,40,0.4),
+        0 0 20px rgba(212,168,40,0.15);
+      transform: translateY(-1px);
+    }
+
+    .gilded-btn.small {
+      font-size: 0.9rem;
+      padding: 8px 22px;
+    }
+
+    .gilded-btn.disabled {
+      background: linear-gradient(180deg, #908878 0%, #786850 50%, #685840 100%);
+      color: #a09880;
+      cursor: not-allowed;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      text-shadow: none;
+    }
+
+    .gilded-btn.disabled::before {
+      border-color: rgba(255,255,200,0.08);
+    }
+
+    /* ==================================== */
+    /* PROPOSAL C: LEATHER & BRASS BUCKLE   */
+    /* ==================================== */
+
+    .leather-btn {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1rem;
+      padding: 12px 40px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.2s ease;
+      background:
+        linear-gradient(180deg, #6a4a2a 0%, #5a3a1e 30%, #4a3018 70%, #3a2410 100%);
+      color: var(--parchment);
+      border-radius: 4px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+      letter-spacing: 0.5px;
+      box-shadow:
+        0 1px 0 rgba(180,140,80,0.15) inset,
+        0 -1px 0 rgba(0,0,0,0.3) inset,
+        0 3px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Stitching effect */
+    .leather-btn::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px dashed rgba(180,140,80,0.25);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Brass buckle accent left */
+    .leather-btn::after {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 20px;
+      border: 2px solid var(--gold);
+      border-radius: 2px;
+      background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-dark) 100%);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .leather-btn {
+      padding-left: 32px; /* make room for buckle */
+    }
+
+    .leather-btn:hover, .leather-btn.hover {
+      background:
+        linear-gradient(180deg, #7a5a3a 0%, #6a4a2a 30%, #5a3a1e 70%, #4a3018 100%);
+      box-shadow:
+        0 1px 0 rgba(180,140,80,0.2) inset,
+        0 -1px 0 rgba(0,0,0,0.3) inset,
+        0 4px 12px rgba(0,0,0,0.5),
+        0 0 15px rgba(212,168,40,0.1);
+      transform: translateY(-1px);
+    }
+
+    .leather-btn:hover::after, .leather-btn.hover::after {
+      background: linear-gradient(135deg, #f0dc80 0%, var(--gold) 100%);
+      box-shadow: 0 1px 5px rgba(212,168,40,0.4);
+    }
+
+    .leather-btn.small {
+      font-size: 0.9rem;
+      padding: 8px 28px;
+      padding-left: 28px;
+    }
+
+    .leather-btn.small::after {
+      width: 10px;
+      height: 14px;
+      left: 6px;
+    }
+
+    .leather-btn.disabled {
+      background: linear-gradient(180deg, #484040 0%, #3a3432 50%, #2e2828 100%);
+      color: #706860;
+      cursor: not-allowed;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      text-shadow: none;
+    }
+
+    .leather-btn.disabled::before {
+      border-color: rgba(100,80,60,0.15);
+    }
+
+    .leather-btn.disabled::after {
+      background: linear-gradient(135deg, #706050 0%, #504030 100%);
+      border-color: #605040;
+      box-shadow: none;
+    }
+
+    /* ========================= */
+    /* PROPOSAL D: CASTLE STONE  */
+    /* ========================= */
+
+    .castle-stone-btn {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1rem;
+      padding: 14px 36px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+      background:
+        linear-gradient(180deg,
+          #7a7060 0%, #686050 8%,
+          #5e5648 20%, #545040 50%,
+          #4a4438 80%, #3e3830 92%,
+          #343028 100%);
+      color: var(--gold-light);
+      text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+      letter-spacing: 0.5px;
+      border-radius: 4px;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.3),
+        inset 1px 0 0 rgba(255,255,255,0.06),
+        inset -1px 0 0 rgba(0,0,0,0.15),
+        0 3px 0 #2a2620,
+        0 4px 8px rgba(0,0,0,0.5);
+    }
+
+    .castle-stone-btn::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(212,168,40,0.25);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .castle-stone-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 4px;
+      background:
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(0,0,0,0.02) 8px, rgba(0,0,0,0.02) 9px),
+        repeating-linear-gradient(0deg, transparent, transparent 6px, rgba(0,0,0,0.015) 6px, rgba(0,0,0,0.015) 7px);
+      pointer-events: none;
+    }
+
+    .castle-stone-btn:hover, .castle-stone-btn.hover {
+      background:
+        linear-gradient(180deg,
+          #8a8070 0%, #787060 8%,
+          #6e6658 20%, #646050 50%,
+          #5a5448 80%, #4e4840 92%,
+          #444038 100%);
+      color: #f0e890;
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.15),
+        inset 0 -1px 0 rgba(0,0,0,0.3),
+        0 3px 0 #2a2620,
+        0 4px 12px rgba(0,0,0,0.5),
+        0 0 12px rgba(212,168,40,0.15);
+      transform: translateY(-1px);
+    }
+
+    .castle-stone-btn:hover::before, .castle-stone-btn.hover::before {
+      border-color: rgba(212,168,40,0.4);
+    }
+
+    .castle-stone-btn:active {
+      transform: translateY(1px);
+      box-shadow:
+        inset 0 2px 3px rgba(0,0,0,0.3),
+        0 1px 0 #2a2620,
+        0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .castle-stone-btn.small {
+      font-size: 0.9rem;
+      padding: 9px 24px;
+    }
+
+    .castle-stone-btn.disabled {
+      background: linear-gradient(180deg, #484440 0%, #3e3a38 50%, #343030 100%);
+      color: #706860;
+      cursor: not-allowed;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 2px 0 #222020, 0 3px 4px rgba(0,0,0,0.3);
+      text-shadow: none;
+    }
+
+    .castle-stone-btn.disabled::before {
+      border-color: rgba(100,90,70,0.15);
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>Chateau Combo</h1>
+  <p class="subtitle">Button Style Proposals - Medieval UI Components</p>
+
+  <!-- PROPOSAL A: WAX SEAL -->
+  <div class="proposal">
+    <div class="proposal-title">A) Wax Seal</div>
+    <div class="proposal-desc">Parchment-textured buttons with a wax seal accent, gold border, warm tones</div>
+
+    <div class="button-row">
+      <span class="label">Primary</span>
+      <button class="wax-seal-btn">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Hover</span>
+      <button class="wax-seal-btn hover">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Secondary</span>
+      <button class="wax-seal-btn small">Shield distribution</button>
+      <button class="wax-seal-btn small">Spend a Key</button>
+      <button class="wax-seal-btn small">Discard</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Disabled</span>
+      <button class="wax-seal-btn disabled">Buy this card</button>
+      <button class="wax-seal-btn small disabled">Spend a Key</button>
+    </div>
+
+    <div class="context-label">In parchment dialog context:</div>
+    <div class="context-block">
+      <button class="wax-seal-btn">Buy this card</button>
+      <button class="wax-seal-btn small">Shield distribution</button>
+      <button class="wax-seal-btn small">Discard</button>
+    </div>
+  </div>
+
+  <div class="divider"><span class="divider-icon">&#9876;</span></div>
+
+  <!-- PROPOSAL B: GILDED SCROLL -->
+  <div class="proposal">
+    <div class="proposal-title">B) Gilded Scroll</div>
+    <div class="proposal-desc">Solid gold gradient buttons — rich, regal, unmistakable call to action</div>
+
+    <div class="button-row">
+      <span class="label">Primary</span>
+      <button class="gilded-btn">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Hover</span>
+      <button class="gilded-btn hover">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Secondary</span>
+      <button class="gilded-btn small">Shield distribution</button>
+      <button class="gilded-btn small">Spend a Key</button>
+      <button class="gilded-btn small">Discard</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Disabled</span>
+      <button class="gilded-btn disabled">Buy this card</button>
+      <button class="gilded-btn small disabled">Spend a Key</button>
+    </div>
+
+    <div class="context-label">In parchment dialog context:</div>
+    <div class="context-block">
+      <button class="gilded-btn">Buy this card</button>
+      <button class="gilded-btn small">Shield distribution</button>
+      <button class="gilded-btn small">Discard</button>
+    </div>
+  </div>
+
+  <div class="divider"><span class="divider-icon">&#9876;</span></div>
+
+  <!-- PROPOSAL C: LEATHER & BRASS BUCKLE -->
+  <div class="proposal">
+    <div class="proposal-title">C) Leather & Brass</div>
+    <div class="proposal-desc">Dark leather buttons with brass buckle accent and stitching detail</div>
+
+    <div class="button-row">
+      <span class="label">Primary</span>
+      <button class="leather-btn">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Hover</span>
+      <button class="leather-btn hover">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Secondary</span>
+      <button class="leather-btn small">Shield distribution</button>
+      <button class="leather-btn small">Spend a Key</button>
+      <button class="leather-btn small">Discard</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Disabled</span>
+      <button class="leather-btn disabled">Buy this card</button>
+      <button class="leather-btn small disabled">Spend a Key</button>
+    </div>
+
+    <div class="context-label">In parchment dialog context:</div>
+    <div class="context-block">
+      <button class="leather-btn">Buy this card</button>
+      <button class="leather-btn small">Shield distribution</button>
+      <button class="leather-btn small">Discard</button>
+    </div>
+  </div>
+
+  <div class="divider"><span class="divider-icon">&#9876;</span></div>
+
+  <!-- PROPOSAL D: CASTLE STONE -->
+  <div class="proposal">
+    <div class="proposal-title">D) Castle Stone</div>
+    <div class="proposal-desc">Carved stone tablets with beveled edges and subtle texture</div>
+
+    <div class="button-row">
+      <span class="label">Primary</span>
+      <button class="castle-stone-btn">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Hover</span>
+      <button class="castle-stone-btn hover">Buy this card</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Secondary</span>
+      <button class="castle-stone-btn small">Shield distribution</button>
+      <button class="castle-stone-btn small">Spend a Key</button>
+      <button class="castle-stone-btn small">Discard</button>
+    </div>
+    <div class="button-row">
+      <span class="label">Disabled</span>
+      <button class="castle-stone-btn disabled">Buy this card</button>
+      <button class="castle-stone-btn small disabled">Spend a Key</button>
+    </div>
+
+    <div class="context-label">In parchment dialog context:</div>
+    <div class="context-block">
+      <button class="castle-stone-btn">Buy this card</button>
+      <button class="castle-stone-btn small">Shield distribution</button>
+      <button class="castle-stone-btn small">Discard</button>
+    </div>
+  </div>
+
+</body>
+</html>

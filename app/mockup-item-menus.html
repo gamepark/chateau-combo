@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chateau Combo — Item Menu Proposals</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Lilita+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1208;
+    color: #F0E4C8;
+    font-family: 'MedievalSharp', cursive;
+    padding: 2rem;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #D4A828;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    margin-bottom: 0.5rem;
+  }
+  .subtitle {
+    text-align: center;
+    color: #8B6B4A;
+    font-size: 0.95rem;
+    margin-bottom: 2.5rem;
+    font-family: Georgia, serif;
+  }
+
+  .proposals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .proposal {
+    background: linear-gradient(145deg, #2a1a0a, #1e1208);
+    border: 1px solid rgba(212,168,40,0.2);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    position: relative;
+  }
+  .proposal h2 {
+    font-family: 'Lilita One', sans-serif;
+    font-size: 1.1rem;
+    color: #D4A828;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+  }
+  .proposal .desc {
+    font-family: Georgia, serif;
+    font-size: 0.82rem;
+    color: #8B6B4A;
+    margin-bottom: 1.2rem;
+    line-height: 1.4;
+  }
+
+  /* ---- Card mockup ---- */
+  .card-scene {
+    position: relative;
+    width: 200px;
+    height: 280px;
+    margin: 0 auto 1rem;
+    perspective: 600px;
+  }
+  .card {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    background:
+      linear-gradient(145deg, #c4a66a 0%, #a88940 40%, #8e7530 100%);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.15);
+    border: 2px solid rgba(212,168,40,0.4);
+    position: relative;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card-art {
+    width: 85%;
+    height: 60%;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #5a7a4a, #3a5a30);
+    border: 1px solid rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.3);
+    font-size: 2rem;
+    margin-top: -2rem;
+  }
+
+  /* =============================================
+     PROPOSAL 1 — Wax Seal
+     ============================================= */
+  .wax-seal-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #c0392b, #8e2020 70%);
+    border: 2.5px solid rgba(0,0,0,0.3);
+    color: #F0E4C8;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    box-shadow:
+      0 3px 8px rgba(0,0,0,0.5),
+      inset 0 2px 3px rgba(255,200,200,0.3),
+      inset 0 -2px 3px rgba(0,0,0,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+    z-index: 10;
+  }
+  .wax-seal-btn:hover {
+    transform: translate(-50%, -50%) scale(1.12);
+    box-shadow:
+      0 5px 14px rgba(0,0,0,0.5),
+      0 0 10px rgba(192,57,43,0.4),
+      inset 0 2px 3px rgba(255,200,200,0.3);
+  }
+  .wax-seal-btn .label {
+    position: absolute;
+    left: calc(100% + 6px);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 12px;
+    background: linear-gradient(180deg, #F0E4C8, #dcc898);
+    color: #3A2410;
+    border: 1.5px solid #D4A828;
+    border-radius: 3px;
+    padding: 2px 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .wax-seal-btn:hover .label { opacity: 1; }
+
+  /* =============================================
+     PROPOSAL 2 — Parchment Ribbon
+     ============================================= */
+  .parchment-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 13px;
+    background: linear-gradient(135deg, #F0E4C8 0%, #e6d6b0 40%, #dcc898 100%);
+    color: #3A2410;
+    border: 2px solid #D4A828;
+    border-radius: 5px;
+    padding: 5px 12px;
+    cursor: pointer;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.4),
+      inset 0 -1px 0 rgba(0,0,0,0.1);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    transition: all 0.2s;
+    z-index: 10;
+    letter-spacing: 0.02em;
+  }
+  .parchment-btn:hover {
+    background: linear-gradient(135deg, #f5edd5, #F0E4C8, #e6d6b0);
+    border-color: #E8D070;
+    box-shadow:
+      0 4px 12px rgba(212,168,40,0.3),
+      0 2px 6px rgba(0,0,0,0.4);
+    transform: translate(-50%, -50%) translateY(-2px);
+  }
+  .parchment-btn i { color: #8B6914; }
+
+  /* =============================================
+     PROPOSAL 3 — Golden Blazon (pulsing)
+     ============================================= */
+  .blazon-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #D4A828, #8B6914);
+    color: #F0E4C8;
+    border: 2.5px solid #E8D070;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.3),
+      0 0 0 3px rgba(212,168,40,0.15);
+    z-index: 10;
+    animation: blazonPulse 2.5s ease-in-out infinite;
+    transition: box-shadow 0.2s;
+  }
+  @keyframes blazonPulse {
+    0%, 100% { box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 0 3px rgba(212,168,40,0.15); }
+    50% { box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.3), 0 0 0 6px rgba(212,168,40,0.25), 0 0 12px rgba(212,168,40,0.15); }
+  }
+  .blazon-btn:hover {
+    animation: none;
+    box-shadow:
+      0 3px 10px rgba(0,0,0,0.5),
+      inset 0 1px 0 rgba(255,255,255,0.3),
+      0 0 0 4px rgba(212,168,40,0.3),
+      0 0 16px rgba(212,168,40,0.25);
+  }
+  .blazon-btn .label {
+    position: absolute;
+    left: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-family: 'MedievalSharp', cursive;
+    font-size: 12px;
+    background: rgba(0,0,0,0.75);
+    color: #E8D070;
+    border: 1px solid rgba(212,168,40,0.3);
+    border-radius: 4px;
+    padding: 3px 8px;
+    backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .blazon-btn:hover .label { opacity: 1; }
+
+  /* =============================================
+     PROPOSAL 4 — Wax Seal + Banner (always visible label)
+     ============================================= */
+  .seal-banner-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    z-index: 10;
+  }
+  .seal-banner-seal {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #c0392b, #8e2020 70%);
+    border: 2px solid rgba(0,0,0,0.3);
+    color: #F0E4C8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-shadow:
+      0 2px 6px rgba(0,0,0,0.5),
+      inset 0 1px 2px rgba(255,200,200,0.3),
+      inset 0 -1px 2px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+    z-index: 2;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .seal-banner-wrap:hover .seal-banner-seal {
+    transform: scale(1.08);
+  }
+  .seal-banner-label {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 11.5px;
+    color: #3A2410;
+    background: linear-gradient(180deg, #F0E4C8, #dcc898);
+    border: 1.5px solid #D4A828;
+    border-left: none;
+    border-radius: 0 4px 4px 0;
+    padding: 3px 10px 3px 14px;
+    margin-left: -8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+    white-space: nowrap;
+    cursor: pointer;
+    z-index: 1;
+    letter-spacing: 0.02em;
+  }
+
+  /* ---- Action demos row ---- */
+  .actions-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+  .action-demo {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #8B6B4A;
+    font-family: Georgia, serif;
+  }
+  .action-demo .mini-card {
+    position: relative;
+    width: 80px;
+    height: 112px;
+    border-radius: 5px;
+    background: linear-gradient(145deg, #c4a66a 0%, #a88940 40%, #8e7530 100%);
+    border: 1.5px solid rgba(212,168,40,0.4);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    margin: 0 auto 0.4rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Item Menu — Design Proposals</h1>
+<p class="subtitle">Hover each button to see interaction states</p>
+
+<div class="proposals">
+
+  <!-- PROPOSAL 1: Wax Seal -->
+  <div class="proposal">
+    <h2>1 — Wax Seal</h2>
+    <p class="desc">Bouton circulaire en cire rouge, label parchemin au hover. Discret mais thématique.</p>
+    <div class="card-scene">
+      <div class="card">
+        <div class="card-art"><i class="fa-solid fa-chess-rook"></i></div>
+        <button class="wax-seal-btn">
+          <i class="fa-solid fa-trash-can"></i>
+          <span class="label">Discard this row</span>
+        </button>
+      </div>
+    </div>
+    <div class="actions-row">
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="wax-seal-btn" style="font-size:12px; width:32px; height:32px;">
+            <i class="fa-solid fa-lock-open"></i>
+            <span class="label">Activate lock</span>
+          </button>
+        </div>
+        Lock
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="wax-seal-btn" style="font-size:12px; width:32px; height:32px;">
+            <i class="fa-solid fa-star"></i>
+            <span class="label">Activate this card</span>
+          </button>
+        </div>
+        Adjacent
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="wax-seal-btn" style="font-size:12px; width:32px; height:32px;">
+            <i class="fa-solid fa-trash-can"></i>
+            <span class="label">Discard this row</span>
+          </button>
+        </div>
+        Discard
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPOSAL 2: Parchment Ribbon -->
+  <div class="proposal">
+    <h2>2 — Parchment Ribbon</h2>
+    <p class="desc">Bouton rectangulaire parchemin avec icône + texte toujours visible. Intégré, clair.</p>
+    <div class="card-scene">
+      <div class="card">
+        <div class="card-art"><i class="fa-solid fa-chess-rook"></i></div>
+        <button class="parchment-btn">
+          <i class="fa-solid fa-trash-can"></i>
+          Discard this row
+        </button>
+      </div>
+    </div>
+    <div class="actions-row">
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="parchment-btn" style="font-size:10px; padding:3px 8px;">
+            <i class="fa-solid fa-lock-open"></i>
+            Activate lock
+          </button>
+        </div>
+        Lock
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="parchment-btn" style="font-size:10px; padding:3px 8px;">
+            <i class="fa-solid fa-star"></i>
+            Activate
+          </button>
+        </div>
+        Adjacent
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="parchment-btn" style="font-size:10px; padding:3px 8px;">
+            <i class="fa-solid fa-trash-can"></i>
+            Discard row
+          </button>
+        </div>
+        Discard
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPOSAL 3: Golden Blazon -->
+  <div class="proposal">
+    <h2>3 — Golden Blazon</h2>
+    <p class="desc">Cercle doré avec pulse subtil. Label tooltip sombre au hover. Attire l'oeil.</p>
+    <div class="card-scene">
+      <div class="card">
+        <div class="card-art"><i class="fa-solid fa-chess-rook"></i></div>
+        <button class="blazon-btn">
+          <i class="fa-solid fa-trash-can"></i>
+          <span class="label">Discard this row</span>
+        </button>
+      </div>
+    </div>
+    <div class="actions-row">
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="blazon-btn" style="font-size:11px; width:30px; height:30px; animation-delay:-0.8s;">
+            <i class="fa-solid fa-lock-open"></i>
+            <span class="label">Activate lock</span>
+          </button>
+        </div>
+        Lock
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="blazon-btn" style="font-size:11px; width:30px; height:30px; animation-delay:-1.6s;">
+            <i class="fa-solid fa-star"></i>
+            <span class="label">Activate this card</span>
+          </button>
+        </div>
+        Adjacent
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <button class="blazon-btn" style="font-size:11px; width:30px; height:30px; animation-delay:-0.4s;">
+            <i class="fa-solid fa-trash-can"></i>
+            <span class="label">Discard this row</span>
+          </button>
+        </div>
+        Discard
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPOSAL 4: Seal + Banner -->
+  <div class="proposal">
+    <h2>4 — Seal + Banner</h2>
+    <p class="desc">Sceau de cire avec ruban parchemin attaché. Label toujours visible, compact.</p>
+    <div class="card-scene">
+      <div class="card">
+        <div class="card-art"><i class="fa-solid fa-chess-rook"></i></div>
+        <div class="seal-banner-wrap">
+          <div class="seal-banner-seal">
+            <i class="fa-solid fa-trash-can"></i>
+          </div>
+          <div class="seal-banner-label">Discard this row</div>
+        </div>
+      </div>
+    </div>
+    <div class="actions-row">
+      <div class="action-demo">
+        <div class="mini-card">
+          <div class="seal-banner-wrap" style="font-size:0.8em;">
+            <div class="seal-banner-seal" style="width:28px;height:28px;font-size:11px;">
+              <i class="fa-solid fa-lock-open"></i>
+            </div>
+            <div class="seal-banner-label" style="font-size:9.5px;">Activate lock</div>
+          </div>
+        </div>
+        Lock
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <div class="seal-banner-wrap" style="font-size:0.8em;">
+            <div class="seal-banner-seal" style="width:28px;height:28px;font-size:11px;">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="seal-banner-label" style="font-size:9.5px;">Activate</div>
+          </div>
+        </div>
+        Adjacent
+      </div>
+      <div class="action-demo">
+        <div class="mini-card">
+          <div class="seal-banner-wrap" style="font-size:0.8em;">
+            <div class="seal-banner-seal" style="width:28px;height:28px;font-size:11px;">
+              <i class="fa-solid fa-trash-can"></i>
+            </div>
+            <div class="seal-banner-label" style="font-size:9.5px;">Discard row</div>
+          </div>
+        </div>
+        Discard
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

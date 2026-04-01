@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Château Combo — Game Log</title>
+<link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A828;
+    --gold-light: #F0D860;
+    --gold-dim: #9E7A18;
+    --red: #A83030;
+    --brown: #6B5030;
+    --brown-dark: #3A2410;
+    --brown-light: #8B6B4A;
+    --parchment: #F0E4C8;
+    --parchment-mid: #E8D8B4;
+    --parchment-dark: #D8C498;
+    --alice: #4A90D9;
+    --bob: #C94040;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #2a1a0a;
+    padding: 2em;
+  }
+
+  .log-panel {
+    width: 380px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(ellipse at 20% 15%, rgba(200, 170, 110, 0.3), transparent 50%),
+      radial-gradient(ellipse at 80% 85%, rgba(160, 130, 80, 0.15), transparent 50%),
+      linear-gradient(168deg, #dcc898 0%, #E8D8B4 15%, #F2E6C8 30%, #E8DCBC 50%, #E0D0A8 70%, #D8C498 100%);
+    border-radius: 0.6em;
+    box-shadow:
+      0 0.7em 3em rgba(0, 0, 0, 0.7),
+      0 0 0 0.12em rgba(140, 110, 50, 0.4),
+      0 0 0 0.3em rgba(40, 25, 10, 0.6),
+      0 0 0 0.35em rgba(140, 110, 50, 0.2);
+    overflow: hidden;
+    font-family: 'Crimson Pro', Georgia, serif;
+    color: var(--brown);
+  }
+
+  /* ── Header ── */
+  .log-header {
+    padding: 0.6em 1em;
+    background: linear-gradient(90deg,
+      rgba(140, 110, 50, 0.08),
+      rgba(140, 110, 50, 0.15),
+      rgba(140, 110, 50, 0.08));
+    border-bottom: 0.12em solid rgba(140, 110, 50, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    flex-shrink: 0;
+  }
+
+  .log-header h2 {
+    font-family: 'MedievalSharp', cursive;
+    font-size: 1.1em;
+    font-weight: normal;
+    color: var(--brown-dark);
+    letter-spacing: 0.04em;
+    text-shadow: 0 0.06em 0 rgba(255, 255, 255, 0.3);
+  }
+
+  /* ── Scrollable body ── */
+  .log-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.4em 0.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 0.12em;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(140, 110, 50, 0.3) transparent;
+  }
+
+  .log-body::-webkit-scrollbar { width: 5px; }
+  .log-body::-webkit-scrollbar-track { background: transparent; }
+  .log-body::-webkit-scrollbar-thumb {
+    background: rgba(140, 110, 50, 0.3);
+    border-radius: 3px;
+  }
+
+  /* ── Turn separator ── */
+  .turn-sep {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    padding: 0.4em 0.3em 0.2em;
+    margin-top: 0.2em;
+  }
+
+  .turn-sep::before,
+  .turn-sep::after {
+    content: '';
+    flex: 1;
+    height: 0.06em;
+    background: linear-gradient(90deg, transparent, rgba(212, 168, 40, 0.35), transparent);
+  }
+
+  .turn-sep span {
+    font-family: 'Lilita One', cursive;
+    font-size: 0.58em;
+    color: var(--brown-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0.7;
+  }
+
+  /* ── Log entry ── */
+  .log-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45em;
+    padding: 0.35em 0.5em;
+    border-radius: 0.25em;
+    background: rgba(140, 110, 50, 0.06);
+    border-left: 0.18em solid transparent;
+    transition: background 0.15s;
+  }
+
+  .log-entry:hover {
+    background: rgba(140, 110, 50, 0.12);
+  }
+
+  .log-entry.action {
+    border-left-color: var(--gold);
+    background: rgba(140, 110, 50, 0.1);
+  }
+
+  /* Consequence (depth 1) */
+  .log-entry.consequence {
+    background: transparent;
+    padding-left: 0.8em;
+    border-left-color: transparent;
+  }
+
+  .log-entry.consequence .entry-text {
+    font-size: 0.88em;
+    color: var(--brown-light);
+  }
+
+  .log-entry.consequence:hover {
+    background: rgba(140, 110, 50, 0.06);
+  }
+
+  .depth-arrow {
+    color: var(--brown-light);
+    font-size: 0.75em;
+    margin-right: 0.05em;
+    opacity: 0.45;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  /* ── Avatar ── */
+  .avatar {
+    width: 1.5em;
+    height: 1.5em;
+    min-width: 1.5em;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lilita One', cursive;
+    font-size: 0.65em;
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 0 0.06em 0.12em rgba(0, 0, 0, 0.4);
+    flex-shrink: 0;
+    margin-top: 0.12em;
+    box-shadow: 0 0.06em 0.18em rgba(0, 0, 0, 0.2);
+  }
+
+  .avatar.alice {
+    background: radial-gradient(circle at 35% 35%, #5DA0E8, var(--alice));
+    border: 0.1em solid rgba(74, 144, 217, 0.5);
+  }
+
+  .avatar.bob {
+    background: radial-gradient(circle at 35% 35%, #E05050, var(--bob));
+    border: 0.1em solid rgba(201, 64, 64, 0.5);
+  }
+
+  .avatar.system {
+    background: radial-gradient(circle at 35% 35%, #B8A070, #8B7A50);
+    border: 0.1em solid rgba(140, 110, 50, 0.4);
+    font-size: 0.7em;
+  }
+
+  /* ── Entry text ── */
+  .entry-text {
+    font-size: 0.92em;
+    color: #5C3A1E;
+    line-height: 1.45;
+    flex: 1;
+  }
+
+  .entry-text .player-name {
+    font-weight: 600;
+  }
+
+  .entry-text .player-name.alice { color: #2E6AAE; }
+  .entry-text .player-name.bob { color: #A83030; }
+
+  .entry-text .card-name {
+    color: var(--gold-dim);
+    font-weight: 600;
+    cursor: pointer;
+    border-bottom: 0.06em dotted rgba(158, 122, 24, 0.4);
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .entry-text .card-name:hover {
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .entry-text .place-name {
+    font-weight: 600;
+    color: var(--brown-dark);
+  }
+
+  /* ── Icons (inline) ── */
+  .icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1em;
+    height: 1.1em;
+    vertical-align: -0.12em;
+    border-radius: 50%;
+    font-size: 0.8em;
+    margin: 0 0.04em;
+  }
+
+  .icon.gold {
+    background: radial-gradient(circle at 40% 35%, #F0D860, #C09020);
+    color: #5C3A10;
+    font-family: 'Lilita One', cursive;
+    font-size: 0.6em;
+    border: 0.06em solid rgba(192, 144, 32, 0.5);
+    box-shadow: 0 0.06em 0.12em rgba(0, 0, 0, 0.2);
+  }
+
+  .icon.key {
+    background: radial-gradient(circle at 40% 35%, #C0C8D0, #808890);
+    color: #2A2A30;
+    font-size: 0.65em;
+    border: 0.06em solid rgba(150, 160, 170, 0.4);
+    box-shadow: 0 0.06em 0.12em rgba(0, 0, 0, 0.2);
+  }
+
+  .icon.lock {
+    background: radial-gradient(circle at 40% 35%, #607080, #404850);
+    color: #D4A828;
+    font-size: 0.65em;
+    border: 0.06em solid rgba(100, 120, 140, 0.4);
+    box-shadow: 0 0.06em 0.12em rgba(0, 0, 0, 0.2);
+  }
+
+  .icon.messenger {
+    background: radial-gradient(circle at 40% 35%, #B8960A, #8B6914);
+    color: #F0E4C8;
+    font-size: 0.55em;
+    border: 0.06em solid rgba(140, 110, 20, 0.4);
+  }
+
+  .icon.purse {
+    background: radial-gradient(circle at 40% 35%, #8B6030, #5C3A18);
+    color: #F0D860;
+    font-size: 0.6em;
+    border: 0.06em solid rgba(140, 96, 48, 0.4);
+  }
+
+  /* ── Quantity ── */
+  .qty {
+    font-family: 'Lilita One', cursive;
+    font-size: 0.9em;
+    color: var(--brown-dark);
+  }
+
+  /* ── Face-down tag ── */
+  .face-down-tag {
+    display: inline-block;
+    background: rgba(140, 110, 50, 0.12);
+    color: var(--brown-light);
+    font-size: 0.88em;
+    padding: 0 0.35em;
+    border-radius: 0.18em;
+    border: 0.06em solid rgba(140, 110, 50, 0.2);
+    vertical-align: 0.06em;
+  }
+
+  /* ── System message (messenger, key placed) ── */
+  .log-entry.system-msg {
+    opacity: 0.6;
+  }
+
+  .log-entry.system-msg .entry-text {
+    font-style: italic;
+    font-size: 0.84em;
+    color: var(--brown-light);
+  }
+</style>
+</head>
+<body>
+
+<div class="log-panel">
+  <div class="log-header">
+    <h2>Game Log</h2>
+  </div>
+
+  <div class="log-body">
+
+    <!-- ═══ TURN 1 ═══ -->
+    <div class="turn-sep"><span>Turn 1 — Alice</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> buys <span class="card-name">Steward</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> gains
+        <span class="qty">1</span> <span class="icon gold">●</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 2 ═══ -->
+    <div class="turn-sep"><span>Turn 2 — Bob</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> takes a card <span class="face-down-tag">face down</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> gains
+        <span class="qty">6</span> <span class="icon gold">●</span>
+        and <span class="qty">2</span> <span class="icon key">🗝</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 3 ═══ -->
+    <div class="turn-sep"><span>Turn 3 — Alice</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> spends a <span class="icon key">🗝</span> Key
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Castle</span>
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> buys <span class="card-name">Banker</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> places
+        <span class="qty">2</span> <span class="icon gold">●</span>
+        on <span class="card-name">Banker</span> <span class="icon purse">💰</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 4 ═══ -->
+    <div class="turn-sep"><span>Turn 4 — Bob</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> buys <span class="card-name">Iron Mask</span> <span class="icon lock">🔒</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        A <span class="icon key">🗝</span> is placed on <span class="card-name">Iron Mask</span> <span class="icon lock">🔒</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Castle</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 5 ═══ -->
+    <div class="turn-sep"><span>Turn 5 — Alice</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> buys <span class="card-name">Templar</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> gains
+        <span class="qty">2</span> <span class="icon key">🗝</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        All other players gain <span class="qty">1</span> <span class="icon gold">●</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 6 ═══ -->
+    <div class="turn-sep"><span>Turn 6 — Bob</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> activates the lock <span class="icon lock">🔒</span> on <span class="card-name">Iron Mask</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> gains
+        <span class="qty">3</span> <span class="icon gold">●</span>
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> buys <span class="card-name">Chaplain</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        All players gain <span class="qty">1</span> <span class="icon key">🗝</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Castle</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 7 ═══ -->
+    <div class="turn-sep"><span>Turn 7 — Alice</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> discards <span class="card-name">Gravedigger</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> gains
+        <span class="qty">4</span> <span class="icon gold">●</span>
+        for discarding <span class="card-name">Gravedigger</span>
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> buys <span class="card-name">Astronomer</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> fills
+        <span class="qty">2</span> purse cards <span class="icon purse">💰</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 8 ═══ -->
+    <div class="turn-sep"><span>Turn 8 — Bob</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> spends a <span class="icon key">🗝</span> Key
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> replaces the 3 <span class="place-name">Castle</span> cards
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> buys <span class="card-name">Peddler</span> <span class="icon lock">🔒</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        A <span class="icon key">🗝</span> is placed on <span class="card-name">Peddler</span> <span class="icon lock">🔒</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Castle</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 9 ═══ -->
+    <div class="turn-sep"><span>Turn 9 — Alice</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> discards the <span class="place-name">Castle</span> river
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> gains
+        <span class="qty">2</span> <span class="icon key">🗝</span>
+        from discarded cards
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> buys <span class="card-name">General</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 10 ═══ -->
+    <div class="turn-sep"><span>Turn 10 — Bob</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> buys <span class="card-name">Vicar</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> chooses:
+        <span class="qty">3</span> <span class="icon gold">●</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Castle</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 11 ═══ -->
+    <div class="turn-sep"><span>Turn 11 — Alice</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> buys <span class="card-name">Fortune Teller</span> <span class="icon lock">🔒</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        A <span class="icon key">🗝</span> is placed on <span class="card-name">Fortune Teller</span> <span class="icon lock">🔒</span>
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> activates <span class="card-name">Banker</span>'s ability
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> places
+        <span class="qty">3</span> <span class="icon gold">●</span>
+        on <span class="card-name">Astronomer</span> <span class="icon purse">💰</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <!-- ═══ TURN 12 ═══ -->
+    <div class="turn-sep"><span>Turn 12 — Bob</span></div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> moves the Messenger to <span class="place-name">Village</span>
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> buys <span class="card-name">Lookout</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence system-msg">
+      <span class="depth-arrow">⤷</span>
+      <div class="entry-text">
+        <span class="icon messenger">♟</span> The Messenger moves to <span class="place-name">Castle</span>
+      </div>
+    </div>
+
+    <!-- ═══ END GAME ═══ -->
+    <div class="turn-sep"><span>End of Game</span></div>
+
+    <div class="log-entry consequence">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> places remaining <span class="icon gold">●</span> on purse cards <span class="icon purse">💰</span>
+      </div>
+    </div>
+
+    <div class="log-entry consequence">
+      <div class="avatar bob">B</div>
+      <div class="entry-text">
+        <span class="player-name bob">Bob</span> places remaining <span class="icon gold">●</span> on purse cards <span class="icon purse">💰</span>
+      </div>
+    </div>
+
+    <div class="log-entry action">
+      <div class="avatar alice">A</div>
+      <div class="entry-text">
+        <span class="player-name alice">Alice</span> passes
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
