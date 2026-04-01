@@ -30,5 +30,8 @@
     "unlinkgp": "git update-index --no-skip-worktree package.json yarn.lock && yarn unlink ../react-game ../react-client ../rules-api",
     "link-react-game": "yarn link ../react-game -r && git update-index --skip-worktree package.json yarn.lock"
   },
-  "packageManager": "yarn@4.9.4"
+  "packageManager": "yarn@4.9.4",
+  "resolutions": {
+    "@gamepark/react-game": "portal:/C:/Users/pbeau/Documents/GamePark/react-game"
+  }
 }
