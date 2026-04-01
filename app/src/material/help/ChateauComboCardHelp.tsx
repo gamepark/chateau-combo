@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
-import { Card } from '@gamepark/chateau-combo/material/Card.ts'
+import { Card, isOutOfTheOubliette } from '@gamepark/chateau-combo/material/Card.ts'
 import { cardCharacteristics, CardPattern } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { Condition, ConditionType } from '@gamepark/chateau-combo/material/Condition'
 import { ChooseBetween, Effect, EffectType } from '@gamepark/chateau-combo/material/Effect'
@@ -151,10 +151,10 @@ const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement, cardScore?: 
         </div>
       )}
 
-      {!!effects.length && !characteristic.outOfTheOubliette && (
+      {!!effects.length && !isOutOfTheOubliette(item.id.front!) && (
         <EffectList i18nKey="card.effect" effects={effects} getDescription={getEffectDescription}/>
       )}
-      {!!effects.length && characteristic.outOfTheOubliette && (
+      {!!effects.length && isOutOfTheOubliette(item.id.front!) && (
         <>
           <div css={lockInfoCss}>
             <Picture src={LockIcon} css={lockIconCss}/>

@@ -98,7 +98,10 @@ export enum Card {
   FortuneTeller,
 }
 
-export const cards = getEnumValues(Card)
+const allCards = getEnumValues(Card)
+export const isOutOfTheOubliette = (card: Card) => card % 100 >= 50
+export const cards = allCards.filter(c => !isOutOfTheOubliette(c))
+export const outOfTheOublietteCards = allCards.filter(isOutOfTheOubliette)
 export const getCardPlace = (card: Card) => Math.floor(card / 100) + 1
 
 export type CardId = {

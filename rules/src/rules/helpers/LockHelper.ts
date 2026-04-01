@@ -1,5 +1,5 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import { Card, CardId } from '../../material/Card'
+import { Card, CardId, isOutOfTheOubliette } from '../../material/Card'
 import { cardCharacteristics } from '../../material/CardCharacteristics'
 import { Effect, EffectType } from '../../material/Effect'
 import { keys } from '../../material/Key'
@@ -20,7 +20,7 @@ export class LockHelper extends MaterialRulesPart {
       .filter<CardId>(item =>
         !item.location.rotation &&
         !!item.id?.front &&
-        !!cardCharacteristics[item.id.front].outOfTheOubliette
+        isOutOfTheOubliette(item.id.front)
       )
 
     return lockCards.getIndexes().filter(index => {

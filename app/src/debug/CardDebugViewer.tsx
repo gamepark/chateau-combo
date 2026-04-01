@@ -1,4 +1,4 @@
-import { cards, getCardPlace } from '@gamepark/chateau-combo/material/Card'
+import { cards, getCardPlace, isOutOfTheOubliette, outOfTheOublietteCards } from '@gamepark/chateau-combo/material/Card'
 import { cardCharacteristics, Shield } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { ConditionType } from '@gamepark/chateau-combo/material/Condition'
 import { EffectType } from '@gamepark/chateau-combo/material/Effect'
@@ -74,7 +74,8 @@ export const CardDebugViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
   const [search, setSearch] = useState('')
 
   const filteredCards = useMemo(() => {
-    return cards.filter(card => {
+    const allCards = [...cards, ...outOfTheOublietteCards]
+    return allCards.filter(card => {
       const chars = cardCharacteristics[card]
       const place = getCardPlace(card)
       if (placeFilter && place !== placeFilter) return false
@@ -82,8 +83,8 @@ export const CardDebugViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
       if (effectFilter !== -1 && !chars.effects.some(e => e.type === effectFilter)) return false
       if (conditionFilter !== -1 && chars.scoring.condition.type !== conditionFilter) return false
       if (costFilter !== -1 && chars.cost !== costFilter) return false
-      if (extensionFilter === true && !chars.outOfTheOubliette) return false
-      if (extensionFilter === false && chars.outOfTheOubliette) return false
+      if (extensionFilter === true && !isOutOfTheOubliette(card)) return false
+      if (extensionFilter === false && isOutOfTheOubliette(card)) return false
       if (search) {
         const name = t(`card.${card}`).toLowerCase()
         if (!name.includes(search.toLowerCase())) return false
@@ -179,7 +180,7 @@ export const CardDebugViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
                       {place === Place.Castle ? 'Castle' : 'Village'}
                     </span>
                     <span css={[tagCss, costTagCss]}>Cost {chars.cost}</span>
-                    {chars.outOfTheOubliette && <span css={[tagCss, extTagCss]}>Ext</span>}
+                    {isOutOfTheOubliette(card) && <span css={[tagCss, extTagCss]}>Ext</span>}
                     {chars.moveMessenger && <span css={[tagCss, messengerTagCss]}>Messenger</span>}
                   </div>
                   <div css={detailCss}>
@@ -188,7 +189,7 @@ export const CardDebugViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
                   <div css={detailCss}>
                     <span>Effects: </span>
                     {chars.effects.length === 0 && <span>none</span>}
-                    {(chars.outOfTheOubliette ? getLockEffects(chars.effects) : chars.effects).map((e, i) => (
+                    {(isOutOfTheOubliette(card) ? getLockEffects(chars.effects) : chars.effects).map((e, i) => (
                       <div key={i} css={effectLineCss}>{getEffectDescription(e)}</div>
                     ))}
                   </div>

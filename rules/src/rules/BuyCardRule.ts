@@ -1,6 +1,6 @@
 import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { GainHelper } from './helpers/GainHelper'
-import { CardId } from '../material/Card'
+import { CardId, isOutOfTheOubliette } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
 import { coins } from '../material/Coin'
 import { keys } from '../material/Key'
@@ -80,14 +80,15 @@ export class BuyCardRule extends PlayerTurnRule {
 
       const moves: MaterialMove[] = []
 
-      if (characteristics.outOfTheOubliette) {
+      const oubliette = isOutOfTheOubliette(card.id!.front!)
+      if (oubliette) {
         // Place a key from supply on the card (lock ability — effect triggered later)
         moves.push(...this.material(MaterialType.Key).money(keys).addMoney(1, {
           type: LocationType.KeyOnCard, player: this.player, parent: move.itemIndex
         }))
       }
 
-      if (characteristics.outOfTheOubliette) {
+      if (oubliette) {
         // Lock cards: go to ActivateLockAfterBuy to let player choose to activate or not
         moves.push(this.startRule(RuleId.ActivateLockAfterBuy))
       } else if (characteristics.effects.length) {

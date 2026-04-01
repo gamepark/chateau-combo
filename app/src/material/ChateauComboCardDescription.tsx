@@ -1,4 +1,4 @@
-import { Card } from '@gamepark/chateau-combo/material/Card'
+import { Card, isOutOfTheOubliette } from '@gamepark/chateau-combo/material/Card'
 import { cardCharacteristics } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
@@ -304,7 +304,7 @@ export class ChateauComboCardDescription extends CardDescription {
     // Lock activation button
     if (ruleId === RuleId.SpendKey || ruleId === RuleId.ActivateLockAfterBuy) {
       const card = item.id?.front as Card | undefined
-      if (card && cardCharacteristics[card].outOfTheOubliette) {
+      if (card && isOutOfTheOubliette(card)) {
         const hasKey = context.rules.material(MaterialType.Key).location(LocationType.KeyOnCard).parent(context.index).length > 0
         if (hasKey) {
           const lockMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ActivateLock)(m) && m.data === context.index)

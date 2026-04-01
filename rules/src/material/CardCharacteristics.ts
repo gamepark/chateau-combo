@@ -26,7 +26,6 @@ export type CardPattern = {
   moveMessenger?: boolean
   effects: Effect[]
   scoring: Scoring
-  outOfTheOubliette?: boolean
 }
 
 export const cardCharacteristics: Record<Card, CardPattern> = {
@@ -799,7 +798,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
       bonus: { type: EffectType.GainKeys, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Craftsmanship } }
     }],
     scoring: { score: 3, condition: { type: ConditionType.PerDifferentCost } },
-    outOfTheOubliette: true
+
   },
 
   [Card.Toady]: {
@@ -808,7 +807,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     moveMessenger: true,
     effects: [{ type: EffectType.DiscardEntireRiver }],
     scoring: { score: 1, condition: { type: ConditionType.SumOfCostsInRow } },
-    outOfTheOubliette: true
+
   },
 
   [Card.Conspirator]: {
@@ -817,7 +816,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     moveMessenger: true,
     effects: [{ type: EffectType.GainGold, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Military } }],
     scoring: { score: 8, condition: { type: ConditionType.IfNoDiscount } },
-    outOfTheOubliette: true
+
   },
 
   [Card.Playwright]: {
@@ -825,7 +824,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     shields: [Shield.Scholarship],
     effects: [{ type: EffectType.GainGold, gain: 1, condition: { type: ConditionType.PerBanner, banner: Place.Castle } }],
     scoring: { score: 2, condition: { type: ConditionType.PerCardWithShieldCount, count: 1 } },
-    outOfTheOubliette: true
+
   },
 
   [Card.CardinalsHand]: {
@@ -833,7 +832,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     shields: [Shield.Military],
     effects: [{ type: EffectType.GainGold, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Faith } }],
     scoring: { score: 5, condition: { type: ConditionType.IfShieldInRow, shield: Shield.Faith } },
-    outOfTheOubliette: true
+
   },
 
   [Card.Printer]: {
@@ -844,7 +843,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
       bonus: { type: EffectType.GainKeys, gain: 3, condition: { type: ConditionType.PerCardWithDiscount } }
     }],
     scoring: { score: 5, condition: { type: ConditionType.IfShieldInColumn, shield: Shield.Scholarship } },
-    outOfTheOubliette: true
+
   },
 
   // Village - Out of the Oubliette
@@ -858,7 +857,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
       bonus: { type: EffectType.GainKeys, gain: 2, condition: { type: ConditionType.PerShield, shield: Shield.Scholarship } }
     }],
     scoring: { score: 12, condition: { type: ConditionType.IfNoFaceDown } },
-    outOfTheOubliette: true
+
   },
 
   [Card.ArtForger]: {
@@ -866,7 +865,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     shields: [Shield.Scholarship],
     effects: [{ type: EffectType.ActivateAdjacentAbility }],
     scoring: { score: 7, condition: { type: ConditionType.IfShieldInRow, shield: Shield.Military } },
-    outOfTheOubliette: true
+
   },
 
   [Card.Cutpurse]: {
@@ -877,7 +876,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
       bonus: { type: EffectType.GainKeys, gain: 3, condition: { type: ConditionType.PerCardWithPurse } }
     }],
     scoring: { score: 10, condition: { type: ConditionType.IfNoPurse } },
-    outOfTheOubliette: true
+
   },
 
   [Card.Peddler]: {
@@ -886,7 +885,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     moveMessenger: true,
     effects: [{ type: EffectType.DiscardEntireRiver }],
     scoring: { score: 1, condition: { type: ConditionType.SumOfCostsInColumn } },
-    outOfTheOubliette: true
+
   },
 
   [Card.PrinceOfThieves]: {
@@ -899,7 +898,7 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
       }
     }],
     scoring: { score: 4, condition: { type: ConditionType.PerLockCard } },
-    outOfTheOubliette: true
+
   },
 
   [Card.FortuneTeller]: {
@@ -908,6 +907,6 @@ export const cardCharacteristics: Record<Card, CardPattern> = {
     moveMessenger: true,
     effects: [{ type: EffectType.ActivateAdjacentAbility }],
     scoring: { score: 3, condition: { type: ConditionType.IfShieldInColumn, shield: Shield.Nobility } },
-    outOfTheOubliette: true
+
   }
 }

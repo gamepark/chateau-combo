@@ -1,7 +1,7 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { range, sumBy, uniq } from 'es-toolkit'
 import { PlayerId } from '../PlayerId'
-import { Card, CardId, getCardPlace } from './Card'
+import { Card, CardId, getCardPlace, isOutOfTheOubliette } from './Card'
 import { cardCharacteristics, Shield, shields } from './CardCharacteristics'
 import { coins } from './Coin'
 import { Condition, ConditionType } from './Condition'
@@ -108,7 +108,7 @@ export class Tableau extends MaterialRulesPart {
       case ConditionType.IfShieldInColumn:
         return this.countShields(condition.shield, this.tableau.map(l => l[x!])) > 0 ? 1 : 0
       case ConditionType.PerLockCard:
-        return this.countCards(card => !!cardCharacteristics[card].outOfTheOubliette)
+        return this.countCards(isOutOfTheOubliette)
       default:
         return 0
     }

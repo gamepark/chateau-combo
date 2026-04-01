@@ -1,8 +1,7 @@
 import { MaterialGameSetup } from '@gamepark/rules-api'
 import { ChateauComboOptions } from './ChateauComboOptions'
 import { ChateauComboRules } from './ChateauComboRules'
-import { cards, getCardPlace } from './material/Card'
-import { cardCharacteristics } from './material/CardCharacteristics'
+import { cards, getCardPlace, outOfTheOublietteCards } from './material/Card'
 import { Coin } from './material/Coin'
 import { Key } from './material/Key'
 import { LocationType } from './material/LocationType'
@@ -79,8 +78,8 @@ export class ChateauComboSetup extends MaterialGameSetup<PlayerId, MaterialType,
 
   setupDecks(options: ChateauComboOptions) {
     const allCards = options.outOfTheOubliette
-      ? cards
-      : cards.filter(card => !cardCharacteristics[card].outOfTheOubliette)
+      ? [...cards, ...outOfTheOublietteCards]
+      : cards
 
     const items = allCards.map(card => ({
       id: { front: card, back: getCardPlace(card) },
