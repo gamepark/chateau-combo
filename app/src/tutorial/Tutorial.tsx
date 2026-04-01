@@ -344,7 +344,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       })
     },
     {
-      view: me,
       popup: {
         text: () => (
           <Trans i18nKey="tuto.you"/>
