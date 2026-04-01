@@ -53,8 +53,8 @@ describe('Buy oubliette card', () => {
 describe('Activate lock', () => {
   it('should offer lock activation in SpendKeyRule', () => {
     const game = createGame()
-    // Place Conspirator in tableau with a key on it
-    addCardToTableau(game, Card.Conspirator, 1, 0, 0)
+    // Place Toady in tableau with a key on it (has DiscardEntireRiver, always activatable)
+    addCardToTableau(game, Card.Toady, 1, 0, 0)
     const cardIndex = 0
     addKeyOnCard(game, 1, cardIndex)
     // Add river cards so we can buy
@@ -70,7 +70,7 @@ describe('Activate lock', () => {
 
   it('should not offer lock activation if already activated this turn', () => {
     const game = createGame()
-    addCardToTableau(game, Card.Conspirator, 1, 0, 0)
+    addCardToTableau(game, Card.Toady, 1, 0, 0)
     addKeyOnCard(game, 1, 0)
     addCardToRiver(game, Card.Steward)
     setGold(game, 1, 10)
