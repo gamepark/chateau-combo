@@ -116,29 +116,20 @@ export const ChateauComboPlayerPanel: FC<Props> = ({ playerId, isViewed, isLeftN
   )
 }
 
-const ANIMATION_DELAY = 1200
-
 const Chip: FC<{ img: string; value: number; score?: boolean }> = ({ img, value, score }) => {
   const prevValue = useRef(value)
-  const [displayValue, setDisplayValue] = useState(value)
   const [pulse, setPulse] = useState(false)
   useEffect(() => {
     if (value === prevValue.current) return
     prevValue.current = value
-    const delayTimeout = setTimeout(() => {
-      setDisplayValue(value)
-      setPulse(true)
-    }, ANIMATION_DELAY)
-    const pulseTimeout = setTimeout(() => setPulse(false), ANIMATION_DELAY + 400)
-    return () => {
-      clearTimeout(delayTimeout)
-      clearTimeout(pulseTimeout)
-    }
+    setPulse(true)
+    const timeout = setTimeout(() => setPulse(false), 400)
+    return () => clearTimeout(timeout)
   }, [value])
   return (
     <div css={[chipCss, score && scoreChipCss, pulse && pulseCss]}>
       <Picture src={img} css={chipImgCss}/>
-      <span>{displayValue}</span>
+      <span>{value}</span>
     </div>
   )
 }

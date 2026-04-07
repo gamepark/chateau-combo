@@ -16,7 +16,7 @@ class TableauLocator extends GridLocator {
   }
 
   getPositionDependencies(location: Location, context: MaterialContext) {
-    return this.countItems(location, context)
+    return [this.countItems(location, context),context.rules.isOver()]
   }
 
   getLocations(context: MaterialContext) {

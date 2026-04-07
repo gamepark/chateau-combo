@@ -36,8 +36,8 @@ const ChateauComboDevTools: FC = () => {
 
 const navCss = css`
   top: auto !important;
-  left: ${import.meta.env.DEV ? '70px' : '16px'} !important;
-  bottom: 16px;
+  left: ${import.meta.env.DEV ? '5.5em' : '2em'} !important;
+  bottom: 1.2em;
   gap: 1em;
 
   button {

@@ -1,11 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { Card } from '@gamepark/chateau-combo/material/Card'
 import { Picture } from '@gamepark/react-game'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import LockIcon from '../../images/icons/lock.png'
 import KeyIcon from '../../images/tokens/Key1.png'
 import { brown, brownDark, gold } from '../../theme/colors'
+import { cardDescription } from '../ChateauComboCardDescription'
+
+const castleCards = [Card.LadyInTheIronMask, Card.Toady, Card.Conspirator, Card.Playwright, Card.CardinalsHand, Card.Printer]
+const villageCards = [Card.KingOfBeggars, Card.ArtForger, Card.Cutpurse, Card.Peddler, Card.PrinceOfThieves, Card.FortuneTeller]
 
 type Props = {
   onClose: () => void
@@ -24,43 +29,51 @@ export const ExtensionInfoDialog: FC<Props> = ({ onClose }) => {
           </div>
         </div>
 
-        <div css={contentCss}>
-          <div css={sectionCss}>
-            <div css={sectionHeaderCss}>
-              <Picture src={LockIcon} css={sectionIconCss}/>
-              {t('extension.lock.title')}
-              <span css={sectionLineCss}/>
+        <div css={bodyCss}>
+          <div css={contentCss}>
+            <div css={sectionCss}>
+              <div css={sectionHeaderCss}>
+                <Picture src={LockIcon} css={sectionIconCss}/>
+                {t('extension.lock.title')}
+                <span css={sectionLineCss}/>
+              </div>
+              <div css={blockCss}>
+                {t('extension.lock.desc')}
+              </div>
             </div>
-            <div css={blockCss}>
-              {t('extension.lock.desc')}
+
+            <div css={sectionCss}>
+              <div css={sectionHeaderCss}>
+                <Picture src={KeyIcon} css={sectionIconCss}/>
+                {t('extension.activate.title')}
+                <span css={sectionLineCss}/>
+              </div>
+              <div css={blockCss}>
+                {t('extension.activate.desc')}
+              </div>
             </div>
+
+            <div css={sectionCss}>
+              <div css={sectionHeaderCss}>
+                {t('extension.scoring.title')}
+                <span css={sectionLineCss}/>
+              </div>
+              <div css={blockCss}>
+                {t('extension.scoring.desc')}
+              </div>
+            </div>
+
+            <button css={closeBtnCss} onClick={onClose}>
+              {t('extension.ok')}
+            </button>
           </div>
 
-          <div css={sectionCss}>
-            <div css={sectionHeaderCss}>
-              <Picture src={KeyIcon} css={sectionIconCss}/>
-              {t('extension.activate.title')}
-              <span css={sectionLineCss}/>
-            </div>
-            <div css={blockCss}>
-              {t('extension.activate.desc')}
-            </div>
-          </div>
-
-          <div css={sectionCss}>
-            <div css={sectionHeaderCss}>
-              {t('extension.scoring.title')}
-              <span css={sectionLineCss}/>
-            </div>
-            <div css={blockCss}>
-              {t('extension.scoring.desc')}
-            </div>
+          <div css={cardsContainerCss}>
+            {[...castleCards, ...villageCards].map(card => (
+              <Picture key={card} src={cardDescription.images[card]} css={extensionCardCss}/>
+            ))}
           </div>
         </div>
-
-        <button css={closeBtnCss} onClick={onClose}>
-          {t('extension.ok')}
-        </button>
       </div>
     </div>
   )
@@ -95,7 +108,7 @@ const dialogCss = css`
   font-family: 'Crimson Pro', Georgia, serif;
   color: ${brown};
   padding: 2em 2.5em;
-  max-width: 35em;
+  max-width: 55em;
   font-size: calc(3em * var(--gp-scale, 1));
   animation: slideUp 0.3s ease;
   @keyframes slideUp {
@@ -179,6 +192,33 @@ const blockCss = css`
   border-left: 0.25em solid #D4A828;
   border-radius: 0 0.3em 0.3em 0;
   box-shadow: 0 0.06em 0.18em rgba(0, 0, 0, 0.06);
+`
+
+const bodyCss = css`
+  display: flex;
+  gap: 1.5em;
+  align-items: flex-start;
+`
+
+const cardsContainerCss = css`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.4em;
+  flex-shrink: 0;
+  width: 24em;
+  align-content: start;
+`
+
+const extensionCardCss = css`
+  width: 100%;
+  border-radius: 0.3em;
+  box-shadow: 0 0.1em 0.4em rgba(0, 0, 0, 0.3);
+  transition: transform 0.08s ease;
+
+  &:hover {
+    transform: scale(1.5);
+    z-index: 1;
+  }
 `
 
 const closeBtnCss = css`
