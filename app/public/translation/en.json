@@ -16,7 +16,7 @@
   "activate-adjacent.you": "Choose an adjacent card to activate its ability",
   "activate-adjacent.player": "{player} must choose an adjacent card to activate",
   "activate-lock-after-buy.you": "Trigger a Lock ability or <0>pass</0>",
-  "activate-lock-after-buy.player": "{player} may trigger a Lock ability or pass",
+  "activate-lock-after-buy.player": "{player} may trigger a Lock ability",
   "discard-entire-river.you": "Choose a row to discard: <0>Castle</0> or <1>Village</1>",
   "discard-entire-river.player": "{player} must choose a row to discard",
   "end-game": "Players place their remaining gold on the Purse cards",

@@ -16,7 +16,7 @@
   "activate-adjacent.you": "Choisissez une carte adjacente pour activer sa capacité",
   "activate-adjacent.player": "{player} doit choisir une carte adjacente à activer",
   "activate-lock-after-buy.you": "Déclenchez un effet Cadenas ou <0>passez</0>",
-  "activate-lock-after-buy.player": "{player} peut déclencher un effet Cadenas ou passer",
+  "activate-lock-after-buy.player": "{player} peut déclencher un effet Cadenas",
   "discard-entire-river.you": "Choisissez une rangée à défausser : <0>Château</0> ou <1>Village</1>",
   "discard-entire-river.player": "{player} doit choisir une rangée à défausser",
   "end-game": "Les joueurs placent l'or qui leur reste sur les cartes Bourse",
