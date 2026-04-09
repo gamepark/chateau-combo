@@ -278,5 +278,7 @@
   "header.you.immediate.key.effect": "You gain Keys",
   "header.player.immediate.key.effect": "{player} gains Keys",
   "header.you.immediate.put.gold.effect": "You place Gold on purse cards",
-  "header.player.immediate.put.gold.effect": "{player} places Gold on purse cards"
+  "header.player.immediate.put.gold.effect": "{player} places Gold on purse cards",
+  "neighbor.you": "Your neighbor",
+  "neighbor.player": "{player}'s neighbor"
 }

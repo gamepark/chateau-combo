@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import { Shield, shields } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { PlayerId } from '@gamepark/chateau-combo/PlayerId'
-import { Avatar, Picture, PlayerTimer, usePlay, usePlayerName, useRules } from '@gamepark/react-game'
+import { Avatar, Picture, PlayerTimer, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMoveBuilder } from '@gamepark/rules-api'
 import { faEye } from '@fortawesome/free-solid-svg-icons/faEye'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -43,6 +43,7 @@ type Props = {
 export const ChateauComboPlayerPanel: FC<Props> = ({ playerId, isViewed, isLeftNeighbor, isRightNeighbor, viewedPlayer }) => {
   const play = usePlay()
   const rules = useRules<ChateauComboRules>()!
+  const me = usePlayerId()
   const name = usePlayerName(playerId)
   const viewedName = usePlayerName(viewedPlayer)
   const { t } = useTranslation()
@@ -107,8 +108,8 @@ export const ChateauComboPlayerPanel: FC<Props> = ({ playerId, isViewed, isLeftN
         </div>
         {/* Neighbor banner strip */}
         <div css={[neighborStripCss, !isLeftNeighbor && !isRightNeighbor && neighborStripHiddenCss]}>
-          {isLeftNeighbor ? t('neighbor.left', { player: viewedName })
-            : isRightNeighbor ? t('neighbor.right', { player: viewedName })
+          {isLeftNeighbor || isRightNeighbor
+            ? (viewedPlayer === me ? t('neighbor.you') : t('neighbor.player', { player: viewedName }))
             : '\u00A0'}
         </div>
       </div>

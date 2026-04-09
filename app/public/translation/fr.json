@@ -278,5 +278,7 @@
   "header.you.immediate.key.effect": "Vous gagnez des Clés",
   "header.player.immediate.key.effect": "{player} gagne des Clés",
   "header.you.immediate.put.gold.effect": "Vous placez de l'Or sur les cartes bourse",
-  "header.player.immediate.put.gold.effect": "{player} place de l'Or sur les cartes bourse"
+  "header.player.immediate.put.gold.effect": "{player} place de l'Or sur les cartes bourse",
+  "neighbor.you": "Votre voisin",
+  "neighbor.player": "Voisin de {player}"
 }
