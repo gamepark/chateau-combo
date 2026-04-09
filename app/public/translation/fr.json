@@ -231,6 +231,7 @@
   "move.discard-river": "Défausser cette rangée",
   "move.activate-lock": "Activer le cadenas",
   "move.activate-adjacent": "Activer cette carte",
+  "move.pass": "Passer",
 
   "neighbor.you": "Votre voisin",
   "neighbor.player": "Voisin de {player}",

@@ -231,6 +231,7 @@
   "move.discard-river": "Discard this row",
   "move.activate-lock": "Activate the lock",
   "move.activate-adjacent": "Activate this card",
+  "move.pass": "Pass",
 
   "neighbor.you": "Your neighbor",
   "neighbor.player": "{player}'s neighbor",

@@ -17,5 +17,6 @@ export enum LocationType {
     Shields,
     CardVictoryPoints,
     KeyOnCard,
-    SpendKeyButton
+    SpendKeyButton,
+    PassButton
 }

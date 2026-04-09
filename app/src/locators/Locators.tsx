@@ -17,6 +17,7 @@ import { playerKeyStockLocator } from './PlayerKeyStockLocator'
 import { riverLocator } from './RiverLocator'
 import { scoringLocator } from './ScoringLocator'
 import { shieldsLocator } from './ShieldsLocator'
+import { passButtonLocator } from './PassButtonLocator'
 import { spendKeyButtonLocator } from './SpendKeyButtonLocator'
 
 export const Locators: Partial<Record<LocationType, Locator>> = {
@@ -37,5 +38,6 @@ export const Locators: Partial<Record<LocationType, Locator>> = {
   [LocationType.MessengerIcon]: messengerIconDescription,
   [LocationType.ScoringArea]: scoringLocator,
   [LocationType.CardVictoryPoints]: cardVictoryPointsLocator,
-  [LocationType.SpendKeyButton]: spendKeyButtonLocator
+  [LocationType.SpendKeyButton]: spendKeyButtonLocator,
+  [LocationType.PassButton]: passButtonLocator
 }
