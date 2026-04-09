@@ -5,7 +5,7 @@ import { isCustomMoveType } from '@gamepark/rules-api'
 import { Trans } from 'react-i18next'
 import { WaxSealButton } from '../theme/WaxSealButton'
 
-export const ActivateLockAfterBuyHeader = () => {
+export const ActivateLockHeader = () => {
   const rules = useRules<ChateauComboRules>()!
   const player = usePlayerId()
   const activePlayer = rules.game.rule?.player
@@ -15,7 +15,7 @@ export const ActivateLockAfterBuyHeader = () => {
   return (
     <Trans i18nKey={itsMe ? 'activate-lock-after-buy.you' : 'activate-lock-after-buy.player'}
            values={{ player: playerName }}>
-      <WaxSealButton move={itsMe ? pass : undefined} auto={30}/>
+      <WaxSealButton move={itsMe ? pass : undefined}/>
     </Trans>
   )
 }

@@ -9,5 +9,5 @@ export enum RuleId {
   EndGame,
   DiscardEntireRiver,
   ActivateAdjacentAbility,
-  ActivateLockAfterBuy
+  ActivateLock
 }

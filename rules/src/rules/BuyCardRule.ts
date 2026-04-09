@@ -88,10 +88,7 @@ export class BuyCardRule extends PlayerTurnRule {
         }))
       }
 
-      if (oubliette) {
-        // Lock cards: go to ActivateLockAfterBuy to let player choose to activate or not
-        moves.push(this.startRule(RuleId.ActivateLockAfterBuy))
-      } else if (characteristics.effects.length) {
+      if (!oubliette && characteristics.effects.length) {
         this.memorize(Memory.PendingEffects, [...characteristics.effects])
         moves.push(...new ImmediateEffectRule(this.game).getPendingEffectsMoves())
       } else {

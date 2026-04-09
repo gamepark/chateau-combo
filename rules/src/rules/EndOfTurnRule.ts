@@ -22,7 +22,7 @@ export class EndOfTurnRule extends PlayerTurnRule {
       const lockIndexes = new LockHelper(this.game, this.player).activatableLockCardIndexes
       if (lockIndexes.length > 0) {
         this.memorize(Memory.ReturnRule, RuleId.EndOfTurn)
-        return this.startRule(RuleId.ActivateLockAfterBuy)
+        return this.startRule(RuleId.ActivateLock)
       }
     }
     return this.nextRuleMove

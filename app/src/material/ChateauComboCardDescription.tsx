@@ -286,6 +286,19 @@ export class ChateauComboCardDescription extends CardDescription {
       }
     }
 
+    // Discard one card from river
+    if (ruleId === RuleId.DiscardFromRiver && item.location.type === LocationType.River) {
+      const discardMove = legalMoves.find(m => isMoveItem(m) && m.itemIndex === context.index && m.location.type === LocationType.Discard)
+      if (discardMove) {
+        const discardableIndexes = legalMoves.filter(m => isMoveItem(m) && m.location.type === LocationType.Discard).map(m => (m as any).itemIndex as number)
+        const maxX = Math.max(...discardableIndexes.map(i => context.rules.material(MaterialType.Card).getItem(i).location.x ?? 0))
+        const isRightmost = (item.location.x ?? 0) === maxX
+        return <SealMenuButton move={discardMove} label={isRightmost ? <Trans i18nKey="move.discard"/> : undefined} x={0} y={0} labelPosition="right">
+          <FontAwesomeIcon icon={faTrash}/>
+        </SealMenuButton>
+      }
+    }
+
     // Discard river button (on top deck card)
     if ((ruleId === RuleId.DiscardEntireRiver || ruleId === RuleId.KeyEffect) && item.location.type === LocationType.Deck) {
       const topIndex = context.rules.material(MaterialType.Card).location(LocationType.Deck).locationId(item.location.id).deck().getIndex()
@@ -302,14 +315,17 @@ export class ChateauComboCardDescription extends CardDescription {
     if (item.location.type !== LocationType.Tableau || item.location.rotation) return
 
     // Lock activation button
-    if (ruleId === RuleId.SpendKey || ruleId === RuleId.ActivateLockAfterBuy) {
+    if (ruleId === RuleId.SpendKey || ruleId === RuleId.ActivateLock) {
       const card = item.id?.front as Card | undefined
       if (card && isOutOfTheOubliette(card)) {
         const hasKey = context.rules.material(MaterialType.Key).location(LocationType.KeyOnCard).parent(context.index).length > 0
         if (hasKey) {
           const lockMove = legalMoves.find(m => isCustomMoveType(CustomMoveType.ActivateLock)(m) && m.data === context.index)
           if (lockMove) {
-            return <SealMenuButton move={lockMove} label={<Trans i18nKey="move.activate-lock"/>} x={0} y={0} labelPosition="right">
+            const allLockMoves = legalMoves.filter(m => isCustomMoveType(CustomMoveType.ActivateLock)(m))
+            const maxX = Math.max(...allLockMoves.map(m => context.rules.material(MaterialType.Card).getItem(m.data as number).location.x ?? 0))
+            const isRightmost = (item.location.x ?? 0) === maxX
+            return <SealMenuButton move={lockMove} label={isRightmost ? <Trans i18nKey="move.activate-lock"/> : undefined} x={0} y={0} labelPosition="right">
               <FontAwesomeIcon icon={faLockOpen}/>
             </SealMenuButton>
           }

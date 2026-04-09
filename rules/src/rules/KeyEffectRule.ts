@@ -4,6 +4,7 @@ import { MaterialType } from '../material/MaterialType'
 import { Place } from '../material/Place'
 import { CustomMoveType } from './CustomMoveType'
 import { DealCardsHelper } from './helpers/DealCardsHelper'
+import { LockHelper } from './helpers/LockHelper'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -54,9 +55,14 @@ export class KeyEffectRule extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.MessengerPawn)(move)) {
-      return [
-        this.startRule(this.returnRule)
-      ]
+      if (!this.remind<boolean>(Memory.LockActivatedThisTurn)) {
+        const lockIndexes = new LockHelper(this.game, this.player).activatableLockCardIndexes
+        if (lockIndexes.length > 0) {
+          this.memorize(Memory.ReturnRule, this.returnRule)
+          return [this.startRule(RuleId.ActivateLock)]
+        }
+      }
+      return [this.startRule(this.returnRule)]
     }
     if (isMoveItemType(MaterialType.Card)(move)) {
       if (move.location.type === LocationType.Discard) {

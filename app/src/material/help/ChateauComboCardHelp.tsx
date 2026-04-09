@@ -94,9 +94,19 @@ export const ChateauComboCardHelp = (props: MaterialHelpProps) => {
           }
         </div>
       }/>}
-      {isFlipped && <p>
-        <PlayMoveButton move={displayLocationHelp({ type: LocationType.Shields })} local>{t('help.shield-distribution')}</PlayMoveButton>
-      </p>}
+      {isFlipped && <>
+        {(takeFaceDown.length === 1) &&
+          <div css={actionsRowCss}>
+            <PlayMoveButton move={takeFaceDown[0]} onPlay={closeDialog}>{t('move.place-down')}</PlayMoveButton>
+          </div>
+        }
+        {(takeFaceDown.length > 1) &&
+          <div css={actionsRowCss}>
+            <PlayMoveButton move={rules.material(MaterialType.Card).index(itemIndex).selectItem()}
+                            onPlay={undoSelect} local>{t('move.select')}</PlayMoveButton>
+          </div>
+        }
+      </>}
       <CardLocation {...props} />
     </>
   )
