@@ -1,5 +1,4 @@
 import { Card, isOutOfTheOubliette } from '@gamepark/chateau-combo/material/Card'
-import { cardCharacteristics } from '@gamepark/chateau-combo/material/CardCharacteristics'
 import { LocationType } from '@gamepark/chateau-combo/material/LocationType'
 import { MaterialType } from '@gamepark/chateau-combo/material/MaterialType'
 import { Place } from '@gamepark/chateau-combo/material/Place'
