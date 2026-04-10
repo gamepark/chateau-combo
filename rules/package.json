@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/chateau-combo",
-  "version": "0.0.0",
+  "version": "1.2.0",
   "description": "The rules of Chateau Combo adapted for Game Park",
   "sideEffects": false,
   "type": "module",

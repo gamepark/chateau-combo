@@ -1,7 +1,7 @@
 {
   "name": "@gamepark/chateau-combo-app",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.2.0",
   "type": "module",
   "description": "The user interface of Chateau Combo adaptation for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
