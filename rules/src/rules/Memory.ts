@@ -3,7 +3,6 @@ export enum Memory {
   PendingEffects,
   LockActivatedThisTurn,
   ReturnRule,
-  ActivateLockReturnRule,
   OriginalPlacedCard,
   ChosenRiver,
   OutOfTheOubliette

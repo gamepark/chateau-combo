@@ -8,6 +8,5 @@ export enum RuleId {
   EndOfTurn,
   EndGame,
   DiscardEntireRiver,
-  ActivateAdjacentAbility,
-  ActivateLock
+  ActivateAdjacentAbility
 }

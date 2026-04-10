@@ -314,7 +314,7 @@ export class ChateauComboCardDescription extends CardDescription {
     if (item.location.type !== LocationType.Tableau || item.location.rotation) return
 
     // Lock activation button
-    if (ruleId === RuleId.SpendKey || ruleId === RuleId.BuyCard || ruleId === RuleId.ActivateLock) {
+    if (ruleId === RuleId.SpendKey || ruleId === RuleId.BuyCard || ruleId === RuleId.EndOfTurn) {
       const card = item.id?.front as Card | undefined
       if (card && isOutOfTheOubliette(card)) {
         const hasKey = context.rules.material(MaterialType.Key).location(LocationType.KeyOnCard).parent(context.index).length > 0

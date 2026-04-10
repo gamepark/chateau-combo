@@ -4,7 +4,7 @@ import { MaterialType } from '../../material/MaterialType'
 import { Place, places } from '../../material/Place'
 
 export class DealCardsHelper extends MaterialRulesPart {
-  completeRivers(moveOnceComplete: MaterialMove) {
+  completeRivers(moveOnceComplete?: MaterialMove) {
     const moves: MaterialMove[] = []
     for (const place of places) {
       const river = this.getRiver(place)
@@ -13,7 +13,7 @@ export class DealCardsHelper extends MaterialRulesPart {
       if (cardsToDraw) {
         if (cardsToDraw <= deck.length) {
           moves.push(...deck.deal({ type: LocationType.River, id: place }, cardsToDraw))
-          moves.push(moveOnceComplete)
+          if (moveOnceComplete) moves.push(moveOnceComplete)
         } else {
           const discard = this.getDiscard(place)
           if (discard.length) {
@@ -27,12 +27,12 @@ export class DealCardsHelper extends MaterialRulesPart {
             if (messenger.getItem()!.location.id === place) {
               moves.push(messenger.moveItem({ type: LocationType.EndOfRiver, id: place === Place.Castle ? Place.Village : Place.Castle }))
             }
-            moves.push(moveOnceComplete)
+            if (moveOnceComplete) moves.push(moveOnceComplete)
           }
         }
       }
     }
-    if (moves.length === 0) {
+    if (moves.length === 0 && moveOnceComplete) {
       moves.push(moveOnceComplete)
     }
     return moves

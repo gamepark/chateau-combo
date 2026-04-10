@@ -1,7 +1,6 @@
 import { RuleId } from '@gamepark/chateau-combo/rules/RuleId'
 import { ComponentType } from 'react'
 import { ActivateAdjacentAbilityHeader } from './ActivateAdjacentAbilityHeader'
-import { ActivateLockHeader } from './ActivateLockHeader'
 import { BuyCardHeader } from './BuyCardHeader'
 import { ChooseBetweenHeader } from './ChooseBetweenHeader'
 import { DiscardEntireRiverHeader } from './DiscardEntireRiverHeader'
@@ -22,6 +21,5 @@ export const Headers: Partial<Record<RuleId, ComponentType>> = {
   [RuleId.EndOfTurn]: EndOfTurnHeader,
   [RuleId.EndGame]: EndGameHeader,
   [RuleId.DiscardEntireRiver]: DiscardEntireRiverHeader,
-  [RuleId.ActivateAdjacentAbility]: ActivateAdjacentAbilityHeader,
-  [RuleId.ActivateLock]: ActivateLockHeader
+  [RuleId.ActivateAdjacentAbility]: ActivateAdjacentAbilityHeader
 }

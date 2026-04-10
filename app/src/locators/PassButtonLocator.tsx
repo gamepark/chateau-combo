@@ -28,7 +28,7 @@ class PassButtonLocator extends Locator {
     const { rules, player } = context
     const rule = rules.game.rule
     const viewPlayer = getViewPlayer(context)
-    if (rule?.id !== RuleId.ActivateLock || rule?.player !== viewPlayer) return []
+    if (rule?.id !== RuleId.EndOfTurn || rule?.player !== viewPlayer) return []
     if (player !== viewPlayer) return []
     return [{ type: LocationType.PassButton, player }]
   }

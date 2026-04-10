@@ -4,7 +4,6 @@ import { MaterialType } from './material/MaterialType'
 import { ScoringHelper } from './material/ScoringHelper'
 import { PlayerId } from './PlayerId'
 import { ActivateAdjacentAbilityRule } from './rules/ActivateAdjacentAbilityRule'
-import { ActivateLockRule } from './rules/ActivateLockRule'
 import { BuyCardRule } from './rules/BuyCardRule'
 import { ChooseBetweenRule } from './rules/ChooseBetweenRule'
 import { DiscardEntireRiverRule } from './rules/DiscardEntireRiverRule'
@@ -32,8 +31,7 @@ export class ChateauComboRules extends HiddenMaterialRules<PlayerId, MaterialTyp
     [RuleId.ChooseBetween]: ChooseBetweenRule,
     [RuleId.EndGame]: EndGameRule,
     [RuleId.DiscardEntireRiver]: DiscardEntireRiverRule,
-    [RuleId.ActivateAdjacentAbility]: ActivateAdjacentAbilityRule,
-    [RuleId.ActivateLock]: ActivateLockRule
+    [RuleId.ActivateAdjacentAbility]: ActivateAdjacentAbilityRule
   }
 
   locationsStrategies = {
