@@ -1,6 +1,4 @@
 {
-  "Name": "Château Combo",
-
   "spend-key.you": "You can <0>Spend a Key</0> or Buy a Card",
   "spend-key.player": "{player} can spend a Key or buy a card",
   "key-effect.you": "<0>Move the Messenger</0> or <1>Replace the 3 {place, select, 1{Castle} other{Village}} cards</1>",
