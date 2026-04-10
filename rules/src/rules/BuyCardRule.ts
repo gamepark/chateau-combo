@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, isMoveItemType, ItemMove, Location, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { GainHelper } from './helpers/GainHelper'
 import { CardId, isOutOfTheOubliette } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
@@ -7,6 +7,8 @@ import { keys } from '../material/Key'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { Tableau } from '../material/Tableau'
+import { CustomMoveType } from './CustomMoveType'
+import { LockHelper } from './helpers/LockHelper'
 import { TableauHelper } from './helpers/TableauHelper'
 import { ImmediateEffectRule } from './ImmediateEffectRule'
 import { Memory } from './Memory'
@@ -23,10 +25,18 @@ export class BuyCardRule extends PlayerTurnRule {
     const affordableCards = cards
       .filter<CardId>(item => cardCharacteristics[item.id.front!].cost - tableau.getDiscount(item.id.back) <= gold)
 
-    return availableSpaces.flatMap(space => [
+    const moves: MaterialMove[] = availableSpaces.flatMap(space => [
       ...affordableCards.moveItems(space),
       ...cards.moveItems({ ...space, rotation: true })
     ])
+
+    if (!this.remind<boolean>(Memory.LockActivatedThisTurn)) {
+      const lockMoves = new LockHelper(this.game, this.player).activatableLockCardIndexes
+        .map(index => this.customMove(CustomMoveType.ActivateLock, index))
+      moves.push(...lockMoves)
+    }
+
+    return moves
   }
 
   get gold() {
@@ -45,6 +55,11 @@ export class BuyCardRule extends PlayerTurnRule {
       .material(MaterialType.Card)
       .location(LocationType.River)
       .locationId(banner)
+  }
+
+  onCustomMove(move: CustomMove): MaterialMove[] {
+    if (!isCustomMoveType(CustomMoveType.ActivateLock)(move)) return []
+    return new LockHelper(this.game, this.player).activateLock(move.data as number, RuleId.BuyCard)
   }
 
   beforeItemMove(move: ItemMove) {

@@ -28,12 +28,6 @@ export class SpendKeyRule extends BuyCardRule {
       moves.push(...keysMoney.removeMoney(1, { type: LocationType.PlayerKeyStock, player: this.player }))
     }
 
-    if (!this.remind<boolean>(Memory.LockActivatedThisTurn)) {
-      const lockMoves = new LockHelper(this.game, this.player).activatableLockCardIndexes
-        .map(index => this.customMove(CustomMoveType.ActivateLock, index))
-      moves.push(...lockMoves)
-    }
-
     return moves
   }
 
