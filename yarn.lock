@@ -649,7 +649,7 @@ __metadata:
     "@fortawesome/free-regular-svg-icons": "npm:^7.2.0"
     "@fortawesome/free-solid-svg-icons": "npm:^7.2.0"
     "@fortawesome/react-fontawesome": "npm:^3.3.0"
-    "@gamepark/react-game": "npm:~7.7.14"
+    "@gamepark/react-game": "npm:~7.7.16"
     "@gamepark/rules-api": "npm:~7.6.2"
     "@types/node": "npm:^25.6.0"
     "@types/react": "npm:^19.2.14"
@@ -686,9 +686,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@gamepark/react-client@npm:^7.6.4":
-  version: 7.6.4
-  resolution: "@gamepark/react-client@npm:7.6.4"
+"@gamepark/react-client@npm:^7.6.5":
+  version: 7.6.5
+  resolution: "@gamepark/react-client@npm:7.6.5"
   dependencies:
     "@reduxjs/toolkit": "npm:^2.11.2"
     "@tanstack/react-query": "npm:^5.90.21"
@@ -702,26 +702,26 @@ __metadata:
     superjson: "npm:^2.2.6"
   peerDependencies:
     "@gamepark/api-types": ^1.0.0
-    "@gamepark/rules-api": ^7.6.0
+    "@gamepark/rules-api": ^7.6.2
     dayjs: ^1.11.19
     es-toolkit: ^1.44.0
     react: ^19.2.4
     react-dom: ^19.2.4
     react-redux: ^9.2.0
     rxjs: ^7.8.2
-  checksum: 10c0/75c94fc6fbf3c4c0102f5e6506064b30a323b39839bf425e5f98882841b349d388d55297480272fa85a047540cfdc824856ebec70bd67f102129bc1507927d09
+  checksum: 10c0/6ad54d4791591054afa3dc186e19876f948fbbda903e25f6b2d6a2d27887f244e0a51b5455de9bfba1eca127dfa774c7696bcdf8f52f3fca61ebacb9a8423033
   languageName: node
   linkType: hard
 
-"@gamepark/react-game@npm:~7.7.14":
-  version: 7.7.15
-  resolution: "@gamepark/react-game@npm:7.7.15"
+"@gamepark/react-game@npm:~7.7.16":
+  version: 7.7.16
+  resolution: "@gamepark/react-game@npm:7.7.16"
   dependencies:
     "@datadog/browser-logs": "npm:^6.28.1"
     "@dnd-kit/modifiers": "npm:^9.0.0"
     "@gamepark/api-types": "npm:^1.0.1"
     "@gamepark/avataaars": "npm:^3.0.0"
-    "@gamepark/react-client": "npm:^7.6.4"
+    "@gamepark/react-client": "npm:^7.6.5"
     dayjs: "npm:^1.11.19"
     fscreen: "npm:^1.2.0"
     i18next-http-backend: "npm:^3.0.2"
@@ -749,7 +749,7 @@ __metadata:
     react-dom: 19.x
     react-i18next: 16.x
     react-redux: 9.x
-  checksum: 10c0/9f8c9c27dc0ec92d2230ad2f3f59b56ad8b9cd0a05c680cba9313e48773d039b4082bcfe2b35d611e7d0e4935813c25a7a46958c724c2f6193baf74848eba573
+  checksum: 10c0/124680fe4336e0791c261ab91001a300e34b14e19cacd2cae984e9a7acfdb4bd6bfe1a32117457cf402ecd2c5fd2bde4159e1d71087e0150adeda521db21efe8
   languageName: node
   linkType: hard
 
