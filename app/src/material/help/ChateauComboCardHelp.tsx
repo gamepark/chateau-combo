@@ -177,7 +177,8 @@ const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement, cardScore?: 
               )}
             </span>
           </div>
-          <EffectList i18nKey="card.lock" effects={getLockEffects(effects)} getDescription={getEffectDescription}/>
+          <EffectList i18nKey="card.lock" effects={getLockEffects(effects)} getDescription={getEffectDescription}
+                      isDiscardedContext={i => effects.some(e => e.type === EffectType.DiscardEntireRiver) && i > 0}/>
         </>
       )}
       {!!chooseBetween && (
@@ -205,8 +206,13 @@ const VisibleCard: FC<MaterialHelpProps & { actions?: ReactElement, cardScore?: 
   )
 }
 
-const EffectList: FC<{ i18nKey: string, effects: Effect[], getDescription: (effect: Effect) => any }> = (props) => {
-  const { i18nKey, effects, getDescription } = props
+const EffectList: FC<{
+  i18nKey: string,
+  effects: Effect[],
+  getDescription: (effect: Effect, discardedContext?: boolean) => any,
+  isDiscardedContext?: (index: number) => boolean
+}> = (props) => {
+  const { i18nKey, effects, getDescription, isDiscardedContext } = props
   return (
     <>
       <div css={sectionHeaderCss}>
@@ -217,7 +223,7 @@ const EffectList: FC<{ i18nKey: string, effects: Effect[], getDescription: (effe
       </div>
       {effects.length === 1 && (
         <div css={effectBlockCss}>
-          {getDescription(effects[0])}
+          {getDescription(effects[0], isDiscardedContext?.(0))}
         </div>
       )}
       {effects.length > 1 && (
@@ -225,7 +231,7 @@ const EffectList: FC<{ i18nKey: string, effects: Effect[], getDescription: (effe
           <ul css={effectListCss}>
             {effects.map((effect, i) => (
               <li key={i}>
-                {getDescription(effect)}
+                {getDescription(effect, isDiscardedContext?.(i))}
               </li>
             ))}
           </ul>
@@ -331,7 +337,7 @@ export const getLockEffects = (effects: Effect[]): Effect[] => {
   return result
 }
 
-export const getEffectDescription = (effect: Effect): ReactElement => {
+export const getEffectDescription = (effect: Effect, discardedContext = false): ReactElement => {
   switch (effect.type) {
     case EffectType.Discount: {
       if (effect.castle && effect.village) return <Trans i18nKey="card.discount.both"/>
@@ -344,7 +350,7 @@ export const getEffectDescription = (effect: Effect): ReactElement => {
       return (
         <Trans i18nKey="card.effect.keys.per"
                values={{ keys: effect.gain }}
-               components={{ condition: <ConditionDetail condition={effect.condition}/> }}
+               components={{ condition: <ConditionDetail condition={effect.condition} discarded={discardedContext}/> }}
         />
       )
     }
@@ -352,7 +358,7 @@ export const getEffectDescription = (effect: Effect): ReactElement => {
       if (effect.condition) return (
         <Trans i18nKey="card.effect.gold.per"
                values={{ gold: effect.gain }}
-               components={{ condition: <ConditionDetail condition={effect.condition}/> }}
+               components={{ condition: <ConditionDetail condition={effect.condition} discarded={discardedContext}/> }}
         />
       )
       return <Trans i18nKey="card.effect.gold.opponents" values={{ gold: effect.opponentsGain }}/>
@@ -381,8 +387,9 @@ export const getEffectDescription = (effect: Effect): ReactElement => {
 
 type ConditionDetailProps = {
   condition: Condition
+  discarded?: boolean
 }
-const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
+const ConditionDetail: FC<ConditionDetailProps> = ({ condition, discarded }) => {
   switch (condition.type) {
     case ConditionType.PerMissingShieldType:
       return <Trans i18nKey="per.shield.diff.missing"><strong/></Trans>
@@ -391,6 +398,7 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
       if (condition.column) i18nKey = 'per.shield.column'
       if (condition.line) i18nKey = 'per.shield.line'
       if (condition.line && condition.column) i18nKey = 'per.shield.both'
+      if (discarded && !condition.column && !condition.line) i18nKey = 'per.shield.discarded'
       return (
         <Trans i18nKey={i18nKey}>
           <Picture css={mini} src={shieldImages[condition.shield]}/>
@@ -454,7 +462,7 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     }
     case ConditionType.PerCardWithDiscount: {
       return (
-        <Trans i18nKey="per.discount"/>
+        <Trans i18nKey={discarded ? 'per.discount.discarded' : 'per.discount'}/>
       )
     }
     case ConditionType.IfCardFlippedDown: {
@@ -464,7 +472,7 @@ const ConditionDetail: FC<ConditionDetailProps> = ({ condition }) => {
     }
     case ConditionType.PerCardWithPurse: {
       return (
-        <Trans i18nKey="per.card-with-purse"/>
+        <Trans i18nKey={discarded ? 'per.card-with-purse.discarded' : 'per.card-with-purse'}/>
       )
     }
     case ConditionType.PerGoldInPurse: {
