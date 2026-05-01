@@ -16,6 +16,15 @@ import { RuleId } from './RuleId'
 
 export class BuyCardRule extends PlayerTurnRule {
 
+  onRuleStart() {
+    // ReturnRule is single-use: clear it if it pointed back here so future
+    // card placements transition naturally to MoveMessenger instead of looping back to BuyCard.
+    if (this.remind<RuleId>(Memory.ReturnRule) === RuleId.BuyCard) {
+      this.forget(Memory.ReturnRule)
+    }
+    return []
+  }
+
   getPlayerMoves(): MaterialMove[] {
     const gold = this.gold
     const availableSpaces: Location[] = new TableauHelper(this.game, this.player).availableSpaces
