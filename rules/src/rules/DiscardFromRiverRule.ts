@@ -1,10 +1,11 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import { Card, CardId } from '../material/Card'
 import { cardCharacteristics } from '../material/CardCharacteristics'
-import { DiscardFromRiver } from '../material/Effect'
+import { DiscardFromRiver, Effect } from '../material/Effect'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { GainHelper } from './helpers/GainHelper'
+import { ImmediateEffectRule } from './ImmediateEffectRule'
 import { Memory } from './Memory'
 import { RuleId } from './RuleId'
 
@@ -57,7 +58,13 @@ export class DiscardFromRiverRule extends PlayerTurnRule {
       moves.push(...gain.gainKeys(discardedCardCost, this.player))
     }
 
-    moves.push(this.startRule(RuleId.MoveMessenger))
+    const pendingEffects = this.remind<Effect[]>(Memory.PendingEffects) ?? []
+    if (pendingEffects.length) {
+      moves.push(...new ImmediateEffectRule(this.game).getPendingEffectsMoves())
+    } else {
+      const returnRule = this.remind<RuleId>(Memory.ReturnRule)
+      moves.push(this.startRule(returnRule ?? RuleId.MoveMessenger))
+    }
 
     return moves
   }
