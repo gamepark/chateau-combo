@@ -1,4 +1,4 @@
-import { ChateauComboOptionsSpec } from '@gamepark/chateau-combo/ChateauComboOptions'
+import { ChateauComboOptionsSpecV2 } from '@gamepark/chateau-combo/ChateauComboOptions'
 import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { ChateauComboSetup } from '@gamepark/chateau-combo/ChateauComboSetup'
 import { GameProvider } from '@gamepark/react-game'
@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="chateau-combo"
       Rules={ChateauComboRules}
-      optionsSpec={ChateauComboOptionsSpec}
+      optionsSpec={ChateauComboOptionsSpecV2}
       GameSetup={ChateauComboSetup}
       material={Material}
       locators={Locators}

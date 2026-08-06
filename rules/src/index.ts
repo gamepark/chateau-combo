@@ -1,3 +1,3 @@
 export { ChateauComboRules } from './ChateauComboRules'
-export { ChateauComboOptionsSpec } from './ChateauComboOptions'
+export { ChateauComboOptionsSpecV2 } from './ChateauComboOptions'
 export { ChateauComboSetup } from './ChateauComboSetup'
