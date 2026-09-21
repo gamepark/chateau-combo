@@ -66,7 +66,7 @@ export const ChateauComboPlayerPanel: FC<Props> = ({ playerId, isViewed, isLeftN
 
         {/* Top zone: avatar + name/timer + resources */}
         <div css={topZoneCss}>
-          <Avatar css={avatarCss} playerId={playerId}/>
+          <Avatar css={avatarCss} playerId={playerId} speechBubble/>
           <div css={identityCss}>
             <span css={nameCss}>{name}</span>
             <div css={metaCss}>
