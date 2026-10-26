@@ -19,7 +19,8 @@ import { FC, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslation } from 'react-i18next'
 import { cardDescription } from '../material/ChateauComboCardDescription'
-import { getEffectDescription, getLockEffects } from '../material/help/ChateauComboCardHelp'
+import { EffectDescription } from '../material/help/EffectDescription'
+import { getLockEffects } from '../material/help/getLockEffects'
 
 const shieldNames: Record<Shield, string> = {
   [Shield.Nobility]: 'Nobility',
@@ -190,7 +191,7 @@ export const CardDebugViewer: FC<{ onClose?: () => void }> = ({ onClose }) => {
                     <span>Effects: </span>
                     {chars.effects.length === 0 && <span>none</span>}
                     {(isOutOfTheOubliette(card) ? getLockEffects(chars.effects) : chars.effects).map((e, i) => (
-                      <div key={i} css={effectLineCss}>{getEffectDescription(e)}</div>
+                      <div key={i} css={effectLineCss}><EffectDescription effect={e}/></div>
                     ))}
                   </div>
                   <div css={detailCss}>

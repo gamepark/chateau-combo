@@ -8,7 +8,7 @@ import { ChateauComboRules } from '@gamepark/chateau-combo/ChateauComboRules'
 import { CustomMove } from '@gamepark/rules-api'
 import { FC } from 'react'
 import { Trans } from 'react-i18next'
-import { getEffectDescription } from '../material/help/ChateauComboCardHelp'
+import { EffectDescription } from '../material/help/EffectDescription'
 import { LogPlayerName } from './LogPlayerName'
 
 export const ChooseEffectLog: FC<MaterialLogProps> = ({ move, context }) => {
@@ -22,7 +22,7 @@ export const ChooseEffectLog: FC<MaterialLogProps> = ({ move, context }) => {
   return (
     <Trans i18nKey="log.choose-effect">
       <LogPlayerName playerId={context.action.playerId}/>
-      {getEffectDescription(chosenEffect)}
+      <EffectDescription effect={chosenEffect}/>
     </Trans>
   )
 }
