@@ -737,6 +737,14 @@ describe('Discount', () => {
     expect(tableau.getDiscount(Place.Castle)).toBe(2) // Alchemist + Chatelaine
     expect(tableau.getDiscount(Place.Village)).toBe(2) // Alchemist + Architect
   })
+
+  it('Face-down cards give no discount', () => {
+    const game = createGame()
+    addCardToTableau(game, Card.Chatelaine, 1, 0, 0) // castle:1
+    addCardToTableau(game, Card.Fisherman, 1, 1, 0, true) // castle:1, face-down
+    const tableau = new Tableau(game, 1)
+    expect(tableau.getDiscount(Place.Castle)).toBe(1)
+  })
 })
 
 // ============================================================

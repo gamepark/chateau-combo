@@ -162,7 +162,7 @@ export class Tableau extends MaterialRulesPart {
       .location(LocationType.Tableau)
       .player(this.player)
       .getItems<CardId>()
-    return sumBy(tableau, card => card.id?.front ? this.getCardDiscount(card.id.front, place) : 0)
+    return sumBy(tableau, card => card.id?.front && !card.location.rotation ? this.getCardDiscount(card.id.front, place) : 0)
   }
 
   getCardDiscount(card: Card, place: Place) {
