@@ -25,9 +25,8 @@ class RiverLocator extends ListLocator {
     return coordinates
   }
 
-  getHoverTransform(item: MaterialItem) {
-    const z = item.location.rotation ? -10 : 10
-    return [`translateZ(${z}em)`, 'scale(2)']
+  getHoverTransform() {
+    return ['translateZ(10em)', 'scale(2)']
   }
 
   getPositionDependencies(_location: Location, context: MaterialContext) {

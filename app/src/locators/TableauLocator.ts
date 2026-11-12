@@ -36,9 +36,8 @@ class TableauLocator extends GridLocator {
     return item.location.player !== getViewPlayer(context)
   }
 
-  getHoverTransform(item: MaterialItem) {
-    const z = item.location.rotation ? -10 : 10
-    return [`translateZ(${z}em)`, 'scale(2)']
+  getHoverTransform() {
+    return ['translateZ(10em)', 'scale(2)']
   }
 
   locationDescription = new TableauSpotDescription()
