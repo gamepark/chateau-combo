@@ -12,11 +12,11 @@ export const journalTheme = {
     padding: 0.35em 0.5em 0.35em 0.6em;
     margin-bottom: 0.12em;
     margin-left: 0;
-    font-size: 2.7em;
+    font-size: 1.35em;
     box-shadow: none;
 
     @media only screen and (max-height: 599px) {
-      font-size: 3em;
+      font-size: 1.5em;
     }
   `
 }
